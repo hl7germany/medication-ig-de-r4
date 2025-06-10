@@ -3,21 +3,21 @@
 # │  used properties are included. For a list of all supported properties and their functions,     │
 # │  see: https://fshschool.org/docs/sushi/configuration/.                                         │
 # ╰────────────────────────────────────────────────────────────────────────────────────────────────╯
-id: de.medication.dosage
+id: de.dosage
 canonical: http://fhir.de
-name: MedicationDosageIG
+name: DosageIG
 # title: Example Title
 # description: Example Implementation Guide for getting started with SUSHI
 status: draft # draft | active | retired | unknown
 version: 0.1.0
 fhirVersion: 4.0.1 # https://www.hl7.org/fhir/valueset-FHIR-version.html
 copyrightYear: 2025+
-releaseLabel: ci-build
+releaseLabel: draft
 # license: CC0-1.0 # https://www.hl7.org/fhir/valueset-spdx-license.html
 # jurisdiction: urn:iso:std:iso:3166#US "United States of America" # https://www.hl7.org/fhir/valueset-jurisdiction.html
 publisher:
-  name: HL7 Deutschland
-  url: https://hl7.de/technische-komitees/fhir/
+  name: gematik
+  url: https://gematik.de
   # email: test@example.org
 
 # The dependencies property corresponds to IG.dependsOn. The key is the
@@ -42,7 +42,7 @@ publisher:
 # file name extension.  Any subproperties that are valid filenames
 # with supported extensions (e.g., .md/.xml) will be treated as
 # sub-pages.
-#
+# TODO
 # pages:
 #   index.md:
 #     title: Example Home
@@ -76,7 +76,13 @@ publisher:
 # ╰────────────────────────────────────────────────────────────────────────────────────────────────╯
 menu:
   Home: index.html
-  Artifacts: artifacts.html
+  Fachliche Beschreibung: overview.html
+  Konzepte:
+    Konzepte: concept.html
+    Textuelle Überführung: dosage-to-text.md
+  Verwendung: usage.html
+  FHIR-Artefakte: artifacts.html
+  Downloads: downloads.html
 
 # ╭───────────────────────────Less Common Implementation Guide Properties──────────────────────────╮
 # │  Uncomment the properties below to configure additional properties on the ImplementationGuide  │

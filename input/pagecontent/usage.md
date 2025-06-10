@@ -10,18 +10,8 @@ Die Verwendung der in diesem IG benannten Dosage-Profile kann in diversen Ressou
 
 Folgende Profile werden genutzt, um Dosierungen darzustellen:
 
-{% include artefacts-structuredef-table-generator.html type="Dosage" %}
-
 und hier der Test mit capture:
 
-{% capture profiles %}
-StructureDefinition/de-dosage-daily-four,
-StructureDefinition/de-dosage-daily-no-time,
-StructureDefinition/de-dosage-daily-time,
-StructureDefinition/de-dosage-freetext,
-StructureDefinition/de-dosage-interval,
-StructureDefinition/de-dosage-weekday
-{% endcapture %}
 
 ## Constraint setzen
 Um sicherzustellen, dass nur ein Dosierschema je Sequenz genutzt wird MUSS folgender Constraint auf dem Element angewendet werden, welches die Dosierung als TargetProfile nutzt:

@@ -53,6 +53,7 @@ publisher:
 #     complexExamples.xml:
 #
 #
+#
 # The parameters property represents IG.definition.parameter. Rather
 # than a list of code/value pairs (as in the ImplementationGuide
 # resource), the code is the YAML key. If a parameter allows repeating

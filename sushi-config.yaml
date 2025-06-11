@@ -80,7 +80,7 @@ menu:
   Fachliche Beschreibung: overview.html
   Konzepte:
     Konzepte: concept.html
-    Textuelle Überführung: dosage-to-text.md
+    Textuelle Überführung: dosage-to-text.html
   Verwendung: usage.html
   FHIR-Artefakte: artifacts.html
   Downloads: downloads.html

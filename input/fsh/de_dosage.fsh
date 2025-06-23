@@ -16,30 +16,9 @@ Description: "Gibt an, wie das Medikament vom Patienten eingenommen wird/wurde o
 
 * patientInstruction MS
 
-* asNeeded[x] only boolean
-
 // Delete all Timing fields that are not used in this level
 * timing MS
 * timing only TimingDE_Zeipunkte
-
-// Menge pro Zeitpunkt(e)
-* doseAndRate MS
-  * dose[x] only SimpleQuantity
-  * doseQuantity MS
-  * type 0..0
-  * rate[x] 0..0
-
-// Deleting other not yet relevant fields
-* site 0..0
-* route 0..0
-* method 0..0
-* maxDosePerPeriod 0..0
-* maxDosePerAdministration 0..0
-* maxDosePerLifetime 0..0
-
-
-
-
 
 // Beschreibungen
 * id

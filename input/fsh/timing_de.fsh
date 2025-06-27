@@ -7,7 +7,7 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
 * id
   * ^short = "Eindeutige ID zur Referenzierung zwischen Elementen"
   * ^definition = "Eindeutige ID für das Element innerhalb einer Ressource (für interne Verweise). Dies kann jeder beliebige Zeichenfolgenwert sein, der keine Leerzeichen enthält."
-  * ^comment = ""
+  * ^comment = "tbd"
 
 * extension
   * ^short = "Zusätzlicher Inhalt, der von Implementierungen definiert wird"
@@ -22,17 +22,17 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
 * event
   * ^short = "Wann das Ereignis eintritt"
   * ^definition = "Gibt bestimmte Zeitpunkte an, zu denen das Ereignis eintritt."
-  * ^comment = ""
+  * ^comment = "tbd"
 
 * repeat
   * ^short = "Wann das Ereignis stattfinden soll"
   * ^definition = "Eine Menge von Regeln, die beschreiben, wann das Ereignis geplant ist."
-  * ^comment = ""
+  * ^comment = "tbd"
 
 * repeat.id
   * ^short = "Eindeutige ID zur Referenzierung zwischen Elementen"
   * ^definition = "Eindeutige ID für das Element innerhalb einer Ressource (für interne Verweise). Dies kann jeder beliebige Zeichenfolgenwert sein, der keine Leerzeichen enthält."
-  * ^comment = ""
+  * ^comment = "tbd"
 
 * repeat.extension
   * ^short = "Zusätzlicher Inhalt, der von Implementierungen definiert wird"
@@ -42,7 +42,7 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
 * repeat.bounds[x]
   * ^short = "Länge/Bereich der Längen oder (Start- und/oder End-)Grenzen"
   * ^definition = "Entweder eine Dauer für die Länge des Zeitplans, ein Bereich möglicher Längen oder äußere Begrenzungen für Start- und/oder Endgrenzen des Zeitplans."
-  * ^comment = ""
+  * ^comment = "tbd"
 
 * repeat.count
   * ^short = "Anzahl der Wiederholungen"
@@ -52,7 +52,7 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
 * repeat.countMax
   * ^short = "Maximale Anzahl der Wiederholungen"
   * ^definition = "Falls vorhanden, zeigt dies an, dass die Anzahl ein Bereich ist - also die Aktion zwischen count und countMax Mal auszuführen ist."
-  * ^comment = ""
+  * ^comment = "tbd"
 
 * repeat.duration
   * ^short = "Wie lange, wenn es passiert"
@@ -67,32 +67,32 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
 * repeat.durationUnit
   * ^short = "s | min | h | d | wk | mo | a - Zeiteinheit (UCUM)"
   * ^definition = "Die Zeiteinheit für die Dauer, in UCUM-Einheiten."
-  * ^comment = ""
+  * ^comment = "tbd"
 
 * repeat.frequency
   * ^short = "Ereignis tritt frequency-mal pro Zeitraum auf"
   * ^definition = "Die Anzahl der Wiederholungen innerhalb des angegebenen Zeitraums. Falls frequencyMax vorhanden ist, gibt dieses Element die Untergrenze des zulässigen Bereichs der Häufigkeit an."
-  * ^comment = ""
+  * ^comment = "tbd"
 
 * repeat.frequencyMax
   * ^short = "Ereignis tritt bis zu frequencyMax-mal pro Zeitraum auf"
   * ^definition = "Falls vorhanden, zeigt dies an, dass die Häufigkeit ein Bereich ist - also zwischen frequency und frequencyMax Mal pro Zeitraum oder Zeitraumspanne wiederholt wird."
-  * ^comment = ""
+  * ^comment = "tbd"
 
 * repeat.period
   * ^short = "Ereignis tritt frequency-mal pro Zeitraum auf"
   * ^definition = "Gibt die Zeitspanne an, über die die Wiederholungen stattfinden sollen; z. B. um „3-mal täglich“ auszudrücken, wäre 3 die Häufigkeit und „1 Tag“ der Zeitraum. Falls periodMax vorhanden ist, gibt dieses Element die Untergrenze des zulässigen Bereichs der Zeitspanne an."
-  * ^comment = ""
+  * ^comment = "tbd"
 
 * repeat.periodMax
   * ^short = "Obergrenze des Zeitraums (z. B. 3-4 Stunden)"
   * ^definition = "Falls vorhanden, zeigt dies an, dass der Zeitraum ein Bereich von period bis periodMax ist, was z. B. Konzepte wie „einmal alle 3-5 Tage“ ausdrücken kann."
-  * ^comment = ""
+  * ^comment = "tbd"
 
 * repeat.periodUnit
   * ^short = "s | min | h | d | wk | mo | a - Zeiteinheit (UCUM)"
   * ^definition = "Die Zeiteinheit für den Zeitraum, in UCUM-Einheiten."
-  * ^comment = ""
+  * ^comment = "tbd"
 
 * repeat.dayOfWeek
   * ^short = "mon | tue | wed | thu | fri | sat | sun"
@@ -112,7 +112,7 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
 * repeat.offset
   * ^short = "Minuten vom Ereignis (vorher oder nachher)"
   * ^definition = "Die Anzahl der Minuten vom Ereignis. Wenn der Ereigniscode nicht angibt, ob die Minuten vor oder nach dem Ereignis liegen, wird angenommen, dass der Offset nach dem Ereignis ist."
-  * ^comment = ""
+  * ^comment = "tbd"
 
 * code
   * ^short = "BID | TID | QID | AM | PM | QD | QOD | +"

@@ -26,7 +26,7 @@ Description: "Gibt an, wie das Medikament vom Patienten eingenommen wird/wurde o
 * id
   * ^short = "Eindeutige ID für die Referenzierung zwischen Elementen"
   * ^definition = "Eindeutige ID für das Element innerhalb einer Ressource (für interne Verweise). Dies kann jeder beliebige Zeichenfolgenwert sein, der keine Leerzeichen enthält."
-  * ^comment = ""
+  * ^comment = "tbd"
 
 * extension
   * ^short = "Zusätzlicher Inhalt, der von Implementierungen definiert wird"
@@ -41,7 +41,7 @@ Description: "Gibt an, wie das Medikament vom Patienten eingenommen wird/wurde o
 * sequence
   * ^short = "Die Reihenfolge der Dosierungsanweisungen"
   * ^definition = "Gibt die Reihenfolge an, in der die Dosierungsanweisungen angewendet oder interpretiert werden sollen."
-  * ^comment = ""
+  * ^comment = "tbd"
 
 * text
   * ^short = "Freitext-Dosierungsanweisungen, z. B. '3x täglich 1 Tablette'"
@@ -56,7 +56,7 @@ Description: "Gibt an, wie das Medikament vom Patienten eingenommen wird/wurde o
 * patientInstruction
   * ^short = "Patienten- oder verbraucherorientierte Anweisungen"
   * ^definition = "Anweisungen in Begriffen, die vom Patienten oder Verbraucher verstanden werden."
-  * ^comment = ""
+  * ^comment = "tbd"
 
 * timing
   * ^short = "Wann das Medikament verabreicht werden soll"
@@ -71,7 +71,7 @@ Description: "Gibt an, wie das Medikament vom Patienten eingenommen wird/wurde o
 * route
   * ^short = "Wie das Medikament in den Körper gelangen soll"
   * ^definition = "Wie das Medikament in den Körper gelangen soll."
-  * ^comment = ""
+  * ^comment = "tbd"
 
 * method
   * ^short = "Technik zur Verabreichung des Medikaments"
@@ -81,12 +81,12 @@ Description: "Gibt an, wie das Medikament vom Patienten eingenommen wird/wurde o
 * doseAndRate
   * ^short = "Menge des verabreichten Medikaments"
   * ^definition = "Die verabreichte Menge des Medikaments."
-  * ^comment = ""
+  * ^comment = "tbd"
 
 * doseAndRate.id
   * ^short = "Eindeutige ID für die Referenzierung zwischen Elementen"
   * ^definition = "Eindeutige ID für das Element innerhalb einer Ressource (für interne Verweise). Dies kann jeder beliebige Zeichenfolgenwert sein, der keine Leerzeichen enthält."
-  * ^comment = ""
+  * ^comment = "tbd"
 
 * doseAndRate.extension
   * ^short = "Zusätzlicher Inhalt, der von Implementierungen definiert wird"
@@ -96,7 +96,7 @@ Description: "Gibt an, wie das Medikament vom Patienten eingenommen wird/wurde o
 * doseAndRate.type
   * ^short = "Art der angegebenen Dosis oder Rate"
   * ^definition = "Die Art der angegebenen Dosis oder Rate, z. B. verordnet oder berechnet."
-  * ^comment = ""
+  * ^comment = "tbd"
 
 * maxDosePerPeriod
   * ^short = "Obergrenze für das Medikament pro Zeiteinheit"
@@ -111,7 +111,7 @@ Description: "Gibt an, wie das Medikament vom Patienten eingenommen wird/wurde o
 * maxDosePerLifetime
   * ^short = "Obergrenze für das Medikament über die Lebenszeit des Patienten"
   * ^definition = "Obergrenze für das Medikament über die Lebenszeit des Patienten."
-  * ^comment = ""
+  * ^comment = "tbd"
 
 
 * doseAndRate.dose[x]

@@ -1,5 +1,5 @@
-Instance: Example-MR-Dosage-DEV
-InstanceOf: DE_DOSAGE_MEDICATIONREQUEST
+Instance: Example-MR-Dosage-DEV-1
+InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
 Usage: #example
 Title: "Example-MR-Dosage-DEV"
 Description: "Dosierung: DEV"
@@ -7,7 +7,7 @@ Description: "Dosierung: DEV"
 * status = #active
 * intent = #order
 * medicationCodeableConcept.text = "DEV Medication"
-* dosageInstruction[+] = Example-Dosage-DEV
+* dosageInstruction[+] = Example-Dosage-DEV-1
 
 
 // Actual Examples

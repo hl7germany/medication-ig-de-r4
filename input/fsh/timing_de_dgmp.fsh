@@ -32,6 +32,6 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
 
 Invariant: timing-only-one-type
 Description: "Only one kind of Repeat is allowed. Current allowed timings: 4-Scheme, Daytime, Weekday, Interval, 4-Schema and Weekday, Interval and Time"
-Expression: "(when.exists() xor timeOfDay.exists() xor dayOfWeek.exists() xor (frequency.exists() and period.exists() and periodUnit.exists()))"
+Expression: "(when.exists() xor timeOfDay.exists() xor dayOfWeek.exists() xor (frequency.exists() and period.exists() and periodUnit.exists()) xor (when.exists() and dayOfWeek.exists()) xor (frequency.exists() and period.exists() and periodUnit.exists() and (timeOfDay.exists() xor dayOfWeek.exists())))"
 Severity: #error
 

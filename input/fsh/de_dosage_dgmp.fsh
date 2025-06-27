@@ -15,14 +15,11 @@ Description: "Gibt an, wie das Medikament vom Patienten eingenommen wird/wurde o
   * type 0..0 //TODO: Sollte das fixed auf "ordered" gesetzt werden oder auf 0..0 gesetzt sein? http://terminology.hl7.org/CodeSystem/dose-rate-type
   * dose[x] only SimpleQuantity
   * doseQuantity MS
-  * rateRatio 0..0
-  * rateRange 0..0
-  * rateQuantity 0..0
+  * rate[x] 0..0
 
 // Remove unused Fields
 * sequence 0..0
-* asNeededBoolean 0..0
-* asNeededCodeableConcept 0..0
+* asNeeded[x] 0..0
 * site 0..0
 * route 0..0
 * method 0..0

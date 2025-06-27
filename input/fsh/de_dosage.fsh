@@ -112,7 +112,6 @@ Description: "Gibt an, wie das Medikament vom Patienten eingenommen wird/wurde o
   * ^definition = "Obergrenze für das Medikament über die Lebenszeit des Patienten."
   * ^comment = "tbd"
 
-
 * doseAndRate.dose[x]
   * ^short = "Menge des Medikaments pro Dosis"
   * ^definition = "Menge des Medikaments pro Dosis."

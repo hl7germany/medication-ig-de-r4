@@ -5,8 +5,6 @@ Title: "DosageDE_Dosierung"
 Description: "Gibt an, wie das Medikament vom Patienten eingenommen wird/wurde oder eingenommen werden soll."
 // TODO: Naming der Profile anpassen
 
-* text 1..1
-
 * additionalInstruction.text 1..1
 * patientInstruction
 
@@ -26,5 +24,3 @@ Description: "Gibt an, wie das Medikament vom Patienten eingenommen wird/wurde o
 * maxDosePerPeriod 0..0
 * maxDosePerAdministration 0..0
 * maxDosePerLifetime 0..0
-
-

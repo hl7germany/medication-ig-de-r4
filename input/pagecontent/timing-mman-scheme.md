@@ -13,7 +13,7 @@ Folgende Beispiele sind in diesem IG dargestellt:
 | Beispiel    | Beipspiel Datei |
 | -------- | ------- |
 | 1-0-1/2-0  | [Example-MR-Dosage-10120](./MedicationRequest-Example-MR-Dosage-10120.html)    |
-| 1-0-2-0 | [Example-MR-Dosage-1020]()./MedicationRequest-Example-MR-Dosage-1020.html     |
+| 1-0-2-0 | [Example-MR-Dosage-1020](./MedicationRequest-Example-MR-Dosage-1020.html)     |
 | 1-0-0-0    | [Example-MR-Dosage-1000](./MedicationRequest-Example-MR-Dosage-1000.html)    |
 | 1-0-1-0    | [Example-MR-Dosage-1010](./MedicationRequest-Example-MR-Dosage-1010.html)    |
 | 1-0-1-0 für 10 Tage   | [Example-MR-Dosage-1010-10-Days](./MedicationRequest-Example-MR-Dosage-1010-10-Days.html)    |

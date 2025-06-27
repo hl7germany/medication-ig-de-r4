@@ -3,7 +3,7 @@ Parent: Dosage
 Id: de-dosage
 Title: "DosageDE_Dosierung"
 Description: "Gibt an, wie das Medikament vom Patienten eingenommen wird/wurde oder eingenommen werden soll."
-* obeys if-sequence-then-boundsDuration // Sequenzen müssen eine Dauer beinhalten
+* obeys de-dosage-if-sequence-then-boundsDuration // Sequenzen müssen eine Dauer beinhalten
 
 * text 1..1 MS
 
@@ -130,7 +130,7 @@ Description: "Gibt an, wie das Medikament vom Patienten eingenommen wird/wurde o
 
 
 // Invarianten
-Invariant: if-sequence-then-boundsDuration
+Invariant: de-dosage-if-sequence-then-boundsDuration
 Description: "If a sequence is given the duration must be stated"
 Expression: "sequence.exists() implies timing.repeat.boundsDuration.exists()"
 Severity: #error

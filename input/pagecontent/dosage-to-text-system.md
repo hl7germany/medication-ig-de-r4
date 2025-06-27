@@ -12,3 +12,5 @@ Implementierung wird für die eML und FdVs getätigt. Ablauf wäre für ein E-Re
    2. E-Rezept-FdV kann entweder die strukturierten Daten anzeigen, oder den Text
 3. Der E-Rezept-Fachdienst sendet die Verordnungsdaten an das ePA AS
 4. Die Aktensysteme generieren den Text und setzen es in die Objekte für die eML
+
+Annahmen: PS können alle strukturierte Daten verarbeiten und anzeigen, nur FdVs bekommen .text zu sehen

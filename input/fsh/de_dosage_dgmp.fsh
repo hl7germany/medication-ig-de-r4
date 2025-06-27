@@ -5,8 +5,11 @@ Title: "DosageDE_Dosierung"
 Description: "Gibt an, wie das Medikament vom Patienten eingenommen wird/wurde oder eingenommen werden soll."
 // TODO: Naming der Profile anpassen
 
-* additionalInstruction.text 1..1
-* patientInstruction
+* text // Free text dosage instructions e.g. SIG
+
+* additionalInstruction 0..0
+
+* patientInstruction //Patient or consumer oriented instructions
 
 * timing only TimingDE_dgmp_Zeipunkte
 * doseAndRate 0..1 MS // Nur eine Dosierung für eine Medikation erlauben

@@ -1,3 +1,12 @@
+Instance: Example-Dosage-DEV
+InstanceOf: DE_DOSAGE_DGMP
+Usage: #inline
+Title: "Example Dosage Freetext"
+* text = "tbd"
+* timing.repeat
+  * when = #MORN
+
+//Actual Examples
 // Instance: Example-Dosage-Freetext
 // InstanceOf: DE_DOSAGE
 // Usage: #inline

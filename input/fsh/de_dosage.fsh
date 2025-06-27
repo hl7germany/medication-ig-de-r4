@@ -4,7 +4,6 @@ Id: de-dosage
 Title: "DosageDE_Dosierung"
 Description: "Gibt an, wie das Medikament vom Patienten eingenommen wird/wurde oder eingenommen werden soll."
 * obeys if-sequence-then-boundsDuration // Sequenzen müssen eine Dauer beinhalten
-* obeys asNeeded-xor-dosage // Bedarf und Dosierung darf nicht zusammen angegeben werden
 
 * text 1..1 MS
 
@@ -19,6 +18,9 @@ Description: "Gibt an, wie das Medikament vom Patienten eingenommen wird/wurde o
 // Delete all Timing fields that are not used in this level
 * timing MS
 * timing only TimingDE_Zeipunkte
+
+* doseAndRate MS
+  * doseQuantity MS
 
 // Beschreibungen
 * id
@@ -133,10 +135,5 @@ Description: "Gibt an, wie das Medikament vom Patienten eingenommen wird/wurde o
 Invariant: if-sequence-then-boundsDuration
 Description: "If a sequence is given the duration must be stated"
 Expression: "sequence.exists() implies timing.repeat.boundsDuration.exists()"
-Severity: #error
-
-Invariant: asNeeded-xor-dosage
-Description: "If the medication can be taken as needed then timing may not be defined"
-Expression: "asNeeded.exsits() xor timing.exists()"
 Severity: #error
 

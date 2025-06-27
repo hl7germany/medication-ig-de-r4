@@ -1,3 +1,16 @@
+Instance: Example-MR-Dosage-DEV
+InstanceOf: DE_DOSAGE_MEDICATIONREQUEST
+Usage: #example
+Title: "Example-MR-Dosage-DEV"
+Description: "Dosierung: DEV"
+* subject.display = "DEV Dosage"
+* status = #active
+* intent = #order
+* medicationCodeableConcept.text = "DEV Medication"
+* dosageInstruction[+] = Example-Dosage-DEV
+
+
+// Actual Examples
 // Instance: Example-MR-Dosage-Freetext
 // InstanceOf: DE_DOSAGE_MEDICATIONREQUEST
 // Usage: #example

@@ -32,6 +32,20 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
 
 Invariant: timing-only-one-type
 Description: "Only one kind of Repeat is allowed. Current allowed timings: 4-Scheme, Daytime, Weekday, Interval, 4-Schema and Weekday, Interval and Time"
-Expression: "(when.exists() xor timeOfDay.exists() xor dayOfWeek.exists() xor (frequency.exists() and period.exists() and periodUnit.exists()) xor (when.exists() and dayOfWeek.exists()) xor (frequency.exists() and period.exists() and periodUnit.exists() and (timeOfDay.exists() xor dayOfWeek.exists())))"
+Expression: "
+(
+  (when.exists() and timeOfDay.exists().not() and dayOfWeek.exists().not() and frequency.exists().not() and period.exists().not() and periodUnit.exists().not()) 
+  or
+  (timeOfDay.exists() and when.exists().not() and dayOfWeek.exists().not() and frequency.exists().not() and period.exists().not() and periodUnit.exists().not()) 
+  or
+  (dayOfWeek.exists() and when.exists().not() and timeOfDay.exists().not() and frequency.exists().not() and period.exists().not() and periodUnit.exists().not()) 
+  or
+  (frequency.exists() and period.exists() and periodUnit.exists() and when.exists().not() and timeOfDay.exists().not() and dayOfWeek.exists().not()) 
+  or
+  (when.exists() and dayOfWeek.exists() and timeOfDay.exists().not() and frequency.exists().not() and period.exists().not() and periodUnit.exists().not()) 
+  or
+  (frequency.exists() and period.exists() and periodUnit.exists() and when.exists().not() and ((timeOfDay.exists() and dayOfWeek.exists().not()) 
+  or (dayOfWeek.exists() and timeOfDay.exists().not())))
+)
+"
 Severity: #error
-

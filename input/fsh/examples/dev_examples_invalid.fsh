@@ -1,4 +1,4 @@
-Instance: Example-MR-Dosage-Invalid-9-Dosage-FrequencyOnly
+Instance: Example-MR-Dosage-Invalid-1-Dosage-FrequencyOnly
 InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
 Usage: #example
 Title: "Example-MR-Dosage-DEV"

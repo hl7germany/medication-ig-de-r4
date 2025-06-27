@@ -1,42 +1,42 @@
-Instance: Example-Dosage-Freetext
-InstanceOf: DE_DOSAGE
-Usage: #inline
-Title: "Example Dosage Freetext"
-* text = "Bitte 1x am Tag nehmen"
+// Instance: Example-Dosage-Freetext
+// InstanceOf: DE_DOSAGE
+// Usage: #inline
+// Title: "Example Dosage Freetext"
+// * text = "Bitte 1x am Tag nehmen"
 
-Instance: Example-Dosage-DailyFourScheme-1-MORN
-InstanceOf: DE_DOSAGE
-Usage: #inline
-Title: "Example Dosage Daily Four Scheme 1 Morn"
-* text = "1 Morgens"
-* timing.repeat.when = #MORN
-* doseAndRate.doseQuantity.value = 1
+// Instance: Example-Dosage-DailyFourScheme-1-MORN
+// InstanceOf: DE_DOSAGE
+// Usage: #inline
+// Title: "Example Dosage Daily Four Scheme 1 Morn"
+// * text = "1 Morgens"
+// * timing.repeat.when = #MORN
+// * doseAndRate.doseQuantity.value = 1
 
-Instance: Example-Dosage-DailyFourScheme-1-NIGHT
-InstanceOf: DE_DOSAGE
-Usage: #inline
-Title: "Example Dosage Daily Four Scheme 1 Night"
-* text = "1 Nachts"
-* timing.repeat.when = #NIGHT
-* doseAndRate.doseQuantity.value = 1
+// Instance: Example-Dosage-DailyFourScheme-1-NIGHT
+// InstanceOf: DE_DOSAGE
+// Usage: #inline
+// Title: "Example Dosage Daily Four Scheme 1 Night"
+// * text = "1 Nachts"
+// * timing.repeat.when = #NIGHT
+// * doseAndRate.doseQuantity.value = 1
 
-Instance: Example-Dosage-DailyFourScheme-05-EVE
-InstanceOf: DE_DOSAGE
-Usage: #inline
-Title: "Example Dosage Daily Four Scheme 0.5 Evening"
-* text = "0.5 Abends"
-* timing.repeat.when = #EVE
-* doseAndRate.doseQuantity.value = 0.5
+// Instance: Example-Dosage-DailyFourScheme-05-EVE
+// InstanceOf: DE_DOSAGE
+// Usage: #inline
+// Title: "Example Dosage Daily Four Scheme 0.5 Evening"
+// * text = "0.5 Abends"
+// * timing.repeat.when = #EVE
+// * doseAndRate.doseQuantity.value = 0.5
 
-Instance: Example-Dosage-DailyFourScheme-special-duration-1
-InstanceOf: DE_DOSAGE
-Usage: #inline
-Title: "Example Morning 1 Evening half"
-* text = "1 Morgens für 2 Wochen"
-* timing.repeat.when = #MORN
-* timing.repeat.boundsDuration.value = 2
-* timing.repeat.boundsDuration.unit = "Wochen"
-* doseAndRate.doseQuantity.value = 1
+// Instance: Example-Dosage-DailyFourScheme-special-duration-1
+// InstanceOf: DE_DOSAGE
+// Usage: #inline
+// Title: "Example Morning 1 Evening half"
+// * text = "1 Morgens für 2 Wochen"
+// * timing.repeat.when = #MORN
+// * timing.repeat.boundsDuration.value = 2
+// * timing.repeat.boundsDuration.unit = "Wochen"
+// * doseAndRate.doseQuantity.value = 1
 
 /*
 TODO

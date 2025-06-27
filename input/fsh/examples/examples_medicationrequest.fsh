@@ -1,36 +1,36 @@
-Instance: Example-MR-Dosage-Freetext
-InstanceOf: DE_DOSAGE_MEDICATIONREQUEST
-Usage: #example
-Title: "Example-MR-Dosage-Freetext"
-Description: "Dosierung: Freetext"
-* subject.display = "Freetext Dosage"
-* status = #active
-* intent = #order
-* medicationCodeableConcept.text = "Test Medication"
-* dosageInstruction[+] = Example-Dosage-Freetext
+// Instance: Example-MR-Dosage-Freetext
+// InstanceOf: DE_DOSAGE_MEDICATIONREQUEST
+// Usage: #example
+// Title: "Example-MR-Dosage-Freetext"
+// Description: "Dosierung: Freetext"
+// * subject.display = "Freetext Dosage"
+// * status = #active
+// * intent = #order
+// * medicationCodeableConcept.text = "Test Medication"
+// * dosageInstruction[+] = Example-Dosage-Freetext
 
-Instance: Example-MR-Dosage-DailyFourScheme
-InstanceOf: DE_DOSAGE_MEDICATIONREQUEST
-Usage: #example
-Title: "Example-MR-Dosage-DailyFourScheme"
-* subject.display = "Simple DailyFourScheme 1-0-0-0"
-* status = #active
-* intent = #order
-* medicationCodeableConcept.text = "Test Medication"
-* dosageInstruction[+] = Example-Dosage-DailyFourScheme-1-MORN
+// Instance: Example-MR-Dosage-DailyFourScheme
+// InstanceOf: DE_DOSAGE_MEDICATIONREQUEST
+// Usage: #example
+// Title: "Example-MR-Dosage-DailyFourScheme"
+// * subject.display = "Simple DailyFourScheme 1-0-0-0"
+// * status = #active
+// * intent = #order
+// * medicationCodeableConcept.text = "Test Medication"
+// * dosageInstruction[+] = Example-Dosage-DailyFourScheme-1-MORN
 
-Instance: Example-MR-Dosage-DailyFourScheme-special
-InstanceOf: DE_DOSAGE_MEDICATIONREQUEST
-Usage: #example
-Title: "Example-MR-Dosage-DailyFourScheme 1-0-0.5-1"
-Description: "Dosierung: DailyFourScheme 1-0-0.5-1"
-* subject.display = "DailyFourScheme 1-0-0.5-1"
-* status = #active
-* intent = #order
-* medicationCodeableConcept.text = "Test Medication"
-* dosageInstruction[+] = Example-Dosage-DailyFourScheme-1-MORN
-* dosageInstruction[+] = Example-Dosage-DailyFourScheme-1-NIGHT
-* dosageInstruction[+] = Example-Dosage-DailyFourScheme-05-EVE
+// Instance: Example-MR-Dosage-DailyFourScheme-special
+// InstanceOf: DE_DOSAGE_MEDICATIONREQUEST
+// Usage: #example
+// Title: "Example-MR-Dosage-DailyFourScheme 1-0-0.5-1"
+// Description: "Dosierung: DailyFourScheme 1-0-0.5-1"
+// * subject.display = "DailyFourScheme 1-0-0.5-1"
+// * status = #active
+// * intent = #order
+// * medicationCodeableConcept.text = "Test Medication"
+// * dosageInstruction[+] = Example-Dosage-DailyFourScheme-1-MORN
+// * dosageInstruction[+] = Example-Dosage-DailyFourScheme-1-NIGHT
+// * dosageInstruction[+] = Example-Dosage-DailyFourScheme-05-EVE
 
 /*
 TODO

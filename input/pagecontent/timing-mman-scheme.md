@@ -17,3 +17,16 @@ Folgende Beispiele sind in diesem IG dargestellt:
 | 1-0-0-0    | [Example-MR-Dosage-1000](./MedicationRequest-Example-MR-Dosage-1000.html)    |
 | 1-0-1-0    | [Example-MR-Dosage-1010](./MedicationRequest-Example-MR-Dosage-1010.html)    |
 | 1-0-1-0 für 10 Tage   | [Example-MR-Dosage-1010-10-Days](./MedicationRequest-Example-MR-Dosage-1010-10-Days.html)    |
+
+## Angabe und Erkennung der Dosierart
+
+Diese Dosierungsart wird daran erkannt, dass ausschließlich ´Dosage.timing.repeat.when´ angegeben ist. An diesem Feld wird dann kodiert die Tageszeit angegeben an der eine konkrete Dosierung einzunehmen ist.
+
+Für eine Dosierung kann auch mehrfach eine Angabe für .when erfolgen und bedeutet, dass wann auch immer einer der Tageszeiten eintritt, die angegebene Dosierung einzunehmen ist.
+
+Beispiel:
+- Dosage.timing.repeat.when = #MORN, #EVE
+- Dosage.doseAndRate.doseQuantity = 1 Tablette
+bedeutet, dass eine Tablette morgens und abends einzunehmen ist.
+
+Lesende Systeme werten entsprechend auch ´Dosage.timing.repeat´ aus. Wenn nur .when angegeben ist, ist dem Nutzer das 4-er Schema anzuzeigen.

@@ -12,7 +12,12 @@ Description: "Gibt an, wie das Medikament vom Patienten eingenommen wird/wurde o
 
 * timing only TimingDE_dgmp_Zeipunkte
 * doseAndRate MS
+  * type 0..0
+  * dose[x] only SimpleQuantity
   * doseQuantity MS
+  * rateRatio 0..0
+  * rateRange 0..0
+  * rateQuantity 0..0
 
 // Remove unused Fields
 * sequence 0..0
@@ -24,10 +29,5 @@ Description: "Gibt an, wie das Medikament vom Patienten eingenommen wird/wurde o
 * maxDosePerPeriod 0..0
 * maxDosePerAdministration 0..0
 * maxDosePerLifetime 0..0
-* doseAndRate
-  * type 0..0
-  * doseRange 0..0
-  * rateRatio 0..0
-  * rateRange 0..0
-  * rateQuantity 0..0
+
 

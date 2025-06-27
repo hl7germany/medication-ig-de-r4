@@ -8,7 +8,6 @@ Description: "Gibt an, wie das Medikament vom Patienten eingenommen wird/wurde o
 * text 1..1 MS
 
 * sequence MS
-  * ^meaningWhenMissing = "Wenn die Sequenz nicht angegeben wird, dann gilt für alle angegebenen Dosierungen implizit die Sequenz 0."
 
 * additionalInstruction MS
   * text MS
@@ -41,7 +40,7 @@ Description: "Gibt an, wie das Medikament vom Patienten eingenommen wird/wurde o
 * sequence
   * ^short = "Die Reihenfolge der Dosierungsanweisungen"
   * ^definition = "Gibt die Reihenfolge an, in der die Dosierungsanweisungen angewendet oder interpretiert werden sollen."
-  * ^comment = "tbd"
+  * ^comment = "Wenn die Sequenz nicht angegeben wird, dann gilt für alle angegebenen Dosierungen implizit die Sequenz 0."
 
 * text
   * ^short = "Freitext-Dosierungsanweisungen, z. B. '3x täglich 1 Tablette'"

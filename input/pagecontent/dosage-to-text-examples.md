@@ -4,6 +4,6 @@
 
 {% include supported-dosage-examples.md %}
 
-## Nicht unterstützte Dosierkonfigurationen
+## Zukünftig unterstützte Dosierkonfigurationen
 
 {% include unsupported-dosage-examples.md %}

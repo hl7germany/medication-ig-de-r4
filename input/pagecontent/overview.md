@@ -4,8 +4,6 @@ Dieser IG beschreibt die Ausbaustufen von Dosierungen. Um eine gleichartige Nutz
 
 ## Dosierungsarten
 
-{% include test.md %}
-
 ### Freitext-Dosierungen
 Freitext-Dosierungen beschreiben die Einnahme eines Medikaments in nicht-standardisierter Form. Sie werden genutzt, wenn die Dosierung nicht durch ein festgelegtes Schema abgebildet werden kann. Ein Beispiel hierfür wäre:  
 „Morgens 1 Tablette, abends ½ Tablette.“

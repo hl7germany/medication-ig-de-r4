@@ -7,6 +7,12 @@ Description: "Gibt an, wie das Medikament vom Patienten eingenommen wird/wurde o
 
 * obeys DosageStructuredOrFreeText
 * text // Free text dosage instructions e.g. SIG
+  * extension[generatedDosageInstructions]
+    * extension[algorithm]
+      * valueCoding 1..1 MS // The algorithm used to generate the text
+        * ^patternCoding.system = Canonical(DosageTextAlgorithmsCS)
+        * ^patternCoding.code = #GermanDosageTextGenerator
+        * version 1..1 MS
 
 * additionalInstruction 0..0
 

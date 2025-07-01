@@ -79,7 +79,15 @@ menu:
   Fachliche Beschreibung: overview.html
   Konzepte:
     Konzepte: concept.html
-    Textuelle Überführung: dosage-to-text.html
+    Textuelle Überführung von Dosierungen: dosage-to-text.html
+  Dosierschemata:
+    Freitext Dosierung: timing-freetext-scheme.html
+    Schema für Tageszeiten Bezug: timing-mman-scheme.html
+    Schema für Uhrzeit Bezug: timing-timeofday-scheme.html
+    Schema für Wochentags-Bezug: timing-weekday-scheme.html
+    Schema für Wiederkehrender Interval: timing-interval-scheme.html
+    Schema für Kombinationen des Zeitintervalls: timing-comb-interval-scheme.html
+    Schema für Kombinationen des Wochentags: timing-comb-weekday-scheme.html
   Verwendung: usage.html
   FHIR-Artefakte: artifacts.html
   Downloads: downloads.html

@@ -11,5 +11,8 @@ sushi .
 # Build Dosage Files
 python3 scripts/run-dosage-generate.py
 
+# Copy current script into the IG
+cp scripts/dosage-to-text.py input/content
+
 # Generate IG Publisher Content
 ./_genonce.sh -no-sushi

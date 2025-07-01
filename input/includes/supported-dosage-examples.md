@@ -7,7 +7,7 @@
 |[MedicationRequest-Example-MR-Dosage-interval-2wk](./MedicationRequest-Example-MR-Dosage-interval-2wk.html) | Medication<br>alle 2 Wochee - 1 Tablette - tbd |
 |[MedicationRequest-Example-MR-Dosage-comb-dayofweek-2](./MedicationRequest-Example-MR-Dosage-comb-dayofweek-2.html) | Medication<br>Montag, Freitag - 1 Tablette - morgens und abends - tbd<br>Montag, Freitag - 2 Tabletten - morgens und abends - tbd |
 |[MedicationRequest-Example-MR-Dosage-10120](./MedicationRequest-Example-MR-Dosage-10120.html) | Medication<br>1 Tablette - morgens - tbd<br>0.5 Tablette - abends - tbd |
-|[MedicationRequest-Example-MR-Dosage-freetext](./MedicationRequest-Example-MR-Dosage-freetext.html) | Medication<br>2 Tabletten morgens zum Frühstück |
+|[MedicationRequest-Example-MR-Dosage-Freetext](./MedicationRequest-Example-MR-Dosage-Freetext.html) | Medication<br>2 Tabletten morgens zum Frühstück |
 |[MedicationRequest-Example-MR-Dosage-comb-dayofweek-3](./MedicationRequest-Example-MR-Dosage-comb-dayofweek-3.html) | Medication<br>Montag, Freitag - 1 Tablette - je 08:00 Uhr - für 3 Woche(n) - tbd<br>Montag, Freitag - 2 Tabletten - je 10:00 Uhr - für 3 Woche(n) - tbd |
 |[MedicationRequest-Example-MR-Dosage-1010-10-Days](./MedicationRequest-Example-MR-Dosage-1010-10-Days.html) | Medication<br>1 Tablette - morgens - für 10 Woche(n) - tbd |
 |[MedicationRequest-Example-MR-Dosage-tod-2-12am](./MedicationRequest-Example-MR-Dosage-tod-2-12am.html) | Medication<br>2 Tabletten - je 12:00 Uhr - tbd |

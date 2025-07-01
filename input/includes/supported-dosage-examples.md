@@ -2,7 +2,7 @@
 | :---: | :---:|
 |[MedicationRequest-Example-MR-Dosage-comb-interval-1](./MedicationRequest-Example-MR-Dosage-comb-interval-1.html) | Medication<br>alle 2 Tage - 1 Tablette - je 08:00 Uhr - tbd<br>alle 2 Tage - 2 Tabletten - je 18:00 Uhr - tbd |
 |[MedicationRequest-Example-MR-Dosage-interval-3d](./MedicationRequest-Example-MR-Dosage-interval-3d.html) | Medication<br>alle 3 Tage - 1 Tablette - tbd |
-|[MedicationRequest-Example-MR-Dosage-interval-2d-bounds](./MedicationRequest-Example-MR-Dosage-interval-2d-bounds.html) | Medication<br>alle 2 Tage - 2 Tablette - für 6 Woche(n) - tbd |
+|[MedicationRequest-Example-MR-Dosage-interval-2d-bound](./MedicationRequest-Example-MR-Dosage-interval-2d-bound.html) | Medication<br>alle 2 Tage - 2 Tablette - für 6 Woche(n) - tbd |
 |[MedicationRequest-Example-MR-Dosage-interval-4times-d](./MedicationRequest-Example-MR-Dosage-interval-4times-d.html) | Medication<br>viermal täglich - 1 Tablette - tbd |
 |[MedicationRequest-Example-MR-Dosage-interval-2wk](./MedicationRequest-Example-MR-Dosage-interval-2wk.html) | Medication<br>alle 2 Wochee - 1 Tablette - tbd |
 |[MedicationRequest-Example-MR-Dosage-comb-dayofweek-2](./MedicationRequest-Example-MR-Dosage-comb-dayofweek-2.html) | Medication<br>Montag, Freitag - 1 Tablette - morgens und abends - tbd<br>Montag, Freitag - 2 Tabletten - morgens und abends - tbd |

@@ -12,6 +12,7 @@ sushi .
 python3 scripts/run-dosage-generate.py
 
 # Copy current script into the IG
+rm input/content/dosage-to-text.py
 cp scripts/dosage-to-text.py input/content
 
 # Generate IG Publisher Content

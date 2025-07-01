@@ -15,7 +15,7 @@ class GermanDosageTextGenerator:
         unsupported_fields = self.get_unsupported_fields(data)
         if unsupported_fields:
             felder = ", ".join(unsupported_fields)
-            return f"Die Dosiskonfiguration mit den Feldern {felder} wird derzeit nicht unterstützt."
+            return f"Die Dosiskonfiguration mit den Feldern {felder} wird in Ausbaustufe 1 nicht unterstützt."
        
         
         # 1. Angaben zum Medikament: Name

@@ -5,7 +5,8 @@ Title: "DosageDE_Dosierung"
 Description: "Gibt an, wie das Medikament vom Patienten eingenommen wird/wurde oder eingenommen werden soll."
 * obeys de-dosage-if-sequence-then-boundsDuration // Sequenzen müssen eine Dauer beinhalten
 
-* text 1..1 MS
+* text 0..1 MS
+  * extension contains GeneratedDosageInstructions named generatedDosageInstructions 0..1 MS
 
 * sequence MS
 

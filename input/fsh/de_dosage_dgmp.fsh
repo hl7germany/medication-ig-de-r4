@@ -1,10 +1,11 @@
 Profile: DE_DOSAGE_DGMP
 Parent: DE_DOSAGE
 Id: de-dosage-dgmp
-Title: "DosageDE_Dosierung"
+Title: "DosageDGMP_Dosierung"
 Description: "Gibt an, wie das Medikament vom Patienten eingenommen wird/wurde oder eingenommen werden soll."
 // TODO: Naming der Profile anpassen
 
+* obeys DosageStructuredOrFreeText
 * text // Free text dosage instructions e.g. SIG
 
 * additionalInstruction 0..0
@@ -27,3 +28,8 @@ Description: "Gibt an, wie das Medikament vom Patienten eingenommen wird/wurde o
 * maxDosePerPeriod 0..0
 * maxDosePerAdministration 0..0
 * maxDosePerLifetime 0..0
+
+Invariant: DosageStructuredOrFreeText
+Description: "Dosage must be either structured or free text, but not both at the same time."
+Expression: "(text.exists() and timing.empty() and doseAndRate.empty()) or (text.empty() and timing.exists() and doseAndRate.exists())"
+Severity: #error

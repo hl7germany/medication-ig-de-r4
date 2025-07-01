@@ -6,7 +6,7 @@ Folgende Beispiele sind in diesem IG dargestellt:
 
 | Beispiel    | Beipspiel Datei |
 | -------- | ------- |
-| 2 Tabletten morgens zum Frühstück  | [Example-MR-Dosage-freetext](./MedicationRequest-Example-MR-Dosage-freetext.html)    |
+| 2 Tabletten morgens zum Frühstück  | [Example-MR-Dosage-Freetext](./MedicationRequest-Example-MR-Dosage-Freetext.html)    |
 
 ## Angabe und Erkennung der Dosierart
 

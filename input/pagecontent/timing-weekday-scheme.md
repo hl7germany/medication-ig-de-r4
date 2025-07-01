@@ -1,12 +1,12 @@
 # Schema für Wochentags-Bezug
 
-Dieses Schema gibt die Tage, an denen das Medikament angewandt werden soll, im Sinne von Wochentagen über eine Kalenderwoche an. (Es ist damit eine besondere Form des Intervalls mit der Einheit "Woche".)
+Dieses Schema gibt an, an welchen Wochentagen einer Kalenderwoche das Medikament angewandt werden soll.
+In diesem Anwendungsfall wird davon ausgegangen, dass das Arzneimittel wöchentlich (für die geplante Dauer) in einem gleichbleibenden Wochentagsschema angewandt wird. Es wird zudem ermöglicht:
 
-Im einfachsten Zustand wiederholt sich das Schema jede Woche über einen unbefristeten Zeitraum und trifft bspw. keine Aussage darüber, zu welchen Tages- oder Uhrzeiten das Arzneimittel an den betreffenden Tagen anzuwenden ist.
+- eine abweichende Dosis abhängig vom Wochentag anzugeben und
+- die geplante Dauer der Anwendung zu begrenzen. 
 
-Alle Anwendungsfälle gehen davon aus, dass das Arzneimittel wöchentlich (für die geplante Dauer) in einem gleichbleibenden Schema angewandt wird.
-
-Es wird ermöglicht, eine abweichende Dosis abhängig vom Wochentag anzugeben.
+Es konkretisiert dabei nicht, zu welchem Zeitpunkt das Arzneimittel an dem betreffenden Wochentag anzuwenden ist.
 
 Es wird ermöglicht, die geplante Dauer der Anwendung zu begrenzen.   
 Folgende Beispiele sind in diesem IG dargestellt:

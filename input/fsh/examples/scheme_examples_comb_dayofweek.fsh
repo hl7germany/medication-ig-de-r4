@@ -7,7 +7,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
 * subject.display = "Patient"
 * status = #active
 * intent = #order
-* medicationCodeableConcept.text = "Medication"
+* medicationCodeableConcept.text = "Komb-Medication Tageszeit"
 * dosageInstruction[+] = Example-Dosage-comb-dayofweek-1
 
 Instance: Example-Dosage-comb-dayofweek-1

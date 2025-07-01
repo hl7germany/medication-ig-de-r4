@@ -76,14 +76,20 @@ publisher:
 # ╰────────────────────────────────────────────────────────────────────────────────────────────────╯
 menu:
   Home: index.html
+  Anwendungsfälle:
+    Strukturierte Dosierungen: dosage-index.html
   Fachliche Beschreibung: overview.html
   Konzepte:
     Konzepte: concept.html
-    Textuelle Überführung: dosage-to-text.html
+    Textuelle Überführung von Dosierungen: dosage-to-text.html
   Verwendung: usage.html
   FHIR-Artefakte: artifacts.html
   Downloads: downloads.html
 
+parameters:
+  path-pages:
+    - input/content
+    
 # ╭───────────────────────────Less Common Implementation Guide Properties──────────────────────────╮
 # │  Uncomment the properties below to configure additional properties on the ImplementationGuide  │
 # │  resource. These properties are less commonly needed than those above.                         │

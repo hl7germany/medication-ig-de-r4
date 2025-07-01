@@ -55,9 +55,6 @@ Description: "Gibt an, wie das Medikament vom Patienten eingenommen wird/wurde o
 
 
 
-
-
-
 // HIER
 * text
   * ^short = "Freitext-Dosierungsanweisungen, z. B. '3x täglich 1 Tablette'"

@@ -19,6 +19,17 @@ Title: "Dosage with timeOfDay 08:00:00"
 * doseAndRate.doseQuantity.value = 1
 * doseAndRate.doseQuantity.unit = "Tablette"
 
+Instance: Example-MR-Dosage-tod-2-12am
+InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+Usage: #example
+Title: "Example-MR-Dosage-tod-2-12am"
+Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von 2 Tabletten um 12:00 Uhr"
+* subject.display = "Patient"
+* status = #active
+* intent = #order
+* medicationCodeableConcept.text = "Medication"
+* dosageInstruction[+] = Example-Dosage-tod-2-12am
+
 Instance: Example-Dosage-tod-2-12am
 InstanceOf: DE_DOSAGE_DGMP
 Usage: #inline

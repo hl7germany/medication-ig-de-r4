@@ -31,16 +31,21 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * offset 0..0
 
 Invariant: timing-only-one-type
-Description: "Only one kind of Repeat is allowed. Current allowed timings: 4-Scheme, Daytime, Weekday, Interval"
+Description: "Only one kind of Repeat is allowed. Current allowed timings: 4-Scheme, Daytime, Weekday, Interval, 4-Schema and Weekday, Interval and Time"
 Expression: "
 (
-  (frequency.exists() and period.exists() and periodUnit.exists() and when.exists() and timeOfDay.empty() and dayOfWeek.empty()) 
+  (frequency.exists() and period.exists() and periodUnit.exists() and when.exists() and timeOfDay.empty() and dayOfWeek.empty())
   or
-  (timeOfDay.exists() and when.empty() and dayOfWeek.empty() and frequency.empty() and period.empty() and periodUnit.empty()) 
+  (timeOfDay.exists() and when.empty() and dayOfWeek.empty() and frequency.empty() and period.empty() and periodUnit.empty())
   or
   (dayOfWeek.exists() and when.empty() and timeOfDay.empty() and frequency.empty() and period.empty() and periodUnit.empty())
   or
   (frequency.exists() and period.exists() and periodUnit.exists() and when.empty() and timeOfDay.empty() and dayOfWeek.empty())
+  or
+  (frequency.exists() and period.exists() and periodUnit.exists() and when.exists() and dayOfWeek.exists() and timeOfDay.empty())
+  or
+  (frequency.exists() and period.exists() and periodUnit.exists() and when.empty() and ((timeOfDay.exists() and dayOfWeek.empty())
+  or (dayOfWeek.exists() and timeOfDay.empty())))
 )
 "
 Severity: #error

@@ -29,7 +29,7 @@ Der Abschnitt von strukturierten Dosierungen wird kontinuierlich weiterentwickel
 - [Schema für Wochentags-Bezug](./timing-weekday-scheme.html)
 - [Schema für Wiederkehrender Interval](./timing-interval-scheme.html)
 - [Schema für Kombinationen des Zeitintervalls](./timing-comb-interval-scheme.html)
-- [Schema für Kombinationen des Wochentags](./timing-comb-weekday-scheme.html)
+- [Schema für Kombinationen des Wochentags](./timing-comb-dayofweek-scheme.html)
 
 ### Ausbaustufe 2
 Alles in Ausbaustufe 1, sowie:

@@ -16,7 +16,7 @@ Folgende Beispiele sind in diesem IG dargestellt:
 | 1 Tablette alle 2 Wochen  | [Example-MR-Dosage-interval-2wk](./MedicationRequest-Example-MR-Dosage-interval-2wk.html)    |
 | 4 x 1 Tablette pro Tag  | [Example-MR-Dosage-interval-4times-d](./MedicationRequest-Example-MR-Dosage-interval-4times-d.html)    |
 | Alle 3 Tage 1 Tablette  | [Example-MR-Dosage-interval-3d](./MedicationRequest-Example-MR-Dosage-interval-3d.html)    |
-| Alle 2 Tage 2 Tabletten für 6 Wochen  | [Example-MR-Dosage-interval-2t-bound](./MedicationRequest-Example-MR-Dosage-interval-2t-bound.html)    |
+| Alle 2 Tage 2 Tabletten für 6 Wochen  | [Example-MR-Dosage-interval-2d-bound](./MedicationRequest-Example-MR-Dosage-interval-2d-bound.html)    |
 
 ## Angabe und Erkennung der Dosierart
 

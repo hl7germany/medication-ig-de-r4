@@ -21,7 +21,7 @@ Title: "Dosage with dayOfWeek Tuesday and Thursday"
 * doseAndRate.doseQuantity.unit = "Tabletten"
 
 
-Instance: Example-MR-Dosage-2t-1t
+Instance: Example-MR-Dosage-weekday-2t-1t
 InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
 Usage: #example
 Title: "Example-MR-Dosage-2t-1t"

@@ -1,10 +1,13 @@
 # Schema für Kombinationen des Wochentags
 
-Es wird ermöglicht, einen Tageszeiten-Bezug oder einen Uhrzeiten-Bezug mit einem Wochentags-Bezug zu kombinieren.
+Dieses Schema gibt an, an welchen Wochentagen einer Kalenderwoche das Medikament angewandt werden soll und trifft zudem eine Aussage, zu welchen Uhrzeiten oder Tageszeiten die Anwendung an den betreffenden Kalendertagen erfolgen soll. 
 
-Es wird ermöglicht, eine abweichende Dosis abhängig von der Tageszeit anzugeben.
+In diesem Anwendungsfall wird davon ausgegangen, dass das Arzneimittel wöchentlich (für die geplante Dauer) in einem gleichbleibenden Wochentagsschema angewandt wird. Es wird zudem ermöglicht:
 
-Es wird ermöglicht, die geplante Dauer der Anwendung zu begrenzen (im Sinne der Eindeutigkeit nur mit der Einheit „Woche“).
+- ein Uhrzeiten-Schema oder Tageszeitenschema für einzelne Wochentage festzulegen 
+- eine abweichende Dosis abhängig von der Uhrzeit/Tageszeit/Wochentag anzugeben und
+- die geplante Dauer der Anwendung zu begrenzen. 
+
 
 Folgende Beispiele sind in diesem IG dargestellt:
 

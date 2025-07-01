@@ -88,7 +88,7 @@ Title: "Dosage with interval every 3 days"
 * doseAndRate.doseQuantity.value = 1
 * doseAndRate.doseQuantity.unit = "Tablette"
 
-Instance: Example-MR-Dosage-interval-2d-bounds
+Instance: Example-MR-Dosage-interval-2d-bound
 InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
 Usage: #example
 Title: "Example-MR-Dosage-interval-2d"
@@ -97,9 +97,9 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
 * status = #active
 * intent = #order
 * medicationCodeableConcept.text = "Medication"
-* dosageInstruction[+] = Example-Dosage-Interval-2d-bounds
+* dosageInstruction[+] = Example-Dosage-Interval-2d-bound
 
-Instance: Example-Dosage-Interval-2d-bounds
+Instance: Example-Dosage-Interval-2d-bound
 InstanceOf: DE_DOSAGE_DGMP
 Usage: #inline
 Title: "Dosage with every 2 day for 6 weeks"

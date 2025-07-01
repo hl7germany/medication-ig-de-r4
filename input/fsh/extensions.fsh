@@ -9,4 +9,22 @@ Context: Dosage
 * extension[text]
   * valueString 1.. MS
 * extension[algorithm]
-  * valueCanonical 1.. MS 
+  * valueCoding 1.. MS 
+  * valueCoding from DosageTextAlgorithmsVS (extensible)
+    * system 1.. MS
+    * code 1.. MS
+    * version 1.. MS
+
+//TODO move to a separate file
+
+CodeSystem: DosageTextAlgorithmsCS
+Id: DosageTextAlgorithms
+Title: "DosageTextAlgorithmsCS"
+Description: "This CodeSystem defines the algorithms used to generate textual dosage instructions from structured dosage information."
+* #GermanDosageTextGenerator "German Dosage Text Generator" "https://github.com/hl7germany/medication-ig-de-r4/tree/develop/input/content"
+
+ValueSet: DosageTextAlgorithmsVS
+Id: DosageTextAlgorithms
+Title: "DosageTextAlgorithmsVS"
+Description: "This ValueSet includes the algorithms used to generate textual dosage instructions from structured dosage information."
+* include codes from system DosageTextAlgorithmsCS

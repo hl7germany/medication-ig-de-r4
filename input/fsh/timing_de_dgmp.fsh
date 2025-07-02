@@ -30,22 +30,63 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * periodMax 0..0
   * offset 0..0
 
-Invariant: timing-only-one-type
-Description: "Only one kind of Repeat is allowed. Current allowed timings: 4-Scheme, Dailytime, Weekday, Interval, 4-Schema and Weekday, Interval and Time/4-Schema"
+Invariant: dosage-only-one-type
+Description: "Only one kind of Repeat is allowed. Current allowed timings: 4-Scheme, Dailytime, Weekday, Interval, Weekday and Time/4-Schema, Interval and Time/4-Schema"
 Expression: "
-(
-  (frequency.exists() and frequency = 1 and period.exists() and period = 1 and periodUnit.exists() and periodUnit = 'd' and when.exists() and timeOfDay.empty() and dayOfWeek.empty())
-  or
-  (timeOfDay.exists() and frequency.exists() and frequency = 1 and period.exists() and period = 1 and periodUnit.exists() and periodUnit = 'd' and when.empty() and dayOfWeek.empty())
-  or
-  (dayOfWeek.exists() and frequency.exists() and frequency = 1 and period.exists() and period = 1 and periodUnit.exists() and periodUnit = 'd' and when.empty() and timeOfDay.empty())
-  or
-  (frequency.exists() and period.exists() and periodUnit.exists() and when.empty() and timeOfDay.empty() and dayOfWeek.empty())
-  or
-  (frequency.exists() and frequency = 1 and period.exists() and period = 1 and periodUnit.exists() and periodUnit = 'd' and when.exists() and dayOfWeek.exists() and timeOfDay.empty())
-  or
-  (frequency.exists() and period.exists() and periodUnit.exists() and ((timeOfDay.exists() and when.empty())
-  or (when.exists() and timeOfDay.empty())))
-)
+ (dosageInstruction.timing.repeat | dosage.timing.repeat)
+    .select(
+      iif(
+        /* 4-Schema */
+        frequency.exists() and frequency = 1 and
+        period.exists() and period = 1 and
+        periodUnit.exists() and periodUnit = 'd' and
+        when.exists() and timeOfDay.empty() and dayOfWeek.empty(),
+        'schemaOnly',
+      iif(
+        /* DailyTime */
+        timeOfDay.exists() and
+        frequency.exists() and frequency = 1 and
+        period.exists() and period = 1 and
+        periodUnit.exists() and periodUnit = 'd' and
+        when.empty() and dayOfWeek.empty(),
+        'dailyTime',
+      iif(
+        /* Weekday */
+        dayOfWeek.exists() and
+        frequency.exists() and frequency = 1 and
+        period.exists() and period = 1 and
+        periodUnit.exists() and periodUnit = 'd' and
+        when.empty() and timeOfDay.empty(),
+        'weekday',
+      iif(
+        /* reines Intervall */
+        frequency.exists() and
+        period.exists() and
+        periodUnit.exists() and
+        when.empty() and
+        timeOfDay.empty() and
+        dayOfWeek.empty(),
+        'intervalOnly',
+      iif(
+        /* Intervall + Time/When mit festen Werten */
+        frequency.exists() and frequency = 1 and
+        period.exists() and period = 1 and
+        periodUnit.exists() and periodUnit = 'd' and
+        when.exists() and
+        ((timeOfDay.exists() and when.empty()) or (when.exists() and timeOfDay.empty())),
+        'intervalTimeStrict',
+      iif(
+        /* Intervall + Time/When (allgemein) */
+        frequency.exists() and
+        period.exists() and
+        periodUnit.exists() and
+        ((timeOfDay.exists() and when.empty()) or (when.exists() and timeOfDay.empty())),
+        'intervalTime',
+        'unknown'
+      ))))))
+    )
+    .distinct()
+    .count() = 1
 "
+//TODO: Kombination von Dosages: verhindern gemischt..
 Severity: #error

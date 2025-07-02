@@ -19,56 +19,79 @@ Instance: Example-Dosage-When
 InstanceOf: DE_DOSAGE_DGMP
 Usage: #inline
 Title: "Dosage with when"
-* text = "Dosierung mit when"
-* timing.repeat.when[+] = #MORN
+* timing.repeat
+  * when[+] = #MORN
+  * frequency = 1
+  * period = 1
+  * periodUnit = #d
 
 Instance: Example-Dosage-TimeOfDay
 InstanceOf: DE_DOSAGE_DGMP
 Usage: #inline
 Title: "Dosage with timeOfDay"
-* text = "Dosierung mit timeOfDay"
-* timing.repeat.timeOfDay[+] = "08:00:00"
+* timing.repeat
+  * timeOfDay[+] = "08:00:00"
+  * frequency = 1
+  * period = 1
+  * periodUnit = #d
+* doseAndRate.doseQuantity.value = 1
+* doseAndRate.doseQuantity.unit = "Tablette"
 
 Instance: Example-Dosage-DayOfWeek
 InstanceOf: DE_DOSAGE_DGMP
 Usage: #inline
 Title: "Dosage with dayOfWeek"
-* text = "Dosierung mit dayOfWeek"
-* timing.repeat.dayOfWeek[+] = #mon
+* timing.repeat
+  * dayOfWeek[+] = #mon
+  * frequency = 1
+  * period = 1
+  * periodUnit = #d
+* doseAndRate.doseQuantity.value = 1
+* doseAndRate.doseQuantity.unit = "Tablette"
 
 Instance: Example-Dosage-FreqPeriod
 InstanceOf: DE_DOSAGE_DGMP
 Usage: #inline
 Title: "Dosage with frequency/period/periodUnit"
-* text = "Dosierung mit frequency/period/periodUnit"
 * timing.repeat.frequency = 2
 * timing.repeat.period = 1
 * timing.repeat.periodUnit = #d
+* doseAndRate.doseQuantity.value = 1
+* doseAndRate.doseQuantity.unit = "Tablette"
 
 Instance: Example-Dosage-When-DayOfWeek
 InstanceOf: DE_DOSAGE_DGMP
 Usage: #inline
 Title: "Dosage with when and dayOfWeek"
-* text = "Dosierung mit when und dayOfWeek"
-* timing.repeat.when[+] = #EVE
-* timing.repeat.dayOfWeek[+] = #fri
+* timing.repeat
+  * when[+] = #EVE
+  * dayOfWeek[+] = #fri
+  * frequency = 1
+  * period = 1
+  * periodUnit = #d
+* doseAndRate.doseQuantity.value = 1
+* doseAndRate.doseQuantity.unit = "Tablette"
 
 Instance: Example-Dosage-FreqPeriod-TimeOfDay
 InstanceOf: DE_DOSAGE_DGMP
 Usage: #inline
 Title: "Dosage with freq/period/periodUnit and timeOfDay"
-* text = "Dosierung mit freq/period/periodUnit und timeOfDay"
-* timing.repeat.frequency = 1
-* timing.repeat.period = 1
-* timing.repeat.periodUnit = #d
-* timing.repeat.timeOfDay[+] = "20:00:00"
+* timing.repeat
+  * frequency = 1
+  * period = 1
+  * periodUnit = #d
+  * timeOfDay[+] = "20:00:00"
+* doseAndRate.doseQuantity.value = 1
+* doseAndRate.doseQuantity.unit = "Tablette"
 
 Instance: Example-Dosage-FreqPeriod-DayOfWeek
 InstanceOf: DE_DOSAGE_DGMP
 Usage: #inline
 Title: "Dosierung mit freq/period/periodUnit und dayOfWeek"
-* text = "Dosierung mit freq/period/periodUnit und dayOfWeek"
-* timing.repeat.frequency = 1
-* timing.repeat.period = 1
-* timing.repeat.periodUnit = #wk
-* timing.repeat.dayOfWeek[+] = #sat
+* timing.repeat
+  * frequency = 1
+  * period = 1
+  * periodUnit = #wk
+  * dayOfWeek[+] = #sat
+* doseAndRate.doseQuantity.value = 1
+* doseAndRate.doseQuantity.unit = "Tablette"

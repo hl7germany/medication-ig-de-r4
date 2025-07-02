@@ -1,4 +1,3 @@
-
 Instance: Example-MR-Dosage-comb-interval-1
 InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
 Usage: #example
@@ -15,12 +14,10 @@ Instance: Example-Dosage-comb-Interval-1-1
 InstanceOf: DE_DOSAGE_DGMP
 Usage: #inline
 Title: "Dosage with every 2 days at 08:00"
-* text = "tbd"
 * timing.repeat
   * frequency = 1
   * period = 2
   * periodUnit = #d
-
   * timeOfDay[+] = "08:00:00"
 
 * doseAndRate.doseQuantity.value = 1
@@ -30,12 +27,10 @@ Instance: Example-Dosage-comb-Interval-1-2
 InstanceOf: DE_DOSAGE_DGMP
 Usage: #inline
 Title: "Dosage with every 2 days at 18:00"
-* text = "tbd"
 * timing.repeat
   * frequency = 1
   * period = 2
   * periodUnit = #d
-
   * timeOfDay[+] = "18:00:00"
 
 * doseAndRate.doseQuantity.value = 2
@@ -56,12 +51,10 @@ Instance: Example-Dosage-comb-Interval-2
 InstanceOf: DE_DOSAGE_DGMP
 Usage: #inline
 Title: "Dosage with interval every 2 Weeks"
-* text = "tbd"
 * timing.repeat
   * frequency = 1
   * period = 1
   * periodUnit = #wk
-
   * when[+] = #MORN
 * doseAndRate.doseQuantity.value = 1
 * doseAndRate.doseQuantity.unit = "Tablette"

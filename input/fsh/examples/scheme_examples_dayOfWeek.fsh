@@ -1,4 +1,3 @@
-
 Instance: Example-MR-Dosage-weekday-2t
 InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
 Usage: #example
@@ -14,9 +13,12 @@ Instance: Example-Dosage-weekday-2t
 InstanceOf: DE_DOSAGE_DGMP
 Usage: #inline
 Title: "Dosage with dayOfWeek Tuesday and Thursday"
-* text = "tbd"
-* timing.repeat.dayOfWeek[+] = #tue
-* timing.repeat.dayOfWeek[+] = #thu
+* timing.repeat
+  * dayOfWeek[+] = #tue
+  * dayOfWeek[+] = #thu
+  * frequency = 1
+  * period = 1
+  * periodUnit = #d
 * doseAndRate.doseQuantity.value = 2
 * doseAndRate.doseQuantity.unit = "Tabletten"
 
@@ -37,8 +39,11 @@ Instance: Example-Dosage-weekday-2t-1t-1
 InstanceOf: DE_DOSAGE_DGMP
 Usage: #inline
 Title: "Dosage with dayOfWeek Monday"
-* text = "tbd"
-* timing.repeat.dayOfWeek[+] = #mon
+* timing.repeat
+  * dayOfWeek[+] = #mon
+  * frequency = 1
+  * period = 1
+  * periodUnit = #d
 * doseAndRate.doseQuantity.value = 2
 * doseAndRate.doseQuantity.unit = "Tabletten"
 
@@ -46,8 +51,11 @@ Instance: Example-Dosage-weekday-2t-1t-2
 InstanceOf: DE_DOSAGE_DGMP
 Usage: #inline
 Title: "Dosage with dayOfWeek Thursday"
-* text = "tbd"
-* timing.repeat.dayOfWeek[+] = #thu
+* timing.repeat
+  * dayOfWeek[+] = #thu
+  * frequency = 1
+  * period = 1
+  * periodUnit = #d
 * doseAndRate.doseQuantity.value = 1
 * doseAndRate.doseQuantity.unit = "Tabletten"
 
@@ -66,8 +74,11 @@ Instance: Example-Dosage-weekday-weekday-2t-bound
 InstanceOf: DE_DOSAGE_DGMP
 Usage: #inline
 Title: "Dosage with dayOfWeek Monday"
-* text = "tbd"
-* timing.repeat.dayOfWeek[+] = #mon
+* timing.repeat
+  * dayOfWeek[+] = #mon
+  * frequency = 1
+  * period = 1
+  * periodUnit = #d
 * timing.repeat.boundsDuration.value = 10
 * timing.repeat.boundsDuration.unit = "Wochen"
 * doseAndRate.doseQuantity.value = 2

@@ -1,4 +1,3 @@
-
 Instance: Example-MR-Dosage-comb-dayofweek-1
 InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
 Usage: #example
@@ -14,13 +13,14 @@ Instance: Example-Dosage-comb-dayofweek-1
 InstanceOf: DE_DOSAGE_DGMP
 Usage: #inline
 Title: "Dosage with every mon and friday morning and evening"
-* text = "tbd"
 * timing.repeat
   * dayOfWeek[+] = #mon
   * dayOfWeek[+] = #fri
   * when[+] = #MORN
   * when[+] = #EVE
-
+  * frequency = 1
+  * period = 1
+  * periodUnit = #d
 * doseAndRate.doseQuantity.value = 1
 * doseAndRate.doseQuantity.unit = "Tablette"
 
@@ -41,13 +41,14 @@ Instance: Example-Dosage-comb-dayofweek-2-1
 InstanceOf: DE_DOSAGE_DGMP
 Usage: #inline
 Title: "Dosage with every mon and friday morning and evening"
-* text = "tbd"
 * timing.repeat
   * dayOfWeek[+] = #mon
   * dayOfWeek[+] = #fri
   * when[+] = #MORN
   * when[+] = #EVE
-
+  * frequency = 1
+  * period = 1
+  * periodUnit = #d
 * doseAndRate.doseQuantity.value = 1
 * doseAndRate.doseQuantity.unit = "Tablette"
 
@@ -55,13 +56,14 @@ Instance: Example-Dosage-comb-dayofweek-2-2
 InstanceOf: DE_DOSAGE_DGMP
 Usage: #inline
 Title: "Dosage with every mon and friday morning and evening"
-* text = "tbd"
 * timing.repeat
   * dayOfWeek[+] = #mon
   * dayOfWeek[+] = #fri
   * when[+] = #MORN
   * when[+] = #EVE
-
+  * frequency = 1
+  * period = 1
+  * periodUnit = #d
 * doseAndRate.doseQuantity.value = 2
 * doseAndRate.doseQuantity.unit = "Tabletten"
 
@@ -81,14 +83,15 @@ Instance: Example-Dosage-comb-dayofweek-3-1
 InstanceOf: DE_DOSAGE_DGMP
 Usage: #inline
 Title: "Dosage with every mon and friday 08:00"
-* text = "tbd"
 * timing.repeat
   * dayOfWeek[+] = #mon
   * dayOfWeek[+] = #fri
-  * timeOfDay[+] = "08:00:00"
+  * when[+] = #MORN
   * boundsDuration.value = 3
   * boundsDuration.unit = "Woche(n)"
-
+  * frequency = 1
+  * period = 1
+  * periodUnit = #d
 * doseAndRate.doseQuantity.value = 1
 * doseAndRate.doseQuantity.unit = "Tablette"
 
@@ -96,13 +99,14 @@ Instance: Example-Dosage-comb-dayofweek-3-2
 InstanceOf: DE_DOSAGE_DGMP
 Usage: #inline
 Title: "Dosage with every mon and friday 10:00"
-* text = "tbd"
 * timing.repeat
   * dayOfWeek[+] = #mon
   * dayOfWeek[+] = #fri
-  * timeOfDay[+] = "10:00:00"
+  * when[+] = #NOON
   * boundsDuration.value = 3
   * boundsDuration.unit = "Woche(n)"
-
+  * frequency = 1
+  * period = 1
+  * periodUnit = #d
 * doseAndRate.doseQuantity.value = 2
 * doseAndRate.doseQuantity.unit = "Tabletten"

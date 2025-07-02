@@ -15,8 +15,11 @@ Instance: Example-Dosage-When-10120-1
 InstanceOf: DE_DOSAGE_DGMP
 Usage: #inline
 Title: "Dosage with when 1-0-0.5-0"
-* text = "tbd"
-* timing.repeat.when[+] = #MORN
+* timing.repeat
+  * when[+] = #MORN
+  * frequency = 1 
+  * period = 1  
+  * periodUnit = #d
 * doseAndRate.doseQuantity.value = 1
 * doseAndRate.doseQuantity.unit = "Tablette"
 
@@ -24,8 +27,11 @@ Instance: Example-Dosage-When-10120-2
 InstanceOf: DE_DOSAGE_DGMP
 Usage: #inline
 Title: "Dosage with when 1-0-0.5-0"
-* text = "tbd"
-* timing.repeat.when[+] = #EVE
+* timing.repeat
+  * when[+] = #EVE
+  * frequency = 1 
+  * period = 1  
+  * periodUnit = #d
 * doseAndRate.doseQuantity.value = 0.5
 * doseAndRate.doseQuantity.unit = "Tablette"
 
@@ -45,8 +51,11 @@ Instance: Example-Dosage-When-1020-1
 InstanceOf: DE_DOSAGE_DGMP
 Usage: #inline
 Title: "Dosage with when 1-0-2-0"
-* text = "tbd"
-* timing.repeat.when[+] = #MORN
+* timing.repeat
+  * when[+] = #MORN
+  * frequency = 1 
+  * period = 1  
+  * periodUnit = #d
 * doseAndRate.doseQuantity.value = 1
 * doseAndRate.doseQuantity.unit = "Tablette"
 
@@ -54,8 +63,11 @@ Instance: Example-Dosage-When-1020-2
 InstanceOf: DE_DOSAGE_DGMP
 Usage: #inline
 Title: "Dosage with when 1-0-2-0"
-* text = "tbd"
-* timing.repeat.when[+] = #EVE
+* timing.repeat
+  * when[+] = #EVE
+  * frequency = 1 
+  * period = 1  
+  * periodUnit = #d
 * doseAndRate.doseQuantity.value = 2
 * doseAndRate.doseQuantity.unit = "Tabletten"
 
@@ -74,8 +86,11 @@ Instance: Example-Dosage-When-1000
 InstanceOf: DE_DOSAGE_DGMP
 Usage: #inline
 Title: "Dosage with when 1-0-0-0"
-* text = "tbd"
-* timing.repeat.when[+] = #MORN
+* timing.repeat
+  * when[+] = #MORN
+  * frequency = 1 
+  * period = 1  
+  * periodUnit = #d
 * doseAndRate.doseQuantity.value = 1
 * doseAndRate.doseQuantity.unit = "Tablette"
 
@@ -94,9 +109,12 @@ Instance: Example-Dosage-When-1010
 InstanceOf: DE_DOSAGE_DGMP
 Usage: #inline
 Title: "Dosage with when 1-0-1-0"
-* text = "tbd"
-* timing.repeat.when[+] = #MORN
-* timing.repeat.when[+] = #EVE
+* timing.repeat
+  * when[+] = #MORN
+  * when[+] = #EVE
+  * frequency = 1 
+  * period = 1  
+  * periodUnit = #d
 * doseAndRate.doseQuantity.value = 1
 * doseAndRate.doseQuantity.unit = "Tablette"
 
@@ -115,8 +133,11 @@ Instance: Example-Dosage-When-1010-10-Days
 InstanceOf: DE_DOSAGE_DGMP
 Usage: #inline
 Title: "Dosage with when 1-0-1-0 for 10 Days"
-* text = "tbd"
-* timing.repeat.when[+] = #MORN
+* timing.repeat
+  * when[+] = #MORN
+  * frequency = 1 
+  * period = 1  
+  * periodUnit = #d
 * timing.repeat.boundsDuration.value = 10
 * timing.repeat.boundsDuration.unit = "Woche(n)"
 * timing.repeat.boundsDuration.code = #wk

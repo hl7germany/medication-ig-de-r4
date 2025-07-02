@@ -1,4 +1,3 @@
-
 Instance: Example-MR-Dosage-interval-8h
 InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
 Usage: #example
@@ -14,7 +13,6 @@ Instance: Example-Dosage-Interval-8h
 InstanceOf: DE_DOSAGE_DGMP
 Usage: #inline
 Title: "Dosage with every 8hrs"
-* text = "tbd"
 * timing.repeat.frequency = 1
 * timing.repeat.period = 8
 * timing.repeat.periodUnit = #h
@@ -36,7 +34,6 @@ Instance: Example-Dosage-Interval-2wk
 InstanceOf: DE_DOSAGE_DGMP
 Usage: #inline
 Title: "Dosage with interval every 2 Weeks"
-* text = "tbd"
 * timing.repeat.frequency = 1
 * timing.repeat.period = 2
 * timing.repeat.periodUnit = #wk
@@ -59,7 +56,6 @@ Instance: Example-Dosage-Interval-4times-d
 InstanceOf: DE_DOSAGE_DGMP
 Usage: #inline
 Title: "Dosage with 4 times per day"
-* text = "tbd"
 * timing.repeat.frequency = 4
 * timing.repeat.period = 1
 * timing.repeat.periodUnit = #d
@@ -81,7 +77,6 @@ Instance: Example-Dosage-Interval-3d
 InstanceOf: DE_DOSAGE_DGMP
 Usage: #inline
 Title: "Dosage with interval every 3 days"
-* text = "tbd"
 * timing.repeat.frequency = 1
 * timing.repeat.period = 3
 * timing.repeat.periodUnit = #d
@@ -103,7 +98,6 @@ Instance: Example-Dosage-Interval-2d-bound
 InstanceOf: DE_DOSAGE_DGMP
 Usage: #inline
 Title: "Dosage with every 2 day for 6 weeks"
-* text = "tbd"
 * timing.repeat.frequency = 1
 * timing.repeat.period = 2
 * timing.repeat.periodUnit = #d

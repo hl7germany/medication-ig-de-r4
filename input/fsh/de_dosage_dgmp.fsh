@@ -37,5 +37,9 @@ Description: "Gibt an, wie das Medikament vom Patienten eingenommen wird/wurde o
 
 Invariant: DosageStructuredOrFreeText
 Description: "Dosage must be either structured or free text, but not both at the same time."
-Expression: "(text.exists() and timing.empty() and doseAndRate.empty()) or (text.empty() and timing.exists() and doseAndRate.exists())"
+Expression: "
+%resource.(ofType(MedicationRequest).dosageInstruction | ofType(MedicationStatement).dosage).all(
+  text.exists() and timing.empty() and doseAndRate.empty()) or (text.empty() and timing.exists() and doseAndRate.exists()
+)
+"
 Severity: #error

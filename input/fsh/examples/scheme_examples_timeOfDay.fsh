@@ -50,7 +50,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
     * period = 1
     * periodUnit = #d
   * doseAndRate.doseQuantity.value = 2
-  * doseAndRate.doseQuantity
+  * doseAndRate.doseQuantity.unit = "Tabletten"
 
 * dosageInstruction[+]
   * timing.repeat
@@ -99,7 +99,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
     * period = 1
     * periodUnit = #d
   * doseAndRate.doseQuantity.value = 2
-  * doseAndRate.doseQuantity
+  * doseAndRate.doseQuantity.unit = "Tabletten"
 
 * dosageInstruction[+]
   * timing.repeat.boundsDuration.value = 10

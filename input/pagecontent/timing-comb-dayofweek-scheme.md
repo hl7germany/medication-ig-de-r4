@@ -26,9 +26,10 @@ Diese Dosierungsart wird daran erkannt, dass folgende Felder unter ´Dosage.timi
 - frequency = 1
 - period = 1
 - periodUnit = d
-- when UND dayOfWeek existieren
+- when ODER dayOfWeek existieren
 
-Folgende FHIR-Path Expression auf Ebene von ´Dosage.timing.repeat´ liefert die Angabe, ob es sich um das Schema handelt: `(frequency.exists() and frequency = 1 and period.exists() and period = 1 and periodUnit.exists() and periodUnit = 'd' and when.exists() and dayOfWeek.exists() and timeOfDay.empty())` // Wohentag und Zeit soll auch gehen
+Folgende FHIR-Path Expression auf Ebene von ´Dosage.timing.repeat´ liefert die Angabe, ob es sich um das Schema handelt: `(frequency.exists() and frequency = 1 and period.exists() and period = 1 and periodUnit.exists() and periodUnit = 'd' and when.exists() or dayOfWeek.exists() and timeOfDay.empty())` 
+// TODO: Validate and check
 
 und entweder ´when´ oder ´timeOfDay´. Damit kann diese Dosierangabe verwendet werden um eine Interval angabe auf Tageszeit oder Uhrzeit zu kombinieren.
 

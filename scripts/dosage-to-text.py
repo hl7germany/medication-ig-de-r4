@@ -425,7 +425,14 @@ class GermanDosageTextGenerator:
             'sat': 'Samstag',
             'sun': 'Sonntag'
         }
-        return ", ".join([day_names.get(day.lower(), day) for day in days])
+        names = [day_names.get(day.lower(), day) for day in days]
+        if not names:
+            return ""
+        if len(names) == 1:
+            return names[0]
+        if len(names) == 2:
+            return f"{names[0]} und {names[1]}"
+        return f"{', '.join(names[:-1])} und {names[-1]}"
 
     def translate_when_code(self, when: str) -> str:
         when_codes = {

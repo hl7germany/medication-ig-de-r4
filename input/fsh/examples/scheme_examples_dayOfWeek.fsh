@@ -21,7 +21,7 @@ Title: "Dosage with dayOfWeek Tuesday and Thursday"
   * periodUnit = #d
 * doseAndRate.doseQuantity.value = 2
 * doseAndRate.doseQuantity.unit = "Tabletten"
-
+// TODO Add Example with 3 Days for render format mon, tue and fri
 
 Instance: Example-MR-Dosage-weekday-2t-1t
 InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST

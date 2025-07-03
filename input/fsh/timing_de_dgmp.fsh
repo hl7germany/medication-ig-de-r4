@@ -11,6 +11,8 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * bounds[x] MS
   * bounds[x] only Duration
   * boundsDuration MS
+  * boundsDuration.system = $ucum (exactly)
+  * boundsDuration.code from De_Dosage_UCUM_UnitsOfTime_DgMP (required)
 
   * frequency MS
   * period MS

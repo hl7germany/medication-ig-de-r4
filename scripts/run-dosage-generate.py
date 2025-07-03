@@ -53,3 +53,8 @@ if __name__ == "__main__":
     print("Markdown tables written to:")
     print(f"- {os.path.join(output_dir, 'supported-dosage-examples.md')}")
     print(f"- {os.path.join(output_dir, 'unsupported-dosage-examples.md')}")
+    
+    # Generate the matrix table
+    matrix_script_path = os.path.join(base_dir, "generate-dosage-matrix.py")
+    subprocess.run(['python3', matrix_script_path])
+

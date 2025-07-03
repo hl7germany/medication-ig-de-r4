@@ -7,7 +7,11 @@ In diesem Anwendungsfall wird davon ausgegangen, dass das Arzneimittel (für die
 - eine abweichende Dosis abhängig von der Tageszeit anzugeben
 - die geplante Dauer der Anwendung zu begrenzen (bsp. in Tagen). 
 
-Folgende Beispiele sind in diesem IG dargestellt:
+## Beipiel
+
+{% fragment MedicationRequest/Example-MR-Dosage-1010 JSON %}
+
+Folgende weitere Beispiele sind in diesem IG dargestellt:
 
 | Beispiel    | Beipspiel Datei |
 | -------- | ------- |
@@ -15,11 +19,21 @@ Folgende Beispiele sind in diesem IG dargestellt:
 | 1-0-2-0 | [Example-MR-Dosage-1020](./MedicationRequest-Example-MR-Dosage-1020.html)     |
 | 1-0-0-0    | [Example-MR-Dosage-1000](./MedicationRequest-Example-MR-Dosage-1000.html)    |
 | 1-0-1-0    | [Example-MR-Dosage-1010](./MedicationRequest-Example-MR-Dosage-1010.html)    |
+| 1-1-1-1    | [Example-MR-Dosage-1111](./MedicationRequest-Example-MR-Dosage-1111.html)    |
 | 1-0-1-0 für 10 Tage   | [Example-MR-Dosage-1010-10-Days](./MedicationRequest-Example-MR-Dosage-1010-10-Days.html)    |
 
 ## Angabe und Erkennung der Dosierart
 
-Diese Dosierungsart wird daran erkannt, dass ausschließlich ´Dosage.timing.repeat.when´ angegeben ist. An diesem Feld wird dann kodiert die Tageszeit angegeben an der eine konkrete Dosierung einzunehmen ist.
+Diese Dosierungsart wird daran erkannt, dass unter ´Dosage.timing.repeat´
+
+- frequency = 1
+- period = 1
+- periodUnit = d
+- und when
+  
+angegeben ist. An diesem Feld wird dann kodiert die Tageszeit angegeben an der eine konkrete Dosierung einzunehmen ist.
+
+Folgende FHIR-Path Expression auf Ebene von ´Dosage.timing.repeat´ liefert die Angabe, ob es sich um das Schema handelt: `(frequency.exists() and frequency = 1 and period.exists() and period = 1 and periodUnit.exists() and periodUnit = 'd' and when.exists() and timeOfDay.empty() and dayOfWeek.empty())`
 
 Für eine Dosierung kann auch mehrfach eine Angabe für .when erfolgen und bedeutet, dass wann auch immer einer der Tageszeiten eintritt, die angegebene Dosierung einzunehmen ist.
 

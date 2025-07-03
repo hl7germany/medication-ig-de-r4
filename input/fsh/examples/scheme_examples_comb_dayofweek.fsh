@@ -6,23 +6,18 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
 * subject.display = "Patient"
 * status = #active
 * intent = #order
-* medicationCodeableConcept.text = "Komb-Medication Tageszeit"
-* dosageInstruction[+] = Example-Dosage-comb-dayofweek-1
-
-Instance: Example-Dosage-comb-dayofweek-1
-InstanceOf: DE_DOSAGE_DGMP
-Usage: #inline
-Title: "Dosage with every mon and friday morning and evening"
-* timing.repeat
-  * dayOfWeek[+] = #mon
-  * dayOfWeek[+] = #fri
-  * when[+] = #MORN
-  * when[+] = #EVE
-  * frequency = 1
-  * period = 1
-  * periodUnit = #d
-* doseAndRate.doseQuantity.value = 1
-* doseAndRate.doseQuantity.unit = "Tablette"
+* medicationCodeableConcept.text = "Ibuprofen 400mg"
+* dosageInstruction[+]
+  * timing.repeat
+    * dayOfWeek[+] = #mon
+    * dayOfWeek[+] = #fri
+    * when[+] = #MORN
+    * when[+] = #EVE
+    * frequency = 1
+    * period = 1
+    * periodUnit = #d
+  * doseAndRate.doseQuantity.value = 1
+  * doseAndRate.doseQuantity.unit = "Tablette"
 
 
 Instance: Example-MR-Dosage-comb-dayofweek-2
@@ -33,39 +28,30 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
 * subject.display = "Patient"
 * status = #active
 * intent = #order
-* medicationCodeableConcept.text = "Medication"
-* dosageInstruction[+] = Example-Dosage-comb-dayofweek-2-1
-* dosageInstruction[+] = Example-Dosage-comb-dayofweek-2-2
+* medicationCodeableConcept.text = "Ibuprofen 400mg"
+* dosageInstruction[+]
+  * timing.repeat
+    * dayOfWeek[+] = #mon
+    * dayOfWeek[+] = #fri
+    * when[+] = #MORN
+    * when[+] = #EVE
+    * frequency = 1
+    * period = 1
+    * periodUnit = #d
+  * doseAndRate.doseQuantity.value = 1
+  * doseAndRate.doseQuantity.unit = "Tablette"
 
-Instance: Example-Dosage-comb-dayofweek-2-1
-InstanceOf: DE_DOSAGE_DGMP
-Usage: #inline
-Title: "Dosage with every mon and friday morning and evening"
-* timing.repeat
-  * dayOfWeek[+] = #mon
-  * dayOfWeek[+] = #fri
-  * when[+] = #MORN
-  * when[+] = #EVE
-  * frequency = 1
-  * period = 1
-  * periodUnit = #d
-* doseAndRate.doseQuantity.value = 1
-* doseAndRate.doseQuantity.unit = "Tablette"
-
-Instance: Example-Dosage-comb-dayofweek-2-2
-InstanceOf: DE_DOSAGE_DGMP
-Usage: #inline
-Title: "Dosage with every mon and friday morning and evening"
-* timing.repeat
-  * dayOfWeek[+] = #mon
-  * dayOfWeek[+] = #fri
-  * when[+] = #MORN
-  * when[+] = #EVE
-  * frequency = 1
-  * period = 1
-  * periodUnit = #d
-* doseAndRate.doseQuantity.value = 2
-* doseAndRate.doseQuantity.unit = "Tabletten"
+* dosageInstruction[+]
+  * timing.repeat
+    * dayOfWeek[+] = #mon
+    * dayOfWeek[+] = #fri
+    * when[+] = #MORN
+    * when[+] = #EVE
+    * frequency = 1
+    * period = 1
+    * periodUnit = #d
+  * doseAndRate.doseQuantity.value = 2
+  * doseAndRate.doseQuantity.unit = "Tabletten"
 
 Instance: Example-MR-Dosage-comb-dayofweek-3
 InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
@@ -75,38 +61,29 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
 * subject.display = "Patient"
 * status = #active
 * intent = #order
-* medicationCodeableConcept.text = "Medication"
-* dosageInstruction[+] = Example-Dosage-comb-dayofweek-3-1
-* dosageInstruction[+] = Example-Dosage-comb-dayofweek-3-2
+* medicationCodeableConcept.text = "Ibuprofen 400mg"
+* dosageInstruction[+]
+  * timing.repeat
+    * dayOfWeek[+] = #mon
+    * dayOfWeek[+] = #fri
+    * when[+] = #MORN
+    * boundsDuration.value = 3
+    * boundsDuration.unit = "Woche(n)"
+    * frequency = 1
+    * period = 1
+    * periodUnit = #d
+  * doseAndRate.doseQuantity.value = 1
+  * doseAndRate.doseQuantity.unit = "Tablette"
 
-Instance: Example-Dosage-comb-dayofweek-3-1
-InstanceOf: DE_DOSAGE_DGMP
-Usage: #inline
-Title: "Dosage with every mon and friday 08:00"
-* timing.repeat
-  * dayOfWeek[+] = #mon
-  * dayOfWeek[+] = #fri
-  * when[+] = #MORN
-  * boundsDuration.value = 3
-  * boundsDuration.unit = "Woche(n)"
-  * frequency = 1
-  * period = 1
-  * periodUnit = #d
-* doseAndRate.doseQuantity.value = 1
-* doseAndRate.doseQuantity.unit = "Tablette"
-
-Instance: Example-Dosage-comb-dayofweek-3-2
-InstanceOf: DE_DOSAGE_DGMP
-Usage: #inline
-Title: "Dosage with every mon and friday 10:00"
-* timing.repeat
-  * dayOfWeek[+] = #mon
-  * dayOfWeek[+] = #fri
-  * when[+] = #NOON
-  * boundsDuration.value = 3
-  * boundsDuration.unit = "Woche(n)"
-  * frequency = 1
-  * period = 1
-  * periodUnit = #d
-* doseAndRate.doseQuantity.value = 2
-* doseAndRate.doseQuantity.unit = "Tabletten"
+* dosageInstruction[+]
+  * timing.repeat
+    * dayOfWeek[+] = #mon
+    * dayOfWeek[+] = #fri
+    * when[+] = #NOON
+    * boundsDuration.value = 3
+    * boundsDuration.unit = "Woche(n)"
+    * frequency = 1
+    * period = 1
+    * periodUnit = #d
+  * doseAndRate.doseQuantity.value = 2
+  * doseAndRate.doseQuantity.unit = "Tabletten"

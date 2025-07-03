@@ -251,13 +251,27 @@ class GermanDosageTextGenerator:
         repeat = timing.get('repeat', {})
         parts = []
         when_list = repeat.get('when', [])
-        if when_list:
-            when_text = " und ".join([self.translate_when_code(w) for w in when_list])
+        # Define the desired order
+        when_order = ['MORN', 'NOON', 'AFT', 'EVE', 'NIGHT']
+        # Create a mapping for sorting
+        order_map = {key: idx for idx, key in enumerate(when_order)}
+        # Sort the when_list by the defined order
+        when_list_sorted = sorted(when_list, key=lambda w: order_map.get(w, len(when_order)))
+        if when_list_sorted:
+            when_names = [self.translate_when_code(w) for w in when_list_sorted]
+            if len(when_names) == 1:
+                when_text = when_names[0]
+            elif len(when_names) == 2:
+                when_text = f"{when_names[0]} und {when_names[1]}"
+            else:
+                when_text = f"{', '.join(when_names[:-1])} und {when_names[-1]}"
             parts.append(when_text)
         # offset = repeat.get('offset')  # COMMENTED OUT: not supported
         # if offset is not None:
         #     parts.append(f"{offset} Minuten Versatz")
         return ", ".join(parts)
+
+
 
     def get_days_of_week(self, dosage: Dict[str, Any]) -> str:
         timing = dosage.get('timing', {})
@@ -355,7 +369,7 @@ class GermanDosageTextGenerator:
     def format_quantity(self, quantity: Dict[str, Any]) -> str:
         value = quantity.get('value', 0)
         unit = quantity.get('unit') or quantity.get('code') or ""
-        return f"{value}{' ' + unit if unit else ''}"
+        return f"je {value}{' ' + unit if unit else ''}"
 
     # def format_range(self, range_obj: Dict[str, Any]) -> str:
     #     low = self.format_quantity(range_obj['low']) if range_obj.get('low') else ""
@@ -425,11 +439,19 @@ class GermanDosageTextGenerator:
             'sat': 'Samstag',
             'sun': 'Sonntag'
         }
-        return ", ".join([day_names.get(day.lower(), day) for day in days])
+        names = [day_names.get(day.lower(), day) for day in days]
+        if not names:
+            return ""
+        if len(names) == 1:
+            return names[0]
+        if len(names) == 2:
+            return f"{names[0]} und {names[1]}"
+        return f"{', '.join(names[:-1])} und {names[-1]}"
 
     def translate_when_code(self, when: str) -> str:
         when_codes = {
             'MORN': 'morgens',
+            'NOON': 'mittags',
             'AFT': 'nachmittags',
             'EVE': 'abends',
             'NIGHT': 'nachts',

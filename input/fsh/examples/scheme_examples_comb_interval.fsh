@@ -6,35 +6,24 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
 * subject.display = "Patient"
 * status = #active
 * intent = #order
-* medicationCodeableConcept.text = "Medication"
-* dosageInstruction[+] = Example-Dosage-comb-Interval-1-1
-* dosageInstruction[+] = Example-Dosage-comb-Interval-1-2
+* medicationCodeableConcept.text = "Ibuprofen 400mg"
+* dosageInstruction[+]
+  * timing.repeat
+    * frequency = 1
+    * period = 2
+    * periodUnit = #d
+    * timeOfDay[+] = "08:00:00"
+  * doseAndRate.doseQuantity.value = 1
+  * doseAndRate.doseQuantity.unit = "Tablette"
 
-Instance: Example-Dosage-comb-Interval-1-1
-InstanceOf: DE_DOSAGE_DGMP
-Usage: #inline
-Title: "Dosage with every 2 days at 08:00"
-* timing.repeat
-  * frequency = 1
-  * period = 2
-  * periodUnit = #d
-  * timeOfDay[+] = "08:00:00"
-
-* doseAndRate.doseQuantity.value = 1
-* doseAndRate.doseQuantity.unit = "Tablette"
-
-Instance: Example-Dosage-comb-Interval-1-2
-InstanceOf: DE_DOSAGE_DGMP
-Usage: #inline
-Title: "Dosage with every 2 days at 18:00"
-* timing.repeat
-  * frequency = 1
-  * period = 2
-  * periodUnit = #d
-  * timeOfDay[+] = "18:00:00"
-
-* doseAndRate.doseQuantity.value = 2
-* doseAndRate.doseQuantity.unit = "Tabletten"
+* dosageInstruction[+]
+  * timing.repeat
+    * frequency = 1
+    * period = 2
+    * periodUnit = #d
+    * timeOfDay[+] = "18:00:00"
+  * doseAndRate.doseQuantity.value = 2
+  * doseAndRate.doseQuantity.unit = "Tabletten"
 
 Instance: Example-MR-Dosage-comb-interval-2
 InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
@@ -44,17 +33,12 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
 * subject.display = "Patient"
 * status = #active
 * intent = #order
-* medicationCodeableConcept.text = "Medication"
-* dosageInstruction[+] = Example-Dosage-comb-Interval-2
-
-Instance: Example-Dosage-comb-Interval-2
-InstanceOf: DE_DOSAGE_DGMP
-Usage: #inline
-Title: "Dosage with interval every 2 Weeks"
-* timing.repeat
-  * frequency = 1
-  * period = 1
-  * periodUnit = #wk
-  * when[+] = #MORN
-* doseAndRate.doseQuantity.value = 1
-* doseAndRate.doseQuantity.unit = "Tablette"
+* medicationCodeableConcept.text = "Ibuprofen 400mg"
+* dosageInstruction[+]
+  * timing.repeat
+    * frequency = 1
+    * period = 1
+    * periodUnit = #wk
+    * when[+] = #MORN
+  * doseAndRate.doseQuantity.value = 1
+  * doseAndRate.doseQuantity.unit = "Tablette"

@@ -7,8 +7,11 @@ In diesem Anwendungsfall wird davon ausgegangen, dass sich das Schema ohne Varia
 
 Es kann nur für Arzneimittel mit der Einheit "Stück" verwendet werden. Es trifft außerdem keine Aussage darüber, zu welchem spezifischen Zeitpunkt das Arzneimittel anzuwenden ist (bspw. als Uhrzeit, Tageszeit oder Wochentag). 
 
+## Beipiel
 
-Folgende Beispiele sind in diesem IG dargestellt:
+{% fragment MedicationRequest/Example-MR-Dosage-interval-8h JSON %}
+
+Folgende weitere Beispiele sind in diesem IG dargestellt:
 
 | Beispiel    | Beipspiel Datei |
 | -------- | ------- |
@@ -24,6 +27,8 @@ Diese Dosierungsart wird daran erkannt, dass folgende Felder unter ´Dosage.timi
 - frequency
 - period
 - periodUnit
+
+Folgende FHIR-Path Expression auf Ebene von ´Dosage.timing.repeat´ liefert die Angabe, ob es sich um das Schema handelt: `(frequency.exists() and period.exists() and periodUnit.exists() and when.empty() and timeOfDay.empty() and dayOfWeek.empty())`
 
 An diesen Feldern wird kodiert der Zeitinterval angegeben an der eine konkrete Dosierung einzunehmen ist.
 

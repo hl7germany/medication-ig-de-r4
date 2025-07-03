@@ -4,7 +4,11 @@ Es wird ermöglicht, einen Tageszeiten-Bezug oder einen Uhrzeiten-Bezug mit eine
 
 Es wird ermöglicht, die geplante Dauer der Anwendung zu begrenzen.
 
-Folgende Beispiele sind in diesem IG dargestellt:
+## Beipiel
+
+{% fragment MedicationRequest/Example-MR-Dosage-comb-interval-1 JSON %}
+
+Folgende weitere Beispiele sind in diesem IG dargestellt:
 
 | Beispiel    | Beipspiel Datei |
 | -------- | ------- |
@@ -17,6 +21,9 @@ Diese Dosierungsart wird daran erkannt, dass folgende Felder unter ´Dosage.timi
 - frequency
 - period
 - periodUnit
+- timeOfDay ODER when
+
+Folgende FHIR-Path Expression auf Ebene von ´Dosage.timing.repeat´ liefert die Angabe, ob es sich um das Schema handelt: `(frequency.exists() and period.exists() and periodUnit.exists() and ((timeOfDay.exists() and when.empty()) or (when.exists() and timeOfDay.empty())))`
 
 und entweder ´when´ oder ´timeOfDay´. Damit kann diese Dosierangabe verwendet werden um eine Interval angabe auf Tageszeit oder Uhrzeit zu kombinieren.
 

@@ -8,8 +8,11 @@ In diesem Anwendungsfall wird davon ausgegangen, dass das Arzneimittel wöchentl
 - eine abweichende Dosis abhängig von der Uhrzeit/Tageszeit/Wochentag anzugeben und
 - die geplante Dauer der Anwendung zu begrenzen. 
 
+## Beipiel
 
-Folgende Beispiele sind in diesem IG dargestellt:
+{% fragment MedicationRequest/Example-MR-Dosage-comb-dayofweek-1 JSON %}
+
+Folgende weitere Beispiele sind in diesem IG dargestellt:
 
 | Beispiel    | Beipspiel Datei |
 | -------- | ------- |
@@ -20,9 +23,12 @@ Folgende Beispiele sind in diesem IG dargestellt:
 ## Angabe und Erkennung der Dosierart 
 
 Diese Dosierungsart wird daran erkannt, dass folgende Felder unter ´Dosage.timing.repeat´ angegeben sind:
-- frequency
-- period
-- periodUnit
+- frequency = 1
+- period = 1
+- periodUnit = d
+- when UND dayOfWeek existieren
+
+Folgende FHIR-Path Expression auf Ebene von ´Dosage.timing.repeat´ liefert die Angabe, ob es sich um das Schema handelt: `(frequency.exists() and frequency = 1 and period.exists() and period = 1 and periodUnit.exists() and periodUnit = 'd' and when.exists() and dayOfWeek.exists() and timeOfDay.empty())` // Wohentag und Zeit soll auch gehen
 
 und entweder ´when´ oder ´timeOfDay´. Damit kann diese Dosierangabe verwendet werden um eine Interval angabe auf Tageszeit oder Uhrzeit zu kombinieren.
 

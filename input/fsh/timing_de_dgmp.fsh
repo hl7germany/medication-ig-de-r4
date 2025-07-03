@@ -33,21 +33,70 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * offset 0..0
 
 Invariant: timing-only-one-type
-Description: "Only one kind of Repeat is allowed. Current allowed timings: 4-Scheme, Dailytime, Weekday, Interval, 4-Schema and Weekday, Interval and Time/4-Schema"
+Description: "Only one kind of Timing is allowed. Current allowed timings: 4-Scheme, TimeOfDay, DayOfWeek, Interval, DayOfWeek and Time/4-Schema, Interval and Time/4-Schema"
 Expression: "
-(
-  (frequency.exists() and frequency = 1 and period.exists() and period = 1 and periodUnit.exists() and periodUnit = 'd' and when.exists() and timeOfDay.empty() and dayOfWeek.empty())
-  or
-  (timeOfDay.exists() and frequency.exists() and frequency = 1 and period.exists() and period = 1 and periodUnit.exists() and periodUnit = 'd' and when.empty() and dayOfWeek.empty())
-  or
-  (dayOfWeek.exists() and frequency.exists() and frequency = 1 and period.exists() and period = 1 and periodUnit.exists() and periodUnit = 'd' and when.empty() and timeOfDay.empty())
-  or
-  (frequency.exists() and period.exists() and periodUnit.exists() and when.empty() and timeOfDay.empty() and dayOfWeek.empty())
-  or
-  (frequency.exists() and frequency = 1 and period.exists() and period = 1 and periodUnit.exists() and periodUnit = 'd' and when.exists() and dayOfWeek.exists() and timeOfDay.empty())
-  or
-  (frequency.exists() and period.exists() and periodUnit.exists() and ((timeOfDay.exists() and when.empty())
-  or (when.exists() and timeOfDay.empty())))
+/* 4-Schema */
+%resource.(ofType(MedicationRequest).dosageInstruction | ofType(MedicationStatement).dosage).all(
+timing.repeat.frequency.exists() and timing.repeat.frequency = 1 and
+timing.repeat.period.exists() and timing.repeat.period = 1 and
+timing.repeat.periodUnit.exists() and timing.repeat.periodUnit = 'd' and
+timing.repeat.when.exists() and
+timing.repeat.timeOfDay.empty() and
+timing.repeat.dayOfWeek.empty()
+) or
+
+/* TimeOfDay */
+%resource.(ofType(MedicationRequest).dosageInstruction | ofType(MedicationStatement).dosage).all(
+timing.repeat.timeOfDay.exists() and
+timing.repeat.frequency.exists() and timing.repeat.frequency = 1 and
+timing.repeat.period.exists() and timing.repeat.period = 1 and
+timing.repeat.periodUnit.exists() and timing.repeat.periodUnit = 'd' and
+timing.repeat.when.empty() and
+timing.repeat.dayOfWeek.empty()
+) or
+
+/* DayOfWeek */
+%resource.(ofType(MedicationRequest).dosageInstruction | ofType(MedicationStatement).dosage).all(
+timing.repeat.dayOfWeek.exists() and
+timing.repeat.frequency.exists() and timing.repeat.frequency = 1 and
+timing.repeat.period.exists() and timing.repeat.period = 1 and
+timing.repeat.periodUnit.exists() and timing.repeat.periodUnit = 'd' and
+timing.repeat.when.empty() and
+timing.repeat.timeOfDay.empty()
+) or
+
+/* Interval */
+%resource.(ofType(MedicationRequest).dosageInstruction | ofType(MedicationStatement).dosage).all(
+timing.repeat.frequency.exists() and
+timing.repeat.period.exists() and
+timing.repeat.periodUnit.exists() and
+timing.repeat.when.empty() and
+timing.repeat.timeOfDay.empty() and
+timing.repeat.dayOfWeek.empty()
+) or
+
+/* DayOfWeek and Time/4-Schema */
+%resource.(ofType(MedicationRequest).dosageInstruction | ofType(MedicationStatement).dosage).all(
+timing.repeat.dayOfWeek.exists() and
+timing.repeat.frequency.exists() and timing.repeat.frequency = 1 and
+timing.repeat.period.exists() and timing.repeat.period = 1 and
+timing.repeat.periodUnit.exists() and timing.repeat.periodUnit = 'd' and
+  (
+    (timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()) or
+    (timing.repeat.when.exists() and timing.repeat.timeOfDay.empty())
+  )
+) or
+
+/* Interval and Time/4-Schema */
+%resource.(ofType(MedicationRequest).dosageInstruction | ofType(MedicationStatement).dosage).all(
+timing.repeat.frequency.exists() and
+timing.repeat.period.exists() and
+timing.repeat.periodUnit.exists() and
+timing.repeat.dayOfWeek.empty() and
+  (
+    (timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()) or
+    (timing.repeat.when.exists() and timing.repeat.timeOfDay.empty())
+  )
 )
 "
 Severity: #error

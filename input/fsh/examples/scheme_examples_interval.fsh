@@ -7,17 +7,12 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
 * status = #active
 * intent = #order
 * medicationCodeableConcept.text = "Medication"
-* dosageInstruction[+] = Example-Dosage-Interval-8h
-
-Instance: Example-Dosage-Interval-8h
-InstanceOf: DE_DOSAGE_DGMP
-Usage: #inline
-Title: "Dosage with every 8hrs"
-* timing.repeat.frequency = 1
-* timing.repeat.period = 8
-* timing.repeat.periodUnit = #h
-* doseAndRate.doseQuantity.value = 1
-* doseAndRate.doseQuantity.unit = "Tablette"
+* dosageInstruction[+]
+  * timing.repeat.frequency = 1
+  * timing.repeat.period = 8
+  * timing.repeat.periodUnit = #h
+  * doseAndRate.doseQuantity.value = 1
+  * doseAndRate.doseQuantity.unit = "Tablette"
 
 Instance: Example-MR-Dosage-interval-2wk
 InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
@@ -28,18 +23,12 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
 * status = #active
 * intent = #order
 * medicationCodeableConcept.text = "Medication"
-* dosageInstruction[+] = Example-Dosage-Interval-2wk
-
-Instance: Example-Dosage-Interval-2wk
-InstanceOf: DE_DOSAGE_DGMP
-Usage: #inline
-Title: "Dosage with interval every 2 Weeks"
-* timing.repeat.frequency = 1
-* timing.repeat.period = 2
-* timing.repeat.periodUnit = #wk
-* doseAndRate.doseQuantity.value = 1
-* doseAndRate.doseQuantity.unit = "Tablette"
-
+* dosageInstruction[+]
+  * timing.repeat.frequency = 1
+  * timing.repeat.period = 2
+  * timing.repeat.periodUnit = #wk
+  * doseAndRate.doseQuantity.value = 1
+  * doseAndRate.doseQuantity.unit = "Tablette"
 
 Instance: Example-MR-Dosage-interval-4times-d
 InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
@@ -50,17 +39,12 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
 * status = #active
 * intent = #order
 * medicationCodeableConcept.text = "Medication"
-* dosageInstruction[+] = Example-Dosage-Interval-4times-d
-
-Instance: Example-Dosage-Interval-4times-d
-InstanceOf: DE_DOSAGE_DGMP
-Usage: #inline
-Title: "Dosage with 4 times per day"
-* timing.repeat.frequency = 4
-* timing.repeat.period = 1
-* timing.repeat.periodUnit = #d
-* doseAndRate.doseQuantity.value = 1
-* doseAndRate.doseQuantity.unit = "Tablette"
+* dosageInstruction[+]
+  * timing.repeat.frequency = 4
+  * timing.repeat.period = 1
+  * timing.repeat.periodUnit = #d
+  * doseAndRate.doseQuantity.value = 1
+  * doseAndRate.doseQuantity.unit = "Tablette"
 
 Instance: Example-MR-Dosage-interval-3d
 InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
@@ -71,17 +55,12 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
 * status = #active
 * intent = #order
 * medicationCodeableConcept.text = "Medication"
-* dosageInstruction[+] = Example-Dosage-Interval-3d
-
-Instance: Example-Dosage-Interval-3d
-InstanceOf: DE_DOSAGE_DGMP
-Usage: #inline
-Title: "Dosage with interval every 3 days"
-* timing.repeat.frequency = 1
-* timing.repeat.period = 3
-* timing.repeat.periodUnit = #d
-* doseAndRate.doseQuantity.value = 1
-* doseAndRate.doseQuantity.unit = "Tablette"
+* dosageInstruction[+]
+  * timing.repeat.frequency = 1
+  * timing.repeat.period = 3
+  * timing.repeat.periodUnit = #d
+  * doseAndRate.doseQuantity.value = 1
+  * doseAndRate.doseQuantity.unit = "Tablette"
 
 Instance: Example-MR-Dosage-interval-2d-bound
 InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
@@ -92,16 +71,11 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
 * status = #active
 * intent = #order
 * medicationCodeableConcept.text = "Medication"
-* dosageInstruction[+] = Example-Dosage-Interval-2d-bound
-
-Instance: Example-Dosage-Interval-2d-bound
-InstanceOf: DE_DOSAGE_DGMP
-Usage: #inline
-Title: "Dosage with every 2 day for 6 weeks"
-* timing.repeat.frequency = 1
-* timing.repeat.period = 2
-* timing.repeat.periodUnit = #d
-* timing.repeat.boundsDuration.value = 6
-* timing.repeat.boundsDuration.unit = "Woche(n)"
-* doseAndRate.doseQuantity.value = 2
-* doseAndRate.doseQuantity.unit = "Tablette"
+* dosageInstruction[+]
+  * timing.repeat.frequency = 1
+  * timing.repeat.period = 2
+  * timing.repeat.periodUnit = #d
+  * timing.repeat.boundsDuration.value = 6
+  * timing.repeat.boundsDuration.unit = "Woche(n)"
+  * doseAndRate.doseQuantity.value = 2
+  * doseAndRate.doseQuantity.unit = "Tablette"

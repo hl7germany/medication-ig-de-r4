@@ -14,6 +14,8 @@ In der aktuellen Ausbaustufe der Dosierangaben sind fünf Kategorien von Dosiera
 3. Dosierangabe nach Uhrzeit
 4. Dosierangabe nach Interval
 5. Dosierangabe nach Wochentag
+6. Dosierangabe nach Wochentag und Uhrzeit/4-Schema
+7. Dosierangabe nach Interval und Uhrzeit/4-Schema
 
 Für eine ausführliche Diskussion der Kategorien und Profilierung siehe DOSAGE_IG[link]
 

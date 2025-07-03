@@ -1,97 +1,134 @@
-Instance: Example-MR-Dosage-Valid
+// when + timeOfDay
+Instance: Example-MR-Dosage-Invalid-One-Kind-1
 InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
 Usage: #example
-Title: "Example-MR-Dosage-DEV"
+Title: "Invalid: when + timeOfDay"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for allowed Permutations"
 * subject.display = "DEV Dosage"
 * status = #active
 * intent = #order
 * medicationCodeableConcept.text = "DEV Medication"
-* dosageInstruction[+] = Example-Dosage-When
-* dosageInstruction[+] = Example-Dosage-TimeOfDay
-* dosageInstruction[+] = Example-Dosage-DayOfWeek
-* dosageInstruction[+] = Example-Dosage-FreqPeriod
-* dosageInstruction[+] = Example-Dosage-When-DayOfWeek
-* dosageInstruction[+] = Example-Dosage-FreqPeriod-TimeOfDay
-* dosageInstruction[+] = Example-Dosage-FreqPeriod-DayOfWeek
+* dosageInstruction[+]
+  * timing.repeat
+    * when[+] = #MORN
+    * frequency = 1
+    * period = 1
+    * periodUnit = #d
+* dosageInstruction[+]
+  * timing.repeat
+    * timeOfDay[+] = "08:00:00"
+    * frequency = 1
+    * period = 1
+    * periodUnit = #d
 
-Instance: Example-Dosage-When
-InstanceOf: DE_DOSAGE_DGMP
-Usage: #inline
-Title: "Dosage with when"
-* timing.repeat
-  * when[+] = #MORN
-  * frequency = 1
-  * period = 1
-  * periodUnit = #d
+// when + dayOfWeek
+Instance: Example-MR-Dosage-Invalid-One-Kind-2
+InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+Usage: #example
+Title: "Invalid: when + dayOfWeek"
+Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for allowed Permutations"
+* subject.display = "DEV Dosage"
+* status = #active
+* intent = #order
+* medicationCodeableConcept.text = "DEV Medication"
+* dosageInstruction[+]
+  * timing.repeat
+    * when[+] = #EVE
+    * frequency = 1
+    * period = 1
+    * periodUnit = #d
+* dosageInstruction[+]
+  * timing.repeat
+    * dayOfWeek[+] = #mon
+    * frequency = 1
+    * period = 1
+    * periodUnit = #d
 
-Instance: Example-Dosage-TimeOfDay
-InstanceOf: DE_DOSAGE_DGMP
-Usage: #inline
-Title: "Dosage with timeOfDay"
-* timing.repeat
-  * timeOfDay[+] = "08:00:00"
-  * frequency = 1
-  * period = 1
-  * periodUnit = #d
-* doseAndRate.doseQuantity.value = 1
-* doseAndRate.doseQuantity.unit = "Tablette"
+// when + interval
+Instance: Example-MR-Dosage-Invalid-One-Kind-3
+InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+Usage: #example
+Title: "Invalid: when + interval"
+Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for allowed Permutations"
+* subject.display = "DEV Dosage"
+* status = #active
+* intent = #order
+* medicationCodeableConcept.text = "DEV Medication"
+* dosageInstruction[+]
+  * timing.repeat
+    * when[+] = #NOON
+    * frequency = 1
+    * period = 1
+    * periodUnit = #d
+* dosageInstruction[+]
+  * timing.repeat
+    * frequency = 2
+    * period = 1
+    * periodUnit = #d
 
-Instance: Example-Dosage-DayOfWeek
-InstanceOf: DE_DOSAGE_DGMP
-Usage: #inline
-Title: "Dosage with dayOfWeek"
-* timing.repeat
-  * dayOfWeek[+] = #mon
-  * frequency = 1
-  * period = 1
-  * periodUnit = #d
-* doseAndRate.doseQuantity.value = 1
-* doseAndRate.doseQuantity.unit = "Tablette"
+// timeOfDay + dayOfWeek
+Instance: Example-MR-Dosage-Invalid-One-Kind-4
+InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+Usage: #example
+Title: "Invalid: timeOfDay + dayOfWeek"
+Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for allowed Permutations"
+* subject.display = "DEV Dosage"
+* status = #active
+* intent = #order
+* medicationCodeableConcept.text = "DEV Medication"
+* dosageInstruction[+]
+  * timing.repeat
+    * timeOfDay[+] = "07:00:00"
+    * frequency = 1
+    * period = 1
+    * periodUnit = #d
+* dosageInstruction[+]
+  * timing.repeat
+    * dayOfWeek[+] = #fri
+    * frequency = 1
+    * period = 1
+    * periodUnit = #d
 
-Instance: Example-Dosage-FreqPeriod
-InstanceOf: DE_DOSAGE_DGMP
-Usage: #inline
-Title: "Dosage with frequency/period/periodUnit"
-* timing.repeat.frequency = 2
-* timing.repeat.period = 1
-* timing.repeat.periodUnit = #d
-* doseAndRate.doseQuantity.value = 1
-* doseAndRate.doseQuantity.unit = "Tablette"
+// timeOfDay + interval
+Instance: Example-MR-Dosage-Invalid-One-Kind-5
+InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+Usage: #example
+Title: "Invalid: timeOfDay + interval"
+Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for allowed Permutations"
+* subject.display = "DEV Dosage"
+* status = #active
+* intent = #order
+* medicationCodeableConcept.text = "DEV Medication"
+* dosageInstruction[+]
+  * timing.repeat
+    * timeOfDay[+] = "12:00:00"
+    * frequency = 1
+    * period = 1
+    * periodUnit = #d
+* dosageInstruction[+]
+  * timing.repeat
+    * frequency = 3
+    * period = 1
+    * periodUnit = #d
 
-Instance: Example-Dosage-When-DayOfWeek
-InstanceOf: DE_DOSAGE_DGMP
-Usage: #inline
-Title: "Dosage with when and dayOfWeek"
-* timing.repeat
-  * when[+] = #EVE
-  * dayOfWeek[+] = #fri
-  * frequency = 1
-  * period = 1
-  * periodUnit = #d
-* doseAndRate.doseQuantity.value = 1
-* doseAndRate.doseQuantity.unit = "Tablette"
-
-Instance: Example-Dosage-FreqPeriod-TimeOfDay
-InstanceOf: DE_DOSAGE_DGMP
-Usage: #inline
-Title: "Dosage with freq/period/periodUnit and timeOfDay"
-* timing.repeat
-  * frequency = 1
-  * period = 1
-  * periodUnit = #d
-  * timeOfDay[+] = "20:00:00"
-* doseAndRate.doseQuantity.value = 1
-* doseAndRate.doseQuantity.unit = "Tablette"
-
-Instance: Example-Dosage-FreqPeriod-DayOfWeek
-InstanceOf: DE_DOSAGE_DGMP
-Usage: #inline
-Title: "Dosierung mit freq/period/periodUnit und dayOfWeek"
-* timing.repeat
-  * frequency = 1
-  * period = 1
-  * periodUnit = #wk
-  * dayOfWeek[+] = #sat
-* doseAndRate.doseQuantity.value = 1
-* doseAndRate.doseQuantity.unit = "Tablette"
+// dayOfWeek + interval
+Instance: Example-MR-Dosage-Invalid-One-Kind-6
+InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+Usage: #example
+Title: "Invalid: dayOfWeek + interval"
+Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for allowed Permutations"
+* subject.display = "DEV Dosage"
+* status = #active
+* intent = #order
+* medicationCodeableConcept.text = "DEV Medication"
+* dosageInstruction[+]
+  * timing.repeat
+    * dayOfWeek[+] = #tue
+    * frequency = 1
+    * period = 1
+    * periodUnit = #d
+* dosageInstruction[+]
+  * timing.repeat
+    * frequency = 2
+    * period = 1
+    * periodUnit = #d

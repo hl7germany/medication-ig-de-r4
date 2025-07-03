@@ -2,7 +2,7 @@
 
 ## Aktuell unterstützte Dosierkonfigurationen
 
-{% include supported-dosage-examples.md %}
+{% include dosage-timing-matrix.md %}
 
 ## Zukünftig unterstützte Dosierkonfigurationen
 

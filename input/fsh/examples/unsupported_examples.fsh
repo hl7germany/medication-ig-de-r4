@@ -376,3 +376,5 @@ Usage: #inline
 Title: "Unsupported: Event"
 * text = "event"
 * timing.event[0] = "2023-06-01T08:00:00+01:00"
+* timing.repeat.boundsDuration.value = 3
+* timing.repeat.boundsDuration.unit = "Woche(n)"

@@ -251,13 +251,27 @@ class GermanDosageTextGenerator:
         repeat = timing.get('repeat', {})
         parts = []
         when_list = repeat.get('when', [])
-        if when_list:
-            when_text = " und ".join([self.translate_when_code(w) for w in when_list])
+        # Define the desired order
+        when_order = ['MORN', 'NOON', 'AFT', 'EVE', 'NIGHT']
+        # Create a mapping for sorting
+        order_map = {key: idx for idx, key in enumerate(when_order)}
+        # Sort the when_list by the defined order
+        when_list_sorted = sorted(when_list, key=lambda w: order_map.get(w, len(when_order)))
+        if when_list_sorted:
+            when_names = [self.translate_when_code(w) for w in when_list_sorted]
+            if len(when_names) == 1:
+                when_text = when_names[0]
+            elif len(when_names) == 2:
+                when_text = f"{when_names[0]} und {when_names[1]}"
+            else:
+                when_text = f"{', '.join(when_names[:-1])} und {when_names[-1]}"
             parts.append(when_text)
         # offset = repeat.get('offset')  # COMMENTED OUT: not supported
         # if offset is not None:
         #     parts.append(f"{offset} Minuten Versatz")
         return ", ".join(parts)
+
+
 
     def get_days_of_week(self, dosage: Dict[str, Any]) -> str:
         timing = dosage.get('timing', {})
@@ -437,6 +451,7 @@ class GermanDosageTextGenerator:
     def translate_when_code(self, when: str) -> str:
         when_codes = {
             'MORN': 'morgens',
+            'NOON': 'mittags',
             'AFT': 'nachmittags',
             'EVE': 'abends',
             'NIGHT': 'nachts',

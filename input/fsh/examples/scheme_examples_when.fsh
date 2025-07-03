@@ -94,6 +94,32 @@ Title: "Dosage with when 1-0-0-0"
 * doseAndRate.doseQuantity.value = 1
 * doseAndRate.doseQuantity.unit = "Tablette"
 
+Instance: Example-MR-Dosage-1111
+InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+Usage: #example
+Title: "Example-MR-Dosage-1111"
+Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung 1-0-0-0 dar"
+* subject.display = "Patient"
+* status = #active
+* intent = #order
+* medicationCodeableConcept.text = "Medication"
+* dosageInstruction[+] = Example-Dosage-When-1111
+
+Instance: Example-Dosage-When-1111
+InstanceOf: DE_DOSAGE_DGMP
+Usage: #inline
+Title: "Dosage with when 1-1-1-1"
+* timing.repeat
+  * when[+] = #EVE
+  * when[+] = #MORN
+  * when[+] = #NIGHT
+  * when[+] = #NOON
+  * frequency = 1 
+  * period = 1  
+  * periodUnit = #d
+* doseAndRate.doseQuantity.value = 1
+* doseAndRate.doseQuantity.unit = "Tablette"
+
 Instance: Example-MR-Dosage-1010
 InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
 Usage: #example

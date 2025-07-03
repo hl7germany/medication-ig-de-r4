@@ -72,6 +72,7 @@ def generate_matrix(input_folder, script_path, output_path):
             dosages = resource.get("dosageInstruction", [])
             if not dosages:
                 continue  # skip if no dosages
+            add_suffix = len(dosages) > 1
             for idx, dosage in enumerate(dosages, start=1):
                 if "timing" not in dosage:
                     continue  # skip if no timing
@@ -80,7 +81,6 @@ def generate_matrix(input_folder, script_path, output_path):
 
                 # description (text) from your script
                 try:
-                    # If your script supports dosage index, add str(idx-1) as an argument
                     result = subprocess.check_output(
                         ['python3', script_path, rel_file_path, str(idx-1)],
                         text=True
@@ -89,15 +89,20 @@ def generate_matrix(input_folder, script_path, output_path):
                 except Exception as e:
                     result = f"Fehler beim Verarbeiten der Datei: {e}"
 
-                file_link = f"[{os.path.splitext(filename)[0]}-dosage-{idx}](./{filename.replace('.json', f'-dosage-{idx}.html')})"
-                fields = extract_timing_matrix_fields(timing)
-                dose_quantity = extract_dose_quantity(dosage)
-                row = [file_link, result, dose_quantity]
+                # Only add -dosage-n to the display name if there are multiple dosages
+                display_name = os.path.splitext(filename)[0]
+                if add_suffix:
+                    display_name = f"{display_name}-dosage-{idx}"
+                file_link = f"[{display_name}](./{filename.replace('.json', '.html')})"
 
+                dose_quantity = extract_dose_quantity(dosage)
+                fields = extract_timing_matrix_fields(timing)
+                row = [file_link, result, dose_quantity]
                 row += [str(fields.get(key, "")) for key in COLUMN_KEYS]
                 matrix_rows.append(row)
         except Exception as e:
             print(f"Error processing {filename}: {e}", file=sys.stderr)
+
 
 
     header = "| File | description | doseQuantity | " + " | ".join(MATRIX_COLUMNS) + " |"

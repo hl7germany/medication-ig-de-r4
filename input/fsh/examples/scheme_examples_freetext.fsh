@@ -6,5 +6,5 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Freit
 * subject.display = "Patient"
 * status = #active
 * intent = #order
-* medicationCodeableConcept.text = "Medication"
+* medicationCodeableConcept.text = "Ibuprofen 400mg"
 * dosageInstruction[+].text = "2 Tabletten morgens zum Frühstück"

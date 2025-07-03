@@ -7,7 +7,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
 * subject.display = "Patient"
 * status = #active
 * intent = #order
-* medicationCodeableConcept.text = "Medication"
+* medicationCodeableConcept.text = "Ibuprofen 400mg"
 * dosageInstruction[+]
   * timing.repeat
     * when[+] = #MORN
@@ -34,7 +34,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
 * subject.display = "Patient"
 * status = #active
 * intent = #order
-* medicationCodeableConcept.text = "Medication"
+* medicationCodeableConcept.text = "Ibuprofen 400mg"
 * dosageInstruction[+]
   * timing.repeat
     * when[+] = #MORN
@@ -61,7 +61,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
 * subject.display = "Patient"
 * status = #active
 * intent = #order
-* medicationCodeableConcept.text = "Medication"
+* medicationCodeableConcept.text = "Ibuprofen 400mg"
 * dosageInstruction[+]
   * timing.repeat
     * when[+] = #MORN
@@ -79,7 +79,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
 * subject.display = "Patient"
 * status = #active
 * intent = #order
-* medicationCodeableConcept.text = "Medication"
+* medicationCodeableConcept.text = "Ibuprofen 400mg"
 * dosageInstruction[+]
   * timing.repeat
     * when[+] = #EVE
@@ -100,7 +100,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
 * subject.display = "Patient"
 * status = #active
 * intent = #order
-* medicationCodeableConcept.text = "Medication"
+* medicationCodeableConcept.text = "Ibuprofen 400mg"
 * dosageInstruction[+]
   * timing.repeat
     * when[+] = #MORN
@@ -119,7 +119,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
 * subject.display = "Patient"
 * status = #active
 * intent = #order
-* medicationCodeableConcept.text = "Medication"
+* medicationCodeableConcept.text = "Ibuprofen 400mg"
 * dosageInstruction[+]
   * timing.repeat
     * when[+] = #MORN

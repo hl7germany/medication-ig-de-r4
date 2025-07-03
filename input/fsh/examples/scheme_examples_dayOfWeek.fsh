@@ -6,7 +6,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
 * subject.display = "Patient"
 * status = #active
 * intent = #order
-* medicationCodeableConcept.text = "Medication"
+* medicationCodeableConcept.text = "Ibuprofen 400mg"
 * dosageInstruction[+]
   * timing.repeat
     * dayOfWeek[+] = #tue
@@ -25,7 +25,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
 * subject.display = "Patient"
 * status = #active
 * intent = #order
-* medicationCodeableConcept.text = "Medication"
+* medicationCodeableConcept.text = "Ibuprofen 400mg"
 * dosageInstruction[+]
   * timing.repeat
     * dayOfWeek[+] = #tue
@@ -45,7 +45,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
 * subject.display = "Patient"
 * status = #active
 * intent = #order
-* medicationCodeableConcept.text = "Medication"
+* medicationCodeableConcept.text = "Ibuprofen 400mg"
 * dosageInstruction[+]
   * timing.repeat
     * dayOfWeek[+] = #mon
@@ -72,7 +72,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
 * subject.display = "Patient"
 * status = #active
 * intent = #order
-* medicationCodeableConcept.text = "Medication"
+* medicationCodeableConcept.text = "Ibuprofen 400mg"
 * dosageInstruction[+]
   * timing.repeat
     * dayOfWeek[+] = #mon

@@ -34,7 +34,7 @@ Invariant: timing-only-one-type
 Description: "Only one kind of Timing is allowed. Current allowed timings: 4-Scheme, TimeOfDay, DayOfWeek, Interval, DayOfWeek and Time/4-Schema, Interval and Time/4-Schema"
 Expression: "
 /* 4-Schema */
-%resource.dosageInstruction.all(
+%resource.(ofType(MedicationRequest).dosageInstruction | ofType(MedicationStatement).dosage).all(
 timing.repeat.frequency.exists() and timing.repeat.frequency = 1 and
 timing.repeat.period.exists() and timing.repeat.period = 1 and
 timing.repeat.periodUnit.exists() and timing.repeat.periodUnit = 'd' and
@@ -44,7 +44,7 @@ timing.repeat.dayOfWeek.empty()
 ) or
 
 /* TimeOfDay */
-%resource.dosageInstruction.all(
+%resource.(ofType(MedicationRequest).dosageInstruction | ofType(MedicationStatement).dosage).all(
 timing.repeat.timeOfDay.exists() and
 timing.repeat.frequency.exists() and timing.repeat.frequency = 1 and
 timing.repeat.period.exists() and timing.repeat.period = 1 and
@@ -54,7 +54,7 @@ timing.repeat.dayOfWeek.empty()
 ) or
 
 /* DayOfWeek */
-%resource.dosageInstruction.all(
+%resource.(ofType(MedicationRequest).dosageInstruction | ofType(MedicationStatement).dosage).all(
 timing.repeat.dayOfWeek.exists() and
 timing.repeat.frequency.exists() and timing.repeat.frequency = 1 and
 timing.repeat.period.exists() and timing.repeat.period = 1 and
@@ -64,7 +64,7 @@ timing.repeat.timeOfDay.empty()
 ) or
 
 /* Interval */
-%resource.dosageInstruction.all(
+%resource.(ofType(MedicationRequest).dosageInstruction | ofType(MedicationStatement).dosage).all(
 timing.repeat.frequency.exists() and
 timing.repeat.period.exists() and
 timing.repeat.periodUnit.exists() and
@@ -74,7 +74,7 @@ timing.repeat.dayOfWeek.empty()
 ) or
 
 /* DayOfWeek and Time/4-Schema */
-%resource.dosageInstruction.all(
+%resource.(ofType(MedicationRequest).dosageInstruction | ofType(MedicationStatement).dosage).all(
 timing.repeat.dayOfWeek.exists() and
 timing.repeat.frequency.exists() and timing.repeat.frequency = 1 and
 timing.repeat.period.exists() and timing.repeat.period = 1 and
@@ -86,7 +86,7 @@ timing.repeat.periodUnit.exists() and timing.repeat.periodUnit = 'd' and
 ) or
 
 /* Interval and Time/4-Schema */
-%resource.dosageInstruction.all(
+%resource.(ofType(MedicationRequest).dosageInstruction | ofType(MedicationStatement).dosage).all(
 timing.repeat.frequency.exists() and
 timing.repeat.period.exists() and
 timing.repeat.periodUnit.exists() and

@@ -4,9 +4,14 @@ import json
 import subprocess
 
 MATRIX_COLUMNS = [
-    "description", "duration", "durationUnit", "frequency", "frequencyMax",
-    "period", "periodUnit", "periodMax", "Day of Week", "Time Of Day",
-    "when", "offset", "bounds[x]", "count"
+    "duration", "durationUnit", "frequency", "period", "periodUnit",
+    "Day<br>of<br>Week", "Time<br>Of<br>Day", "when", "bounds[x]"
+    # Removed frequencyMax, periodMax, offset, count
+]
+
+COLUMN_KEYS = [
+    "duration", "durationUnit", "frequency", "period", "periodUnit",
+    "Day of Week", "Time Of Day", "when", "bounds[x]"
 ]
 
 def extract_timing_matrix_fields(timing):
@@ -14,18 +19,14 @@ def extract_timing_matrix_fields(timing):
         return val if val is not None else default
 
     fields = {}
-    fields["description"] = ""  # will be filled with text from dosage-to-text.py
     fields["duration"] = str(get(timing.get("repeat", {}).get("duration", "")))
     fields["durationUnit"] = get(timing.get("repeat", {}).get("durationUnit", ""))
     fields["frequency"] = str(get(timing.get("repeat", {}).get("frequency", "")))
-    fields["frequencyMax"] = str(get(timing.get("repeat", {}).get("frequencyMax", "")))
     fields["period"] = str(get(timing.get("repeat", {}).get("period", "")))
     fields["periodUnit"] = get(timing.get("repeat", {}).get("periodUnit", ""))
-    fields["periodMax"] = str(get(timing.get("repeat", {}).get("periodMax", "")))
-    fields["Day of Week"] = " | ".join(timing.get("repeat", {}).get("dayOfWeek", []))
-    fields["Time Of Day"] = " | ".join(timing.get("repeat", {}).get("timeOfDay", []))
-    fields["when"] = " | ".join(timing.get("repeat", {}).get("when", []))
-    fields["offset"] = str(get(timing.get("repeat", {}).get("offset", "")))
+    fields["Day of Week"] = ", ".join(timing.get("repeat", {}).get("dayOfWeek", []))
+    fields["Time Of Day"] = ", ".join(timing.get("repeat", {}).get("timeOfDay", []))
+    fields["when"] = ", ".join(timing.get("repeat", {}).get("when", []))
     bounds = timing.get("repeat", {}).get("boundsDuration") \
         or timing.get("repeat", {}).get("boundsPeriod") \
         or timing.get("repeat", {}).get("boundsRange")
@@ -38,8 +39,16 @@ def extract_timing_matrix_fields(timing):
             fields["bounds[x]"] = str(bounds)
     else:
         fields["bounds[x]"] = ""
-    fields["count"] = str(get(timing.get("repeat", {}).get("count", "")))
     return fields
+
+def extract_dose_quantity(dosage):
+    dq = dosage.get("doseAndRate", [{}])[0].get("doseQuantity")
+    if dq:
+        value = dq.get("value", "")
+        unit = dq.get("unit", "")
+        return f"{value} {unit}".strip()
+    return ""
+
 
 def generate_matrix(input_folder, script_path, output_path):
     all_files = [
@@ -53,7 +62,6 @@ def generate_matrix(input_folder, script_path, output_path):
         )
     ]
 
-
     matrix_rows = []
     for filename in all_files:
         file_path = os.path.join(input_folder, filename)
@@ -61,31 +69,40 @@ def generate_matrix(input_folder, script_path, output_path):
         try:
             with open(file_path, "r", encoding="utf-8") as f:
                 resource = json.load(f)
-            timing = None
-            for dosage in resource.get("dosageInstruction", []):
-                if "timing" in dosage:
-                    timing = dosage["timing"]
-                    break
-            if not timing:
-                continue  # skip if no timing
+            dosages = resource.get("dosageInstruction", [])
+            if not dosages:
+                continue  # skip if no dosages
+            for idx, dosage in enumerate(dosages, start=1):
+                if "timing" not in dosage:
+                    continue  # skip if no timing
 
-            # description (text) from your script
-            try:
-                result = subprocess.check_output(['python3', script_path, rel_file_path], text=True).strip()
-                result = result.replace('\n', '<br>')
-            except Exception as e:
-                result = f"Fehler beim Verarbeiten der Datei: {e}"
+                timing = dosage["timing"]
 
-            file_link = f"[{os.path.splitext(filename)[0]}](./{filename.replace('.json', '.html')})"
-            fields = extract_timing_matrix_fields(timing)
-            row = [file_link, result]
-            row += [str(fields.get(col, "")) for col in MATRIX_COLUMNS[1:]]
-            matrix_rows.append(row)
+                # description (text) from your script
+                try:
+                    # If your script supports dosage index, add str(idx-1) as an argument
+                    result = subprocess.check_output(
+                        ['python3', script_path, rel_file_path, str(idx-1)],
+                        text=True
+                    ).strip()
+                    result = result.replace('\n', '<br>')
+                except Exception as e:
+                    result = f"Fehler beim Verarbeiten der Datei: {e}"
+
+                file_link = f"[{os.path.splitext(filename)[0]}-dosage-{idx}](./{filename.replace('.json', f'-dosage-{idx}.html')})"
+                fields = extract_timing_matrix_fields(timing)
+                dose_quantity = extract_dose_quantity(dosage)
+                row = [file_link, result, dose_quantity]
+
+                row += [str(fields.get(key, "")) for key in COLUMN_KEYS]
+                matrix_rows.append(row)
         except Exception as e:
             print(f"Error processing {filename}: {e}", file=sys.stderr)
 
-    header = "| " + " | ".join(["File", "description"] + MATRIX_COLUMNS[1:]) + " |"
-    sep = "| " + " | ".join([":---:"] * (2 + len(MATRIX_COLUMNS) - 1)) + " |"
+
+    header = "| File | description | doseQuantity | " + " | ".join(MATRIX_COLUMNS) + " |"
+    sep = "| :---: | :--- | :---: | " + " | ".join([":---:"] * len(MATRIX_COLUMNS)) + " |"
+
     md_table = header + "\n" + sep + "\n"
     for row in matrix_rows:
         md_table += "| " + " | ".join(row) + " |\n"

@@ -355,7 +355,7 @@ class GermanDosageTextGenerator:
     def format_quantity(self, quantity: Dict[str, Any]) -> str:
         value = quantity.get('value', 0)
         unit = quantity.get('unit') or quantity.get('code') or ""
-        return f"{value}{' ' + unit if unit else ''}"
+        return f"je {value}{' ' + unit if unit else ''}"
 
     # def format_range(self, range_obj: Dict[str, Any]) -> str:
     #     low = self.format_quantity(range_obj['low']) if range_obj.get('low') else ""

@@ -23,7 +23,7 @@ Description: "Gibt an, wie das Medikament vom Patienten eingenommen wird/wurde o
   * type 0..0 //TODO: Sollte das fixed auf "ordered" gesetzt werden oder auf 0..0 gesetzt sein? http://terminology.hl7.org/CodeSystem/dose-rate-type
   * dose[x] only SimpleQuantity
   * doseQuantity
-  * doseQuantity from DosageDoseQuantityDGMPVS
+  * doseQuantity from $kbv-dosiereinheit-vs
   * rate[x] 0..0
 
 // Remove unused Fields

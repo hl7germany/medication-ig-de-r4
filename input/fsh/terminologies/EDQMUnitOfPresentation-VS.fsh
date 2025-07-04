@@ -1,7 +1,7 @@
 
 // Quelle: https://build.fhir.org/ig/hl7-eu/unicom-ig/branches/master/ValueSet-pharmaceutical-doseform-vs.html
-ValueSet: UnitOfPresentation
-Id: unit-of-presentation
+ValueSet: EDQMUnitOfPresentationVS
+Id: EDQMUnitOfPresentation
 Title: "EDQM Unit of Presentation"
 Description: "ValueSet Einheit der Darreichungsform gemäß EDQM, UOP, siehe https://standardterms.edqm.eu/#"
 * $edqm#15001000 "Actuation"

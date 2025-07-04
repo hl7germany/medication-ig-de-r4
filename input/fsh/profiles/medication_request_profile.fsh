@@ -1,7 +1,8 @@
 Profile: MedicationRequestDgMP
 Parent: MedicationRequest
 Id: MedicationRequestDgMP
-Title: "MedicationRequestDgMP"
+Title: "MedicationRequest zur Nutzung von Dosierungen für dgMP"
+Description: "Dieses Profil enthält eine Referenz der dosageInstruction auf das Dosierungsprofil für den Kontext dgMP"
 
 * dosageInstruction only DosageDgMP
   * ^short = "Angabe der Dosierinformationen strukturiert oder als Freiteixt"

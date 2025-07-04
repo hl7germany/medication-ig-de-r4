@@ -43,33 +43,10 @@ Description: "Gibt an, wie das Medikament vom Patienten eingenommen wird/wurde o
   * ^definition = "Gibt die Reihenfolge an, in der die Dosierungsanweisungen angewendet oder interpretiert werden sollen."
   * ^comment = "Wenn die Sequenz nicht angegeben wird, dann gilt für alle angegebenen Dosierungen implizit die Sequenz 0."
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-// HIER
 * text
   * ^short = "Freitext-Dosierungsanweisungen, z. B. '3x täglich 1 Tablette'"
   * ^definition = "Freitext-Dosierungsanweisungen, z. B. '3x täglich 1 Tablette'. Als Quelle dient hier ausschließlich der Arzt oder Apotheker"
   * ^comment = "Die Freitextdosierung sollte nur angegeben werden, wenn aufgrund der Komplexität keine strukturierte Dosierung möglich ist, um widersprüchliche Anweisungen zu vermeiden."
-
-  /*
-  	
-Free text dosage instructions can be used for cases where the instructions are too complex to code. 
-The content of this attribute does not include the name or description of the medication. 
-When coded instructions are present, the free text instructions may still be present for display to humans taking or administering the medication. 
-It is expected that the text instructions will always be populated. If the dosage.timing attribute is also populated, then the dosage.text should reflect the same information as the timing. 
-Additional information about administration or preparation of the medication should be included as text.
-*/
 
 * additionalInstruction
   * ^short = "Zusätzliche Anweisungen oder Warnhinweise für den Patienten - z. B. „zu den Mahlzeiten“, „kann Schläfrigkeit verursachen“"
@@ -81,7 +58,6 @@ Additional information about administration or preparation of the medication sho
   * ^definition = "Anweisungen in Begriffen, die vom Patienten oder Verbraucher verstanden werden."
   * ^comment = "tbd"
 
-// HIER
 
 
 

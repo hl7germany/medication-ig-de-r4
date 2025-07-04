@@ -1,6 +1,6 @@
 ValueSet: DosageUnitsOfTimeDgMP
 Id: DosageUnitsOfTimeDgMP
-Title: "DosageUnitsOfTimeDgMP"
+Title: "Zeiteinheiten für Dosierungen"
 Description: "This Valueset extracts unitsoftime from ucum in German"
 * include $ucum#d 
   * ^designation.language = #de-DE

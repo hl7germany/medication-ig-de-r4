@@ -1,7 +1,7 @@
 Profile: TimingDE
 Parent: Timing
 Id: TimingDE
-Title: "Timing DE Zeitpunkte"
+Title: "Zeitmuster für deutschlandweite Dosierungen"
 Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne werden verwendet, um festzuhalten, wann etwas geplant, erwartet oder angefordert ist. Die häufigste Anwendung ist in Dosierungsanweisungen für Medikamente. Sie werden aber auch für die Planung verschiedener Versorgungsleistungen genutzt und können zur Dokumentation von bereits erfolgten oder laufenden Aktivitäten verwendet werden."
 // Beschreibungen
 * id

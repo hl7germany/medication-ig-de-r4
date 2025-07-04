@@ -1,4 +1,5 @@
 .DS_Store
+.devcontainer
 Thumbs.db
 /fsh-generated
 /input-cache

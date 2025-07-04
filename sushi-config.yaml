@@ -3,29 +3,29 @@
 # │  used properties are included. For a list of all supported properties and their functions,     │
 # │  see: https://fshschool.org/docs/sushi/configuration/.                                         │
 # ╰────────────────────────────────────────────────────────────────────────────────────────────────╯
-id: de.medication.dosage
+id: de.medication.r4
 canonical: http://fhir.de
-name: MedicationDosageIG
-# title: Example Title
+name: MedicationDE
+title: Medication IG DE
 # description: Example Implementation Guide for getting started with SUSHI
 status: draft # draft | active | retired | unknown
 version: 0.1.0
 fhirVersion: 4.0.1 # https://www.hl7.org/fhir/valueset-FHIR-version.html
 copyrightYear: 2025+
-releaseLabel: ci-build
+releaseLabel: draft
 # license: CC0-1.0 # https://www.hl7.org/fhir/valueset-spdx-license.html
 # jurisdiction: urn:iso:std:iso:3166#US "United States of America" # https://www.hl7.org/fhir/valueset-jurisdiction.html
 publisher:
   name: HL7 Deutschland
-  url: https://hl7.de/technische-komitees/fhir/
+  url: https://hl7.de
   # email: test@example.org
 
 # The dependencies property corresponds to IG.dependsOn. The key is the
 # package id and the value is the version (or dev/current). For advanced
 # use cases, the value can be an object with keys for id, uri, and version.
 #
-# dependencies:
-#   hl7.fhir.us.core: 3.1.0
+dependencies:
+  kbv.all.st: 1.23.0
 #   hl7.fhir.us.mcode:
 #     id: mcode
 #     uri: http://hl7.org/fhir/us/mcode/ImplementationGuide/hl7.fhir.us.mcode
@@ -42,7 +42,7 @@ publisher:
 # file name extension.  Any subproperties that are valid filenames
 # with supported extensions (e.g., .md/.xml) will be treated as
 # sub-pages.
-#
+# TODO
 # pages:
 #   index.md:
 #     title: Example Home
@@ -51,6 +51,7 @@ publisher:
 #     title: Examples Overview
 #     simpleExamples.xml:
 #     complexExamples.xml:
+#
 #
 #
 # The parameters property represents IG.definition.parameter. Rather
@@ -76,8 +77,18 @@ publisher:
 # ╰────────────────────────────────────────────────────────────────────────────────────────────────╯
 menu:
   Home: index.html
-  Artifacts: artifacts.html
+  Dosierungen: 
+    Einführung: dosage-index.html
+    Fachliche Rahmenbedingungen: dosage-concept.html
+    Textgenerierung: dosage-to-text.html
+    Beispielliste Dosierung: dosage-examples.html
+  FHIR-Artefakte: artifacts.html
+  Downloads: downloads.html
 
+parameters:
+  path-pages:
+    - input/content
+    
 # ╭───────────────────────────Less Common Implementation Guide Properties──────────────────────────╮
 # │  Uncomment the properties below to configure additional properties on the ImplementationGuide  │
 # │  resource. These properties are less commonly needed than those above.                         │

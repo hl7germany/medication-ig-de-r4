@@ -44,6 +44,11 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * ^definition = "Entweder eine Dauer für die Länge des Zeitplans, ein Bereich möglicher Längen oder äußere Begrenzungen für Start- und/oder Endgrenzen des Zeitplans."
   * ^comment = "tbd"
 
+* repeat.boundsDuration MS
+  * ^short = "Dauer der Dosieranweisung ausgedrückt in UCUM-Einheiten"
+  * ^definition = "Entweder eine Dauer für die Länge des Zeitplans, ein Bereich möglicher Längen oder äußere Begrenzungen für Start- und/oder Endgrenzen des Zeitplans."
+  * system = $ucum
+
 * repeat.count
   * ^short = "Anzahl der Wiederholungen"
   * ^definition = "Gesamtanzahl der gewünschten Wiederholungen über die gesamte Dauer des Zeitplans. Falls countMax vorhanden ist, gibt dieses Element die Untergrenze des zulässigen Bereichs der Wiederholungsanzahl an."

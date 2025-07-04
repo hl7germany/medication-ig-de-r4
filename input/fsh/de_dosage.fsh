@@ -15,12 +15,12 @@ Description: "Gibt an, wie das Medikament vom Patienten eingenommen wird/wurde o
 
 * patientInstruction MS
 
-// Delete all Timing fields that are not used in this level
 * timing MS
 * timing only TimingDE_Zeipunkte
 
 * doseAndRate MS
   * doseQuantity MS
+  * doseQuantity from DosageDoseQuantityDEVS
 
 // Beschreibungen
 * id
@@ -60,7 +60,7 @@ Description: "Gibt an, wie das Medikament vom Patienten eingenommen wird/wurde o
 * text
   * ^short = "Freitext-Dosierungsanweisungen, z. B. '3x täglich 1 Tablette'"
   * ^definition = "Freitext-Dosierungsanweisungen, z. B. '3x täglich 1 Tablette'. Als Quelle dient hier ausschließlich der Arzt oder Apotheker"
-  * ^comment = "Die Freitextdosierung ist auch dann anzugeben, wenn die Dosierung strukturiert angegeben wurde. Ein Algorithmus und Beispielimplementierung kann im IG eingesehen werden."
+  * ^comment = "Die Freitextdosierung sollte nur angegeben werden, wenn aufgrund der Komplexität keine strukturierte Dosierung möglich ist, um widersprüchliche Anweisungen zu vermeiden."
 
   /*
   	
@@ -125,11 +125,6 @@ Additional information about administration or preparation of the medication sho
 * doseAndRate
   * ^short = "Menge des verabreichten Medikaments"
   * ^definition = "Die verabreichte Menge des Medikaments."
-  * ^comment = "tbd"
-
-* doseAndRate.id
-  * ^short = "Eindeutige ID für die Referenzierung zwischen Elementen"
-  * ^definition = "Eindeutige ID für das Element innerhalb einer Ressource (für interne Verweise). Dies kann jeder beliebige Zeichenfolgenwert sein, der keine Leerzeichen enthält."
   * ^comment = "tbd"
 
 * doseAndRate.extension

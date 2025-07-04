@@ -19,10 +19,11 @@ Description: "Gibt an, wie das Medikament vom Patienten eingenommen wird/wurde o
 * patientInstruction //Patient or consumer oriented instructions
 
 * timing only TimingDE_dgmp_Zeipunkte
-* doseAndRate 0..1 MS // Nur eine Dosierung für eine Medikation erlauben
+* doseAndRate 0..1 // Nur eine Dosierung für eine Medikation erlauben
   * type 0..0 //TODO: Sollte das fixed auf "ordered" gesetzt werden oder auf 0..0 gesetzt sein? http://terminology.hl7.org/CodeSystem/dose-rate-type
   * dose[x] only SimpleQuantity
-  * doseQuantity MS
+  * doseQuantity
+  * doseQuantity from $kbv-dosiereinheit-vs
   * rate[x] 0..0
 
 // Remove unused Fields

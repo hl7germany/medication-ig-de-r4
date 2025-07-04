@@ -1,6 +1,6 @@
 
 Instance: Example-MR-Dosage-10120
-InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-10120"
 Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von 1-0-0.5-0 dar"
@@ -27,7 +27,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
   * doseAndRate.doseQuantity.unit = "Tablette"
 
 Instance: Example-MR-Dosage-1020
-InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-1020"
 Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung 1-0-2-0 dar"
@@ -54,7 +54,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
   * doseAndRate.doseQuantity.unit = "Tabletten"
 
 Instance: Example-MR-Dosage-1000
-InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-1000"
 Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung 1-0-0-0 dar"
@@ -72,7 +72,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
   * doseAndRate.doseQuantity.unit = "Tablette"
 
 Instance: Example-MR-Dosage-1111
-InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-1111"
 Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung 1-0-0-0 dar"
@@ -93,7 +93,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
   * doseAndRate.doseQuantity.unit = "Tablette"
 
 Instance: Example-MR-Dosage-1010
-InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-1010"
 Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung 1-0-1-0 dar"
@@ -112,7 +112,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
   * doseAndRate.doseQuantity.unit = "Tablette"
 
 Instance: Example-MR-Dosage-1010-10-Days
-InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-1010"
 Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung 1-0-1-0 dar"

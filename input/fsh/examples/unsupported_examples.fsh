@@ -1,5 +1,5 @@
 Instance: MR-Unsupported-Dosage-1-Count
-InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 Count"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
@@ -10,14 +10,14 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
 * dosageInstruction[+] = Unsupported-Dosage-1-Count
 
 Instance: Unsupported-Dosage-1-Count
-InstanceOf: DE_DOSAGE
+InstanceOf: DosageDE
 Usage: #inline
 Title: "Unsupported: Count"
 * text = "count"
 * timing.repeat.count = 5
 
 Instance: MR-Unsupported-Dosage-2-asNeededBoolean
-InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 asNeededBoolean"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
@@ -28,14 +28,14 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
 * dosageInstruction[+] = Unsupported-Dosage-2-asNeededBoolean
 
 Instance: Unsupported-Dosage-2-asNeededBoolean
-InstanceOf: DE_DOSAGE
+InstanceOf: DosageDE
 Usage: #inline
 Title: "Unsupported: asNeededBoolean"
 * text = "asNeededBoolean"
 * asNeededBoolean = true
 
 Instance: MR-Unsupported-Dosage-3-asNeededCodeableConcept
-InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 asNeededCodeableConcept"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
@@ -46,14 +46,14 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
 * dosageInstruction[+] = Unsupported-Dosage-3-asNeededCodeableConcept
 
 Instance: Unsupported-Dosage-3-asNeededCodeableConcept
-InstanceOf: DE_DOSAGE
+InstanceOf: DosageDE
 Usage: #inline
 Title: "Unsupported: asNeededCodeableConcept"
 * text = "asNeededCodeableConcept"
 * asNeededCodeableConcept.text = "nur wenn nötig"
 
 Instance: MR-Unsupported-Dosage-4-Method
-InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 Method"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
@@ -64,14 +64,14 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
 * dosageInstruction[+] = Unsupported-Dosage-4-Method
 
 Instance: Unsupported-Dosage-4-Method
-InstanceOf: DE_DOSAGE
+InstanceOf: DosageDE
 Usage: #inline
 Title: "Unsupported: Method"
 * text = "method"
 * method.text = "oral"
 
 Instance: MR-Unsupported-Dosage-5-Route
-InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 Route"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
@@ -82,14 +82,14 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
 * dosageInstruction[+] = Unsupported-Dosage-5-Route
 
 Instance: Unsupported-Dosage-5-Route
-InstanceOf: DE_DOSAGE
+InstanceOf: DosageDE
 Usage: #inline
 Title: "Unsupported: Route"
 * text = "route"
 * route.text = "intravenös"
 
 Instance: MR-Unsupported-Dosage-6-Site
-InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 Site"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
@@ -100,14 +100,14 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
 * dosageInstruction[+] = Unsupported-Dosage-6-Site
 
 Instance: Unsupported-Dosage-6-Site
-InstanceOf: DE_DOSAGE
+InstanceOf: DosageDE
 Usage: #inline
 Title: "Unsupported: Site"
 * text = "site"
 * site.text = "linker Arm"
 
 Instance: MR-Unsupported-Dosage-7-DoseRange
-InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 DoseRange"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
@@ -118,7 +118,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
 * dosageInstruction[+] = Unsupported-Dosage-7-DoseRange
 
 Instance: Unsupported-Dosage-7-DoseRange
-InstanceOf: DE_DOSAGE
+InstanceOf: DosageDE
 Usage: #inline
 Title: "Unsupported: DoseRange"
 * text = "doseRange"
@@ -128,7 +128,7 @@ Title: "Unsupported: DoseRange"
 * doseAndRate[0].doseRange.high.unit = "mg"
 
 Instance: MR-Unsupported-Dosage-8-RateQuantity
-InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 RateQuantity"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
@@ -139,7 +139,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
 * dosageInstruction[+] = Unsupported-Dosage-8-RateQuantity
 
 Instance: Unsupported-Dosage-8-RateQuantity
-InstanceOf: DE_DOSAGE
+InstanceOf: DosageDE
 Usage: #inline
 Title: "Unsupported: RateQuantity"
 * text = "rateQuantity"
@@ -147,7 +147,7 @@ Title: "Unsupported: RateQuantity"
 * doseAndRate[0].rateQuantity.unit = "ml/h"
 
 Instance: MR-Unsupported-Dosage-9-RateRange
-InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 RateRange"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
@@ -158,7 +158,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
 * dosageInstruction[+] = Unsupported-Dosage-9-RateRange
 
 Instance: Unsupported-Dosage-9-RateRange
-InstanceOf: DE_DOSAGE
+InstanceOf: DosageDE
 Usage: #inline
 Title: "Unsupported: RateRange"
 * text = "rateRange"
@@ -168,7 +168,7 @@ Title: "Unsupported: RateRange"
 * doseAndRate[0].rateRange.high.unit = "ml/h"
 
 Instance: MR-Unsupported-Dosage-10-RateRatio
-InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 RateRatio"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
@@ -179,7 +179,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
 * dosageInstruction[+] = Unsupported-Dosage-10-RateRatio
 
 Instance: Unsupported-Dosage-10-RateRatio
-InstanceOf: DE_DOSAGE
+InstanceOf: DosageDE
 Usage: #inline
 Title: "Unsupported: RateRatio"
 * text = "rateRatio"
@@ -189,7 +189,7 @@ Title: "Unsupported: RateRatio"
 * doseAndRate[0].rateRatio.denominator.unit = "h"
 
 Instance: MR-Unsupported-Dosage-11-AdditionalInstruction
-InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 AdditionalInstruction"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
@@ -200,14 +200,14 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
 * dosageInstruction[+] = Unsupported-Dosage-11-AdditionalInstruction
 
 Instance: Unsupported-Dosage-11-AdditionalInstruction
-InstanceOf: DE_DOSAGE
+InstanceOf: DosageDE
 Usage: #inline
 Title: "Unsupported: AdditionalInstruction"
 * text = "additionalInstruction"
 * additionalInstruction[0].text = "Mit Wasser einnehmen"
 
 Instance: MR-Unsupported-Dosage-12-MaxDosePerPeriod
-InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 MaxDosePerPeriod"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
@@ -218,7 +218,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
 * dosageInstruction[+] = Unsupported-Dosage-12-MaxDosePerPeriod
 
 Instance: Unsupported-Dosage-12-MaxDosePerPeriod
-InstanceOf: DE_DOSAGE
+InstanceOf: DosageDE
 Usage: #inline
 Title: "Unsupported: MaxDosePerPeriod"
 * text = "maxDosePerPeriod"
@@ -228,7 +228,7 @@ Title: "Unsupported: MaxDosePerPeriod"
 * maxDosePerPeriod.denominator.unit = "h"
 
 Instance: MR-Unsupported-Dosage-13-MaxDosePerAdministration
-InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 MaxDosePerAdministration"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
@@ -239,7 +239,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
 * dosageInstruction[+] = Unsupported-Dosage-13-MaxDosePerAdministration
 
 Instance: Unsupported-Dosage-13-MaxDosePerAdministration
-InstanceOf: DE_DOSAGE
+InstanceOf: DosageDE
 Usage: #inline
 Title: "Unsupported: MaxDosePerAdministration"
 * text = "maxDosePerAdministration"
@@ -247,7 +247,7 @@ Title: "Unsupported: MaxDosePerAdministration"
 * maxDosePerAdministration.unit = "mg"
 
 Instance: MR-Unsupported-Dosage-14-MaxDosePerLifetime
-InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 MaxDosePerLifetime"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
@@ -258,7 +258,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
 * dosageInstruction[+] = Unsupported-Dosage-14-MaxDosePerLifetime
 
 Instance: Unsupported-Dosage-14-MaxDosePerLifetime
-InstanceOf: DE_DOSAGE
+InstanceOf: DosageDE
 Usage: #inline
 Title: "Unsupported: MaxDosePerLifetime"
 * text = "maxDosePerLifetime"
@@ -266,7 +266,7 @@ Title: "Unsupported: MaxDosePerLifetime"
 * maxDosePerLifetime.unit = "mg"
 
 Instance: MR-Unsupported-Dosage-15-Count
-InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 Count"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
@@ -277,14 +277,14 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
 * dosageInstruction[+] = Unsupported-Dosage-15-Count
 
 Instance: Unsupported-Dosage-15-Count
-InstanceOf: DE_DOSAGE
+InstanceOf: DosageDE
 Usage: #inline
 Title: "Unsupported: Count"
 * text = "count"
 * timing.repeat.count = 5
 
 Instance: MR-Unsupported-Dosage-16-CountMax
-InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 CountMax"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
@@ -295,14 +295,14 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
 * dosageInstruction[+] = Unsupported-Dosage-16-CountMax
 
 Instance: Unsupported-Dosage-16-CountMax
-InstanceOf: DE_DOSAGE
+InstanceOf: DosageDE
 Usage: #inline
 Title: "Unsupported: CountMax"
 * text = "countMax"
 * timing.repeat.countMax = 10
 
 Instance: MR-Unsupported-Dosage-17-BoundsPeriod
-InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 BoundsPeriod"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
@@ -313,7 +313,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
 * dosageInstruction[+] = Unsupported-Dosage-17-BoundsPeriod
 
 Instance: Unsupported-Dosage-17-BoundsPeriod
-InstanceOf: DE_DOSAGE
+InstanceOf: DosageDE
 Usage: #inline
 Title: "Unsupported: BoundsPeriod"
 * text = "boundsPeriod"
@@ -321,7 +321,7 @@ Title: "Unsupported: BoundsPeriod"
 * timing.repeat.boundsPeriod.end = "2023-01-31"
 
 Instance: MR-Unsupported-Dosage-18-BoundsRange
-InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 BoundsRange"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
@@ -332,7 +332,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
 * dosageInstruction[+] = Unsupported-Dosage-18-BoundsRange
 
 Instance: Unsupported-Dosage-18-BoundsRange
-InstanceOf: DE_DOSAGE
+InstanceOf: DosageDE
 Usage: #inline
 Title: "Unsupported: BoundsRange"
 * text = "boundsRange"
@@ -342,7 +342,7 @@ Title: "Unsupported: BoundsRange"
 * timing.repeat.boundsRange.high.unit = "d"
 
 Instance: MR-Unsupported-Dosage-19-Offset
-InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 Offset"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
@@ -353,14 +353,14 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
 * dosageInstruction[+] = Unsupported-Dosage-19-Offset
 
 Instance: Unsupported-Dosage-19-Offset
-InstanceOf: DE_DOSAGE
+InstanceOf: DosageDE
 Usage: #inline
 Title: "Unsupported: Offset"
 * text = "offset"
 * timing.repeat.offset = 30
 
 Instance: MR-Unsupported-Dosage-20-Event
-InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 Event"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
@@ -371,7 +371,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
 * dosageInstruction[+] = Unsupported-Dosage-20-Event
 
 Instance: Unsupported-Dosage-20-Event
-InstanceOf: DE_DOSAGE
+InstanceOf: DosageDE
 Usage: #inline
 Title: "Unsupported: Event"
 * text = "event"

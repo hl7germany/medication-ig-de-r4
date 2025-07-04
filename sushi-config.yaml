@@ -78,7 +78,6 @@ dependencies:
 menu:
   Home: index.html
   Dosierungen: dosage-index.html
-  Verwendung: usage.html
   FHIR-Artefakte: artifacts.html
   Downloads: downloads.html
 

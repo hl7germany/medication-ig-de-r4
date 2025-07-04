@@ -1,5 +1,5 @@
 Instance: Example-MR-Dosage-Freetext
-InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-Freetext"
 Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Freitext-Dosierung dar"

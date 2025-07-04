@@ -1,7 +1,7 @@
-ValueSet: TimingDE_dgmp_Zeipunkte_VS
-Id: timing-de-dgmp-zeipunkte-vs
-Title: "Timing DE dgmp Zeipunkte VS"
-Description: "Timing Events for dgMP"
+ValueSet: TimingWhenDgMPVS
+Id: TimingWhenDgMP
+Title: "TimingWhenDgMP"
+Description: "TODO"
 * $cs-event-timing#MORN
 * $cs-event-timing#NOON
 * $cs-event-timing#EVE

@@ -1,7 +1,7 @@
-Profile: DE_DOSAGE
+Profile: DosageDE
 Parent: Dosage
-Id: de-dosage
-Title: "DosageDE_Dosierung"
+Id: DosageDE
+Title: "Dosage für deutschlandweite Nutzung"
 Description: "Gibt an, wie das Medikament vom Patienten eingenommen wird/wurde oder eingenommen werden soll."
 * obeys de-dosage-if-sequence-then-boundsDuration // Sequenzen müssen eine Dauer beinhalten
 
@@ -16,7 +16,7 @@ Description: "Gibt an, wie das Medikament vom Patienten eingenommen wird/wurde o
 * patientInstruction MS
 
 * timing MS
-* timing only TimingDE_Zeipunkte
+* timing only TimingDE
 
 * doseAndRate MS
   * doseQuantity MS

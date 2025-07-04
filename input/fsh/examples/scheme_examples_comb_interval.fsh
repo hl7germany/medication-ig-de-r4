@@ -1,5 +1,5 @@
 Instance: Example-MR-Dosage-comb-interval-1
-InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-comb-interval-1"
 Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von Jeden 2. Tag 1 Tablette um 08:00 Uhr und 1 Tablette um 10:00 Uhr dar"
@@ -26,7 +26,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
   * doseAndRate.doseQuantity.unit = "Tabletten"
 
 Instance: Example-MR-Dosage-comb-interval-2
-InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-comb-interval-2"
 Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von 1 x pro Woche 1 Tablette morgens dar"

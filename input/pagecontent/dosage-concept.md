@@ -6,7 +6,7 @@ Diese Seite beschreibt, wie im Rahmen dieses ImplementationGuides vorgegangen wi
 
 ## Weiterentwicklung der Arten von Dosierungen
 
-Für die Profilierung wird die FHIR-Ressource [Dosage](http://hl7.org/fhir/R4/dosage.html) verwendet. Es gibt ein abstraktes Profil "DE_DOSAGE", welches übergreifende Beschreibungen und Profilierungen enthält, die für alle Dosierungen gelten.
+Für die Profilierung wird die FHIR-Ressource [Dosage](http://hl7.org/fhir/R4/dosage.html) verwendet. Es gibt ein abstraktes Profil "DosageDE", welches übergreifende Beschreibungen und Profilierungen enthält, die für alle Dosierungen gelten.
 
 {% capture profiles %}
 StructureDefinition/de-dosage

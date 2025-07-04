@@ -1,5 +1,5 @@
 Instance: Example-MR-Dosage-interval-8h
-InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-interval-8h"
 Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von 1 Tablette alle 8 Stunden dar"
@@ -15,7 +15,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
   * doseAndRate.doseQuantity.unit = "Tablette"
 
 Instance: Example-MR-Dosage-interval-2wk
-InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-interval-2wk"
 Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von 1 Tablette alle 2 Wochen dar"
@@ -31,7 +31,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
   * doseAndRate.doseQuantity.unit = "Tablette"
 
 Instance: Example-MR-Dosage-interval-4times-d
-InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-interval-4times-d"
 Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von 4 x 1 Tablette pro Tag dar"
@@ -47,7 +47,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
   * doseAndRate.doseQuantity.unit = "Tablette"
 
 Instance: Example-MR-Dosage-interval-3d
-InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-interval-3d"
 Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von Alle 3 Tage 1 Tablette dar"
@@ -63,7 +63,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
   * doseAndRate.doseQuantity.unit = "Tablette"
 
 Instance: Example-MR-Dosage-interval-2d-bound
-InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-interval-2d"
 Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von Alle 2 Tage 2 Tabletten für 6 Wochen dar"

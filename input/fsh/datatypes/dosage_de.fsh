@@ -58,26 +58,6 @@ Description: "Gibt an, wie das Medikament vom Patienten eingenommen wird/wurde o
   * ^definition = "Anweisungen in Begriffen, die vom Patienten oder Verbraucher verstanden werden."
   * ^comment = "tbd"
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 * timing
   * ^short = "Wann das Medikament verabreicht werden soll"
   * ^definition = "Wann das Medikament verabreicht werden soll."

@@ -1,7 +1,7 @@
-Profile: TimingDE_dgmp_Zeipunkte
-Parent: TimingDE_Zeipunkte
-Id: timing-de-dgmp-zeipunkte
-Title: "Timing DE Zeipunkte"
+Profile: TimingDgMP
+Parent: TimingDE
+Id: TimingDgMP
+Title: "Zeitmuster für Dosierungen im dgMP"
 Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne werden verwendet, um festzuhalten, wann etwas geplant, erwartet oder angefordert ist. Die häufigste Anwendung ist in Dosierungsanweisungen für Medikamente. Sie werden aber auch für die Planung verschiedener Versorgungsleistungen genutzt und können zur Dokumentation von bereits erfolgten oder laufenden Aktivitäten verwendet werden."
 * event 0..0
 * code 0..0
@@ -11,8 +11,8 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * bounds[x] MS
   * bounds[x] only Duration
   * boundsDuration MS
-  * boundsDuration.system = $ucum
-  * boundsDuration.code from De_Dosage_UCUM_UnitsOfTime_DgMP (required)
+  * boundsDuration.system = $ucum (exactly)
+  * boundsDuration.code from DosageUnitsOfTimeDgMP (required)
 
   * frequency MS
   * period MS
@@ -20,7 +20,7 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * dayOfWeek MS
   * timeOfDay MS
   * when MS
-  * when from TimingDE_dgmp_Zeipunkte_VS (required)
+  * when from TimingWhenDgMPVS (required)
 
   // Restrict all elements in the repeat backbone to 0..0
   * count 0..0

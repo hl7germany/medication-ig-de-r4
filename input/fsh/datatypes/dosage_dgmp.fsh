@@ -1,9 +1,8 @@
-Profile: DE_DOSAGE_DGMP
-Parent: DE_DOSAGE
-Id: de-dosage-dgmp
-Title: "DosageDGMP_Dosierung"
-Description: "Gibt an, wie das Medikament vom Patienten eingenommen wird/wurde oder eingenommen werden soll."
-// TODO: Naming der Profile anpassen
+Profile: DosageDgMP
+Parent: DosageDE
+Id: DosageDgMP
+Title: "Dosage für dgMP"
+Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenommen wird/wurde oder eingenommen werden soll."
 
 * obeys DosageStructuredOrFreeText
 * text // Free text dosage instructions e.g. SIG
@@ -18,7 +17,7 @@ Description: "Gibt an, wie das Medikament vom Patienten eingenommen wird/wurde o
 
 * patientInstruction //Patient or consumer oriented instructions
 
-* timing only TimingDE_dgmp_Zeipunkte
+* timing only TimingDgMP
 * doseAndRate 0..1 // Nur eine Dosierung für eine Medikation erlauben
   * type 0..0 //TODO: Sollte das fixed auf "ordered" gesetzt werden oder auf 0..0 gesetzt sein? http://terminology.hl7.org/CodeSystem/dose-rate-type
   * dose[x] only SimpleQuantity

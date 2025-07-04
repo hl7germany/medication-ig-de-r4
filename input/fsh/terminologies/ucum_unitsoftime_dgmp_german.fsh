@@ -1,7 +1,7 @@
-ValueSet: De_Dosage_UCUM_UnitsOfTime_DgMP
-Id: De-dosage-ucum-units-of-time-dg-mp
-Title: "De Dosage UCUM Units Of Time Dg MP"
-Description: "This Valueset extracts unitsoftime from ucum in German"
+ValueSet: DosageUnitsOfTimeDgMP
+Id: DosageUnitsOfTimeDgMP
+Title: "Zeiteinheiten für Dosierungen"
+Description: "Dieses ValueSet enthält Zeiteinheiten aus dem UCUM-CodeSystem in deutscher Übersetzung."
 * include $ucum#d 
   * ^designation.language = #de-DE
   * ^designation.value = "Tag(e)"

@@ -1,9 +1,10 @@
-Profile: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+Profile: MedicationRequestDgMP
 Parent: MedicationRequest
-Id: de-dosage-medicationrequest
-Title: "DE DOSAGE MEDICATIONREQUEST"
+Id: MedicationRequestDgMP
+Title: "MedicationRequest zur Nutzung von Dosierungen für dgMP"
+Description: "Dieses Profil enthält eine Referenz der dosageInstruction auf das Dosierungsprofil für den Kontext dgMP"
 
-* dosageInstruction only DE_DOSAGE_DGMP
+* dosageInstruction only DosageDgMP
   * ^short = "Angabe der Dosierinformationen strukturiert oder als Freiteixt"
   * ^definition = """
 ## Dosierangaben

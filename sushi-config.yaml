@@ -77,13 +77,11 @@ dependencies:
 # ╰────────────────────────────────────────────────────────────────────────────────────────────────╯
 menu:
   Home: index.html
-  Anwendungsfälle:
-    Strukturierte Dosierungen: dosage-index.html
-  Fachliche Beschreibung: overview.html
-  Konzepte:
-    Konzepte: concept.html
-    Textuelle Überführung von Dosierungen: dosage-to-text.html
-  Verwendung: usage.html
+  Dosierungen: 
+    Einführung: dosage-index.html
+    Fachliche Rahmenbedingungen: dosage-concept.html
+    Textgenerierung: dosage-to-text.html
+    Beispielliste Dosierung: dosage-examples.html
   FHIR-Artefakte: artifacts.html
   Downloads: downloads.html
 

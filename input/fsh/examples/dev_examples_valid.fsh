@@ -1,6 +1,6 @@
 // when + timeOfDay
 Instance: Example-MR-Dosage-Invalid-One-Kind-1
-InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid: when + timeOfDay"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for allowed Permutations"
@@ -23,7 +23,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
 
 // when + dayOfWeek
 Instance: Example-MR-Dosage-Invalid-One-Kind-2
-InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid: when + dayOfWeek"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for allowed Permutations"
@@ -46,7 +46,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
 
 // when + interval
 Instance: Example-MR-Dosage-Invalid-One-Kind-3
-InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid: when + interval"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for allowed Permutations"
@@ -68,7 +68,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
 
 // timeOfDay + dayOfWeek
 Instance: Example-MR-Dosage-Invalid-One-Kind-4
-InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid: timeOfDay + dayOfWeek"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for allowed Permutations"
@@ -91,7 +91,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
 
 // timeOfDay + interval
 Instance: Example-MR-Dosage-Invalid-One-Kind-5
-InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid: timeOfDay + interval"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for allowed Permutations"
@@ -113,7 +113,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
 
 // dayOfWeek + interval
 Instance: Example-MR-Dosage-Invalid-One-Kind-6
-InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid: dayOfWeek + interval"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for allowed Permutations"

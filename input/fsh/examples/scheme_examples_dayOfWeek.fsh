@@ -1,5 +1,5 @@
 Instance: Example-MR-Dosage-weekday-2t
-InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-weekday-2t"
 Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von Dienstags und Donnerstags je 2 Tabletten dar"
@@ -18,7 +18,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
   * doseAndRate.doseQuantity.unit = "Tabletten"
 
 Instance: Example-MR-Dosage-weekday-3t
-InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-weekday-3t"
 Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von Dienstags, Donnerstags und Samstag je 2 Tabletten dar"
@@ -38,7 +38,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
   * doseAndRate.doseQuantity.unit = "Tabletten"
 
 Instance: Example-MR-Dosage-weekday-2t-1t
-InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-2t-1t"
 Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von Montags 2 Tabletten, Donnerstags 1 Tablette dar"
@@ -65,7 +65,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
   * doseAndRate.doseQuantity.unit = "Tabletten"
 
 Instance: Example-MR-Dosage-weekday-2t-bound
-InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-weekday-2t-bound"
 Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von Montags 2 Tabl. für 10 Wochen dar"

@@ -1,5 +1,5 @@
 Instance: Example-MR-Dosage-comb-dayofweek-1
-InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-comb-dayofweek-1"
 Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von Montags und Freitags 1-0-1-0 dar"
@@ -21,7 +21,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
 
 
 Instance: Example-MR-Dosage-comb-dayofweek-2
-InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-comb-dayofweek-2"
 Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von Montags und Freitags 1-0-2-0 dar"
@@ -54,7 +54,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
   * doseAndRate.doseQuantity.unit = "Tabletten"
 
 Instance: Example-MR-Dosage-comb-dayofweek-3
-InstanceOf: DE_DOSAGE_DGMP_MEDICATIONREQUEST
+InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-comb-dayofweek-3"
 Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von Montags und Freitags 1 Tablette um 08:00 Uhr und 2 Tabletten um 10:00 Uhr - für 3 Wochen dar"

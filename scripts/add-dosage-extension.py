@@ -27,7 +27,7 @@ def add_extension_to_medicationrequest(file_path, dosage_text):
 
     # Ensure dosageInstruction exists
     if "dosageInstruction" not in data or not data["dosageInstruction"]:
-        data["dosageInstruction"] = [{}]
+        return
 
     # Add the extension to each dosageInstruction
     for dosage in data["dosageInstruction"]:

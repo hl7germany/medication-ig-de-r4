@@ -17,6 +17,10 @@ def process_files(input_folder, script_path):
         try:
             result = subprocess.check_output(['python3', script_path, rel_file_path], text=True).strip()
             result = result.replace('\n', '<br>')
+            # Also add the extension to the MedicationRequest file
+            add_extension_script = os.path.join(base_dir, "add-dosage-extension.py")
+            subprocess.run(['python3', add_extension_script, rel_file_path, result.replace('<br>', '\n')])
+
         except Exception as e:
             result = f"Fehler beim Verarbeiten der Datei: {e}"
 

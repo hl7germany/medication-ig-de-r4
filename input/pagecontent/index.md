@@ -12,17 +12,6 @@ Dieser Implementation Guide wird kontinuierlich weiterentwickelt und verbessert.
 
 - Strukturierte und textuelle Darstellung von [Dosierungen](./dosage-index.html)
 
-## Terminologien und Codesysteme
-
-Zur Sicherstellung der Interoperabilität werden in diesem Implementation Guide standardisierte Terminologien und Codesysteme verwendet. Diese ermöglichen eine eindeutige und maschinenlesbare Kommunikation zwischen verschiedenen Systemen.
-
-Folgende Terminologien werden eingesetzt:
-
-- **EQDM**: Angabe strukturierter Dosiereinheiten
-//TODO
-
-Die jeweils verwendeten ValueSets und Codesysteme sind in den Profilen und Ressourcen dieses IG dokumentiert und referenziert. Bei der Implementierung ist darauf zu achten, die jeweils angegebenen Terminologien zu verwenden und die korrekten Codes zu übermitteln.
-
 ## Must Support
 
 In diesem Implementation Guide – insbesondere in den anwendungsfallspezifischen Profilen – werden [Must Support Flags](https://www.hl7.org/fhir/profiling.html#mustsupport) verwendet. Implementierende Systeme sollen sicherstellen, dass Elemente mit diesem Flag sowohl lesend als auch schreibend unterstützt werden.

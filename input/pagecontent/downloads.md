@@ -29,8 +29,3 @@ Alle Profildaten dieses Implementation Guide können in einer einzigen CSV- oder
 Auch Schematron-Dateien sind zum Herunterladen verfügbar:
 
 - [Schematron (komprimierter Ordner)](schematrons.zip)
-
-
-### Abhängigkeiten
-
-{% include dependency-table.xhtml %}

@@ -24,6 +24,10 @@ Dieser IG wird kontinuierlich weiterentwickelt und verbessert. Folgende Anwendun
 - Ärzte, Apotheker, Pflegekräfte
 - Fachexperten für Interoperabilität und Arzneimitteltherapie
 
+### Abhängigkeiten
+
+{% include dependency-table.xhtml %}
+
 
 ## Kontakt und Feedback
 

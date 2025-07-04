@@ -78,7 +78,9 @@ dependencies:
 menu:
   Home: index.html
   Dosierungen: 
-    Einführung Dosierung: dosage-index.html
+    Einführung: dosage-index.html
+    Fachliche Rahmenbedingungen: dosage-concept.html
+    Textgenerierung: dosage-to-text.md
     Beispielliste Dosierung: dosage-examples.html
   FHIR-Artefakte: artifacts.html
   Downloads: downloads.html

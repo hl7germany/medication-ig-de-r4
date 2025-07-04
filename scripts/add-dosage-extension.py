@@ -8,7 +8,7 @@ def add_extension_to_medicationrequest(file_path, dosage_text):
 
     # Build the extension
     extension = {
-        "url": "http://fhir.de/StructureDefinition/generated-dosage-instructions",
+        "url": "http://fhir.de/StructureDefinition/GeneratedDosageInstructions",
         "extension": [
             {
                 "url": "text",

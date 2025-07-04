@@ -16,8 +16,8 @@ Für Informationen wie im dgMP sichergestellt wird, dass der Text an einer Dosie
 Das Skript unterstützt aktuell nur eine Teilmenge der möglichen Felder für Dosierungsangaben.  
 Nicht unterstützte Felder führen dazu, dass die Konfiguration als „nicht unterstützt“ zurückgewiesen wird. Die nicht unterstützten Felder werden explizit benannt.
 Die unterstützten Felder in Dosage sind:
-  - doseAndRate.doseQuantity
   - text
+  - doseAndRate.doseQuantity
   - patientInstruction
   - timing.repeat.boundsDuration
   - timing.repeat.frequency

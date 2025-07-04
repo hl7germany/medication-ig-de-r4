@@ -54,22 +54,34 @@ Darüber hinaus finden sich auf der Seite [Beispiele für Dosierungen](./dosage-
 Für die strukturierte Abbildung von Dosierungen wurden zwei Profil-Ebenen definiert: DE-Profile und dgMP-Profile.  
 Die folgenden Profile der Ressourcen `Dosage` und `Timing` sind für die deutschlandweite Nutzung vorgesehen:
 
-{% capture profilesde %} StructureDefinition/DosageDE, StructureDefinition/TimingDE {% endcapture %}  
+{% capture profilesde %}
+StructureDefinition/DosageDE,
+StructureDefinition/TimingDE,
+{% endcapture %}  
 {% include artifacts-table-generator.html render=profilesde %}
 
 Für den dgMP-Kontext:
 
-{% capture profilesdgmp %} StructureDefinition/DosageDgMP, StructureDefinition/TimingDgMP {% endcapture %}  
+{% capture profilesdgmp %}
+StructureDefinition/DosageDgMP,
+StructureDefinition/TimingDgMP,
+{% endcapture %}  
 {% include artifacts-table-generator.html render=profilesdgmp %}
 
 Zur Unterstützung von Spezifikateuren stehen folgende Profile zur Verfügung, die Ressourcen mit Referenz auf den Datentyp `Dosage` profilieren:
 
-{% capture supportprofilesdgmp %} StructureDefinition/MedicationRequestDgMP, StructureDefinition/MedicationDispenseDgMP, StructureDefinition/MedicationStatementDgMP {% endcapture %}  
+{% capture supportprofilesdgmp %}
+StructureDefinition/MedicationRequestDgMP,
+StructureDefinition/MedicationDispenseDgMP,
+StructureDefinition/MedicationStatementDgMP,
+{% endcapture %}  
 {% include artifacts-table-generator.html render=supportprofilesdgmp %}
 
 Diese Profile nutzen folgende Extensions:
 
-{% capture extensionsdgmp %} StructureDefinition/GeneratedDosageInstructions {% endcapture %}  
+{% capture extensionsdgmp %}
+StructureDefinition/GeneratedDosageInstructions,
+{% endcapture %}  
 {% include artifacts-table-generator.html render=extensionsdgmp %}
 
 ### Relevante Terminologien

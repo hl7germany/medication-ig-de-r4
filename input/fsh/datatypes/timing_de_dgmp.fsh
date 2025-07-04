@@ -11,7 +11,6 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * bounds[x] MS
   * bounds[x] only Duration
   * boundsDuration MS
-  * boundsDuration.system = $ucum (exactly)
   * boundsDuration.code from DosageUnitsOfTimeDgMP (required)
 
   * frequency MS
@@ -36,7 +35,7 @@ Invariant: timing-only-one-type
 Description: "Only one kind of Timing is allowed. Current allowed timings: 4-Scheme, TimeOfDay, DayOfWeek, Interval, DayOfWeek and Time/4-Schema, Interval and Time/4-Schema"
 Expression: "
 /* 4-Schema */
-%resource.(ofType(MedicationRequest).dosageInstruction | ofType(MedicationStatement).dosage).all(
+%resource.(ofType(MedicationRequest).dosageInstruction | ofType(MedicationDispense).dosageInstruction | ofType(MedicationStatement).dosage).all(
 timing.repeat.frequency.exists() and timing.repeat.frequency = 1 and
 timing.repeat.period.exists() and timing.repeat.period = 1 and
 timing.repeat.periodUnit.exists() and timing.repeat.periodUnit = 'd' and

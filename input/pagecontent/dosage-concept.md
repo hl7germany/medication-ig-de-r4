@@ -1,42 +1,51 @@
-# Konzepte zur Erstellung von Dosierungen
+# Fachliche Rahmenvorgaben für Dosierungen
 
-In Deutschland gibt es diverse möglichkeiten, wie Dosierungen angegeben werden können (siehe [Arten von Dosierungen](./usage.html)).
+Diese Seite beschreibt fachliche Aspekte und Entscheidungen zur Handhabung von strukturierten Dosierungen im dgMP-Kontext.
 
-Diese Seite beschreibt, wie im Rahmen dieses ImplementationGuides vorgegangen wird, um neue Arten der Dosierung in FHIR abzubilden. Weiterhin werden Konzepte vorgestellt, welche Vorgaben getroffen wurden, um bestimmte Aspekte von Dosierungen abzubilden.
+## Kardinalitäten und Weiterentwicklung der dgMP-Profile
 
-## Weiterentwicklung der Arten von Dosierungen
+Das Projekt wird iterativ weiterentwickelt. In den dgMP-Profilen werden Felder, die in der aktuellen Ausbaustufe nicht berücksichtigt werden, durch die Kardinalität 0..0 ausgeschlossen.  
+Dies bedeutet jedoch nicht, dass diese Felder in zukünftigen Ausbaustufen nicht relevant werden. Implementierungen sollten daher so gestaltet sein, dass sie zusätzliche, bislang nicht genutzte Angaben beim Lesen ignorieren und keine Fehler verursachen. Es gilt: Verarbeitet werden soll, was verarbeitet werden kann – alles Weitere wird ignoriert.
 
-Für die Profilierung wird die FHIR-Ressource [Dosage](http://hl7.org/fhir/R4/dosage.html) verwendet. Es gibt ein abstraktes Profil "DosageDE", welches übergreifende Beschreibungen und Profilierungen enthält, die für alle Dosierungen gelten.
+## Nutzung des Feldes `.text`
 
-{% capture profiles %}
-StructureDefinition/de-dosage
-{% endcapture %}
+Die textuelle Angabe von Dosierungen wird in diesem Projekt in zwei Varianten unterschieden:
+- Vom Menschen beschriebene Dosierung (Freitext)
+- Automatisch aus der strukturierten Angabe generierte textuelle Repräsentation
 
-Davon abgeleitet gibt es dann für jede Art der Dosierung ein Profil, was entsprechende Einschränkungen enthält, um die Art der Dosierung abzubilden. Es werden via Kardinalität alle Felder gestrichen, welche für diese Art der Dosierung nicht verwendet werden dürfen.
-Dies soll Implementierern helfen jede Art der Dosierung einfacher zu verstehen und zu implementieren.
+Das Feld `Dosage.text` ist ausschließlich für vom Menschen erzeugten Freitext vorgesehen. Es darf nicht gleichzeitig mit einer strukturierten Angabe verwendet werden, um widersprüchliche Informationen zu vermeiden.
 
-### Kardinalitäten und Weiterentwicklung
-
-Dieses Projekt wird iterativ weiterentwickelt. Zur Einfachheit werden Felder, die in der aktuellen Ausbaustufe nicht betrachtet werden, via Kardinalität 0..0 gestrichen. Das bedeutet nicht, dass diese Felder in der Zukunft nicht doch relevant werden könnten. Daher sollte die Implementierung beim Lesen der Profile so gestaltet sein, dass zusätzliche Angaben nicht zu einem Fehler führen, sondern eher das, was verarbeitet werden kann verarbeitet wird und der Rest ignoriert. TBD
-
-## Nutzung des Feldes .text
-
-Für eine schnelle Verwendbarkeit der Profile im Feld wurde sich darauf geeinigt, dass ...
-ALT: Um ggf. gegensätzliche Beschreibungen zu vermeiden, wurde sich darauf geeinigt, dass...
+Im Kontext des dgMP sorgt die [Infrastruktur zur Bereitstellung des Dosierungstextes](./dosage-to-text-system.html) dafür, dass zu jeder strukturierten Dosierung auch eine einheitliche, maschinell generierte textuelle Repräsentation bereitgestellt wird. Dieser Text wird in der Extension `Dosage.extension[GeneratedDosageInstructionsEx]` hinterlegt.
 
 ## Verwendung mehrerer Dosages
 
-Jede Dosage kennzeichnet eine Kombination von Eventrhythmus (z.B. 3x tägl.) und einer Dosierung je auftretendem Event (2 Tabletten oder 400mg)
+Jede `Dosage`-Instanz beschreibt eine Kombination aus Einnahmerhythmus (z.B. „3x täglich“) und der zugehörigen Dosis pro Einnahmeereignis (z.B. „2 Tabletten“). Der Einnahmerhythmus wird in `Dosage.timing` abgebildet.
+
+Wichtige Grundregeln:
+- Jede `Dosage`-Instanz bildet **nur ein Dosierschema** ab.
+- Für unterschiedliche Schemata (z.B. einmal morgens, einmal abends) müssen jeweils eigene `Dosage`-Instanzen erzeugt werden.
+- Auch für verschiedene Dosierungen innerhalb desselben Schemas (z.B. morgens 1 Tablette, abends 2 Tabletten) sind separate `Dosage`-Instanzen erforderlich.
+
+**Beispiel:**
+
+Ein Patient soll morgens 1 Tablette und abends 2 Tabletten einnehmen.
+
+- Es werden zwei `Dosage`-Instanzen erstellt:
+    1. Erste Dosage:  
+        - `Dosage.timing`: morgens  
+        - `Dosage.doseAndRate`: 1 Tablette
+    2. Zweite Dosage:  
+        - `Dosage.timing`: abends  
+        - `Dosage.doseAndRate`: 2 Tabletten
+
+Jede dieser Instanzen beschreibt ein eigenes Dosierschema, auch wenn sie im selben Medikationsauftrag stehen.
 
 ## Nutzung von Sequenzen
 
-Es ist möglich aufeinander aufbauende Dosierungen zu beschreiben, z.B. für 2 Wochen 3x1 Tablette und für 1 Woche 1x täglich. Um diese Phasen der Dosierung abzugrenzen werden Sequenzen von Dosierungen verwendet.
+In der aktuellen Ausbaustufe ist die Verwendung von `Dosage.sequence` nicht erlaubt. Dieses Feld dient beispielsweise dazu, aufeinander aufbauende Dosierungen (wie Ein- oder Ausschleichen) zu kennzeichnen. Die Nutzung kann in zukünftigen Ausbaustufen geprüft werden.
 
 ## Strukturierte Angabe der Einheit
 
-Für Berechnungen der Reichweite ist es nötig, dass die Einheiten z.B. mg und ml strukturiert über ein CodeSystem angegeben werden. Daher gibt es ein eingeschränktes ValueSet (TBD) welches den Auszug aller Einheiten trägt, die in den Arzneimitteldaten der TBD aufgeführt sind. Dieses ValueSet ermöglicht damit die angabe strukturierter Einheiten als Grundlage möglicher Reichweitenberechnungen.
-
-## Verwendung von Kardinalitäten
-
-Dieser IG unterstützt ein Dosage Profil, welches in verschiedenen Anwendungsfällen eingesetzt werden kann. Es wird darauf verzichtet diverse Profile für jeden einzelnen Anwendungsfall zu erstellen. 
-Das Streichen von Kardinalitäten drückt aus, dass eine Funktionalität der Dosierung in der aktuellen Stufe nicht genutzt werden darf.
+Für die Berechnung der Reichweite einer Medikation ist es erforderlich, dass Dosierungseinheiten (z.B. „1 Tablette“) strukturiert über ein Codesystem angegeben werden.  
+Dafür steht ein eingeschränktes ValueSet (`DosageDoseQuantityDE` bzw. `DosageDoseQuantityDGMP`) zur Verfügung, das alle zulässigen Dosiereinheiten enthält.  
+Die strukturierte Angabe der Einheit bildet die Grundlage für mögliche Reichweitenberechnungen und fördert die Interoperabilität.

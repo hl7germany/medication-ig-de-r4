@@ -81,7 +81,7 @@ menu:
     Einführung: dosage-index.html
     Fachliche Rahmenbedingungen: dosage-concept.html
     Textgenerierung: dosage-to-text.html
-    Beispielliste Dosierung: dosage-examples.html
+    Beispielliste Dosierung: dosage-to-text-examples.html
   FHIR-Artefakte: artifacts.html
   Downloads: downloads.html
 

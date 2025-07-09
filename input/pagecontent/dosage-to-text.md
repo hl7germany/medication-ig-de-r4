@@ -50,8 +50,6 @@ Die Reihenfolge der Komponenten entspricht der folgenden Logik:
      a) timeOfDay  
      b) when
   4. Gesamtdauer der Anwendung (timing.repeat.boundsDuration)
-  5. Text (text)
-  6. Patientenhinweis (patientInstruction)
 
 ## Validierung und Fehlerbehandlung
 

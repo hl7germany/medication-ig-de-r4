@@ -30,6 +30,14 @@ def process_files(input_folder, script_path):
             f.startswith("MedicationStatement-")
         ) and f.endswith('.json') and os.path.isfile(os.path.join(input_folder, f))
     ]
+    extension_files = [
+        f for f in all_files
+        if not (
+            "Valid" in f or
+            "Invalid" in f or
+            "Unsupported" in f
+        )
+    ]
     for filename in all_files:
         file_path = os.path.join(input_folder, filename)
         rel_file_path = os.path.relpath(file_path)
@@ -54,12 +62,13 @@ def process_files(input_folder, script_path):
                     finally:
                         os.unlink(temp_path)
                 result = "<br><br>".join(results)
-            # Also add the extension
-            add_extension_script = os.path.join(base_dir, "add-dosage-extension.py")
-            try:
-                subprocess.run(['python3', add_extension_script, rel_file_path, result.replace('<br>', '\n')])
-            except Exception:
-                pass
+            # Only add the extension for filtered files
+            if filename in extension_files:
+                add_extension_script = os.path.join(base_dir, "add-dosage-extension.py")
+                try:
+                    subprocess.run(['python3', add_extension_script, rel_file_path, result.replace('<br>', '\n')])
+                except Exception:
+                    pass
         except Exception as e:
             result = f"Fehler beim Verarbeiten der Datei: {e}"
         filename_no_ext = os.path.splitext(filename)[0]
@@ -73,6 +82,7 @@ def process_files(input_folder, script_path):
     supported_table = header + "\n" + "\n".join(supported_rows)
     unsupported_table = header + "\n" + "\n".join(unsupported_rows)
     return supported_table, unsupported_table
+
 
 if __name__ == "__main__":
     base_dir = os.path.dirname(os.path.abspath(__file__))

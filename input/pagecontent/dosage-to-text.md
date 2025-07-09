@@ -42,17 +42,16 @@ Die Aktuelle Version des Algortimus mit unterstützten Felder ist in der [Python
 Die einzelnen Komponenten der Dosierungsanweisung werden durch „ - “ (Leerzeichen-Strich-Leerzeichen) getrennt.
 Die Reihenfolge der Komponenten entspricht der folgenden Logik:
 
-  1. Medikamentenname
-  2. Zeitabschnitt  
+  1. Zeitabschnitt  
      a) frequency UND period UND/ODER  
      b) dayOfWeek
-  3. Dosis (doseAndRate.doseQuantity)
-  4. Geplante Frequenz innerhalb des Zeitabschnitts  
+  2. Dosis (doseAndRate.doseQuantity)
+  3. Geplante Frequenz innerhalb des Zeitabschnitts  
      a) timeOfDay  
      b) when
-  5. Gesamtdauer der Anwendung (timing.repeat.boundsDuration)
-  6. Text (text)
-  7. Patientenhinweis (patientInstruction)
+  4. Gesamtdauer der Anwendung (timing.repeat.boundsDuration)
+  5. Text (text)
+  6. Patientenhinweis (patientInstruction)
 
 ## Validierung und Fehlerbehandlung
 

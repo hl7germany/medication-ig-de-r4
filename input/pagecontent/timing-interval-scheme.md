@@ -15,7 +15,7 @@ Folgende weitere Beispiele sind in diesem IG dargestellt:
 
 | Beispiel    | Beipspiel Datei |
 | -------- | ------- |
-| 1 Tablette alle 8 Stunden  | [Example-MR-Dosage-interval-8h](./MedicationRequest-Example-MR-Dosage-interval-8h.html)    |  |
+| 1 Tablette alle 8 Tage  | [Example-MR-Dosage-interval-8d](./MedicationRequest-Example-MR-Dosage-interval-8d.html)    |  |
 | 1 Tablette alle 2 Wochen  | [Example-MR-Dosage-interval-2wk](./MedicationRequest-Example-MR-Dosage-interval-2wk.html)    |
 | 4 x 1 Tablette pro Tag  | [Example-MR-Dosage-interval-4times-d](./MedicationRequest-Example-MR-Dosage-interval-4times-d.html)    |
 | Alle 3 Tage 1 Tablette  | [Example-MR-Dosage-interval-3d](./MedicationRequest-Example-MR-Dosage-interval-3d.html)    |

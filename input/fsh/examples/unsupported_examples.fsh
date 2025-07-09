@@ -14,7 +14,13 @@ InstanceOf: DosageDE
 Usage: #inline
 Title: "Unsupported: Count"
 * text = "count"
-* timing.repeat.count = 5
+* timing
+  * repeat
+    * count = 5
+    * frequency = 1
+    * period = 1
+    * periodUnit = #d
+
 
 Instance: MR-Unsupported-Dosage-2-asNeededBoolean
 InstanceOf: MedicationRequestDgMP
@@ -281,7 +287,12 @@ InstanceOf: DosageDE
 Usage: #inline
 Title: "Unsupported: Count"
 * text = "count"
-* timing.repeat.count = 5
+* timing
+  * repeat
+    * frequency = 1
+    * period = 1
+    * periodUnit = #d
+    * count = 5
 
 Instance: MR-Unsupported-Dosage-16-CountMax
 InstanceOf: MedicationRequestDgMP
@@ -298,8 +309,12 @@ Instance: Unsupported-Dosage-16-CountMax
 InstanceOf: DosageDE
 Usage: #inline
 Title: "Unsupported: CountMax"
-* text = "countMax"
-* timing.repeat.countMax = 10
+* timing
+  * repeat
+    * frequency = 1
+    * period = 1
+    * periodUnit = #d
+    * countMax = 10
 
 Instance: MR-Unsupported-Dosage-17-BoundsPeriod
 InstanceOf: MedicationRequestDgMP
@@ -317,8 +332,13 @@ InstanceOf: DosageDE
 Usage: #inline
 Title: "Unsupported: BoundsPeriod"
 * text = "boundsPeriod"
-* timing.repeat.boundsPeriod.start = "2023-01-01"
-* timing.repeat.boundsPeriod.end = "2023-01-31"
+* timing
+  * repeat
+    * frequency = 1
+    * period = 1
+    * periodUnit = #d
+    * boundsPeriod.start = "2023-01-01"
+    * boundsPeriod.end = "2023-01-31"
 
 Instance: MR-Unsupported-Dosage-18-BoundsRange
 InstanceOf: MedicationRequestDgMP
@@ -336,10 +356,15 @@ InstanceOf: DosageDE
 Usage: #inline
 Title: "Unsupported: BoundsRange"
 * text = "boundsRange"
-* timing.repeat.boundsRange.low.value = 1
-* timing.repeat.boundsRange.low.unit = "d"
-* timing.repeat.boundsRange.high.value = 10
-* timing.repeat.boundsRange.high.unit = "d"
+* timing
+  * repeat
+    * frequency = 1
+    * period = 1
+    * periodUnit = #d
+    * boundsRange.low.value = 1
+    * boundsRange.low.unit = "d"
+    * boundsRange.high.value = 10
+    * boundsRange.high.unit = "d"
 
 Instance: MR-Unsupported-Dosage-19-Offset
 InstanceOf: MedicationRequestDgMP
@@ -356,8 +381,12 @@ Instance: Unsupported-Dosage-19-Offset
 InstanceOf: DosageDE
 Usage: #inline
 Title: "Unsupported: Offset"
-* text = "offset"
-* timing.repeat.offset = 30
+* timing
+  * repeat
+    * frequency = 1
+    * period = 1
+    * periodUnit = #d
+    * offset = 30
 
 Instance: MR-Unsupported-Dosage-20-Event
 InstanceOf: MedicationRequestDgMP
@@ -374,7 +403,13 @@ Instance: Unsupported-Dosage-20-Event
 InstanceOf: DosageDE
 Usage: #inline
 Title: "Unsupported: Event"
-* text = "event"
-* timing.event[0] = "2023-06-01T08:00:00+01:00"
-* timing.repeat.boundsDuration.value = 3
-* timing.repeat.boundsDuration.unit = "Woche(n)"
+* timing
+  * event[0] = "2023-06-01T08:00:00+01:00"
+  * repeat
+    * when[+] = #MORN
+    * timeOfDay[+] = "08:00:00"
+    * frequency = 1
+    * period = 1
+    * periodUnit = #d
+    * boundsDuration.value = 3
+    * boundsDuration.unit = "Woche(n)"

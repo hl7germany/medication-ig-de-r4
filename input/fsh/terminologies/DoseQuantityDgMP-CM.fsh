@@ -1,7 +1,7 @@
 Instance: KBV-CS-SFHIR-BMP-DOSIEREINHEIT-to-EDQM-UCUM
 InstanceOf: ConceptMap
 Usage: #definition
-* url = "http://fhir.de/ConceptMap/KBV-CS-SFHIR-BMP-DOSIEREINHEIT-to-EDQM-UCUM"
+* url = "http://ig.fhir.de/igs/medication/ConceptMap/KBV-CS-SFHIR-BMP-DOSIEREINHEIT-to-EDQM-UCUM"
 * status = #draft
 * targetCanonical = Canonical(DosageDoseQuantityDGMPVS)
 * group[0].source = $kbv-dosiereinheit

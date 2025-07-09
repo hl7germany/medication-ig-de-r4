@@ -1,4 +1,4 @@
-// TODO: Infusion A direkt nach Infusion B geben soll laut FHIR Standard in .text. Hier müsste man noch eine Extension "PractitionerInstruction" definieren, 
+// TODO: Infusion A direkt nach Infusion B geben soll laut FHIR Standard in .text. Hier müsste man noch eine Extension "PractitionerInstruction" definieren,
 // um .text nur für FreitextDosierungen zu verwenden und nicht für strukturierte Dosierungen.
 Profile: DosageDE
 Parent: Dosage

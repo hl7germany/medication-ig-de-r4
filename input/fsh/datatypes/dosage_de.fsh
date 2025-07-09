@@ -1,4 +1,4 @@
-// TODO: Infusion A direkt nach Infusion B geben soll laut FHIR Standard in .text. Hier müsste man noch eine Extension "PractitionerInstruction" definieren, 
+// TODO: Infusion A direkt nach Infusion B geben soll laut FHIR Standard in .text. Hier müsste man noch eine Extension "PractitionerInstruction" definieren,
 // um .text nur für FreitextDosierungen zu verwenden und nicht für strukturierte Dosierungen.
 Profile: DosageDE
 Parent: Dosage
@@ -10,6 +10,9 @@ Description: "Gibt an, wie das Medikament vom Patienten eingenommen wird/wurde o
   * ^short = "Freitext-Dosierungsanweisungen, z. B. 'Maximal 3x täglich 1 Tablette bei Bedarf'"
   * ^definition = "Freitext-Dosierungsanweisungen, z. B. 'Maximal 3x täglich 1 Tablette bei Bedarf'. Als Quelle dient hier ausschließlich der Arzt oder Apotheker"
   * ^comment = "Die Freitextdosierung sollte nur angegeben werden, wenn aufgrund der Komplexität keine strukturierte Dosierung möglich ist, um widersprüchliche Anweisungen zu vermeiden."
+* patientInstruction MS
+  * ^short = "Patienten- oder verbraucherorientierte Anweisungen"
+  * ^definition = "Anweisungen in einer für den Patienten oder Verbraucher verständlichen Sprache."
 * timing MS
   * ^short = "Wann das Medikament verabreicht werden soll"
   * ^definition = "Wann das Medikament verabreicht werden soll."

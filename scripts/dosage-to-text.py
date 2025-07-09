@@ -287,7 +287,7 @@ class GermanDosageTextGenerator:
         times = repeat.get('timeOfDay', [])
         if not times:
             return ""
-        return "je " + ", ".join([self.format_time(time) for time in times])
+        return "um " + ", ".join([self.format_time(time) for time in times])
 
     # def get_route(self, dosage: Dict[str, Any]) -> str:
     #     if dosage.get('route'):

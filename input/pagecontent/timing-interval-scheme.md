@@ -9,7 +9,7 @@ Es kann nur für Arzneimittel mit der Einheit "Stück" verwendet werden. Es trif
 
 ## Beipiel
 
-{% fragment MedicationRequest/Example-MR-Dosage-interval-8h JSON %}
+{% fragment MedicationRequest/Example-MR-Dosage-interval-8d JSON %}
 
 Folgende weitere Beispiele sind in diesem IG dargestellt:
 

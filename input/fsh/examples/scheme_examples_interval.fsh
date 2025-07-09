@@ -1,8 +1,8 @@
-Instance: Example-MR-Dosage-interval-8h
+Instance: Example-MR-Dosage-interval-8d
 InstanceOf: MedicationRequestDgMP
 Usage: #example
-Title: "Example-MR-Dosage-interval-8h"
-Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von 1 Tablette alle 8 Stunden dar"
+Title: "Example-MR-Dosage-interval-8d"
+Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von 1 Tablette alle 8 Tage dar"
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -10,7 +10,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
 * dosageInstruction[+]
   * timing.repeat.frequency = 1
   * timing.repeat.period = 8
-  * timing.repeat.periodUnit = #h
+  * timing.repeat.periodUnit = #d
   * doseAndRate.doseQuantity.value = 1
   * doseAndRate.doseQuantity.unit = "Tablette"
 

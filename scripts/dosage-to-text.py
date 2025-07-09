@@ -122,8 +122,8 @@ class GermanDosageTextGenerator:
         # 7. Text/Patientenhinweis
         if dosage.get('text'):
             elements.append(dosage['text'])
-        if dosage.get('patientInstruction'):
-            elements.append(dosage['patientInstruction'])
+        # if dosage.get('patientInstruction'):
+        #     elements.append(dosage['patientInstruction'])
 
         # as_needed = self.get_as_needed(dosage)  # COMMENTED OUT: not supported
         # if as_needed:
@@ -287,7 +287,7 @@ class GermanDosageTextGenerator:
         times = repeat.get('timeOfDay', [])
         if not times:
             return ""
-        return "je " + ", ".join([self.format_time(time) for time in times])
+        return "um " + ", ".join([self.format_time(time) for time in times])
 
     # def get_route(self, dosage: Dict[str, Any]) -> str:
     #     if dosage.get('route'):
@@ -468,7 +468,7 @@ class GermanDosageTextGenerator:
 
     # --- Validation function ---
     def is_supported_dosage(self, data: Dict[str, Any]) -> bool:
-        allowed_dosage_fields = {'doseAndRate', 'text', 'patientInstruction', 'timing'}
+        allowed_dosage_fields = {'doseAndRate', 'text', 'timing'}
         allowed_timing_repeat_fields = {'boundsDuration', 'frequency', 'frequencyMax', 'period', 'periodMax', 'periodUnit', 'dayOfWeek', 'timeOfDay', 'when'}
         dosage_instructions = self.get_dosage_instructions(data)
         for dosage in dosage_instructions:

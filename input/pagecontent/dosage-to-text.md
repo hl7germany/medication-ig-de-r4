@@ -18,7 +18,6 @@ Nicht unterstützte Felder führen dazu, dass die Konfiguration als „nicht unt
 Die unterstützten Felder in Dosage sind:
   - text
   - doseAndRate.doseQuantity
-  - patientInstruction
   - timing.repeat.boundsDuration
   - timing.repeat.frequency
   - timing.repeat.frequencyMax

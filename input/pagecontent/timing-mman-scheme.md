@@ -35,7 +35,7 @@ angegeben ist. An diesem Feld wird dann kodiert die Tageszeit angegeben an der e
 
 Folgende FHIR-Path Expression auf Ebene von ´Dosage.timing.repeat´ liefert die Angabe, ob es sich um das Schema handelt: `(frequency.exists() and frequency = 1 and period.exists() and period = 1 and periodUnit.exists() and periodUnit = 'd' and when.exists() and timeOfDay.empty() and dayOfWeek.empty())`
 
-Für eine Dosierung kann auch mehrfach eine Angabe für .when erfolgen und bedeutet, dass wann auch immer einer der Tageszeiten eintritt, die angegebene Dosierung einzunehmen ist.
+Soll das Arzneimittel in derselben Dosierung zu mehreren Tageszeiten angewandt werden, wird dies über mehrere Angaben von "when" ausgedrückt. Die angegebene Dosierung ist dann zu jeder der genannten Tageszeiten anzuwenden. 
 
 Beispiel:
 - Dosage.timing.repeat.when = #MORN, #EVE

@@ -1,41 +1,39 @@
-//SUSHI will not build those examples due to cardinality
+Instance: Invalid-Dosage-01-of-10-FrequencyOnly
+InstanceOf: MedicationRequestDgMP
+Usage: #example
+Title: "Example-MR-Dosage-DEV"
+Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for invalid Permutations"
+* subject.display = "DEV Dosage"
+* status = #active
+* intent = #order
+* medicationCodeableConcept.text = "DEV Medication"
+* dosageInstruction[+] = Invalid-Dosage-FrequencyOnly
 
-// Instance: Invalid-1-Dosage-FrequencyOnly
-// InstanceOf: MedicationRequestDgMP
-// Usage: #example
-// Title: "Example-MR-Dosage-DEV"
-// Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for invalid Permutations"
-// * subject.display = "DEV Dosage"
-// * status = #active
-// * intent = #order
-// * medicationCodeableConcept.text = "DEV Medication"
-// * dosageInstruction[+] = Invalid-Dosage-FrequencyOnly
+Instance: Invalid-Dosage-FrequencyOnly
+InstanceOf: DosageDgMP
+Usage: #inline
+Title: "Invalid: frequency only"
+* timing
+  * repeat.frequency = 1
 
-// Instance: Invalid-Dosage-FrequencyOnly
-// InstanceOf: DosageDgMP
-// Usage: #inline
-// Title: "Invalid: frequency only"
-// * timing
-//   * repeat.frequency = 1
+Instance: Invalid-Dosage-02-of-10-FreqPeriod
+InstanceOf: MedicationRequestDgMP
+Usage: #example
+Title: "Example-MR-Dosage-DEV"
+Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for invalid Permutations"
+* subject.display = "DEV Dosage"
+* status = #active
+* intent = #order
+* medicationCodeableConcept.text = "DEV Medication"
+* dosageInstruction[+] = Invalid-Dosage-FreqPeriod
 
-// Instance: Invalid-2-Dosage-FreqPeriod
-// InstanceOf: MedicationRequestDgMP
-// Usage: #example
-// Title: "Example-MR-Dosage-DEV"
-// Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for invalid Permutations"
-// * subject.display = "DEV Dosage"
-// * status = #active
-// * intent = #order
-// * medicationCodeableConcept.text = "DEV Medication"
-// * dosageInstruction[+] = Invalid-Dosage-FreqPeriod
+Instance: Invalid-Dosage-FreqPeriod
+InstanceOf: DosageDgMP
+Usage: #inline
+Title: "Invalid: frequency only"
+* timing.repeat.frequency = 1
 
-// Instance: Invalid-Dosage-FreqPeriod
-// InstanceOf: DosageDgMP
-// Usage: #inline
-// Title: "Invalid: frequency only"
-// * timing.repeat.frequency = 1
-
-Instance: Invalid-03-Dosage-When-TimeOfDay
+Instance: Invalid-Dosage-03-of-10-When-TimeOfDay
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-DEV"
@@ -55,7 +53,7 @@ Title: "Invalid: when and timeOfDay"
     * when[+] = #MORN
     * timeOfDay[+] = "08:00:00"
 
-Instance: Invalid-04-Dosage-TimeOfDay-DayOfWeek
+Instance: Invalid-Dosage-04-of-10-TimeOfDay-DayOfWeek
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-DEV"
@@ -75,7 +73,7 @@ Title: "Invalid: timeOfDay and dayOfWeek"
     * dayOfWeek[+] = #mon
     * timeOfDay[+] = "08:00:00"
 
-Instance: Invalid-05-Dosage-When-TimeOfDay-DayOfWeek
+Instance: Invalid-Dosage-05-of-10-When-TimeOfDay-DayOfWeek
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-DEV"
@@ -96,7 +94,7 @@ Title: "Invalid: when, timeOfDay, and dayOfWeek"
     * timeOfDay[+] = "08:00:00"
     * dayOfWeek[+] = #mon   
 
-Instance: Invalid-06-Dosage-FreqPeriod-When
+Instance: Invalid-Dosage-06-of-10-FreqPeriod-When
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-DEV"
@@ -116,7 +114,7 @@ Title: "Invalid: freq/period/periodUnit and when"
 * timing.repeat.periodUnit = #d
 * timing.repeat.when[+] = #MORN
 
-Instance: Invalid-07-Dosage-FreqPeriod-ToD-DayOfWeek
+Instance: Invalid-Dosage-07-of-10-FreqPeriod-ToD-DayOfWeek
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-DEV"
@@ -137,7 +135,7 @@ Title: "Invalid: freq/period/periodUnit, timeOfDay, and dayOfWeek"
 * timing.repeat.timeOfDay[+] = "08:00:00"
 * timing.repeat.dayOfWeek[+] = #mon
 
-Instance: Invalid-08-Dosage-FreqPeriod-When-DayOfWeek
+Instance: Invalid-Dosage-08-of-10-FreqPeriod-When-DayOfWeek
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-DEV"
@@ -158,7 +156,7 @@ Title: "Invalid: freq/period/periodUnit, when, and dayOfWeek"
 * timing.repeat.when[+] = #MORN
 * timing.repeat.dayOfWeek[+] = #mon
 
-Instance: Invalid-09-Dosage-FreeText-and-structured
+Instance: Invalid-Dosage-09-of-10-FreeText-and-structured
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-DEV"
@@ -178,7 +176,7 @@ Title: "Invalid: when and structured"
   * repeat
     * when[+] = #MORN
 
-Instance: Invalid-10-Dosage-multiple-types
+Instance: Invalid-Dosage-10-of-10-multiple-types
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-DEV"
@@ -197,4 +195,3 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
   * timing.repeat.period = 1
   * timing.repeat.periodUnit = #d
   * timing.repeat.timeOfDay[+] = "08:00:00"
-

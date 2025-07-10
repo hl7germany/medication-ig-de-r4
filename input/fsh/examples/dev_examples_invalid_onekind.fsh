@@ -1,5 +1,5 @@
 // when + timeOfDay
-Instance: Example-MR-Dosage-Invalid-One-Kind-1
+Instance: Invalid-Dosage-One-Kind-01-of-06
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid: when + timeOfDay"
@@ -16,7 +16,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * timeOfDay[+] = "08:00:00"
 
 // when + dayOfWeek
-Instance: Example-MR-Dosage-Invalid-One-Kind-2
+Instance: Invalid-Dosage-One-Kind-02-of-06
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid: when + dayOfWeek"
@@ -33,7 +33,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * dayOfWeek[+] = #mon
 
 // when + interval
-Instance: Example-MR-Dosage-Invalid-One-Kind-3
+Instance: Invalid-Dosage-One-Kind-03-of-06
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid: when + interval"
@@ -52,7 +52,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * periodUnit = #d
 
 // timeOfDay + dayOfWeek
-Instance: Example-MR-Dosage-Invalid-One-Kind-4
+Instance: Invalid-Dosage-One-Kind-04-of-06
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid: timeOfDay + dayOfWeek"
@@ -70,7 +70,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
 
 
 // timeOfDay + interval
-Instance: Example-MR-Dosage-Invalid-One-Kind-5
+Instance: Invalid-Dosage-One-Kind-05-of-06
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid: timeOfDay + interval"
@@ -89,7 +89,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * periodUnit = #d
 
 // dayOfWeek + interval
-Instance: Example-MR-Dosage-Invalid-One-Kind-6
+Instance: Invalid-Dosage-One-Kind-06-of-06
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid: dayOfWeek + interval"

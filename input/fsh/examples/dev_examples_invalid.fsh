@@ -1,4 +1,6 @@
-// Instance: Example-MR-Dosage-Invalid-1-Dosage-FrequencyOnly
+//SUSHI will not build those examples due to cardinality
+
+// Instance: Invalid-1-Dosage-FrequencyOnly
 // InstanceOf: MedicationRequestDgMP
 // Usage: #example
 // Title: "Example-MR-Dosage-DEV"
@@ -16,7 +18,7 @@
 // * timing
 //   * repeat.frequency = 1
 
-// Instance: Example-MR-Dosage-Invalid-2-Dosage-FreqPeriod
+// Instance: Invalid-2-Dosage-FreqPeriod
 // InstanceOf: MedicationRequestDgMP
 // Usage: #example
 // Title: "Example-MR-Dosage-DEV"
@@ -33,7 +35,7 @@
 // Title: "Invalid: frequency only"
 // * timing.repeat.frequency = 1
 
-Instance: Example-MR-Dosage-Invalid-3-Dosage-When-TimeOfDay
+Instance: Invalid-03-Dosage-When-TimeOfDay
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-DEV"
@@ -52,11 +54,8 @@ Title: "Invalid: when and timeOfDay"
   * repeat
     * when[+] = #MORN
     * timeOfDay[+] = "08:00:00"
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
 
-Instance: Example-MR-Dosage-Invalid-4-Dosage-TimeOfDay-DayOfWeek
+Instance: Invalid-04-Dosage-TimeOfDay-DayOfWeek
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-DEV"
@@ -75,11 +74,8 @@ Title: "Invalid: timeOfDay and dayOfWeek"
   * repeat
     * dayOfWeek[+] = #mon
     * timeOfDay[+] = "08:00:00"
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
 
-Instance: Example-MR-Dosage-Invalid-5-Dosage-When-TimeOfDay-DayOfWeek
+Instance: Invalid-05-Dosage-When-TimeOfDay-DayOfWeek
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-DEV"
@@ -98,12 +94,9 @@ Title: "Invalid: when, timeOfDay, and dayOfWeek"
   * repeat
     * when[+] = #MORN
     * timeOfDay[+] = "08:00:00"
-    * dayOfWeek[+] = #mon
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
+    * dayOfWeek[+] = #mon   
 
-Instance: Example-MR-Dosage-Invalid-6-Dosage-FreqPeriod-When
+Instance: Invalid-06-Dosage-FreqPeriod-When
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-DEV"
@@ -123,7 +116,7 @@ Title: "Invalid: freq/period/periodUnit and when"
 * timing.repeat.periodUnit = #d
 * timing.repeat.when[+] = #MORN
 
-Instance: Example-MR-Dosage-Invalid-7-Dosage-FreqPeriod-ToD-DayOfWeek
+Instance: Invalid-07-Dosage-FreqPeriod-ToD-DayOfWeek
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-DEV"
@@ -144,7 +137,7 @@ Title: "Invalid: freq/period/periodUnit, timeOfDay, and dayOfWeek"
 * timing.repeat.timeOfDay[+] = "08:00:00"
 * timing.repeat.dayOfWeek[+] = #mon
 
-Instance: Example-MR-Dosage-Invalid-8-Dosage-FreqPeriod-When-DayOfWeek
+Instance: Invalid-08-Dosage-FreqPeriod-When-DayOfWeek
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-DEV"
@@ -165,7 +158,7 @@ Title: "Invalid: freq/period/periodUnit, when, and dayOfWeek"
 * timing.repeat.when[+] = #MORN
 * timing.repeat.dayOfWeek[+] = #mon
 
-Instance: Example-MR-Dosage-Invalid-10-Dosage-FreeText-and-structured
+Instance: Invalid-09-Dosage-FreeText-and-structured
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-DEV"
@@ -184,11 +177,8 @@ Title: "Invalid: when and structured"
 * timing
   * repeat
     * when[+] = #MORN
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
 
-Instance: Example-MR-Dosage-Invalid-11-Dosage-multiple-types
+Instance: Invalid-10-Dosage-multiple-types
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-DEV"
@@ -197,24 +187,14 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
 * status = #active
 * intent = #order
 * medicationCodeableConcept.text = "DEV Medication"
-* dosageInstruction[+] = Invalid-Dosage-multiple-types-1
-* dosageInstruction[+] = Invalid-Dosage-multiple-types-2
-
-Instance: Invalid-Dosage-multiple-types-1
-InstanceOf: DosageDgMP
-Usage: #inline
-Title: "Invalid: when and structured"
-* timing.repeat.frequency = 1
-* timing.repeat.period = 1
-* timing.repeat.periodUnit = #d
-* timing.repeat.when[+] = #MORN
-
-Instance: Invalid-Dosage-multiple-types-2
-InstanceOf: DosageDgMP
-Usage: #inline
-Title: "Invalid: when and structured"
-* timing.repeat.frequency = 1
-* timing.repeat.period = 1
-* timing.repeat.periodUnit = #d
-* timing.repeat.timeOfDay[+] = "08:00:00"
+* dosageInstruction[+]
+  * timing.repeat.frequency = 1
+  * timing.repeat.period = 1
+  * timing.repeat.periodUnit = #d
+  * timing.repeat.when[+] = #MORN
+* dosageInstruction[+]
+  * timing.repeat.frequency = 1
+  * timing.repeat.period = 1
+  * timing.repeat.periodUnit = #d
+  * timing.repeat.timeOfDay[+] = "08:00:00"
 

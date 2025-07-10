@@ -13,9 +13,6 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
     * dayOfWeek[+] = #fri
     * when[+] = #MORN
     * when[+] = #EVE
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
   * doseAndRate.doseQuantity.value = 1
   * doseAndRate.doseQuantity.unit = "Tablette"
 
@@ -35,21 +32,15 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
     * dayOfWeek[+] = #fri
     * when[+] = #MORN
     * when[+] = #EVE
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
   * doseAndRate.doseQuantity.value = 1
   * doseAndRate.doseQuantity.unit = "Tablette"
 
 * dosageInstruction[+]
   * timing.repeat
-    * dayOfWeek[+] = #mon
-    * dayOfWeek[+] = #fri
+    * dayOfWeek[+] = #tue
+    * dayOfWeek[+] = #sat
     * when[+] = #MORN
     * when[+] = #EVE
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
   * doseAndRate.doseQuantity.value = 2
   * doseAndRate.doseQuantity.unit = "Tabletten"
 
@@ -69,9 +60,6 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
     * when[+] = #MORN
     * boundsDuration.value = 3
     * boundsDuration.unit = "Woche(n)"
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
   * doseAndRate.doseQuantity.value = 1
   * doseAndRate.doseQuantity.unit = "Tablette"
 
@@ -82,8 +70,5 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
     * when[+] = #NOON
     * boundsDuration.value = 3
     * boundsDuration.unit = "Woche(n)"
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
   * doseAndRate.doseQuantity.value = 2
   * doseAndRate.doseQuantity.unit = "Tabletten"

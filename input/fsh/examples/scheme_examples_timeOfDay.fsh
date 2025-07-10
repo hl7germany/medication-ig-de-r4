@@ -10,9 +10,6 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
 * dosageInstruction[+]
   * timing.repeat
     * timeOfDay[+] = "08:00:00"
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
   * doseAndRate.doseQuantity.value = 1
   * doseAndRate.doseQuantity.unit = "Tablette"
 
@@ -28,9 +25,6 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
 * dosageInstruction[+]
   * timing.repeat
     * timeOfDay[+] = "12:00:00"
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
   * doseAndRate.doseQuantity.value = 2
   * doseAndRate.doseQuantity.unit = "Tabletten"
 
@@ -46,38 +40,20 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
 * dosageInstruction[+]
   * timing.repeat
     * timeOfDay[+] = "08:00:00"
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
   * doseAndRate.doseQuantity.value = 2
   * doseAndRate.doseQuantity.unit = "Tabletten"
 
 * dosageInstruction[+]
   * timing.repeat
     * timeOfDay[+] = "11:00:00"
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
   * timing.repeat
     * timeOfDay[+] = "14:00:00"
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
   * timing.repeat
     * timeOfDay[+] = "17:00:00"
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
   * timing.repeat
     * timeOfDay[+] = "20:00:00"
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
   * timing.repeat
     * timeOfDay[+] = "23:00:00"
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
   * doseAndRate.doseQuantity.value = 1
   * doseAndRate.doseQuantity.unit = "Tablette"
 
@@ -94,10 +70,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
   * timing.repeat.boundsDuration.value = 10
   * timing.repeat.boundsDuration.unit = "Tage"
   * timing.repeat
-    * timeOfDay[+] = "08:00:00"
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
+    * timeOfDay[+] = "08:00:00" 
   * doseAndRate.doseQuantity.value = 2
   * doseAndRate.doseQuantity.unit = "Tabletten"
 
@@ -106,28 +79,13 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
   * timing.repeat.boundsDuration.unit = "Tage"
   * timing.repeat
     * timeOfDay[+] = "11:00:00"
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
   * timing.repeat
     * timeOfDay[+] = "14:00:00"
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
   * timing.repeat
     * timeOfDay[+] = "17:00:00"
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
   * timing.repeat
     * timeOfDay[+] = "20:00:00"
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
   * timing.repeat
     * timeOfDay[+] = "23:00:00"
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
   * doseAndRate.doseQuantity.value = 1
   * doseAndRate.doseQuantity.unit = "Tablette"

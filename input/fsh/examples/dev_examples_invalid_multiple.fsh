@@ -1,0 +1,60 @@
+Instance: Invalid-12-Dosage-multiple-when
+InstanceOf: MedicationRequestDgMP
+Usage: #example
+Title: "Two dosages with the same period of day"
+Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for invalid Permutations"
+* subject.display = "DEV Dosage"
+* status = #active
+* intent = #order
+* medicationCodeableConcept.text = "DEV Medication"
+* dosageInstruction[+]
+  * doseAndRate.doseQuantity.value = 1
+  * doseAndRate.doseQuantity.unit = "Tablette"
+  * timing
+    * repeat
+      * when[+] = #MORN
+      * frequency = 1
+      * period = 1
+      * periodUnit = #d
+* dosageInstruction[+]
+  * doseAndRate.doseQuantity.value = 2
+  * doseAndRate.doseQuantity.unit = "Tablette"
+  * timing
+    * repeat
+      * when[+] = #MORN
+      * when[+] = #EVE
+      * frequency = 1
+      * period = 1
+      * periodUnit = #d
+
+Instance: Invalid-13-Dosage-multiple-timeOfDay
+InstanceOf: MedicationRequestDgMP
+Usage: #example
+Title: "Two dosages with the same time of day"
+Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for invalid Permutations"
+* subject.display = "Patient"
+* status = #active
+* intent = #order
+* medicationCodeableConcept.text = "Ibuprofen 400mg"
+* dosageInstruction[+]
+  * timing.repeat
+    * timeOfDay[+] = "08:00:00"
+    * frequency = 1
+    * period = 1
+    * periodUnit = #d
+  * doseAndRate.doseQuantity.value = 2
+  * doseAndRate.doseQuantity.unit = "Tabletten"
+
+* dosageInstruction[+]
+  * timing.repeat
+    * timeOfDay[+] = "08:00:00"
+    * frequency = 1
+    * period = 1
+    * periodUnit = #d
+  * timing.repeat
+    * timeOfDay[+] = "14:00:00"
+    * frequency = 1
+    * period = 1
+    * periodUnit = #d
+  * doseAndRate.doseQuantity.value = 1
+  * doseAndRate.doseQuantity.unit = "Tablette"

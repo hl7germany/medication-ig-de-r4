@@ -70,9 +70,11 @@ Für eine Auflistung von Unterstüzten und nicht-unterstützten Dosierkonfigurat
 ## Weiterführende Hinweise
 
 Die vollständige Liste der unterstützten und nicht unterstützten Felder ist im Quelltext dokumentiert und sollte bei Erweiterungen aktualisiert werden.
-Die Logik zur eigentlichen Textgenerierung (z. B. Pluralbildung, Formatierung der Zeitangaben) orientiert sich an den Empfehlungen des 
 
-//TODO: Referenz zur Empfehlung aus Studie angeben
+Die Logik zur eigentlichen Textgenerierung (z. B. Pluralbildung, Formatierung der Zeitangaben) orientiert sich an folgenden Empfehlungen:
+- [Medications Management – Medications List, User Interface Design Guidance, NHS CUI Programme Team, June 2015](https://webarchive.nationalarchives.gov.uk/ukgwa/20160921150545/http://systems.digital.nhs.uk/data/cui/uig)
+- [National Guidelines for On-Screen Display of Medicines Information, Australian Commission on Safety and Quality in Health Care, December 2017](https://www.safetyandquality.gov.au/sites/default/files/migrated/National-guidelines-for-on-screen-display-of-medicines-information.pdf)
+
 
 und wird kontinuierlich weiterentwickelt.
 

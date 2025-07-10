@@ -1,13 +1,15 @@
 import json
 import sys
-import os
+
+# The URL to filter/remove and use in the new extension
+REMOVE_EXTENSION_URL = "http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructions"
 
 def add_extension_to_medicationresource(file_path, dosage_text):
     with open(file_path, 'r', encoding='utf-8') as f:
         data = json.load(f)
-    # Build the extension
+    # Build the extension, using the variable
     extension = {
-        "url": "http://fhir.de/StructureDefinition/GeneratedDosageInstructions",
+        "url": REMOVE_EXTENSION_URL,
         "extension": [
             {
                 "url": "text",
@@ -24,19 +26,27 @@ def add_extension_to_medicationresource(file_path, dosage_text):
         ]
     }
 
+    # Helper function to filter extensions
+    def filter_extensions(extensions):
+        return [ext for ext in extensions if ext.get("url") != REMOVE_EXTENSION_URL]
+
     # Handle MedicationRequest: dosageInstruction
     if "dosageInstruction" in data and data["dosageInstruction"]:
         for dosage in data["dosageInstruction"]:
             if "extension" in dosage:
-                del dosage["extension"]
-            dosage["extension"] = [extension]
+                dosage["extension"] = filter_extensions(dosage["extension"])
+            else:
+                dosage["extension"] = []
+            dosage["extension"].append(extension)
 
     # Handle MedicationStatement: dosage
     if "dosage" in data and data["dosage"]:
         for dosage in data["dosage"]:
             if "extension" in dosage:
-                del dosage["extension"]
-            dosage["extension"] = [extension]
+                dosage["extension"] = filter_extensions(dosage["extension"])
+            else:
+                dosage["extension"] = []
+            dosage["extension"].append(extension)
 
     # Overwrite the file (or write to a new file)
     with open(file_path, 'w', encoding='utf-8') as f:

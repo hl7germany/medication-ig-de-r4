@@ -36,11 +36,62 @@ Der digital gestützte Medikationsprozess unterstützt aktuell die folgenden Dos
 - [Schema für Kombinationen von Zeitintervallen](./timing-comb-interval-scheme.html)
 - [Schema für Kombinationen von Wochentagen](./timing-comb-dayofweek-scheme.html)
 
-### Ausbaustufe 2
+### Folgende Ausbaustufe
 
-Enthält alle Schemata aus Ausbaustufe 1 sowie:
+In weiteren Ausbaustufen sollen weitere Schemata entwickelt, die bestehenden Schemata ergänzt und Regeln für die übergeordnete Beziehung zwischen mehreren Schemata aufgebaut werden. Untenstehend findet sich eine Übersicht über Erweiterungen, die in zukünftigen Ausbaustufen berücksichtigt werden sollen, mitsamt Erläuterungen und/oder Beispielen. Diese Liste kann in der Zukunft erweitert oder angepasst werden. Für eine zweite Ausbaustufe wird empfohlen, die folgenden zwei bzw. drei Punkte anzugehen:
 
-*TBD //TODO: Weitere Schemata und Details ergänzen*
+- Schema für Bedarfsmedikation
+- Alternativen zur eindeutigen “Gesamtdauer”, um die gesamte Anwendung eines Arzneimittels zeitlich zu begrenzen
+- Einführung eines Start- und Enddatums
+- Evaluation hinsichtlich der zeitnahen Umsetzbarkeit von Wertelisten
+  - für die Körperstelle, an der das Arzneimittel angewandt werden soll
+  - für die Technik, mit der das Arzneimittel angewandt werden soll
+  - für den Weg, über den das Arzneimittel in den Körper gelangen soll
+
+Sobald diesbezüglich eine Entscheidung getroffen wurde, wird die Planung zur zweiten Ausbaustufe hier kommuniziert.
+
+#### Weitere Schemata und Erläuterungen
+
+| Weitere Schemata                                   | Erläuterungen                                                                                                                                                                                                                                                                                                                                 |
+|----------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Bedarfsmedikation                                 | Bedarfsmedikation bezeichnet ein Arzneimittel, das nicht nach einem festen Einnahmeplan, sondern nur bei tatsächlich auftretendem Bedarf verabreicht wird. Die Verordnung einer Bedarfsmedikation erfordert i.d.R. die Angabe des Einnahmeanlasses, des Abstands zwischen zwei Anwendungen sowie von Höchstdosen (pro Anwendung/pro Tag/insgesamt). |
+| Konkreter Anwendungszeitpunkt                     | Bei manchen Arzneimitteln kann es sinnvoll sein, einen konkreten Anwendungszeitpunkt inkl. Datum und ggf. Uhrzeit zu benennen. Dies kann bspw. bei Arzneimitteln der Fall sein, für welche ein Termin in einer medizinischen Einrichtung vereinbart wird (bspw. Infusionen).                                                                       |
+| Festlegung der Dosis einer Anwendung in Abhängigkeit zu bestimmten Bedingungen | Bestimmte Arzneimittel werden bspw. in Abhängigkeit von Labor- oder Selbstmesswerten oder von Art und Menge einer Mahlzeit dosiert. Hierzu gehören bspw. Insulinschemata, deren Dosis in Abhängigkeit zum Blut-Glukose-Wert und zum Kohlenhydrat-Gehalt einer Mahlzeit bestimmt wird.                                                               |
+
+#### Ergänzung bestehender Schemata
+
+**Alternative Zeitangaben und Dosierungen**
+| Ergänzung / Alternative                                  | Beispiel                                               |
+|----------------------------------------------------------|--------------------------------------------------------|
+| Ungefähre Gesamtdauer                                    | Täglich 1 Tablette für 1–2 Wochen                      |
+| Start- und Enddatum                                      | Täglich 1 Tablette vom 01.12.2025 bis zum 15.12.2025   |
+| Gesamtzahl an Anwendungen bis zum Therapieabschluss      | Täglich 1 Tablette, insgesamt 20 Stück                 |
+| Ungefähre Dosierung                                      | Täglich 1–2 Tabletten                                  |
+
+**Wertelisten & Ereignisbezug**
+| Ergänzung / Werteliste / Ereignis                        | Beispiel                                               |
+|----------------------------------------------------------|--------------------------------------------------------|
+| Körperstelle, an der das Arzneimittel angewandt wird     | Täglich 10 Tropfen in das linke Ohr                    |
+| Technik der Anwendung                                   | Injektion                                              |
+| Applikationsweg                                         | Intramuskuläre Anwendung                               |
+| Anwendung in Bezug zu Ereignis (inkl. zeitlichem Abstand)| Mit dem Frühstück / 30 min vor dem Frühstück           |
+| Laufzeit einzelner Anwendungen                           | Infusion mit Gesamtmenge 500 ml, max. Laufrate 125 ml/h|
+
+
+#### Übergeordnete Beziehung zwischen bestehenden Schemata
+
+| Übergeordnete Beziehung zwischen bestehenden Schemata           | Beispiel                                                                                                 |
+|-----------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|
+| Änderung von Dosis oder Anwendungshäufigkeit im Zeitverlauf     | Täglich 1 Tablette morgens für 1 Woche. Anschließend täglich 2 Tabletten morgens für 1 Woche. (Einschleichen) |
+| Kombination verschiedener Anwendungsintervalle                  | Abwechselnd: Jeden zweiten Tag 1 Tablette morgens und jeden zweiten Tag 2 Tabletten morgens              |
+
+#### Beispiele für komplexe Beziehungen zwischen Arzneimitteln
+
+| Beziehungstyp                                        | Beispiel                                                                                                             |
+|------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
+| Gabe von zwei oder mehr Arzneimitteln in zeitlicher Beziehung zueinander | Das Arzneimittel „Acetylsalicylsäure” sollte mindestens eine halbe Stunde vor dem Arzneimittel „Ibuprofen” eingenommen werden. |
+| Gabe von zwei oder mehr Arzneimitteln in bedingter Beziehung zueinander  | Wenn > 5 Tage Ibuprofen 600mg als Bedarfsmedikation, dann 1x täglich Omeprazol 20 mg.                                         |
+
 
 ## Beispiele
 

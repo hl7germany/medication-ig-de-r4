@@ -145,6 +145,3 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
     * timeOfDay[+] = "20:00:00"
   * doseAndRate.doseQuantity.value = 2
   * doseAndRate.doseQuantity.unit = "Tabletten"
-
-  //selbes interval und gleiche Zeit
-    // Intervale prüfen, ob sie gleich sind?? Normales Schema und komb Schema

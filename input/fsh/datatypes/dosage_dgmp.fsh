@@ -4,6 +4,7 @@ Id: DosageDgMP
 Title: "Dosage für dgMP"
 Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenommen wird/wurde oder eingenommen werden soll."
 * obeys DosageStructuredOrFreeText
+
 * extension[generatedDosageInstructions]
   * extension[algorithm]
     * valueCoding 1..1 MS // The algorithm used to generate the text

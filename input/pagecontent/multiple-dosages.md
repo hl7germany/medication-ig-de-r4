@@ -14,10 +14,10 @@ Eine Dosage-Instanz kann dabei nur ein Timing Objekt und eine Angabe der Dosieru
 ## Verschiedene Dosierungen
 
 Beispiele:
-- 1-0-1-0 kann in einer Dosage Instanz mit ´timing.repeat.when= MORN, EVE´ und ´doseAndRate.doseQuantity = 1 Tablette´ angegeben werden
+- 1-0-1-0 kann in einer Dosage Instanz mit `timing.repeat.when= MORN, EVE` und `doseAndRate.doseQuantity = 1 Tablette` angegeben werden
 - 1-0-2-0 benötigt zwei Dosage Instanzen:
-  - erste Dosage Instanz: ´timing.repeat.when= MORN und ´doseAndRate.doseQuantity = 1 Tablette´
-  - zweite Dosage Instanz: ´timing.repeat.when= EVE und ´doseAndRate.doseQuantity = 2 Tabletten´
+  - erste Dosage Instanz: `timing.repeat.when= MORN und `doseAndRate.doseQuantity = 1 Tablette`
+  - zweite Dosage Instanz: `timing.repeat.when= EVE und `doseAndRate.doseQuantity = 2 Tabletten`
 
 ## Einheitliche Dosierungen
 
@@ -25,8 +25,8 @@ Für eine Dosierung (z.B. 1 Tablette) kann jedoch ein komplexes Zeitschema angeg
 
 Beispiel:
 - 1 Tablette Montags, Mittwochs, Samstags jeweils 08:00 und 20:00:
-  - ´doseAndRate.doseQuantity = 1 Tablette´
-  - ´timing.repeat.dayOfWeek = mon, wed, sat´
-  - ´timing.repeat.timeOfDay = 08:00:00, 20:00:00´
+  - `doseAndRate.doseQuantity = 1 Tablette`
+  - `timing.repeat.dayOfWeek = mon, wed, sat`
+  - `timing.repeat.timeOfDay = 08:00:00, 20:00:00`
 
 wird in der selben Dosage Instanz abgebildet.

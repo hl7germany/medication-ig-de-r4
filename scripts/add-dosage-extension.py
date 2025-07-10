@@ -19,7 +19,7 @@ def add_extension_to_medicationresource(file_path, dosage_text):
                 "url": "algorithm",
                 "valueCoding": {
                     "code": "GermanDosageTextGenerator",
-                    "system": "http://fhir.de/CodeSystem/DosageTextAlgorithms",
+                    "system": "http://ig.fhir.de/igs/medication/CodeSystem/DosageTextAlgorithms",
                     "version": "1.0.0"
                 }
             }

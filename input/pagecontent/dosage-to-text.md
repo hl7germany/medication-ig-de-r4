@@ -39,7 +39,7 @@ Die Aktuelle Version des Algortimus mit unterstützten Felder ist in der [Python
 
 ## Komponenten und Trennzeichen
 
-Die einzelnen Komponenten der Dosierungsanweisung werden durch „ - “ (Leerzeichen-Strich-Leerzeichen) getrennt.
+Die einzelnen Komponenten der Dosierungsanweisung werden durch „ — “ (Leerzeichen-Gedankenstrich-Leerzeichen) getrennt.
 Die Reihenfolge der Komponenten entspricht der folgenden Logik:
 
   1. Zeitabschnitt  

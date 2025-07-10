@@ -13,9 +13,6 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
   * timing
     * repeat
       * when[+] = #MORN
-      * frequency = 1
-      * period = 1
-      * periodUnit = #d
 * dosageInstruction[+]
   * doseAndRate.doseQuantity.value = 2
   * doseAndRate.doseQuantity.unit = "Tablette"
@@ -23,9 +20,6 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * repeat
       * when[+] = #MORN
       * when[+] = #EVE
-      * frequency = 1
-      * period = 1
-      * periodUnit = #d
 
 Instance: Invalid-12-Dosage-multiple-timeOfDay
 InstanceOf: MedicationRequestDgMP
@@ -39,23 +33,14 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
 * dosageInstruction[+]
   * timing.repeat
     * timeOfDay[+] = "08:00:00"
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
   * doseAndRate.doseQuantity.value = 2
   * doseAndRate.doseQuantity.unit = "Tabletten"
 
 * dosageInstruction[+]
   * timing.repeat
     * timeOfDay[+] = "08:00:00"
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
   * timing.repeat
     * timeOfDay[+] = "14:00:00"
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
   * doseAndRate.doseQuantity.value = 1
   * doseAndRate.doseQuantity.unit = "Tablette"
 
@@ -72,9 +57,6 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
   * timing.repeat
     * dayOfWeek[+] = #mon
     * dayOfWeek[+] = #sat
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
   * doseAndRate.doseQuantity.value = 1
   * doseAndRate.doseQuantity.unit = "Tablette"
 
@@ -82,9 +64,6 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
   * timing.repeat
     * dayOfWeek[+] = #mon
     * dayOfWeek[+] = #fri
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
   * doseAndRate.doseQuantity.value = 2
   * doseAndRate.doseQuantity.unit = "Tabletten"
 
@@ -103,9 +82,6 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * dayOfWeek[+] = #fri
     * when[+] = #MORN
     * when[+] = #EVE
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
   * doseAndRate.doseQuantity.value = 1
   * doseAndRate.doseQuantity.unit = "Tablette"
 
@@ -114,9 +90,6 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * dayOfWeek[+] = #mon
     * dayOfWeek[+] = #sat
     * when[+] = #MORN
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
   * doseAndRate.doseQuantity.value = 2
   * doseAndRate.doseQuantity.unit = "Tabletten"
 
@@ -135,9 +108,6 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * dayOfWeek[+] = #fri
     * timeOfDay[+] = "08:00:00"
     * timeOfDay[+] = "12:00:00"
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
   * doseAndRate.doseQuantity.value = 1
   * doseAndRate.doseQuantity.unit = "Tablette"
 
@@ -146,8 +116,5 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * dayOfWeek[+] = #mon
     * dayOfWeek[+] = #sat
     * timeOfDay[+] = "08:00:00"
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
   * doseAndRate.doseQuantity.value = 2
   * doseAndRate.doseQuantity.unit = "Tabletten"

@@ -54,9 +54,6 @@ Title: "Invalid: when and timeOfDay"
   * repeat
     * when[+] = #MORN
     * timeOfDay[+] = "08:00:00"
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
 
 Instance: Invalid-04-Dosage-TimeOfDay-DayOfWeek
 InstanceOf: MedicationRequestDgMP
@@ -77,9 +74,6 @@ Title: "Invalid: timeOfDay and dayOfWeek"
   * repeat
     * dayOfWeek[+] = #mon
     * timeOfDay[+] = "08:00:00"
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
 
 Instance: Invalid-05-Dosage-When-TimeOfDay-DayOfWeek
 InstanceOf: MedicationRequestDgMP
@@ -100,10 +94,7 @@ Title: "Invalid: when, timeOfDay, and dayOfWeek"
   * repeat
     * when[+] = #MORN
     * timeOfDay[+] = "08:00:00"
-    * dayOfWeek[+] = #mon
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
+    * dayOfWeek[+] = #mon   
 
 Instance: Invalid-06-Dosage-FreqPeriod-When
 InstanceOf: MedicationRequestDgMP
@@ -186,9 +177,6 @@ Title: "Invalid: when and structured"
 * timing
   * repeat
     * when[+] = #MORN
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
 
 Instance: Invalid-10-Dosage-multiple-types
 InstanceOf: MedicationRequestDgMP

@@ -35,7 +35,7 @@
 // Title: "Invalid: frequency only"
 // * timing.repeat.frequency = 1
 
-Instance: Invalid-3-Dosage-When-TimeOfDay
+Instance: Invalid-03-Dosage-When-TimeOfDay
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-DEV"
@@ -58,7 +58,7 @@ Title: "Invalid: when and timeOfDay"
     * period = 1
     * periodUnit = #d
 
-Instance: Invalid-4-Dosage-TimeOfDay-DayOfWeek
+Instance: Invalid-04-Dosage-TimeOfDay-DayOfWeek
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-DEV"
@@ -81,7 +81,7 @@ Title: "Invalid: timeOfDay and dayOfWeek"
     * period = 1
     * periodUnit = #d
 
-Instance: Invalid-5-Dosage-When-TimeOfDay-DayOfWeek
+Instance: Invalid-05-Dosage-When-TimeOfDay-DayOfWeek
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-DEV"
@@ -105,7 +105,7 @@ Title: "Invalid: when, timeOfDay, and dayOfWeek"
     * period = 1
     * periodUnit = #d
 
-Instance: Invalid-6-Dosage-FreqPeriod-When
+Instance: Invalid-06-Dosage-FreqPeriod-When
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-DEV"
@@ -125,7 +125,7 @@ Title: "Invalid: freq/period/periodUnit and when"
 * timing.repeat.periodUnit = #d
 * timing.repeat.when[+] = #MORN
 
-Instance: Invalid-7-Dosage-FreqPeriod-ToD-DayOfWeek
+Instance: Invalid-07-Dosage-FreqPeriod-ToD-DayOfWeek
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-DEV"
@@ -146,7 +146,7 @@ Title: "Invalid: freq/period/periodUnit, timeOfDay, and dayOfWeek"
 * timing.repeat.timeOfDay[+] = "08:00:00"
 * timing.repeat.dayOfWeek[+] = #mon
 
-Instance: Invalid-8-Dosage-FreqPeriod-When-DayOfWeek
+Instance: Invalid-08-Dosage-FreqPeriod-When-DayOfWeek
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-DEV"
@@ -167,7 +167,7 @@ Title: "Invalid: freq/period/periodUnit, when, and dayOfWeek"
 * timing.repeat.when[+] = #MORN
 * timing.repeat.dayOfWeek[+] = #mon
 
-Instance: Invalid-10-Dosage-FreeText-and-structured
+Instance: Invalid-09-Dosage-FreeText-and-structured
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-DEV"
@@ -190,7 +190,7 @@ Title: "Invalid: when and structured"
     * period = 1
     * periodUnit = #d
 
-Instance: Invalid-11-Dosage-multiple-types
+Instance: Invalid-10-Dosage-multiple-types
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-DEV"

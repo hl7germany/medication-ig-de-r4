@@ -1,4 +1,4 @@
-Instance: Invalid-12-Dosage-multiple-when
+Instance: Invalid-11-Dosage-multiple-when
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Two dosages with the same period of day"
@@ -27,7 +27,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
       * period = 1
       * periodUnit = #d
 
-Instance: Invalid-13-Dosage-multiple-timeOfDay
+Instance: Invalid-12-Dosage-multiple-timeOfDay
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Two dosages with the same time of day"
@@ -59,7 +59,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
   * doseAndRate.doseQuantity.value = 1
   * doseAndRate.doseQuantity.unit = "Tablette"
 
-Instance: Invalid-14-Dosage-multiple-dayOfWeek
+Instance: Invalid-13-Dosage-multiple-dayOfWeek
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Two dosages with the same period of day on the same day"
@@ -88,7 +88,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
   * doseAndRate.doseQuantity.value = 2
   * doseAndRate.doseQuantity.unit = "Tabletten"
 
-Instance: Invalid-15-Dosage-multiple-dayOfWeekAndWhen
+Instance: Invalid-14-Dosage-multiple-dayOfWeekAndWhen
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Two dosages with the same period of day on the same day"
@@ -120,7 +120,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
   * doseAndRate.doseQuantity.value = 2
   * doseAndRate.doseQuantity.unit = "Tabletten"
 
-Instance: Invalid-16-Dosage-multiple-dayOfWeekAndTimeOfDay
+Instance: Invalid-15-Dosage-multiple-dayOfWeekAndTimeOfDay
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Two dosages with the same time of day on the same day"

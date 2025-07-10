@@ -38,8 +38,11 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
 Invariant: DosageStructuredOrFreeText
 Description: "Dosage must be either structured or free text, but not both at the same time."
 Expression: "
-(%resource.ofType(MedicationRequest).dosageInstruction | ofType(MedicationDispense).dosageInstruction | ofType(MedicationStatement).dosage).all(
-  text.exists() and timing.empty() and doseAndRate.empty()) or (text.empty() and timing.exists() and doseAndRate.exists()
+(%resource.ofType(MedicationRequest).dosageInstruction | 
+ ofType(MedicationDispense).dosageInstruction | 
+ ofType(MedicationStatement).dosage).all(
+  (text.exists() and timing.empty() and doseAndRate.empty()) or
+  (text.empty() and timing.exists() and doseAndRate.exists())
 )
 "
 Severity: #error

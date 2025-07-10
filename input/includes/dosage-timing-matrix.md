@@ -24,8 +24,6 @@
 | [MedicationRequest-Example-MR-Dosage-interval-8d](./MedicationRequest-Example-MR-Dosage-interval-8d.html) | alle 8 Tage — je 1 Tablette | 1 Tablette |  |  | 1 | 8 | d |  |  |  |  |
 | [MedicationRequest-Example-MR-Dosage-comb-dayofweek-1](./MedicationRequest-Example-MR-Dosage-comb-dayofweek-1.html) | Montag und Freitag — je 1 Tablette — morgens und abends | 1 Tablette |  |  |  |  |  | mon, fri |  | MORN, EVE |  |
 | [MedicationRequest-Example-MR-Dosage-1010](./MedicationRequest-Example-MR-Dosage-1010.html) | je 1 Tablette — morgens und abends | 1 Tablette |  |  |  |  |  |  |  | MORN, EVE |  |
-| [MedicationRequest-Example-MR-Dosage-comb-interval-3-dosage-1](./MedicationRequest-Example-MR-Dosage-comb-interval-3.html) | alle 2 Tage — je 1 Tablette — um 08:00 Uhr | 1 Tablette |  |  | 1 | 2 | d |  | 08:00:00 |  |  |
-| [MedicationRequest-Example-MR-Dosage-comb-interval-3-dosage-2](./MedicationRequest-Example-MR-Dosage-comb-interval-3.html) | alle 2 Tage — je 2 Tabletten — um 20:00 Uhr | 2 Tabletten |  |  | 1 | 2 | d |  | 20:00:00 |  |  |
 | [MedicationRequest-Example-MR-Dosage-weekday-2t-bound](./MedicationRequest-Example-MR-Dosage-weekday-2t-bound.html) | Montag — je 2 Tabletten — für je 10 Wochen | 2 Tabletten |  |  |  |  |  | mon |  |  | {'value': 10, 'unit': 'Wochen'} |
 | [MedicationRequest-Example-MR-Dosage-weekday-3t](./MedicationRequest-Example-MR-Dosage-weekday-3t.html) | Dienstag, Donnerstag und Samstag — je 2 Tabletten | 2 Tabletten |  |  |  |  |  | tue, thu, sat |  |  |  |
 | [MedicationRequest-Example-MR-Dosage-1000](./MedicationRequest-Example-MR-Dosage-1000.html) | je 1 Tablette — morgens | 1 Tablette |  |  |  |  |  |  |  | MORN |  |

@@ -199,7 +199,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
   * doseAndRate.doseQuantity.value = 2
   * doseAndRate.doseQuantity.unit = "Tabletten"
 
-Instance: Invalid-Dosage-multiple-09-of-09-IntervalAndDifferentInterval
+Instance: Invalid-Dosage-multiple-09-of-09-IntervalAndDifInterval
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Two interval Dosages same time"

@@ -30,3 +30,17 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
   * timing.repeat
     * when[+] = #MORN
   * doseAndRate.doseQuantity = 400 $kbv-dosiereinheit#v "mg"
+
+Instance: Example-MR-Dosage-UnitTasse-1000
+InstanceOf: MedicationRequestDgMP
+Usage: #example
+Title: "Example-MR-Dosage-UnitTasse-1000"
+Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung 1-0-0-0 und kodierter Einheit 'Stück' dar"
+* subject.display = "Patient"
+* status = #active
+* intent = #order
+* medicationCodeableConcept.text = "Ibuprofen Saft"
+* dosageInstruction[+]
+  * timing.repeat
+    * when[+] = #MORN
+  * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#7 "Teelöffel"

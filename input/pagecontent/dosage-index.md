@@ -61,6 +61,7 @@ Sobald diesbezüglich eine Entscheidung getroffen wurde, wird die Planung zur zw
 #### Ergänzung bestehender Schemata
 
 **Alternative Zeitangaben und Dosierungen**
+
 | Ergänzung / Alternative                                  | Beispiel                                               |
 |----------------------------------------------------------|--------------------------------------------------------|
 | Ungefähre Gesamtdauer                                    | Täglich 1 Tablette für 1–2 Wochen                      |
@@ -69,6 +70,7 @@ Sobald diesbezüglich eine Entscheidung getroffen wurde, wird die Planung zur zw
 | Ungefähre Dosierung                                      | Täglich 1–2 Tabletten                                  |
 
 **Wertelisten & Ereignisbezug**
+
 | Ergänzung / Werteliste / Ereignis                        | Beispiel                                               |
 |----------------------------------------------------------|--------------------------------------------------------|
 | Körperstelle, an der das Arzneimittel angewandt wird     | Täglich 10 Tropfen in das linke Ohr                    |

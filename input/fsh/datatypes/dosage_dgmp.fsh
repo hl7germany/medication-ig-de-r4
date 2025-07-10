@@ -4,6 +4,7 @@ Id: DosageDgMP
 Title: "Dosage für dgMP"
 Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenommen wird/wurde oder eingenommen werden soll."
 * obeys DosageStructuredOrFreeText
+* obeys DosageDoseUnitSameCode
 
 * extension[generatedDosageInstructions]
   * extension[algorithm]
@@ -43,10 +44,11 @@ Expression: "
 "
 Severity: #error
 
-// Invariant: DosageDoseUnitSameCode
-// Description: "Die Dosiereinheit muss über alle Dosierungen gleich sein."
-// Expression: "(%resource.ofType(MedicationRequest).dosageInstruction | ofType(MedicationDispense).dosageInstruction | ofType(MedicationStatement).dosage).all(
-//   doseAndRate.doseQuantity
-// )"
-// Severity: #error
+Invariant: DosageDoseUnitSameCode
+Description: "Die Dosiereinheit muss über alle Dosierungen gleich sein."
+Expression: "(%resource.ofType(MedicationRequest).dosageInstruction | ofType(MedicationDispense).dosageInstruction | ofType(MedicationStatement).dosage).all(
+doseAndRate.exists() implies
+  %resource.dosageInstruction.doseAndRate.doseQuantity.code.distinct().count() = 1
+)"
+Severity: #error
 

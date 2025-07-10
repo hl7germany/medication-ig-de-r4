@@ -78,4 +78,4 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
   * timing.repeat.boundsDuration.value = 6
   * timing.repeat.boundsDuration.unit = "Woche(n)"
   * doseAndRate.doseQuantity.value = 2
-  * doseAndRate.doseQuantity.unit = "Tablette"
+  * doseAndRate.doseQuantity.unit = "Tabletten"

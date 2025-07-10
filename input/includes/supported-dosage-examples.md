@@ -3,7 +3,7 @@
 |[MedicationRequest-Example-MR-Dosage-comb-interval-1](./MedicationRequest-Example-MR-Dosage-comb-interval-1.html) | alle 2 Tage - je 1 Tablette - um 08:00 Uhr<br><br>alle 2 Tage - je 2 Tabletten - um 18:00 Uhr |
 |[MedicationRequest-Example-MR-Dosage-interval-3d](./MedicationRequest-Example-MR-Dosage-interval-3d.html) | alle 3 Tage - je 1 Tablette |
 |[MedicationRequest-Example-MR-Dosage-1111](./MedicationRequest-Example-MR-Dosage-1111.html) | je 1 Tablette - täglich morgens, mittags, abends und nachts |
-|[MedicationRequest-Example-MR-Dosage-interval-2d-bound](./MedicationRequest-Example-MR-Dosage-interval-2d-bound.html) | alle 2 Tage - je 2 Tablette - für je 6 Woche(n) |
+|[MedicationRequest-Example-MR-Dosage-interval-2d-bound](./MedicationRequest-Example-MR-Dosage-interval-2d-bound.html) | alle 2 Tage - je 2 Tabletten - für je 6 Woche(n) |
 |[MedicationRequest-Example-MR-Dosage-interval-4times-d](./MedicationRequest-Example-MR-Dosage-interval-4times-d.html) | viermal täglich - je 1 Tablette |
 |[MedicationRequest-Example-MR-Dosage-interval-2wk](./MedicationRequest-Example-MR-Dosage-interval-2wk.html) | alle 2 Wochen - je 1 Tablette |
 |[MedicationRequest-Example-MR-Dosage-comb-dayofweek-2](./MedicationRequest-Example-MR-Dosage-comb-dayofweek-2.html) | Montag und Freitag - je 1 Tablette - morgens und abends<br><br>Dienstag und Samstag - je 2 Tabletten - morgens und abends |
@@ -19,6 +19,7 @@
 |[MedicationRequest-Example-MR-Dosage-interval-8d](./MedicationRequest-Example-MR-Dosage-interval-8d.html) | alle 8 Tage - je 1 Tablette |
 |[MedicationRequest-Example-MR-Dosage-comb-dayofweek-1](./MedicationRequest-Example-MR-Dosage-comb-dayofweek-1.html) | Montag und Freitag - je 1 Tablette - morgens und abends |
 |[MedicationRequest-Example-MR-Dosage-1010](./MedicationRequest-Example-MR-Dosage-1010.html) | je 1 Tablette - täglich morgens und abends |
+|[MedicationRequest-Example-MR-Dosage-comb-interval-3](./MedicationRequest-Example-MR-Dosage-comb-interval-3.html) | alle 2 Tage - je 1 Tablette - um 08:00 Uhr<br><br>alle 2 Tage - je 2 Tabletten - um 20:00 Uhr |
 |[MedicationRequest-Example-MR-Dosage-weekday-2t-bound](./MedicationRequest-Example-MR-Dosage-weekday-2t-bound.html) | Montag - je 2 Tabletten - für je 10 Wochen |
 |[MedicationRequest-Example-MR-Dosage-weekday-3t](./MedicationRequest-Example-MR-Dosage-weekday-3t.html) | Dienstag, Donnerstag und Samstag - je 2 Tabletten |
 |[MedicationRequest-Example-MR-Dosage-1000](./MedicationRequest-Example-MR-Dosage-1000.html) | je 1 Tablette - täglich morgens |

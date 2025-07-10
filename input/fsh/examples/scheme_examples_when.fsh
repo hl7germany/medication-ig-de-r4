@@ -10,19 +10,13 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
 * medicationCodeableConcept.text = "Ibuprofen 400mg"
 * dosageInstruction[+]
   * timing.repeat
-    * when[+] = #MORN
-    * frequency = 1 
-    * period = 1  
-    * periodUnit = #d
+    * when[+] = #MORN   
   * doseAndRate.doseQuantity.value = 1
   * doseAndRate.doseQuantity.unit = "Tablette"
 
 * dosageInstruction[+]
   * timing.repeat
     * when[+] = #EVE
-    * frequency = 1 
-    * period = 1  
-    * periodUnit = #d
   * doseAndRate.doseQuantity.value = 0.5
   * doseAndRate.doseQuantity.unit = "Tablette"
 
@@ -38,18 +32,12 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
 * dosageInstruction[+]
   * timing.repeat
     * when[+] = #MORN
-    * frequency = 1 
-    * period = 1  
-    * periodUnit = #d
   * doseAndRate.doseQuantity.value = 1
   * doseAndRate.doseQuantity.unit = "Tablette"
 
 * dosageInstruction[+]
   * timing.repeat
     * when[+] = #EVE
-    * frequency = 1 
-    * period = 1  
-    * periodUnit = #d
   * doseAndRate.doseQuantity.value = 2
   * doseAndRate.doseQuantity.unit = "Tabletten"
 
@@ -65,9 +53,6 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
 * dosageInstruction[+]
   * timing.repeat
     * when[+] = #MORN
-    * frequency = 1 
-    * period = 1  
-    * periodUnit = #d
   * doseAndRate.doseQuantity.value = 1
   * doseAndRate.doseQuantity.unit = "Tablette"
 
@@ -86,9 +71,6 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
     * when[+] = #MORN
     * when[+] = #NIGHT
     * when[+] = #NOON
-    * frequency = 1 
-    * period = 1  
-    * periodUnit = #d
   * doseAndRate.doseQuantity.value = 1
   * doseAndRate.doseQuantity.unit = "Tablette"
 
@@ -105,9 +87,6 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
   * timing.repeat
     * when[+] = #MORN
     * when[+] = #EVE
-    * frequency = 1 
-    * period = 1  
-    * periodUnit = #d
   * doseAndRate.doseQuantity.value = 1
   * doseAndRate.doseQuantity.unit = "Tablette"
 
@@ -123,9 +102,6 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
 * dosageInstruction[+]
   * timing.repeat
     * when[+] = #MORN
-    * frequency = 1 
-    * period = 1  
-    * periodUnit = #d
   * timing.repeat.boundsDuration.value = 10
   * timing.repeat.boundsDuration.unit = "Woche(n)"
   * timing.repeat.boundsDuration.code = #wk

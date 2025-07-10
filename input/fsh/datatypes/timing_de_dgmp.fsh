@@ -17,9 +17,9 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * boundsDuration MS
   * boundsDuration.code from DurationUnitsOfTimeDgMPVS (required)
 
-  * frequency 1.. MS
-  * period 1.. MS
-  * periodUnit 1.. MS
+  * frequency MS
+  * period MS
+  * periodUnit MS
   * periodUnit from PeriodUnitsOfTimeDgMPVS (required)
   * dayOfWeek MS
   * timeOfDay MS
@@ -42,10 +42,10 @@ Description: "Only one kind of Timing is allowed. Current allowed timings: 4-Sch
 Expression: "
 /* 4-Schema */
 (%resource.ofType(MedicationRequest).dosageInstruction | ofType(MedicationDispense).dosageInstruction | ofType(MedicationStatement).dosage).all(
-timing.repeat.frequency.exists() and timing.repeat.frequency = 1 and
-timing.repeat.period.exists() and timing.repeat.period = 1 and
-timing.repeat.periodUnit.exists() and timing.repeat.periodUnit = 'd' and
 timing.repeat.when.exists() and
+timing.repeat.frequency.empty() and
+timing.repeat.period.empty() and
+timing.repeat.periodUnit.empty() and
 timing.repeat.timeOfDay.empty() and
 timing.repeat.dayOfWeek.empty()
 ) or
@@ -53,9 +53,9 @@ timing.repeat.dayOfWeek.empty()
 /* TimeOfDay */
 (%resource.ofType(MedicationRequest).dosageInstruction | ofType(MedicationDispense).dosageInstruction | ofType(MedicationStatement).dosage).all(
 timing.repeat.timeOfDay.exists() and
-timing.repeat.frequency.exists() and timing.repeat.frequency = 1 and
-timing.repeat.period.exists() and timing.repeat.period = 1 and
-timing.repeat.periodUnit.exists() and timing.repeat.periodUnit = 'd' and
+timing.repeat.frequency.empty() and
+timing.repeat.period.empty() and
+timing.repeat.periodUnit.empty() and
 timing.repeat.when.empty() and
 timing.repeat.dayOfWeek.empty()
 ) or
@@ -63,9 +63,9 @@ timing.repeat.dayOfWeek.empty()
 /* DayOfWeek */
 (%resource.ofType(MedicationRequest).dosageInstruction | ofType(MedicationDispense).dosageInstruction | ofType(MedicationStatement).dosage).all(
 timing.repeat.dayOfWeek.exists() and
-timing.repeat.frequency.exists() and timing.repeat.frequency = 1 and
-timing.repeat.period.exists() and timing.repeat.period = 1 and
-timing.repeat.periodUnit.exists() and timing.repeat.periodUnit = 'd' and
+timing.repeat.frequency.empty() and
+timing.repeat.period.empty() and
+timing.repeat.periodUnit.empty() and
 timing.repeat.when.empty() and
 timing.repeat.timeOfDay.empty()
 ) or
@@ -83,9 +83,9 @@ timing.repeat.dayOfWeek.empty()
 /* DayOfWeek and Time/4-Schema */
 (%resource.ofType(MedicationRequest).dosageInstruction | ofType(MedicationDispense).dosageInstruction | ofType(MedicationStatement).dosage).all(
 timing.repeat.dayOfWeek.exists() and
-timing.repeat.frequency.exists() and timing.repeat.frequency = 1 and
-timing.repeat.period.exists() and timing.repeat.period = 1 and
-timing.repeat.periodUnit.exists() and timing.repeat.periodUnit = 'd' and
+timing.repeat.frequency.empty() and
+timing.repeat.period.empty() and
+timing.repeat.periodUnit.empty() and
   (
     (timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()) or
     (timing.repeat.when.exists() and timing.repeat.timeOfDay.empty())
@@ -116,10 +116,10 @@ Expression: "
   | %resource.ofType(MedicationStatement).dosage
 ).all(
   (
-    timing.repeat.frequency.exists() and timing.repeat.frequency = 1 and
-    timing.repeat.period.exists() and timing.repeat.period = 1 and
-    timing.repeat.periodUnit.exists() and timing.repeat.periodUnit = 'd' and
     timing.repeat.when.exists() and
+    timing.repeat.frequency.empty() and
+    timing.repeat.period.empty() and
+    timing.repeat.periodUnit.empty() and
     timing.repeat.timeOfDay.empty() and
     timing.repeat.dayOfWeek.empty()
   )
@@ -152,9 +152,9 @@ Expression: "
 ).all(
   (
     timing.repeat.timeOfDay.exists() and
-    timing.repeat.frequency.exists() and timing.repeat.frequency = 1 and
-    timing.repeat.period.exists() and timing.repeat.period = 1 and
-    timing.repeat.periodUnit.exists() and timing.repeat.periodUnit = 'd' and
+    timing.repeat.frequency.empty() and
+    timing.repeat.period.empty() and
+    timing.repeat.periodUnit.empty() and
     timing.repeat.when.empty() and
     timing.repeat.dayOfWeek.empty()
   )
@@ -186,9 +186,9 @@ Expression: "
 ).all(
   (
     timing.repeat.dayOfWeek.exists() and
-    timing.repeat.frequency.exists() and timing.repeat.frequency = 1 and
-    timing.repeat.period.exists() and timing.repeat.period = 1 and
-    timing.repeat.periodUnit.exists() and timing.repeat.periodUnit = 'd' and
+    timing.repeat.frequency.empty() and
+    timing.repeat.period.empty() and
+    timing.repeat.periodUnit.empty() and
     timing.repeat.when.empty() and
     timing.repeat.timeOfDay.empty()
   )
@@ -220,9 +220,9 @@ Expression: "
 ).all(
   (
     timing.repeat.dayOfWeek.exists() and
-    timing.repeat.frequency.exists() and timing.repeat.frequency = 1 and
-    timing.repeat.period.exists() and timing.repeat.period = 1 and
-    timing.repeat.periodUnit.exists() and timing.repeat.periodUnit = 'd' and
+    timing.repeat.frequency.empty() and
+    timing.repeat.period.empty() and
+    timing.repeat.periodUnit.empty() and
       (
         (timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()) or
         (timing.repeat.when.exists() and timing.repeat.timeOfDay.empty())

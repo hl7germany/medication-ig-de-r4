@@ -11,15 +11,9 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
 * dosageInstruction[+]
   * timing.repeat
     * when[+] = #MORN
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
 * dosageInstruction[+]
   * timing.repeat
     * timeOfDay[+] = "08:00:00"
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
 
 // when + dayOfWeek
 Instance: Example-MR-Dosage-Invalid-One-Kind-2
@@ -34,15 +28,9 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
 * dosageInstruction[+]
   * timing.repeat
     * when[+] = #EVE
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
 * dosageInstruction[+]
   * timing.repeat
     * dayOfWeek[+] = #mon
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
 
 // when + interval
 Instance: Example-MR-Dosage-Invalid-One-Kind-3
@@ -57,9 +45,6 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
 * dosageInstruction[+]
   * timing.repeat
     * when[+] = #NOON
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
 * dosageInstruction[+]
   * timing.repeat
     * frequency = 2
@@ -79,15 +64,10 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
 * dosageInstruction[+]
   * timing.repeat
     * timeOfDay[+] = "07:00:00"
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
 * dosageInstruction[+]
   * timing.repeat
     * dayOfWeek[+] = #fri
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
+
 
 // timeOfDay + interval
 Instance: Example-MR-Dosage-Invalid-One-Kind-5
@@ -102,9 +82,6 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
 * dosageInstruction[+]
   * timing.repeat
     * timeOfDay[+] = "12:00:00"
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
 * dosageInstruction[+]
   * timing.repeat
     * frequency = 3
@@ -124,9 +101,6 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
 * dosageInstruction[+]
   * timing.repeat
     * dayOfWeek[+] = #tue
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
 * dosageInstruction[+]
   * timing.repeat
     * frequency = 2

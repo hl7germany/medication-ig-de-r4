@@ -17,6 +17,9 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
   * dose[x] only SimpleQuantity
   * doseQuantity
   * doseQuantity from $kbv-dosiereinheit-vs
+    * system 0..1 MS
+    * code 0..1 MS
+    * unit 1..1 MS
   * rate[x] 0..0
 
 // Remove unused Fields
@@ -39,3 +42,11 @@ Expression: "
 )
 "
 Severity: #error
+
+Invariant: DosageDoseUnitSameCode
+Description: "Die Dosiereinheit muss über alle Dosierungen gleich sein."
+Expression: "(%resource.ofType(MedicationRequest).dosageInstruction | ofType(MedicationDispense).dosageInstruction | ofType(MedicationStatement).dosage).all(
+  doseAndRate.doseQuantity
+)"
+Severity: #error
+

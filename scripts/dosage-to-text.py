@@ -99,6 +99,8 @@ class GermanDosageTextGenerator:
         times = repeat.get('timeOfDay', [])
         if not times:
             return ""
+        if self.is_only_key_and_bounds(repeat, 'timeOfDay'):
+            return "täglich um " + ", ".join([self.format_time(time) for time in times])
         return "um " + ", ".join([self.format_time(time) for time in times])
 
     def get_when_and_offset(self, dosage):
@@ -117,6 +119,8 @@ class GermanDosageTextGenerator:
                 when_text = f"{when_names[0]} und {when_names[1]}"
             else:
                 when_text = f"{', '.join(when_names[:-1])} und {when_names[-1]}"
+            if self.is_only_key_and_bounds(repeat, 'when'):
+                when_text = "täglich " + when_text
             parts.append(when_text)
         return ", ".join(parts)
 
@@ -207,6 +211,16 @@ class GermanDosageTextGenerator:
             'CV': 'zum Abendessen'
         }
         return when_codes.get(when.upper(), when)
+    
+    def is_only_key_and_bounds(self, repeat, key):
+        allowed = {key}
+        # boundsDuration, boundsRange, boundsPeriod sind erlaubt
+        allowed.update([k for k in repeat if k.startswith('bounds')])
+        # Gibt es noch andere Schlüssel mit Wert?
+        for k, v in repeat.items():
+            if k not in allowed and v:
+                return False
+        return key in repeat and repeat[key]
 
 def main():
     if len(sys.argv) < 2:

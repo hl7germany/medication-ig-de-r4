@@ -43,8 +43,8 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
 
 * dosageInstruction[+]
   * timing.repeat
-    * dayOfWeek[+] = #mon
-    * dayOfWeek[+] = #fri
+    * dayOfWeek[+] = #tue
+    * dayOfWeek[+] = #sat
     * when[+] = #MORN
     * when[+] = #EVE
     * frequency = 1

@@ -1,4 +1,4 @@
-Instance: MR-Unsupported-Dosage-1-Count
+Instance: MR-Unsupported-Dosage-01-of-20-Count
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 Count"
@@ -22,7 +22,7 @@ Title: "Unsupported: Count"
     * periodUnit = #d
 
 
-Instance: MR-Unsupported-Dosage-2-asNeededBoolean
+Instance: MR-Unsupported-Dosage-02-of-20-asNeededBoolean
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 asNeededBoolean"
@@ -40,7 +40,7 @@ Title: "Unsupported: asNeededBoolean"
 * text = "asNeededBoolean"
 * asNeededBoolean = true
 
-Instance: MR-Unsupported-Dosage-3-asNeededCodeableConcept
+Instance: MR-Unsupported-Dosage-03-of-20-asNeededCodeableConcept
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 asNeededCodeableConcept"
@@ -58,7 +58,7 @@ Title: "Unsupported: asNeededCodeableConcept"
 * text = "asNeededCodeableConcept"
 * asNeededCodeableConcept.text = "nur wenn nötig"
 
-Instance: MR-Unsupported-Dosage-4-Method
+Instance: MR-Unsupported-Dosage-04-of-20-Method
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 Method"
@@ -76,7 +76,7 @@ Title: "Unsupported: Method"
 * text = "method"
 * method.text = "oral"
 
-Instance: MR-Unsupported-Dosage-5-Route
+Instance: MR-Unsupported-Dosage-05-of-20-Route
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 Route"
@@ -94,7 +94,7 @@ Title: "Unsupported: Route"
 * text = "route"
 * route.text = "intravenös"
 
-Instance: MR-Unsupported-Dosage-6-Site
+Instance: MR-Unsupported-Dosage-06-of-20-Site
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 Site"
@@ -112,7 +112,7 @@ Title: "Unsupported: Site"
 * text = "site"
 * site.text = "linker Arm"
 
-Instance: MR-Unsupported-Dosage-7-DoseRange
+Instance: MR-Unsupported-Dosage-07-of-20-DoseRange
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 DoseRange"
@@ -133,7 +133,7 @@ Title: "Unsupported: DoseRange"
 * doseAndRate[0].doseRange.high.value = 2
 * doseAndRate[0].doseRange.high.unit = "mg"
 
-Instance: MR-Unsupported-Dosage-8-RateQuantity
+Instance: MR-Unsupported-Dosage-08-of-20-RateQuantity
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 RateQuantity"
@@ -152,7 +152,7 @@ Title: "Unsupported: RateQuantity"
 * doseAndRate[0].rateQuantity.value = 10
 * doseAndRate[0].rateQuantity.unit = "ml/h"
 
-Instance: MR-Unsupported-Dosage-9-RateRange
+Instance: MR-Unsupported-Dosage-09-of-20-RateRange
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 RateRange"
@@ -173,7 +173,7 @@ Title: "Unsupported: RateRange"
 * doseAndRate[0].rateRange.high.value = 15
 * doseAndRate[0].rateRange.high.unit = "ml/h"
 
-Instance: MR-Unsupported-Dosage-10-RateRatio
+Instance: MR-Unsupported-Dosage-10-of-20-RateRatio
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 RateRatio"
@@ -194,7 +194,7 @@ Title: "Unsupported: RateRatio"
 * doseAndRate[0].rateRatio.denominator.value = 1
 * doseAndRate[0].rateRatio.denominator.unit = "h"
 
-Instance: MR-Unsupported-Dosage-11-AdditionalInstruction
+Instance: MR-Unsupported-Dosage-11-of-20-AdditionalInstruction
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 AdditionalInstruction"
@@ -212,7 +212,7 @@ Title: "Unsupported: AdditionalInstruction"
 * text = "additionalInstruction"
 * additionalInstruction[0].text = "Mit Wasser einnehmen"
 
-Instance: MR-Unsupported-Dosage-12-MaxDosePerPeriod
+Instance: MR-Unsupported-Dosage-12-of-20-MaxDosePerPeriod
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 MaxDosePerPeriod"
@@ -233,7 +233,7 @@ Title: "Unsupported: MaxDosePerPeriod"
 * maxDosePerPeriod.denominator.value = 24
 * maxDosePerPeriod.denominator.unit = "h"
 
-Instance: MR-Unsupported-Dosage-13-MaxDosePerAdministration
+Instance: MR-Unsupported-Dosage-13-of-20-MaxDosePerAdministration
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 MaxDosePerAdministration"
@@ -252,7 +252,7 @@ Title: "Unsupported: MaxDosePerAdministration"
 * maxDosePerAdministration.value = 2
 * maxDosePerAdministration.unit = "mg"
 
-Instance: MR-Unsupported-Dosage-14-MaxDosePerLifetime
+Instance: MR-Unsupported-Dosage-14-of-20-MaxDosePerLifetime
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 MaxDosePerLifetime"
@@ -271,7 +271,7 @@ Title: "Unsupported: MaxDosePerLifetime"
 * maxDosePerLifetime.value = 100
 * maxDosePerLifetime.unit = "mg"
 
-Instance: MR-Unsupported-Dosage-15-Count
+Instance: MR-Unsupported-Dosage-15-of-20-Count
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 Count"
@@ -294,7 +294,7 @@ Title: "Unsupported: Count"
     * periodUnit = #d
     * count = 5
 
-Instance: MR-Unsupported-Dosage-16-CountMax
+Instance: MR-Unsupported-Dosage-16-of-20-CountMax
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 CountMax"
@@ -316,7 +316,7 @@ Title: "Unsupported: CountMax"
     * periodUnit = #d
     * countMax = 10
 
-Instance: MR-Unsupported-Dosage-17-BoundsPeriod
+Instance: MR-Unsupported-Dosage-17-of-20-BoundsPeriod
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 BoundsPeriod"
@@ -340,7 +340,7 @@ Title: "Unsupported: BoundsPeriod"
     * boundsPeriod.start = "2023-01-01"
     * boundsPeriod.end = "2023-01-31"
 
-Instance: MR-Unsupported-Dosage-18-BoundsRange
+Instance: MR-Unsupported-Dosage-18-of-20-BoundsRange
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 BoundsRange"
@@ -366,7 +366,7 @@ Title: "Unsupported: BoundsRange"
     * boundsRange.high.value = 10
     * boundsRange.high.unit = "d"
 
-Instance: MR-Unsupported-Dosage-19-Offset
+Instance: MR-Unsupported-Dosage-19-of-20-Offset
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 Offset"
@@ -388,7 +388,7 @@ Title: "Unsupported: Offset"
     * periodUnit = #d
     * offset = 30
 
-Instance: MR-Unsupported-Dosage-20-Event
+Instance: MR-Unsupported-Dosage-20-of-20-Event
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 Event"

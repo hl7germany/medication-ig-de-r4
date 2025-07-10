@@ -14,6 +14,9 @@ class GermanDosageTextGenerator:
         days_of_week = self.get_days_of_week(dosage)
         if days_of_week:
             elements.append(days_of_week)
+         # Wenn weder frequency noch days_of_week gesetzt sind, "täglich" einfügen
+        if not frequency and not days_of_week:
+            elements.append("täglich")
         # Dose
         dose = self.get_dose(dosage)
         if dose:
@@ -99,8 +102,6 @@ class GermanDosageTextGenerator:
         times = repeat.get('timeOfDay', [])
         if not times:
             return ""
-        if self.is_only_key_and_bounds(repeat, 'timeOfDay'):
-            return "täglich um " + ", ".join([self.format_time(time) for time in times])
         return "um " + ", ".join([self.format_time(time) for time in times])
 
     def get_when_and_offset(self, dosage):
@@ -119,8 +120,6 @@ class GermanDosageTextGenerator:
                 when_text = f"{when_names[0]} und {when_names[1]}"
             else:
                 when_text = f"{', '.join(when_names[:-1])} und {when_names[-1]}"
-            if self.is_only_key_and_bounds(repeat, 'when'):
-                when_text = "täglich " + when_text
             parts.append(when_text)
         return ", ".join(parts)
 

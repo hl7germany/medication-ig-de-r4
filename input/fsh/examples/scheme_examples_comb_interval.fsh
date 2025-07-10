@@ -13,8 +13,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
     * period = 2
     * periodUnit = #d
     * timeOfDay[+] = "08:00:00"
-  * doseAndRate.doseQuantity.value = 1
-  * doseAndRate.doseQuantity.unit = "Tablette"
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 * dosageInstruction[+]
   * timing.repeat
@@ -22,8 +21,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
     * period = 2
     * periodUnit = #d
     * timeOfDay[+] = "18:00:00"
-  * doseAndRate.doseQuantity.value = 2
-  * doseAndRate.doseQuantity.unit = "Tabletten"
+  * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
 Instance: Example-MR-Dosage-comb-interval-2
 InstanceOf: MedicationRequestDgMP
@@ -40,8 +38,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
     * period = 1
     * periodUnit = #wk
     * when[+] = #MORN
-  * doseAndRate.doseQuantity.value = 1
-  * doseAndRate.doseQuantity.unit = "Tablette"
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 Instance: Example-MR-Dosage-comb-interval-3
 InstanceOf: MedicationRequestDgMP
@@ -58,8 +55,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
     * period = 2
     * periodUnit = #d
     * timeOfDay[+] = "08:00:00"
-  * doseAndRate.doseQuantity.value = 1
-  * doseAndRate.doseQuantity.unit = "Tablette"
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 * dosageInstruction[+]
   * timing.repeat
@@ -67,5 +63,4 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
     * period = 2
     * periodUnit = #d
     * timeOfDay[+] = "20:00:00"
-  * doseAndRate.doseQuantity.value = 2
-  * doseAndRate.doseQuantity.unit = "Tabletten"
+  * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"

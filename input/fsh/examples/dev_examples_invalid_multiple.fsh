@@ -8,14 +8,12 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
 * intent = #order
 * medicationCodeableConcept.text = "DEV Medication"
 * dosageInstruction[+]
-  * doseAndRate.doseQuantity.value = 1
-  * doseAndRate.doseQuantity.unit = "Tablette"
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
   * timing
     * repeat
       * when[+] = #MORN
 * dosageInstruction[+]
-  * doseAndRate.doseQuantity.value = 2
-  * doseAndRate.doseQuantity.unit = "Tablette"
+  * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
   * timing
     * repeat
       * when[+] = #MORN
@@ -33,16 +31,14 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
 * dosageInstruction[+]
   * timing.repeat
     * timeOfDay[+] = "08:00:00"
-  * doseAndRate.doseQuantity.value = 2
-  * doseAndRate.doseQuantity.unit = "Tabletten"
+  * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
 * dosageInstruction[+]
   * timing.repeat
     * timeOfDay[+] = "08:00:00"
   * timing.repeat
     * timeOfDay[+] = "14:00:00"
-  * doseAndRate.doseQuantity.value = 1
-  * doseAndRate.doseQuantity.unit = "Tablette"
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 Instance: Invalid-Dosage-multiple-03-of-09-dayOfWeek
 InstanceOf: MedicationRequestDgMP
@@ -57,15 +53,13 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
   * timing.repeat
     * dayOfWeek[+] = #mon
     * dayOfWeek[+] = #sat
-  * doseAndRate.doseQuantity.value = 1
-  * doseAndRate.doseQuantity.unit = "Tablette"
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 * dosageInstruction[+]
   * timing.repeat
     * dayOfWeek[+] = #mon
     * dayOfWeek[+] = #fri
-  * doseAndRate.doseQuantity.value = 2
-  * doseAndRate.doseQuantity.unit = "Tabletten"
+  * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
 Instance: Invalid-Dosage-multiple-04-of-09-dayOfWeekAndWhen
 InstanceOf: MedicationRequestDgMP
@@ -82,16 +76,14 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * dayOfWeek[+] = #fri
     * when[+] = #MORN
     * when[+] = #EVE
-  * doseAndRate.doseQuantity.value = 1
-  * doseAndRate.doseQuantity.unit = "Tablette"
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 * dosageInstruction[+]
   * timing.repeat
     * dayOfWeek[+] = #mon
     * dayOfWeek[+] = #sat
     * when[+] = #MORN
-  * doseAndRate.doseQuantity.value = 2
-  * doseAndRate.doseQuantity.unit = "Tabletten"
+  * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
 Instance: Invalid-Dosage-multiple-05-of-09-dayOfWeekAndTimeOfDay
 InstanceOf: MedicationRequestDgMP
@@ -108,16 +100,14 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * dayOfWeek[+] = #fri
     * timeOfDay[+] = "08:00:00"
     * timeOfDay[+] = "12:00:00"
-  * doseAndRate.doseQuantity.value = 1
-  * doseAndRate.doseQuantity.unit = "Tablette"
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 * dosageInstruction[+]
   * timing.repeat
     * dayOfWeek[+] = #mon
     * dayOfWeek[+] = #sat
     * timeOfDay[+] = "08:00:00"
-  * doseAndRate.doseQuantity.value = 2
-  * doseAndRate.doseQuantity.unit = "Tabletten"
+  * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
 Instance: Invalid-Dosage-multiple-06-of-09-Interval
 InstanceOf: MedicationRequestDgMP
@@ -133,16 +123,14 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
     * frequency = 1
     * period = 2
     * periodUnit = #d
-  * doseAndRate.doseQuantity.value = 1
-  * doseAndRate.doseQuantity.unit = "Tablette"
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 * dosageInstruction[+]
   * timing.repeat
     * frequency = 1
     * period = 3
     * periodUnit = #d
-  * doseAndRate.doseQuantity.value = 2
-  * doseAndRate.doseQuantity.unit = "Tabletten"
+  * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
 Instance: Invalid-Dosage-multiple-07-of-09-IntervalAndSamePeriodOfDay
 InstanceOf: MedicationRequestDgMP
@@ -159,8 +147,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
     * period = 2
     * periodUnit = #d
     * when[+] = #MORN
-  * doseAndRate.doseQuantity.value = 1
-  * doseAndRate.doseQuantity.unit = "Tablette"
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 * dosageInstruction[+]
   * timing.repeat
@@ -169,8 +156,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
     * periodUnit = #d
     * when[+] = #MORN
     * when[+] = #EVE
-  * doseAndRate.doseQuantity.value = 2
-  * doseAndRate.doseQuantity.unit = "Tabletten"
+  * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
 Instance: Invalid-Dosage-multiple-08-of-09-IntervalAndSameTimeOfDay
 InstanceOf: MedicationRequestDgMP
@@ -187,8 +173,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
     * period = 2
     * periodUnit = #d
     * timeOfDay[+] = "08:00:00"
-  * doseAndRate.doseQuantity.value = 1
-  * doseAndRate.doseQuantity.unit = "Tablette"
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 * dosageInstruction[+]
   * timing.repeat
@@ -196,8 +181,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
     * period = 2
     * periodUnit = #d
     * timeOfDay[+] = "08:00:00"
-  * doseAndRate.doseQuantity.value = 2
-  * doseAndRate.doseQuantity.unit = "Tabletten"
+  * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
 Instance: Invalid-Dosage-multiple-09-of-09-IntervalAndDifInterval
 InstanceOf: MedicationRequestDgMP
@@ -214,8 +198,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
     * period = 2
     * periodUnit = #d
     * timeOfDay[+] = "08:00:00"
-  * doseAndRate.doseQuantity.value = 1
-  * doseAndRate.doseQuantity.unit = "Tablette"
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 * dosageInstruction[+]
   * timing.repeat
@@ -223,5 +206,4 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
     * period = 3
     * periodUnit = #d
     * timeOfDay[+] = "20:00:00"
-  * doseAndRate.doseQuantity.value = 2
-  * doseAndRate.doseQuantity.unit = "Tabletten"
+  * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"

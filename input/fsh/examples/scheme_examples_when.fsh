@@ -102,6 +102,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
 * dosageInstruction[+]
   * timing.repeat
     * when[+] = #MORN
+    * when[+] = #EVE
   * timing.repeat.boundsDuration.value = 10
   * timing.repeat.boundsDuration.unit = "Woche(n)"
   * timing.repeat.boundsDuration.code = #wk

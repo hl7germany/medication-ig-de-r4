@@ -8,6 +8,7 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
 
 * repeat 1..1 MS
   * obeys timing-only-one-type
+  * obeys TimingIntervalOnlyOneFrequency
   * obeys TimingOnlyOneWhen
   * obeys TimingOnlyOneTimeOfDay
   * obeys TimingOnlyOneDayOfWeek
@@ -208,6 +209,48 @@ Expression: "
   )
 )"
 Severity: #error
+
+Invariant: TimingIntervalOnlyOneFrequency
+Description: "Dosages Timings must not state the same time of day across multiple dosage instances"
+Expression: "
+/* Detect Interval */
+(
+  %resource.ofType(MedicationRequest).dosageInstruction
+  | %resource.ofType(MedicationDispense).dosageInstruction
+  | %resource.ofType(MedicationStatement).dosage
+)
+.all(
+  (
+    timing.repeat.frequency.exists()
+    and timing.repeat.period.exists()
+    and timing.repeat.periodUnit.exists()
+    and timing.repeat.when.empty()
+    and timing.repeat.timeOfDay.empty()
+    and timing.repeat.dayOfWeek.empty()
+  )
+  /* Only One Dosage allowed for Interval */
+  implies
+  (
+    (
+      (
+        %resource.ofType(MedicationRequest).exists()
+        or %resource.ofType(MedicationDispense).exists()
+      )
+      implies (
+        %resource.dosageInstruction.count() = 1
+      )
+    )
+    and
+    (
+      %resource.ofType(MedicationStatement).exists()
+      implies
+      %resource.dosage.count() = 1
+    )
+  )
+)
+"
+Severity: #error
+
 
 Invariant: TimingOnlyOnePeriodForDayOfWeek
 Description: "Dosages Timings must not state the same time of day across multiple dosage instances"

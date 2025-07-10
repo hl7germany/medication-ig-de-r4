@@ -64,8 +64,8 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
 * dosageInstruction[+]
   * timing.repeat
     * frequency = 1
-    * period = 3
+    * period = 2
     * periodUnit = #d
-    * timeOfDay[+] = "08:00:00"
+    * timeOfDay[+] = "20:00:00"
   * doseAndRate.doseQuantity.value = 2
   * doseAndRate.doseQuantity.unit = "Tabletten"

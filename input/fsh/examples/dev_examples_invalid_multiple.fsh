@@ -1,4 +1,4 @@
-Instance: Invalid-11-Dosage-multiple-when
+Instance: Invalid-Dosage-multiple-01-when
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Two dosages with the same period of day"
@@ -21,7 +21,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
       * when[+] = #MORN
       * when[+] = #EVE
 
-Instance: Invalid-12-Dosage-multiple-timeOfDay
+Instance: Invalid-Dosage-multiple-02-timeOfDay
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Two dosages with the same time of day"
@@ -44,7 +44,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
   * doseAndRate.doseQuantity.value = 1
   * doseAndRate.doseQuantity.unit = "Tablette"
 
-Instance: Invalid-13-Dosage-multiple-dayOfWeek
+Instance: Invalid-Dosage-multiple-03-dayOfWeek
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Two dosages with the same period of day on the same day"
@@ -67,7 +67,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
   * doseAndRate.doseQuantity.value = 2
   * doseAndRate.doseQuantity.unit = "Tabletten"
 
-Instance: Invalid-14-Dosage-multiple-dayOfWeekAndWhen
+Instance: Invalid-Dosage-multiple-04-dayOfWeekAndWhen
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Two dosages with the same period of day on the same day"
@@ -93,7 +93,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
   * doseAndRate.doseQuantity.value = 2
   * doseAndRate.doseQuantity.unit = "Tabletten"
 
-Instance: Invalid-15-Dosage-multiple-dayOfWeekAndTimeOfDay
+Instance: Invalid-Dosage-multiple-05-dayOfWeekAndTimeOfDay
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Two dosages with the same time of day on the same day"
@@ -119,10 +119,35 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
   * doseAndRate.doseQuantity.value = 2
   * doseAndRate.doseQuantity.unit = "Tabletten"
 
-Instance: Invalid-16-Dosage-multiple-IntervalAndTimeOfDay
+Instance: Invalid-Dosage-multiple-06-Interval
 InstanceOf: MedicationRequestDgMP
 Usage: #example
-Title: "Example-MR-Dosage-comb-interval-1"
+Title: "Two Interval Dosages"
+Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von jeden 2. Tag 1 Tablette und 3. Tag 2 Tabletten dar"
+* subject.display = "Patient"
+* status = #active
+* intent = #order
+* medicationCodeableConcept.text = "Ibuprofen 400mg"
+* dosageInstruction[+]
+  * timing.repeat
+    * frequency = 1
+    * period = 2
+    * periodUnit = #d
+  * doseAndRate.doseQuantity.value = 1
+  * doseAndRate.doseQuantity.unit = "Tablette"
+
+* dosageInstruction[+]
+  * timing.repeat
+    * frequency = 1
+    * period = 3
+    * periodUnit = #d
+  * doseAndRate.doseQuantity.value = 2
+  * doseAndRate.doseQuantity.unit = "Tabletten"
+
+Instance: Invalid-Dosage-multiple-07-IntervalAndSameTimeOfDay
+InstanceOf: MedicationRequestDgMP
+Usage: #example
+Title: "Two interval Dosages same time"
 Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von Jeden 2. Tag 1 Tablette um 08:00 Uhr und 1 Tablette um 10:00 Uhr dar"
 * subject.display = "Patient"
 * status = #active
@@ -141,6 +166,33 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
   * timing.repeat
     * frequency = 1
     * period = 2
+    * periodUnit = #d
+    * timeOfDay[+] = "08:00:00"
+  * doseAndRate.doseQuantity.value = 2
+  * doseAndRate.doseQuantity.unit = "Tabletten"
+
+Instance: Invalid-Dosage-multiple-08-IntervalAndDifferentInterval
+InstanceOf: MedicationRequestDgMP
+Usage: #example
+Title: "Two interval Dosages same time"
+Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von Jeden 2. Tag 1 Tablette um 08:00 Uhr und 1 Tablette um 10:00 Uhr dar"
+* subject.display = "Patient"
+* status = #active
+* intent = #order
+* medicationCodeableConcept.text = "Ibuprofen 400mg"
+* dosageInstruction[+]
+  * timing.repeat
+    * frequency = 1
+    * period = 2
+    * periodUnit = #d
+    * timeOfDay[+] = "08:00:00"
+  * doseAndRate.doseQuantity.value = 1
+  * doseAndRate.doseQuantity.unit = "Tablette"
+
+* dosageInstruction[+]
+  * timing.repeat
+    * frequency = 1
+    * period = 3
     * periodUnit = #d
     * timeOfDay[+] = "20:00:00"
   * doseAndRate.doseQuantity.value = 2

@@ -1,10 +1,10 @@
-# Schema für Kombinationen des Zeitintervalls
+## Schema für Kombinationen des Zeitintervalls
 
 Es wird ermöglicht, einen Tageszeiten-Bezug oder einen Uhrzeiten-Bezug mit einem Zeitintervall (Einheit mind. „Tag“) zu kombinieren.
 
 Es wird ermöglicht, die geplante Dauer der Anwendung zu begrenzen.
 
-## Beipiel
+### Beipiel
 
 {% fragment MedicationRequest/Example-MR-Dosage-comb-interval-1 JSON %}
 
@@ -16,7 +16,7 @@ Folgende weitere Beispiele sind in diesem IG dargestellt:
 | 1 x pro Woche 1 Tablette morgens  | [Example-MR-Dosage-comb-interval-2](./MedicationRequest-Example-MR-Dosage-comb-interval-2.html)    |
 | Jeden 2. Tag 1 Tablette um 08:00 Uhr und jeden 2. Tag 1 Tablette um 08:00 Uhr  | [Example-MR-Dosage-comb-interval-3](./MedicationRequest-Example-MR-Dosage-comb-interval-3.html)    |
 
-## Angabe und Erkennung der Dosierart 
+### Angabe und Erkennung der Dosierart 
 
 Diese Dosierungsart wird daran erkannt, dass folgende Felder unter `Dosage.timing.repeat` angegeben sind:
 

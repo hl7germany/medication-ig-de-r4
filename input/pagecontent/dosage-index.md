@@ -1,25 +1,25 @@
-# FHIR Dosierungen für den digital gestützten Medikationsprozess
+## FHIR Dosierungen für den digital gestützten Medikationsprozess
 
-## Kurzbeschreibung
+### Kurzbeschreibung
 
 Dieser Implementation Guide (IG) beschreibt die standardisierte und interoperable Abbildung von Dosierungsinformationen mithilfe von FHIR-Ressourcen für das deutsche Gesundheitswesen. Ziel ist es, eine einheitliche, sektorenübergreifende Darstellung und Übermittlung von Dosierungsangaben zu ermöglichen.  
 Alle Institutionen und Softwaresysteme, die medizinische Daten für die Nutzung in Deutschland erzeugen, können von diesen Profilen Gebrauch machen, um nationale Interoperabilität zu erreichen.
 
-## Profilierung
+### Profilierung
 
-### DE-Profile
+#### DE-Profile
 
 Für die strukturierte Abbildung von Dosierinformationen wurde ein grundlegendes, deutschlandweit einsetzbares Profil entwickelt: [DosageDE](./StructureDefinition-DosageDE.html) mit Referenz auf [TimingDE](./StructureDefinition-TimingDE.html).
 
 Diese Profile enthalten deutsche Feldbeschreibungen, bilden grundlegende Vorgaben zu Dosierungen in Deutschland ab und sollen in allen Fachgebieten verwendet werden, in denen strukturierte Dosierungen mit FHIR abgebildet werden.
 
-### dgMP-Profile
+#### dgMP-Profile
 
 Für den digital gestützten Medikationsprozess (dgMP) wurden die Profile [DosageDgMP](./StructureDefinition-DosageDgMP.html) und [TimingDgMP](./StructureDefinition-TimingDgMP.html) erstellt. Sie bilden die spezifischen Anforderungen und Einschränkungen des dgMP ab und erlauben ausschließlich die im Prozess vorgesehenen Dosierschemata.
 
 Die beteiligten Akteure und Systeme stimmen die Einführung neuer Ausbaustufen für strukturierte Dosierungen gemeinsam ab.
 
-## Unterstützte Dosierungen
+### Unterstützte Dosierungen
 
 Die Abbildung strukturierter Dosierungen wird kontinuierlich weiterentwickelt. Ziel ist es, die strukturierte Angabe von Dosierungen schrittweise in den dgMP-Anwendungsfällen einzuführen. Beteiligte Projekte und Systeme stimmen sich hierzu ab und führen Erweiterungen koordiniert ein.  
 Da die Ausbaustufen rückwärtskompatibel sind, können nachgelagerte Systeme (z.B. ePA) schon vor den erzeugenden Systemen neue Ausbaustufen unterstützen.
@@ -30,7 +30,7 @@ Das Profil `TimingDgMP` enthält der Implementierung unterstützende Constraints
 Da FHIR nur die Schweregrade error und warning für Constraints vorsieht, werden diese unterstützenden Prüfungen als warning deklariert. Sie dienen ausschließlich der Information und sollen die Implementierung erleichtern, indem sie eine gezielte Rückmeldung geben, welches Schema erkannt wurde.
 Die eigentliche Validierung auf Korrektheit und Exklusivität der Schemata erfolgt weiterhin über separate Fehler-Constraints (error), die verhindern, dass mehrere Schemata gleichzeitig verwendet werden oder ungültige Kombinationen auftreten.
 
-### Ausbaustufe 1
+#### Ausbaustufe 1
 
 - [Freitext-Dosierung](./timing-freetext-scheme.html)
 - [Schema mit Tageszeiten-Bezug](./timing-mman-scheme.html)
@@ -40,7 +40,7 @@ Die eigentliche Validierung auf Korrektheit und Exklusivität der Schemata erfol
 - [Schema für Kombinationen von Zeitintervallen](./timing-comb-interval-scheme.html)
 - [Schema für Kombinationen von Wochentagen](./timing-comb-dayofweek-scheme.html)
 
-### Folgende Ausbaustufe
+#### Folgende Ausbaustufe
 
 In weiteren Ausbaustufen sollen weitere Schemata entwickelt, die bestehenden Schemata ergänzt und Regeln für die übergeordnete Beziehung zwischen mehreren Schemata aufgebaut werden. Untenstehend findet sich eine Übersicht über Erweiterungen, die in zukünftigen Ausbaustufen berücksichtigt werden sollen, mitsamt Erläuterungen und/oder Beispielen. Diese Liste kann in der Zukunft erweitert oder angepasst werden. Für eine zweite Ausbaustufe wird empfohlen, die folgenden zwei bzw. drei Punkte anzugehen:
 
@@ -54,7 +54,7 @@ In weiteren Ausbaustufen sollen weitere Schemata entwickelt, die bestehenden Sch
 
 Sobald diesbezüglich eine Entscheidung getroffen wurde, wird die Planung zur zweiten Ausbaustufe hier kommuniziert.
 
-#### Weitere Schemata und Erläuterungen
+##### Weitere Schemata und Erläuterungen
 
 | Weitere Schemata                                   | Erläuterungen                                                                                                                                                                                                                                                                                                                                 |
 |----------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -62,7 +62,7 @@ Sobald diesbezüglich eine Entscheidung getroffen wurde, wird die Planung zur zw
 | Konkreter Anwendungszeitpunkt                     | Bei manchen Arzneimitteln kann es sinnvoll sein, einen konkreten Anwendungszeitpunkt inkl. Datum und ggf. Uhrzeit zu benennen. Dies kann bspw. bei Arzneimitteln der Fall sein, für welche ein Termin in einer medizinischen Einrichtung vereinbart wird (bspw. Infusionen).                                                                       |
 | Festlegung der Dosis einer Anwendung in Abhängigkeit zu bestimmten Bedingungen | Bestimmte Arzneimittel werden bspw. in Abhängigkeit von Labor- oder Selbstmesswerten oder von Art und Menge einer Mahlzeit dosiert. Hierzu gehören bspw. Insulinschemata, deren Dosis in Abhängigkeit zum Blut-Glukose-Wert und zum Kohlenhydrat-Gehalt einer Mahlzeit bestimmt wird.                                                               |
 
-#### Ergänzung bestehender Schemata
+##### Ergänzung bestehender Schemata
 
 **Alternative Zeitangaben und Dosierungen**
 
@@ -91,7 +91,7 @@ Sobald diesbezüglich eine Entscheidung getroffen wurde, wird die Planung zur zw
 | Änderung von Dosis oder Anwendungshäufigkeit im Zeitverlauf     | Täglich 1 Tablette morgens für 1 Woche. Anschließend täglich 2 Tabletten morgens für 1 Woche. (Einschleichen) |
 | Kombination verschiedener Anwendungsintervalle                  | Abwechselnd: Jeden zweiten Tag 1 Tablette morgens und jeden zweiten Tag 2 Tabletten morgens              |
 
-#### Beispiele für komplexe Beziehungen zwischen Arzneimitteln
+##### Beispiele für komplexe Beziehungen zwischen Arzneimitteln
 
 | Beziehungstyp                                        | Beispiel                                                                                                             |
 |------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
@@ -99,14 +99,14 @@ Sobald diesbezüglich eine Entscheidung getroffen wurde, wird die Planung zur zw
 | Gabe von zwei oder mehr Arzneimitteln in bedingter Beziehung zueinander  | Wenn > 5 Tage Ibuprofen 600mg als Bedarfsmedikation, dann 1x täglich Omeprazol 20 mg.                                         |
 
 
-## Beispiele
+### Beispiele
 
 Zur Unterstützung der Implementierenden werden in diesem Projekt verschiedene Beispiele bereitgestellt. Die [Übersicht der Beispiele](./dosage-to-text-examples.html) zeigt alle validen Beispiele in einer Matrix mit generierter Dosisinstruktion und einer Übersicht der belegten Felder.  
 Darüber hinaus finden sich auf der Seite [Beispiele für Dosierungen](./dosage-examples.html) vollständige Listen von Positiv- und Negativbeispielen, inklusive solcher, die in der aktuellen Ausbaustufe noch nicht unterstützt werden.
 
-## Inhalte für strukturierte Dosierungen
+### Inhalte für strukturierte Dosierungen
 
-### Relevante Ressourcen
+#### Relevante Ressourcen
 
 Für die strukturierte Abbildung von Dosierungen wurden zwei Profil-Ebenen definiert: DE-Profile und dgMP-Profile.  
 Die folgenden Profile der Ressourcen `Dosage` und `Timing` sind für die deutschlandweite Nutzung vorgesehen:
@@ -141,7 +141,7 @@ StructureDefinition/GeneratedDosageInstructions,
 {% endcapture %}  
 {% include artifacts-table-generator.html render=extensionsdgmp %}
 
-### Relevante Terminologien
+#### Relevante Terminologien
 
 Zur Sicherstellung der Interoperabilität werden standardisierte Terminologien und Codesysteme verwendet. Diese ermöglichen eine eindeutige und maschinenlesbare Kommunikation zwischen verschiedenen Systemen.
 
@@ -152,15 +152,15 @@ Verwendete Terminologien (Beispiele):
 
 Die jeweils verwendeten ValueSets und Codesysteme sind in den Profilen und Ressourcen dieses IG dokumentiert und referenziert. Bei der Implementierung ist darauf zu achten, die jeweils angegebenen Terminologien zu verwenden und die korrekten Codes zu übermitteln.
 
-## Technische Validierung der Dosierungen
+### Technische Validierung der Dosierungen
 
 Um sicherzustellen, dass Dosierungen syntaktisch korrekt und den Vorgaben der jeweiligen Ausbaustufe entsprechend erstellt werden, sind folgende technische Prüfungen implementiert:
 
-### Freitext oder strukturierte Dosierung
+#### Freitext oder strukturierte Dosierung
 
 Der Constraint `DosageStructuredOrFreeText` im Profil [DosageDgMP](./StructureDefinition-DosageDgMP.html) stellt sicher, dass entweder das Element `.text` oder eine strukturierte Angabe der Dosierung befüllt wird – nicht jedoch beides gleichzeitig. So wird ausgeschlossen, dass widersprüchliche Angaben gemacht werden.
 
-### Nur ein Dosierungsschema pro Instanz
+#### Nur ein Dosierungsschema pro Instanz
 
 Der Constraint `timing-only-one-type` im Profil [TimingDgMP](./StructureDefinition-TimingDgMP.html) stellt sicher, dass eine Dosierung ausschließlich einem zulässigen Dosierungsschema der aktuellen Ausbaustufe entspricht. Außerdem wird sichergestellt, dass alle Dosierungen innerhalb einer übergeordneten Ressource (z.B. alle Einträge in `MedicationRequest.dosageInstruction`) demselben Dosierungsschema folgen.
 

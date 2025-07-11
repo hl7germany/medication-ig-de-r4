@@ -1,4 +1,4 @@
-# Schema für Wiederkehrendes Zeitinterval
+## Schema für Wiederkehrendes Zeitinterval
 
 Dieses Schema basiert auf definierten Zeitintervallen, anhand derer sich die Anwendung des Arzneimittels wiederholt. Das Intervall kann in verschiedenen Zeiteinheiten angegeben werden, also z.B. in Tagen, Wochen oder Monaten. Für jedes Intervall wird angegeben, in welcher Frequenz die Anwendung innerhalb des Intervalls erfolgen soll.
 In diesem Anwendungsfall wird davon ausgegangen, dass sich das Schema ohne Variation der Länge eines Intervalls oder der Frequenz der Anwendung wiederholt. Es wird zudem ermöglicht:
@@ -7,7 +7,7 @@ In diesem Anwendungsfall wird davon ausgegangen, dass sich das Schema ohne Varia
 
 Es kann nur für Arzneimittel mit der Einheit "Stück" verwendet werden. Es trifft außerdem keine Aussage darüber, zu welchem spezifischen Zeitpunkt das Arzneimittel anzuwenden ist (bspw. als Uhrzeit, Tageszeit oder Wochentag). 
 
-## Beipiel
+### Beipiel
 
 {% fragment MedicationRequest/Example-MR-Dosage-interval-8d JSON %}
 
@@ -21,7 +21,7 @@ Folgende weitere Beispiele sind in diesem IG dargestellt:
 | Alle 3 Tage 1 Tablette  | [Example-MR-Dosage-interval-3d](./MedicationRequest-Example-MR-Dosage-interval-3d.html)    |
 | Alle 2 Tage 2 Tabletten für 6 Wochen  | [Example-MR-Dosage-interval-2d-bound](./MedicationRequest-Example-MR-Dosage-interval-2d-bound.html)    |
 
-## Angabe und Erkennung der Dosierart
+### Angabe und Erkennung der Dosierart
 
 Diese Dosierungsart wird daran erkannt, dass folgende Felder unter `Dosage.timing.repeat` angegeben sind:
 

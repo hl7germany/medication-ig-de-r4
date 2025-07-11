@@ -1,13 +1,13 @@
-# Fachliche Rahmenvorgaben für Dosierungen
+## Fachliche Rahmenvorgaben für Dosierungen
 
 Diese Seite beschreibt fachliche Aspekte und Entscheidungen zur Handhabung von strukturierten Dosierungen im dgMP-Kontext.
 
-## Kardinalitäten und Weiterentwicklung der dgMP-Profile
+### Kardinalitäten und Weiterentwicklung der dgMP-Profile
 
 Das Projekt wird iterativ weiterentwickelt. In den dgMP-Profilen werden Felder, die in der aktuellen Ausbaustufe nicht berücksichtigt werden, durch die Kardinalität 0..0 ausgeschlossen.  
 Dies bedeutet jedoch nicht, dass diese Felder in zukünftigen Ausbaustufen nicht relevant werden. Implementierungen sollten daher so gestaltet sein, dass sie zusätzliche, bislang nicht genutzte Angaben beim Lesen ignorieren und keine Fehler verursachen. Es gilt: Verarbeitet werden soll, was verarbeitet werden kann – alles Weitere wird ignoriert.
 
-## Nutzung des Feldes `.text`
+### Nutzung des Feldes `.text`
 
 Die textuelle Angabe von Dosierungen wird in diesem Projekt in zwei Varianten unterschieden:
 - Vom Menschen beschriebene Dosierung (Freitext)
@@ -19,7 +19,7 @@ Das Feld `Dosage.text` ist ausschließlich für vom Menschen erzeugten Freitext 
 
 Im Kontext des dgMP sorgt die [Infrastruktur zur Bereitstellung des Dosierungstextes](./dosage-to-text-system.html) dafür, dass zu jeder strukturierten Dosierung auch eine einheitliche, maschinell generierte textuelle Repräsentation bereitgestellt wird. Dieser Text wird in der Extension `Dosage.extension[GeneratedDosageInstructionsEx]` hinterlegt.
 
-## Verwendung mehrerer Dosages
+### Verwendung mehrerer Dosages
 
 Jede `Dosage`-Instanz beschreibt eine Kombination aus Einnahmerhythmus (z.B. „3x täglich“) und der zugehörigen Dosis pro Einnahmeereignis (z.B. „2 Tabletten“). Der Einnahmerhythmus wird in `Dosage.timing` abgebildet.
 
@@ -44,11 +44,11 @@ Eine Instanz dieser Dosierung ist im Beispiel [MedicationRequest-Example-MR-Dosa
 
 Für weitere Details siehe [Erstellen und Auswerten mehrerer Dosierungen](./multiple-dosages.html).
 
-## Nutzung von Sequenzen
+### Nutzung von Sequenzen
 
 In der aktuellen Ausbaustufe und im Kontext dgMP ist die Verwendung von `Dosage.sequence` nicht erlaubt. Dieses Feld dient beispielsweise dazu, aufeinander aufbauende Dosierungen (wie Ein- oder Ausschleichen) zu kennzeichnen. Die Nutzung kann in zukünftigen Ausbaustufen geprüft werden.
 
-## Strukturierte Angabe der Einheit
+### Strukturierte Angabe der Einheit
 
 Für die Berechnung der Reichweite einer Medikation ist es erforderlich, dass Dosierungseinheiten (z.B. „1 Tablette“) strukturiert über ein Codesystem angegeben werden.  
 Dafür steht ein eingeschränktes ValueSet (`DosageDoseQuantityDE` bzw. `DosageDoseQuantityDGMP`) zur Verfügung, das alle zulässigen Dosiereinheiten enthält.  

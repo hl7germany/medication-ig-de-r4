@@ -1,4 +1,4 @@
-# Schema für Wochentags-Bezug
+## Schema für Wochentags-Bezug
 
 Dieses Schema gibt an, an welchen Wochentagen einer Kalenderwoche das Medikament angewandt werden soll.
 In diesem Anwendungsfall wird davon ausgegangen, dass das Arzneimittel wöchentlich (für die geplante Dauer) in einem gleichbleibenden Wochentagsschema angewandt wird. Es wird zudem ermöglicht:
@@ -10,7 +10,7 @@ Es konkretisiert dabei nicht, zu welchem Zeitpunkt das Arzneimittel an dem betre
 
 Es wird ermöglicht, die geplante Dauer der Anwendung zu begrenzen.   
 
-## Beipiel
+### Beipiel
 
 {% fragment MedicationRequest/Example-MR-Dosage-weekday-2t JSON %}
 
@@ -23,7 +23,7 @@ Folgende Beispiele sind in diesem IG dargestellt:
 | Montags 2 Tabletten, Donnerstags 1 Tablette | [Example-MR-Dosage-weekday-2t-1t](./MedicationRequest-Example-MR-Dosage-weekday-2t-1t.html)     |
 | Montags 2 Tabl. für 10 Wochen  | [Example-MR-Dosage-weekday-2t-bound](./MedicationRequest-Example-MR-Dosage-weekday-2t-bound.html)    |
 
-## Angabe und Erkennung der Dosierart
+### Angabe und Erkennung der Dosierart
 
 Diese Dosierungsart wird daran erkannt, dass unter `Dosage.timing.repeat`
 

@@ -1,4 +1,4 @@
-# Schema für Uhrzeit Bezug
+## Schema für Uhrzeit Bezug
 
 Dieses Schema bietet die Möglichkeit, die Dosierung zu exakt festgelegten Zeiten an einem Tag zu planen (z.B. 08:00 und 12:00 Uhr). 
 In diesem Anwendungsfall wird davon ausgegangen, dass das Arzneimittel (für die geplante Dauer) täglich in einem gleichbleibenden Uhrzeitenschema angewandt wird. Es wird zudem ermöglicht:
@@ -6,7 +6,7 @@ In diesem Anwendungsfall wird davon ausgegangen, dass das Arzneimittel (für die
 - eine abweichende Dosis abhängig von der Uhrzeit anzugeben und
 - die geplante Dauer der Anwendung zu begrenzen (bsp. in Tagen). 
 
-## Beipiel
+### Beipiel
 
 {% fragment MedicationRequest/Example-MR-Dosage-tod-1t-8am JSON %}
 
@@ -19,7 +19,7 @@ Folgende weitere Beispiele sind in diesem IG dargestellt:
 | 8 Uhr 2 Tabletten - 11 Uhr 1 Tablette - 14 Uhr 1 Tablette - 17 Uhr 1 Tablette - 20 Uhr 1 Tablette - 23 Uhr 1 Tablette    | [Example-MR-Dosage-tod-multi](./MedicationRequest-Example-MR-Dosage-tod-multi.html)    |
 | 8 Uhr 2 Tabletten - 11 Uhr 1 Tablette - 14 Uhr 1 Tablette - 17 Uhr 1 Tablette - 20 Uhr 1 Tablette - 23 Uhr 1 Tablette, für 10 Tage    | [Example-MR-Dosage-tod-multi-bound](./MedicationRequest-Example-MR-Dosage-tod-multi-bound.html)    |
 
-## Angabe und Erkennung der Dosierart
+### Angabe und Erkennung der Dosierart
 
 Diese Dosierungsart wird daran erkannt, dass unter `Dosage.timing.repeat`
 

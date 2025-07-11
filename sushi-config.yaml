@@ -53,6 +53,10 @@ pages:
     title: Textgenerierung
   dosage-to-text-examples.md:
     title: Beispielliste Dosierung
+  dosage-examples.md:
+    title: Dosage Beispiele
+  dosage-to-text-system.md:
+    title: Hinzufügen des Dosistextes
   multiple-dosages.md:
     title: Mehrere Dosierungen
   timing-freetext-scheme.md:
@@ -69,6 +73,8 @@ pages:
     title: Schema für Kombinationen von Zeitintervallen
   timing-comb-dayofweek-scheme.md:
     title: Schema für Kombinationen von Wochentagen
+  duration.md:
+    title: Duration
   artifacts.html:
     title: FHIR Summary
   downloads.md:
@@ -104,8 +110,10 @@ menu:
     Einführung: dosage-index.html
     Fachliche Rahmenbedingungen: dosage-concept.html
     Textgenerierung: dosage-to-text.html
+    Hinzufügen des Dosistextes: dosage-to-text-system.html
     Beispielliste Dosierung: dosage-to-text-examples.html
     Mehrere Dosierungen: multiple-dosages.html
+#   TODO: Duration
   Dosierschemata:
     Freitext-Dosierung: timing-freetext-scheme.html
     Schema mit Tageszeiten-Bezug: timing-mman-scheme.html
@@ -114,6 +122,7 @@ menu:
     Schema für wiederkehrende Intervalle: timing-interval-scheme.html
     Schema für Kombinationen von Zeitintervallen: timing-comb-interval-scheme.html
     Schema für Kombinationen von Wochentagen: timing-comb-dayofweek-scheme.html
+    Beispiel Dosierungen: dosage-examples.html
   FHIR-Artefakte: artifacts.html
   Downloads: downloads.html
 

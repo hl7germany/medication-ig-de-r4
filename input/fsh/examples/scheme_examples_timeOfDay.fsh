@@ -81,3 +81,18 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
   * timing.repeat
     * timeOfDay[+] = "23:00:00"
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
+
+Instance: Example-MR-Dosage-tod-unsorted
+InstanceOf: MedicationRequestDgMP
+Usage: #example
+Title: "Example-MR-Dosage-tod-unsorted"
+Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von 1 Tablette und unsortierten Zeiten dar"
+* subject.display = "Patient"
+* status = #active
+* intent = #order
+* medicationCodeableConcept.text = "Ibuprofen 400mg"
+* dosageInstruction[+]
+  * timing.repeat
+    * timeOfDay[+] = "15:00:00"
+    * timeOfDay[+] = "08:00:00"
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"

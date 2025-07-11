@@ -6,6 +6,7 @@
 |[MedicationRequest-Example-MR-Dosage-UnitMg-1000](./MedicationRequest-Example-MR-Dosage-UnitMg-1000.html) | täglich — je 400 mg — morgens |
 |[MedicationRequest-Example-MR-Dosage-interval-2d-bound](./MedicationRequest-Example-MR-Dosage-interval-2d-bound.html) | alle 2 Tage — je 2 Stück — für 6 Woche(n) |
 |[MedicationRequest-Example-MR-Dosage-interval-4times-d](./MedicationRequest-Example-MR-Dosage-interval-4times-d.html) | viermal täglich — je 1 Stück |
+|[MedicationRequest-Example-MR-Dosage-1010-Unsorted](./MedicationRequest-Example-MR-Dosage-1010-Unsorted.html) | täglich — je 1 Stück — morgens und abends |
 |[MedicationRequest-Example-MR-Dosage-interval-2wk](./MedicationRequest-Example-MR-Dosage-interval-2wk.html) | alle 2 Wochen — je 1 Stück |
 |[MedicationRequest-Example-MR-Dosage-UnitStueck-1020](./MedicationRequest-Example-MR-Dosage-UnitStueck-1020.html) | täglich — je 1 Stück — morgens<br><br>täglich — je 2 Stück — abends |
 |[MedicationRequest-Example-MR-Dosage-comb-dayofweek-2](./MedicationRequest-Example-MR-Dosage-comb-dayofweek-2.html) | Montag und Freitag — je 1 Stück — morgens und abends<br><br>Dienstag und Samstag — je 2 Stück — morgens und abends |
@@ -18,9 +19,12 @@
 |[MedicationRequest-Example-MR-Dosage-weekday-2t](./MedicationRequest-Example-MR-Dosage-weekday-2t.html) | Dienstag und Donnerstag — je 2 Stück |
 |[MedicationRequest-Example-MR-Dosage-tod-1t-8am](./MedicationRequest-Example-MR-Dosage-tod-1t-8am.html) | täglich — je 1 Stück — um 08:00 Uhr |
 |[MedicationRequest-Example-MR-Dosage-weekday-2t-1t](./MedicationRequest-Example-MR-Dosage-weekday-2t-1t.html) | Montag — je 2 Stück<br><br>Donnerstag — je 1 Stück |
+|[MedicationRequest-Example-MR-Dosage-tod-unsorted](./MedicationRequest-Example-MR-Dosage-tod-unsorted.html) | täglich — je 1 Stück — um 08:00 Uhr, 15:00 Uhr |
+|[MedicationRequest-Example-MR-Dosage-weekday-unsorted](./MedicationRequest-Example-MR-Dosage-weekday-unsorted.html) | Montag, Dienstag, Donnerstag und Freitag — je 2 Stück |
 |[MedicationRequest-Example-MR-Dosage-interval-8d](./MedicationRequest-Example-MR-Dosage-interval-8d.html) | alle 8 Tage — je 1 Stück |
 |[MedicationRequest-Example-MR-Dosage-comb-dayofweek-1](./MedicationRequest-Example-MR-Dosage-comb-dayofweek-1.html) | Montag und Freitag — je 1 Stück — morgens und abends |
 |[MedicationRequest-Example-MR-Dosage-1010](./MedicationRequest-Example-MR-Dosage-1010.html) | täglich — je 1 Stück — morgens und abends |
+|[MedicationRequest-Example-MR-Dosage-comb-dayofweek-unsorted](./MedicationRequest-Example-MR-Dosage-comb-dayofweek-unsorted.html) | Montag, Donnerstag und Samstag — je 1 Stück — morgens und abends |
 |[MedicationRequest-Example-MR-Dosage-comb-interval-3](./MedicationRequest-Example-MR-Dosage-comb-interval-3.html) | alle 2 Tage — je 1 Stück — um 08:00 Uhr<br><br>alle 2 Tage — je 2 Stück — um 20:00 Uhr |
 |[MedicationRequest-Example-MR-Dosage-weekday-2t-bound](./MedicationRequest-Example-MR-Dosage-weekday-2t-bound.html) | Montag — je 2 Stück — für 10 Woche(n) |
 |[MedicationRequest-Example-MR-Dosage-weekday-3t](./MedicationRequest-Example-MR-Dosage-weekday-3t.html) | Dienstag, Donnerstag und Samstag — je 2 Stück |

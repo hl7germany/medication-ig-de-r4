@@ -62,3 +62,20 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
     * dayOfWeek[+] = #mon
     * boundsDuration = 10 $ucum#wk "Woche(n)"
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
+
+Instance: Example-MR-Dosage-weekday-unsorted
+InstanceOf: MedicationRequestDgMP
+Usage: #example
+Title: "Example-MR-Dosage-weekday-unsorted"
+Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von unsortierten Wochentagen je 2 Tabletten dar"
+* subject.display = "Patient"
+* status = #active
+* intent = #order
+* medicationCodeableConcept.text = "Ibuprofen 400mg"
+* dosageInstruction[+]
+  * timing.repeat
+    * dayOfWeek[+] = #fri
+    * dayOfWeek[+] = #tue
+    * dayOfWeek[+] = #thu
+    * dayOfWeek[+] = #mon
+  * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"

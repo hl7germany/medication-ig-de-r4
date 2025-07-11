@@ -22,10 +22,10 @@
 |[MedicationRequest-Example-MR-Dosage-comb-dayofweek-1](./MedicationRequest-Example-MR-Dosage-comb-dayofweek-1.html) | Montag und Freitag — je 1 Stück — morgens und abends |
 |[MedicationRequest-Example-MR-Dosage-1010](./MedicationRequest-Example-MR-Dosage-1010.html) | täglich — je 1 Stück — morgens und abends |
 |[MedicationRequest-Example-MR-Dosage-comb-interval-3](./MedicationRequest-Example-MR-Dosage-comb-interval-3.html) | alle 2 Tage — je 1 Stück — um 08:00 Uhr<br><br>alle 2 Tage — je 2 Stück — um 20:00 Uhr |
-|[MedicationRequest-Example-MR-Dosage-weekday-2t-bound](./MedicationRequest-Example-MR-Dosage-weekday-2t-bound.html) | Montag — je 2 Stück — für je 10 Wochen |
+|[MedicationRequest-Example-MR-Dosage-weekday-2t-bound](./MedicationRequest-Example-MR-Dosage-weekday-2t-bound.html) | Montag — je 2 Stück — für je 10 Woche(n) |
 |[MedicationRequest-Example-MR-Dosage-weekday-3t](./MedicationRequest-Example-MR-Dosage-weekday-3t.html) | Dienstag, Donnerstag und Samstag — je 2 Stück |
 |[MedicationRequest-Example-MR-Dosage-UnitTasse-1000](./MedicationRequest-Example-MR-Dosage-UnitTasse-1000.html) | täglich — je 2 Teelöffel — morgens |
 |[MedicationRequest-Example-MR-Dosage-1000](./MedicationRequest-Example-MR-Dosage-1000.html) | täglich — je 1 Stück — morgens |
 |[MedicationRequest-Example-MR-Dosage-1020](./MedicationRequest-Example-MR-Dosage-1020.html) | täglich — je 1 Stück — morgens<br><br>täglich — je 2 Stück — abends |
 |[MedicationRequest-Example-MR-Dosage-comb-interval-2](./MedicationRequest-Example-MR-Dosage-comb-interval-2.html) | einmal wöchentlich — je 1 Stück — morgens |
-|[MedicationRequest-Example-MR-Dosage-tod-multi-bound](./MedicationRequest-Example-MR-Dosage-tod-multi-bound.html) | täglich — je 2 Stück — um 08:00 Uhr — für je 10 Tage<br><br>täglich — je 1 Stück — um 11:00 Uhr, 14:00 Uhr, 17:00 Uhr, 20:00 Uhr, 23:00 Uhr — für je 10 Tage |
+|[MedicationRequest-Example-MR-Dosage-tod-multi-bound](./MedicationRequest-Example-MR-Dosage-tod-multi-bound.html) | täglich — je 2 Stück — um 08:00 Uhr — für je 10 Tag(e)<br><br>täglich — je 1 Stück — um 11:00 Uhr, 14:00 Uhr, 17:00 Uhr, 20:00 Uhr, 23:00 Uhr — für je 10 Tag(e) |

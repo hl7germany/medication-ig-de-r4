@@ -11,14 +11,12 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
 * dosageInstruction[+]
   * timing.repeat
     * when[+] = #MORN   
-  * doseAndRate.doseQuantity.value = 1
-  * doseAndRate.doseQuantity.unit = "Tablette"
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 * dosageInstruction[+]
   * timing.repeat
     * when[+] = #EVE
-  * doseAndRate.doseQuantity.value = 0.5
-  * doseAndRate.doseQuantity.unit = "Tablette"
+  * doseAndRate.doseQuantity = 0.5 $kbv-dosiereinheit#1 "Stück"
 
 Instance: Example-MR-Dosage-1020
 InstanceOf: MedicationRequestDgMP
@@ -32,14 +30,12 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
 * dosageInstruction[+]
   * timing.repeat
     * when[+] = #MORN
-  * doseAndRate.doseQuantity.value = 1
-  * doseAndRate.doseQuantity.unit = "Tablette"
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 * dosageInstruction[+]
   * timing.repeat
     * when[+] = #EVE
-  * doseAndRate.doseQuantity.value = 2
-  * doseAndRate.doseQuantity.unit = "Tabletten"
+  * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
 Instance: Example-MR-Dosage-1000
 InstanceOf: MedicationRequestDgMP
@@ -53,8 +49,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
 * dosageInstruction[+]
   * timing.repeat
     * when[+] = #MORN
-  * doseAndRate.doseQuantity.value = 1
-  * doseAndRate.doseQuantity.unit = "Tablette"
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 Instance: Example-MR-Dosage-1111
 InstanceOf: MedicationRequestDgMP
@@ -71,8 +66,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
     * when[+] = #MORN
     * when[+] = #NIGHT
     * when[+] = #NOON
-  * doseAndRate.doseQuantity.value = 1
-  * doseAndRate.doseQuantity.unit = "Tablette"
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 Instance: Example-MR-Dosage-1010
 InstanceOf: MedicationRequestDgMP
@@ -87,8 +81,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
   * timing.repeat
     * when[+] = #MORN
     * when[+] = #EVE
-  * doseAndRate.doseQuantity.value = 1
-  * doseAndRate.doseQuantity.unit = "Tablette"
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 Instance: Example-MR-Dosage-1010-10-Days
 InstanceOf: MedicationRequestDgMP
@@ -102,9 +95,9 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
 * dosageInstruction[+]
   * timing.repeat
     * when[+] = #MORN
+    * when[+] = #EVE
   * timing.repeat.boundsDuration.value = 10
   * timing.repeat.boundsDuration.unit = "Woche(n)"
   * timing.repeat.boundsDuration.code = #wk
   * timing.repeat.boundsDuration.system = "http://unitsofmeasure.org" //Triggerwarning!
-  * doseAndRate.doseQuantity.value = 1
-  * doseAndRate.doseQuantity.unit = "Tablette"
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"

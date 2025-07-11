@@ -13,8 +13,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
     * dayOfWeek[+] = #fri
     * when[+] = #MORN
     * when[+] = #EVE
-  * doseAndRate.doseQuantity.value = 1
-  * doseAndRate.doseQuantity.unit = "Tablette"
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 
 Instance: Example-MR-Dosage-comb-dayofweek-2
@@ -32,8 +31,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
     * dayOfWeek[+] = #fri
     * when[+] = #MORN
     * when[+] = #EVE
-  * doseAndRate.doseQuantity.value = 1
-  * doseAndRate.doseQuantity.unit = "Tablette"
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 * dosageInstruction[+]
   * timing.repeat
@@ -41,8 +39,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
     * dayOfWeek[+] = #sat
     * when[+] = #MORN
     * when[+] = #EVE
-  * doseAndRate.doseQuantity.value = 2
-  * doseAndRate.doseQuantity.unit = "Tabletten"
+  * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
 Instance: Example-MR-Dosage-comb-dayofweek-3
 InstanceOf: MedicationRequestDgMP
@@ -60,8 +57,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
     * when[+] = #MORN
     * boundsDuration.value = 3
     * boundsDuration.unit = "Woche(n)"
-  * doseAndRate.doseQuantity.value = 1
-  * doseAndRate.doseQuantity.unit = "Tablette"
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 * dosageInstruction[+]
   * timing.repeat
@@ -70,5 +66,4 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
     * when[+] = #NOON
     * boundsDuration.value = 3
     * boundsDuration.unit = "Woche(n)"
-  * doseAndRate.doseQuantity.value = 2
-  * doseAndRate.doseQuantity.unit = "Tabletten"
+  * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"

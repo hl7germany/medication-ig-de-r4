@@ -25,22 +25,29 @@ Folgende Beispiele sind in diesem IG dargestellt:
 
 ## Angabe und Erkennung der Dosierart
 
-Diese Dosierungsart wird daran erkannt, dass unter ´Dosage.timing.repeat´
+Diese Dosierungsart wird daran erkannt, dass unter `Dosage.timing.repeat`
 
-- frequency = 1
-- period = 1
-- periodUnit = d
-- und dayOfWeek
+- ausschließliche Angabe von `dayOfWeek`
+- opt. Angabe von `bounds[x]`
 
 angegeben ist. An diesem Feld wird dann kodiert der Wochentag angegeben an der eine konkrete Dosierung einzunehmen ist.
 
-Folgende FHIR-Path Expression auf Ebene von ´Dosage.timing.repeat´ liefert die Angabe, ob es sich um das Schema handelt: `(dayOfWeek.exists() and frequency.exists() and frequency = 1 and period.exists() and period = 1 and periodUnit.exists() and periodUnit = 'd' and when.empty() and timeOfDay.empty())`
+Folgende FHIR-Path Expression auf Ebene von `Dosage.timing.repeat` liefert die Angabe, ob es sich um das Schema handelt: 
 
-Für eine Dosierung kann auch mehrfach eine Angabe für ´.dayOfWeek´ erfolgen und bedeutet, dass wann auch immer einer der Wochentage eintritt, die angegebene Dosierung einzunehmen ist.
+```
+timing.repeat.dayOfWeek.exists() and
+timing.repeat.frequency.empty() and
+timing.repeat.period.empty() and
+timing.repeat.periodUnit.empty() and
+timing.repeat.when.empty() and
+timing.repeat.timeOfDay.empty()
+```
+
+Für eine Dosierung kann auch mehrfach eine Angabe für `.dayOfWeek` erfolgen und bedeutet, dass wann auch immer einer der Wochentage eintritt, die angegebene Dosierung einzunehmen ist.
 
 Beispiel:
 - Dosage.timing.repeat.dayOfWeek = "mon", "fri"
 - Dosage.doseAndRate.doseQuantity = 1 Tablette
 bedeutet, dass eine Tablette jeweils am Montag und Freitag einzunehmen ist.
 
-Lesende Systeme werten entsprechend auch ´Dosage.timing.repeat´ aus. Wenn nur .dayOfWeek angegeben ist, ist dem Nutzer anzuzeigen, dass die Dosierung nach Wochentagen definiert ist.
+Lesende Systeme werten entsprechend auch `Dosage.timing.repeat` aus. Wenn nur .dayOfWeek angegeben ist, ist dem Nutzer anzuzeigen, dass die Dosierung nach Wochentagen definiert ist.

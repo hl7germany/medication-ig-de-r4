@@ -4,6 +4,8 @@ Id: DosageDgMP
 Title: "Dosage für dgMP"
 Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenommen wird/wurde oder eingenommen werden soll."
 * obeys DosageStructuredOrFreeText
+* obeys DosageStructuredRequiresBoth
+* obeys DosageDoseUnitSameCode
 
 * extension[generatedDosageInstructions]
   * extension[algorithm]
@@ -17,6 +19,9 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
   * dose[x] only SimpleQuantity
   * doseQuantity
   * doseQuantity from $kbv-dosiereinheit-vs
+    * system 1..1 MS
+    * code 1..1 MS
+    * unit 1..1 MS
   * rate[x] 0..0
 
 // Remove unused Fields
@@ -32,10 +37,31 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
 * maxDosePerLifetime 0..0
 
 Invariant: DosageStructuredOrFreeText
-Description: "Dosage must be either structured or free text, but not both at the same time."
-Expression: "
-(%resource.ofType(MedicationRequest).dosageInstruction | ofType(MedicationDispense).dosageInstruction | ofType(MedicationStatement).dosage).all(
-  text.exists() and timing.empty() and doseAndRate.empty()) or (text.empty() and timing.exists() and doseAndRate.exists()
+Description: "Die Dosierungsangabe darf entweder nur als Freitext oder nur als vollständige strukturierte Information erfolgen — eine Mischung ist nicht erlaubt."
+Expression: "(%resource.ofType(MedicationRequest).dosageInstruction | 
+ ofType(MedicationDispense).dosageInstruction | 
+ ofType(MedicationStatement).dosage).all(
+  (text.exists() and timing.empty() and doseAndRate.empty()) or
+  (text.empty() and (timing.exists() or doseAndRate.exists()))
 )
 "
+Severity: #error
+
+Invariant: DosageStructuredRequiresBoth
+Description: "Wenn eine strukturierte Dosierungsangabe erfolgt, müssen sowohl timing als auch doseAndRate angegeben werden."
+Expression: "(%resource.ofType(MedicationRequest).dosageInstruction | 
+ ofType(MedicationDispense).dosageInstruction | 
+ ofType(MedicationStatement).dosage).all(
+  (timing.exists() implies doseAndRate.exists()) and
+  (doseAndRate.exists() implies timing.exists())
+)
+"
+Severity: #error
+
+Invariant: DosageDoseUnitSameCode
+Description: "Die Dosiereinheit muss über alle Dosierungen gleich sein."
+Expression: "(%resource.ofType(MedicationRequest).dosageInstruction | ofType(MedicationDispense).dosageInstruction | ofType(MedicationStatement).dosage).all(
+doseAndRate.exists() implies
+  %resource.dosageInstruction.doseAndRate.doseQuantity.code.distinct().count() = 1
+)"
 Severity: #error

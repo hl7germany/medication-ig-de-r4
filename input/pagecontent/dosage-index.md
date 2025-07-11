@@ -26,6 +26,10 @@ Da die Ausbaustufen rückwärtskompatibel sind, können nachgelagerte Systeme (z
 
 Der digital gestützte Medikationsprozess unterstützt aktuell die folgenden Dosierschemata, gegliedert nach Ausbaustufen. Die jeweiligen Seiten enthalten eine fachliche Beschreibung, Beispiele und technische Hinweise zur Instanziierung.
 
+Das Profil `TimingDgMP` enthält der Implementierung unterstützende Constraints zur Detektion und Unterscheidung der verschiedenen erlaubten Timingschemata. Diese Constraints sind als Hilfestellung für Entwickler gedacht, um frühzeitig zu erkennen, welchem der unterstützten Schemata eine konkrete Timing-Angabe entspricht.
+Da FHIR nur die Schweregrade error und warning für Constraints vorsieht, werden diese unterstützenden Prüfungen als warning deklariert. Sie dienen ausschließlich der Information und sollen die Implementierung erleichtern, indem sie eine gezielte Rückmeldung geben, welches Schema erkannt wurde.
+Die eigentliche Validierung auf Korrektheit und Exklusivität der Schemata erfolgt weiterhin über separate Fehler-Constraints (error), die verhindern, dass mehrere Schemata gleichzeitig verwendet werden oder ungültige Kombinationen auftreten.
+
 ### Ausbaustufe 1
 
 - [Freitext-Dosierung](./timing-freetext-scheme.html)

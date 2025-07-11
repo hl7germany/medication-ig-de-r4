@@ -3,8 +3,8 @@
 Dieses Schema gibt an, an welchen Wochentagen einer Kalenderwoche das Medikament angewandt werden soll.
 In diesem Anwendungsfall wird davon ausgegangen, dass das Arzneimittel wöchentlich (für die geplante Dauer) in einem gleichbleibenden Wochentagsschema angewandt wird. Es wird zudem ermöglicht:
 
-- eine abweichende Dosis abhängig vom Wochentag anzugeben und
-- die geplante Dauer der Anwendung zu begrenzen. 
+- die geplante Dauer der Anwendung zu begrenzen (bspw. in Tagen)
+- eine abweichende Dosis abhängig vom Wochentag anzugeben (in einer weiteren Dosage-Instanz).
 
 Es konkretisiert dabei nicht, zu welchem Zeitpunkt das Arzneimittel an dem betreffenden Wochentag anzuwenden ist.
 

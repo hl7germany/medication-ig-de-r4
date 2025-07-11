@@ -43,7 +43,7 @@ timing.repeat.when.empty() and
 timing.repeat.timeOfDay.empty()
 ```
 
-Für eine Dosierung kann auch mehrfach eine Angabe für `.dayOfWeek` erfolgen und bedeutet, dass wann auch immer einer der Wochentage eintritt, die angegebene Dosierung einzunehmen ist.
+Soll das Arzneimittel in derselben Dosierung an mehreren Tagen angewandt werden, wird dies über mehrere Angaben von `dayOfWeek` ausgedrückt. Die angegebene Dosierung ist dann zu jedem der genannten Tage anzuwenden.
 
 Beispiel:
 - Dosage.timing.repeat.dayOfWeek = "mon", "fri"

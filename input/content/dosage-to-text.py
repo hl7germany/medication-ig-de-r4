@@ -36,7 +36,7 @@ class GermanDosageTextGenerator:
         # Free text
         if dosage.get('text'):
             elements.append(dosage['text'])
-        return " - ".join(elements)
+        return " — ".join(elements)
 
     def get_dose(self, dosage):
         dose_and_rate = dosage.get('doseAndRate', [])

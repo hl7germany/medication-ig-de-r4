@@ -42,7 +42,7 @@ timing.repeat.timeOfDay.empty() and
 timing.repeat.dayOfWeek.empty()
 ```
 
-Für eine Dosierung kann auch mehrfach eine Angabe für .when erfolgen und bedeutet, dass wann auch immer einer der Tageszeiten eintritt, die angegebene Dosierung einzunehmen ist.
+Soll das Arzneimittel in derselben Dosierung zu mehreren Tageszeiten angewandt werden, wird dies über mehrere Angaben von "when" ausgedrückt. Die angegebene Dosierung ist dann zu jeder der genannten Tageszeiten anzuwenden. 
 
 Beispiel:
 - Dosage.timing.repeat.when = #MORN, #EVE

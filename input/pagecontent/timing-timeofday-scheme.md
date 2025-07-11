@@ -39,7 +39,7 @@ timing.repeat.when.empty() and
 timing.repeat.dayOfWeek.empty()
 ```
 
-Für eine Dosierung kann auch mehrfach eine Angabe für .timeOfDay` erfolgen und bedeutet, dass wann auch immer einer der Uhrzeiten eintritt, die angegebene Dosierung einzunehmen ist.
+Soll das Arzneimittel in derselben Dosierung zu mehreren Uhrzeiten angewandt werden, wird dies über mehrere Angaben von `.timeOfDay` ausgedrückt. Die angegebene Dosierung ist dann zu jeder der genannten Uhrzeiten anzuwenden.
 
 Beispiel:
 - Dosage.timing.repeat.timeOfDay` = "08:00:00", "12:00:00"

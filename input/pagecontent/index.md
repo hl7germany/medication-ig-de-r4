@@ -31,6 +31,8 @@ Sind Must-Support-Elemente in einer Instanz vorhanden, dürfen sie nicht zu Fehl
 
 ### Abhängigkeiten
 
+Dieser IG verwendet zur Kodierung der doseQuantity [KBV_VS_SFHIR_BMP_DOSIEREINHEIT](https://fhir.kbv.de/ValueSet/KBV_VS_SFHIR_BMP_DOSIEREINHEIT) & [KBV_CS_SFHIR_BMP_DOSIEREINHEIT](https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT) welche bewusst nicht als Abhängigkeit deklariert worden sind.
+
 {% include dependency-table.xhtml %}
 
 ### Kontakt und Feedback

@@ -4,6 +4,7 @@ Id: DosageDgMP
 Title: "Dosage für dgMP"
 Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenommen wird/wurde oder eingenommen werden soll."
 * obeys DosageStructuredOrFreeText
+* obeys DosageStructuredRequiresBoth
 * obeys DosageDoseUnitSameCode
 
 * extension[generatedDosageInstructions]
@@ -36,13 +37,25 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
 * maxDosePerLifetime 0..0
 
 Invariant: DosageStructuredOrFreeText
-Description: "Dosage must be either structured or free text, but not both at the same time."
+Description: "Die Dosierungsangabe darf entweder nur als Freitext oder nur als vollständige strukturierte Information erfolgen — eine Mischung ist nicht erlaubt."
 Expression: "
 (%resource.ofType(MedicationRequest).dosageInstruction | 
  ofType(MedicationDispense).dosageInstruction | 
  ofType(MedicationStatement).dosage).all(
   (text.exists() and timing.empty() and doseAndRate.empty()) or
-  (text.empty() and timing.exists() and doseAndRate.exists())
+  (text.empty() and (timing.exists() or doseAndRate.exists()))
+)
+"
+Severity: #error
+
+Invariant: DosageStructuredRequiresBoth
+Description: "Wenn eine strukturierte Dosierungsangabe erfolgt, müssen sowohl timing als auch doseAndRate angegeben werden."
+Expression: "
+(%resource.ofType(MedicationRequest).dosageInstruction | 
+ ofType(MedicationDispense).dosageInstruction | 
+ ofType(MedicationStatement).dosage).all(
+  (timing.exists() implies doseAndRate.exists()) and
+  (doseAndRate.exists() implies timing.exists())
 )
 "
 Severity: #error
@@ -54,4 +67,3 @@ doseAndRate.exists() implies
   %resource.dosageInstruction.doseAndRate.doseQuantity.code.distinct().count() = 1
 )"
 Severity: #error
-

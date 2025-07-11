@@ -41,7 +41,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
       * when[+] = #MORN
       * timeOfDay[+] = "08:00:00"
 
-Instance: Invalid-Dosage-04-of-12-TimeOfDay-DayOfWeek
+Instance: Invalid-Dosage-04-of-12-TimeOfDay-DayOfWeekWhen
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid Dosage"
@@ -56,6 +56,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * repeat
       * dayOfWeek[+] = #mon
       * timeOfDay[+] = "08:00:00"
+      * when[+] = #MORN
 
 Instance: Invalid-Dosage-05-of-12-When-TimeOfDay-DayOfWeek
 InstanceOf: MedicationRequestDgMP
@@ -85,10 +86,12 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
 * medicationCodeableConcept.text = "DEV Medication"
 * dosageInstruction[+]
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
-  * timing.repeat.frequency = 1
-  * timing.repeat.period = 1
-  * timing.repeat.periodUnit = #d
-  * timing.repeat.when[+] = #MORN
+  * timing.repeat
+    * frequency = 1
+    * period = 1
+    * periodUnit = #d
+    * when[+] = #MORN
+    * timeOfDay[+] = "08:00:00"
 
 Instance: Invalid-Dosage-07-of-12-FreqPeriod-ToD-DayOfWeek
 InstanceOf: MedicationRequestDgMP

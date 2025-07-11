@@ -41,15 +41,45 @@ publisher:
 # file name extension.  Any subproperties that are valid filenames
 # with supported extensions (e.g., .md/.xml) will be treated as
 # sub-pages.
-# TODO
-# pages:
-#   index.md:
-#     title: Example Home
-#   implementation.xml:
-#   examples.xml:
-#     title: Examples Overview
-#     simpleExamples.xml:
-#     complexExamples.xml:
+
+pages:
+  index.md:
+    title: Home
+  dosage-index.md:
+    title: Einführung
+  dosage-concept.md:
+    title: Fachliche Rahmenbedingungen
+  dosage-to-text.md:
+    title: Textgenerierung
+  dosage-to-text-examples.md:
+    title: Beispielliste Dosierung
+  dosage-examples.md:
+    title: Dosage Beispiele
+  dosage-to-text-system.md:
+    title: Hinzufügen des Dosistextes
+  multiple-dosages.md:
+    title: Mehrere Dosierungen
+  timing-freetext-scheme.md:
+    title: Freitext-Dosierung
+  timing-mman-scheme.md:
+    title: Schema mit Tageszeiten-Bezug
+  timing-timeofday-scheme.md:
+    title: Schema mit Uhrzeiten-Bezug
+  timing-weekday-scheme.md:
+    title: Schema mit Wochentags-Bezug
+  timing-interval-scheme.md:
+    title: Schema für wiederkehrende Intervalle
+  timing-comb-interval-scheme.md:
+    title: Schema für Kombinationen von Zeitintervallen
+  timing-comb-dayofweek-scheme.md:
+    title: Schema für Kombinationen von Wochentagen
+  duration.md:
+    title: Duration
+  artifacts.html:
+    title: FHIR Summary
+  downloads.md:
+    title: Downloads
+
 #
 #
 #
@@ -80,8 +110,10 @@ menu:
     Einführung: dosage-index.html
     Fachliche Rahmenbedingungen: dosage-concept.html
     Textgenerierung: dosage-to-text.html
+    Hinzufügen des Dosistextes: dosage-to-text-system.html
     Beispielliste Dosierung: dosage-to-text-examples.html
     Mehrere Dosierungen: multiple-dosages.html
+#   TODO: Duration
   Dosierschemata:
     Freitext-Dosierung: timing-freetext-scheme.html
     Schema mit Tageszeiten-Bezug: timing-mman-scheme.html
@@ -90,6 +122,7 @@ menu:
     Schema für wiederkehrende Intervalle: timing-interval-scheme.html
     Schema für Kombinationen von Zeitintervallen: timing-comb-interval-scheme.html
     Schema für Kombinationen von Wochentagen: timing-comb-dayofweek-scheme.html
+    Beispiel Dosierungen: dosage-examples.html
   FHIR-Artefakte: artifacts.html
   Downloads: downloads.html
 

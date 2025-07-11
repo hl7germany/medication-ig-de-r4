@@ -1,6 +1,7 @@
 # Schema für Wochentags-Bezug
 
 Dieses Schema gibt an, an welchen Wochentagen einer Kalenderwoche das Medikament angewandt werden soll.
+
 In diesem Anwendungsfall wird davon ausgegangen, dass das Arzneimittel wöchentlich (für die geplante Dauer) in einem gleichbleibenden Wochentagsschema angewandt wird. Es wird zudem ermöglicht:
 
 - die geplante Dauer der Anwendung zu begrenzen (bspw. in Tagen)

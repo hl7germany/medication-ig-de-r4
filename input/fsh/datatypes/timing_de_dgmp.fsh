@@ -219,22 +219,22 @@ Expression: "(
     ( /* only one different value and code are allowed*/
       (%resource.ofType(MedicationRequest).exists() or %resource.ofType(MedicationDispense).exists())
       implies
-      %resource.dosageInstruction.timing.repeat.boundsDuration.exists().not() or
+      %resource.dosageInstruction.timing.repeat.bounds.ofType(Duration).exists().not() or
       (
-        (%resource.dosageInstruction.timing.repeat.boundsDuration.value.distinct().count() = 1)
+        (%resource.dosageInstruction.timing.repeat.bounds.ofType(Duration).value.distinct().count() = 1)
         and
-        (%resource.dosageInstruction.timing.repeat.boundsDuration.code.distinct().count() = 1)
+        (%resource.dosageInstruction.timing.repeat.bounds.ofType(Duration).code.distinct().count() = 1)
       )
     )
     and
     (
       %resource.ofType(MedicationStatement).exists()
       implies
-      %resource.dosage.timing.repeat.boundsDuration.exists().not() or
+      %resource.dosage.timing.repeat.bounds.ofType(Duration).exists().not() or
       (
-        (%resource.dosage.timing.repeat.boundsDuration.value.distinct().count() = 1)
+        (%resource.dosage.timing.repeat.bounds.ofType(Duration).value.distinct().count() = 1)
         and
-        (%resource.dosage.timing.repeat.boundsDuration.code.distinct().count() = 1)
+        (%resource.dosage.timing.repeat.bounds.ofType(Duration).code.distinct().count() = 1)
       )
     )
   )

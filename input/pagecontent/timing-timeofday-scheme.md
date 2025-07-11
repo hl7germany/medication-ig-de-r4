@@ -1,10 +1,11 @@
 ## Schema für Uhrzeit Bezug
 
-Dieses Schema bietet die Möglichkeit, die Dosierung zu exakt festgelegten Zeiten an einem Tag zu planen (z.B. 08:00 und 12:00 Uhr). 
+Dieses Schema bietet die Möglichkeit, die Dosierung zu exakt festgelegten Zeiten an einem Tag zu planen (z.B. 08:00 und 12:00 Uhr).
+
 In diesem Anwendungsfall wird davon ausgegangen, dass das Arzneimittel (für die geplante Dauer) täglich in einem gleichbleibenden Uhrzeitenschema angewandt wird. Es wird zudem ermöglicht:
 
-- eine abweichende Dosis abhängig von der Uhrzeit anzugeben und
-- die geplante Dauer der Anwendung zu begrenzen (bsp. in Tagen). 
+- die geplante Dauer der Anwendung zu begrenzen (bspw. in Tagen)
+- eine abweichende Dosis abhängig von der Uhrzeit anzugeben (in einer weiteren Dosage-Instanz).
 
 ### Beipiel
 

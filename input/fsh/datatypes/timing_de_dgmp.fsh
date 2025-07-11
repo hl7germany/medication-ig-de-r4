@@ -14,6 +14,7 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * obeys TimingOnlyOneDayOfWeek
   * obeys TimingOnlyOnePeriodForDayOfWeek
   * obeys TimingOnlyOneTimeForInterval
+  * obeys TimingOnlyOneBounds
   * bounds[x] MS
   * bounds[x] only Duration
   * boundsDuration MS
@@ -44,9 +45,8 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
 //TODO Invariant info auf Teile der Invariante.
 Invariant: TimingOnlyOneType
 Description: "Only one kind of Timing is allowed. Current allowed timings: 4-Scheme, TimeOfDay, DayOfWeek, Interval, DayOfWeek and Time/4-Schema, Interval and Time/4-Schema"
-Expression: "
-/* 4-Schema */
-(%resource.ofType(MedicationRequest).dosageInstruction | ofType(MedicationDispense).dosageInstruction | ofType(MedicationStatement).dosage).all(
+Expression: "( /* 4-Schema */
+%resource.ofType(MedicationRequest).dosageInstruction | ofType(MedicationDispense).dosageInstruction | ofType(MedicationStatement).dosage).all(
 timing.repeat.when.exists() and
 timing.repeat.frequency.empty() and
 timing.repeat.period.empty() and
@@ -113,9 +113,7 @@ Severity: #error
 
 Invariant: TimingOnlyOneWhen
 Description: "Dosages Timings must not state the same period of day across multiple dosage instances"
-Expression: "
-/* Detect 4-Schema */
-(
+Expression: "( /* Detect 4-Schema */
   %resource.ofType(MedicationRequest).dosageInstruction
   | %resource.ofType(MedicationDispense).dosageInstruction
   | %resource.ofType(MedicationStatement).dosage
@@ -148,9 +146,7 @@ Severity: #error
 
 Invariant: TimingOnlyOneTimeOfDay
 Description: "Dosages Timings must not state the same time of day across multiple dosage instances"
-Expression: "
-/* Detect TimeOfDay */
-(
+Expression: "( /* Detect TimeOfDay */
   %resource.ofType(MedicationRequest).dosageInstruction
   | %resource.ofType(MedicationDispense).dosageInstruction
   | %resource.ofType(MedicationStatement).dosage
@@ -182,9 +178,7 @@ Severity: #error
 
 Invariant: TimingOnlyOneDayOfWeek
 Description: "Dosages Timings must not state the same time of day across multiple dosage instances"
-Expression: "
-/* Detect DayOfWeek */
-(
+Expression: "( /* Detect DayOfWeek */
   %resource.ofType(MedicationRequest).dosageInstruction
   | %resource.ofType(MedicationDispense).dosageInstruction
   | %resource.ofType(MedicationStatement).dosage
@@ -216,26 +210,32 @@ Severity: #error
 
 Invariant: TimingOnlyOneBounds
 Description: "Dosages Timings must not state the same bounds duration across multiple dosage instances"
-Expression: "
-/* Detect DayOfWeek */
-(
+Expression: "(
   %resource.ofType(MedicationRequest).dosageInstruction
   | %resource.ofType(MedicationDispense).dosageInstruction
   | %resource.ofType(MedicationStatement).dosage
 ).all(
   (
-    (
+    ( /* only one different value and code are allowed*/
       (%resource.ofType(MedicationRequest).exists() or %resource.ofType(MedicationDispense).exists())
       implies
-      (%resource.dosageInstruction.timing.repeat.boundsDuration.value.distinct().count() = %resource.dosageInstruction.timing.repeat.boundsDuration.value.count())
-      (%resource.dosageInstruction.timing.repeat.boundsDuration.code.distinct().count() = %resource.dosageInstruction.timing.repeat.boundsDuration.code.count())
+      %resource.dosageInstruction.timing.repeat.boundsDuration.exists().not() or
+      (
+        (%resource.dosageInstruction.timing.repeat.boundsDuration.value.distinct().count() = 1)
+        and
+        (%resource.dosageInstruction.timing.repeat.boundsDuration.code.distinct().count() = 1)
+      )
     )
     and
     (
       %resource.ofType(MedicationStatement).exists()
       implies
-      (%resource.dosage.timing.repeat.boundsDuration.value.distinct().count() = %resource.dosage.timing.repeat.boundsDuration.value.count())
-      (%resource.dosage.timing.repeat.boundsDuration.code.distinct().count() = %resource.dosage.timing.repeat.boundsDuration.code.count())
+      %resource.dosage.timing.repeat.boundsDuration.exists().not() or
+      (
+        (%resource.dosage.timing.repeat.boundsDuration.value.distinct().count() = 1)
+        and
+        (%resource.dosage.timing.repeat.boundsDuration.code.distinct().count() = 1)
+      )
     )
   )
 )"
@@ -243,9 +243,7 @@ Severity: #error
 
 Invariant: TimingIntervalOnlyOneFrequency
 Description: "Dosages Timings must not state the same time of day across multiple dosage instances"
-Expression: "
-/* Detect Interval */
-(
+Expression: "( /* Detect Interval */
   %resource.ofType(MedicationRequest).dosageInstruction
   | %resource.ofType(MedicationDispense).dosageInstruction
   | %resource.ofType(MedicationStatement).dosage
@@ -285,9 +283,7 @@ Severity: #error
 
 Invariant: TimingOnlyOnePeriodForDayOfWeek
 Description: "Dosages Timings must not state the same time of day across multiple dosage instances"
-Expression: "
-/* Detect DayOfWeek and Time/4-Schema */
-(
+Expression: "( /* Detect DayOfWeek and Time/4-Schema */
   %resource.ofType(MedicationRequest).dosageInstruction
   | %resource.ofType(MedicationDispense).dosageInstruction
   | %resource.ofType(MedicationStatement).dosage
@@ -484,8 +480,7 @@ Severity: #error
 
 Invariant: TimingOnlyOneTimeForInterval
 Description: "Dosages Timings must not state the same time of day across multiple dosage instances"
-Expression: "
-/* 
+Expression: "/* 
   Detect DayOfWeek and Time/4-Schema
   This logic checks for dosage instructions that specify either timeOfDay or when, 
   but not both, and ensures certain consistency rules for frequency, period, and periodUnit.

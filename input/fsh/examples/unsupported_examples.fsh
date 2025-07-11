@@ -411,5 +411,4 @@ Title: "Unsupported: Event"
     * frequency = 1
     * period = 1
     * periodUnit = #d
-    * boundsDuration.value = 3
-    * boundsDuration.unit = "Woche(n)"
+    * boundsDuration = 3 $ucum#wk "Woche(n)"

@@ -63,15 +63,13 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
 * intent = #order
 * medicationCodeableConcept.text = "Ibuprofen 400mg"
 * dosageInstruction[+]
-  * timing.repeat.boundsDuration.value = 10
-  * timing.repeat.boundsDuration.unit = "Tage"
   * timing.repeat
     * timeOfDay[+] = "08:00:00" 
+    * boundsDuration = 10 $ucum#d "Tag(e)"
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
 * dosageInstruction[+]
-  * timing.repeat.boundsDuration.value = 10
-  * timing.repeat.boundsDuration.unit = "Tage"
+  * timing.repeat.boundsDuration = 10 $ucum#d "Tag(e)"
   * timing.repeat
     * timeOfDay[+] = "11:00:00"
   * timing.repeat

@@ -55,8 +55,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
     * dayOfWeek[+] = #mon
     * dayOfWeek[+] = #fri
     * when[+] = #MORN
-    * boundsDuration.value = 3
-    * boundsDuration.unit = "Woche(n)"
+    * boundsDuration = 3 $ucum#wk "Woche(n)"
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 * dosageInstruction[+]
@@ -64,6 +63,5 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
     * dayOfWeek[+] = #mon
     * dayOfWeek[+] = #fri
     * when[+] = #NOON
-    * boundsDuration.value = 3
-    * boundsDuration.unit = "Woche(n)"
+    * boundsDuration = 3 $ucum#wk "Woche(n)"
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"

@@ -14,6 +14,12 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * obeys TimingOnlyOneDayOfWeek
   * obeys TimingOnlyOnePeriodForDayOfWeek
   * obeys TimingOnlyOneTimeForInterval
+  * obeys TimingIs4Schema
+  * obeys TimingIsTimeOfDay
+  * obeys TimingIsDayOfWeek
+  * obeys TimingIsInterval
+  * obeys TimingIsDayOfWeekAndTimeOr4Schema
+  * obeys TimingIsIntervalAndTimeOr4Schema
   * bounds[x] MS
   * bounds[x] only Duration
   * boundsDuration MS
@@ -532,3 +538,103 @@ Expression: "
 )
 "
 Severity: #error
+
+Invariant: TimingIs4Schema
+Description: "INFO: Dosierung bilded den Tageszeiten Bezug (nur 'when' ist gesetzt) ab."
+Expression: "
+(%resource.ofType(MedicationRequest).dosageInstruction | 
+ ofType(MedicationDispense).dosageInstruction | 
+ ofType(MedicationStatement).dosage).all(
+  timing.repeat.when.exists() and
+  timing.repeat.frequency.empty() and
+  timing.repeat.period.empty() and
+  timing.repeat.periodUnit.empty() and
+  timing.repeat.timeOfDay.empty() and
+  timing.repeat.dayOfWeek.empty()
+)
+"
+Severity: #warning
+
+Invariant: TimingIsTimeOfDay
+Description: "INFO: Dosierung bilded den Uhrzeiten Bezug (nur 'timeOfDay' ist gesetzt) ab."
+Expression: "
+(%resource.ofType(MedicationRequest).dosageInstruction | 
+ ofType(MedicationDispense).dosageInstruction | 
+ ofType(MedicationStatement).dosage).all(
+  timing.repeat.timeOfDay.exists() and
+  timing.repeat.frequency.empty() and
+  timing.repeat.period.empty() and
+  timing.repeat.periodUnit.empty() and
+  timing.repeat.when.empty() and
+  timing.repeat.dayOfWeek.empty()
+)
+"
+Severity: #warning
+
+Invariant: TimingIsDayOfWeek
+Description: "INFO: Dosierung bilded den Wochentags Bezug (nur 'dayOfWeek' ist gesetzt) ab."
+Expression: "
+(%resource.ofType(MedicationRequest).dosageInstruction | 
+ ofType(MedicationDispense).dosageInstruction | 
+ ofType(MedicationStatement).dosage).all(
+  timing.repeat.dayOfWeek.exists() and
+  timing.repeat.frequency.empty() and
+  timing.repeat.period.empty() and
+  timing.repeat.periodUnit.empty() and
+  timing.repeat.when.empty() and
+  timing.repeat.timeOfDay.empty()
+)
+"
+Severity: #warning
+
+Invariant: TimingIsInterval
+Description: "INFO: Dosierung bilded das wiederkehrende Intervall-Schema ('frequency', 'period' und 'periodUnit' sind gesetzt) ab."
+Expression: "
+(%resource.ofType(MedicationRequest).dosageInstruction | 
+ ofType(MedicationDispense).dosageInstruction | 
+ ofType(MedicationStatement).dosage).all(
+  timing.repeat.frequency.exists() and
+  timing.repeat.period.exists() and
+  timing.repeat.periodUnit.exists() and
+  timing.repeat.when.empty() and
+  timing.repeat.timeOfDay.empty() and
+  timing.repeat.dayOfWeek.empty()
+)
+"
+Severity: #warning
+
+Invariant: TimingIsDayOfWeekAndTimeOr4Schema
+Description: "INFO: Dosierung bilded das Schema für Kombination des Wochentags ('dayOfWeek' ist gesetzt und entweder 'timeOfDay' oder 'when') ab."
+Expression: "
+(%resource.ofType(MedicationRequest).dosageInstruction | 
+ ofType(MedicationDispense).dosageInstruction | 
+ ofType(MedicationStatement).dosage).all(
+  timing.repeat.dayOfWeek.exists() and
+  timing.repeat.frequency.empty() and
+  timing.repeat.period.empty() and
+  timing.repeat.periodUnit.empty() and
+    (
+      (timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()) or
+      (timing.repeat.when.exists() and timing.repeat.timeOfDay.empty())
+    )
+)
+"
+Severity: #warning
+
+Invariant: TimingIsIntervalAndTimeOr4Schema
+Description: "INFO: Dosierung bilded das Schema für Kombination von Zeitintervallen ('frequency', 'period' und 'periodUnit' sind gesetzt, dazu entweder 'timeOfDay' oder 'when') ab."
+Expression: "
+(%resource.ofType(MedicationRequest).dosageInstruction | 
+ ofType(MedicationDispense).dosageInstruction | 
+ ofType(MedicationStatement).dosage).all(
+  timing.repeat.frequency.exists() and
+  timing.repeat.period.exists() and
+  timing.repeat.periodUnit.exists() and
+  timing.repeat.dayOfWeek.empty() and
+    (
+      (timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()) or
+      (timing.repeat.when.exists() and timing.repeat.timeOfDay.empty())
+    )
+)
+"
+Severity: #warning

@@ -7,7 +7,7 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
 * code 0..0
 
 * repeat 1..1 MS
-  * obeys timing-only-one-type
+  * obeys TimingOnlyOneType
   * obeys TimingIntervalOnlyOneFrequency
   * obeys TimingOnlyOneWhen
   * obeys TimingOnlyOneTimeOfDay
@@ -39,7 +39,7 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * offset 0..0
 
 //TODO Invariant info auf Teile der Invariante.
-Invariant: timing-only-one-type
+Invariant: TimingOnlyOneType
 Description: "Only one kind of Timing is allowed. Current allowed timings: 4-Scheme, TimeOfDay, DayOfWeek, Interval, DayOfWeek and Time/4-Schema, Interval and Time/4-Schema"
 Expression: "
 /* 4-Schema */

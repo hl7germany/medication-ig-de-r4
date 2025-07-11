@@ -23,13 +23,24 @@ Folgende weitere Beispiele sind in diesem IG dargestellt:
 
 ## Angabe und Erkennung der Dosierart
 
-Diese Dosierungsart wird daran erkannt, dass folgende Felder unter ´Dosage.timing.repeat´ angegeben sind:
+Diese Dosierungsart wird daran erkannt, dass folgende Felder unter `Dosage.timing.repeat` angegeben sind:
+
 - frequency
 - period
 - periodUnit
+- opt. Angabe von `bounds[x]`
 
-Folgende FHIR-Path Expression auf Ebene von ´Dosage.timing.repeat´ liefert die Angabe, ob es sich um das Schema handelt: `(frequency.exists() and period.exists() and periodUnit.exists() and when.empty() and timeOfDay.empty() and dayOfWeek.empty())`
+Folgende FHIR-Path Expression auf Ebene von `Dosage.timing.repeat` liefert die Angabe, ob es sich um das Schema handelt: 
+
+```
+timing.repeat.frequency.exists() and
+timing.repeat.period.exists() and
+timing.repeat.periodUnit.exists() and
+timing.repeat.when.empty() and
+timing.repeat.timeOfDay.empty() and
+timing.repeat.dayOfWeek.empty()
+```
 
 An diesen Feldern wird kodiert der Zeitinterval angegeben an der eine konkrete Dosierung einzunehmen ist.
 
-Lesende Systeme werten entsprechend auch ´Dosage.timing.repeat´ aus. Wenn ausschließlich die oben genannten Felder angegeben sind, ist dem Nutzer anzuzeigen, dass die Dosierung nach einem Interval definiert ist.
+Lesende Systeme werten entsprechend auch `Dosage.timing.repeat` aus. Wenn ausschließlich die oben genannten Felder angegeben sind, ist dem Nutzer anzuzeigen, dass die Dosierung nach einem Interval definiert ist.

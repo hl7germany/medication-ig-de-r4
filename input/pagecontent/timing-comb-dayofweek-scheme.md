@@ -22,16 +22,24 @@ Folgende weitere Beispiele sind in diesem IG dargestellt:
 
 ## Angabe und Erkennung der Dosierart 
 
-Diese Dosierungsart wird daran erkannt, dass folgende Felder unter ´Dosage.timing.repeat´ angegeben sind:
-- frequency = 1
-- period = 1
-- periodUnit = d
-- when ODER dayOfWeek existieren
+Diese Dosierungsart wird daran erkannt, dass folgende Felder unter `Dosage.timing.repeat` angegeben sind:
 
-Folgende FHIR-Path Expression auf Ebene von ´Dosage.timing.repeat´ liefert die Angabe, ob es sich um das Schema handelt: `(frequency.exists() and frequency = 1 and period.exists() and period = 1 and periodUnit.exists() and periodUnit = 'd' and when.exists() or dayOfWeek.exists() and timeOfDay.empty())` 
-// TODO: Validate and check
+- `when` ODER `dayOfWeek` existieren
 
-und entweder ´when´ oder ´timeOfDay´. Damit kann diese Dosierangabe verwendet werden um eine Interval angabe auf Tageszeit oder Uhrzeit zu kombinieren.
+Folgende FHIR-Path Expression auf Ebene von `Dosage.timing.repeat` liefert die Angabe, ob es sich um das Schema handelt: 
 
-Lesende Systeme werten entsprechend auch ´Dosage.timing.repeat´ aus. 
+```
+timing.repeat.dayOfWeek.exists() and
+timing.repeat.frequency.empty() and
+timing.repeat.period.empty() and
+timing.repeat.periodUnit.empty() and
+  (
+    (timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()) or
+    (timing.repeat.when.exists() and timing.repeat.timeOfDay.empty())
+  )
+```
+
+und entweder `when` oder `timeOfDay`. Damit kann diese Dosierangabe verwendet werden um eine Interval angabe auf Tageszeit oder Uhrzeit zu kombinieren.
+
+Lesende Systeme werten entsprechend auch `Dosage.timing.repeat` aus. 
 Wenn die oben genannten Felder angegeben sind, ist dem Nutzer anzuzeigen, dass die Dosierung nach einem Interval mit Tageszeit oder Uhrzeitbezug definiert ist.

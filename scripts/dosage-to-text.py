@@ -14,6 +14,9 @@ class GermanDosageTextGenerator:
         days_of_week = self.get_days_of_week(dosage)
         if days_of_week:
             elements.append(days_of_week)
+         # Wenn weder frequency noch days_of_week gesetzt sind, "täglich" einfügen
+        if not frequency and not days_of_week:
+            elements.append("täglich")
         # Dose
         dose = self.get_dose(dosage)
         if dose:
@@ -207,6 +210,16 @@ class GermanDosageTextGenerator:
             'CV': 'zum Abendessen'
         }
         return when_codes.get(when.upper(), when)
+    
+    def is_only_key_and_bounds(self, repeat, key):
+        allowed = {key}
+        # boundsDuration, boundsRange, boundsPeriod sind erlaubt
+        allowed.update([k for k in repeat if k.startswith('bounds')])
+        # Gibt es noch andere Schlüssel mit Wert?
+        for k, v in repeat.items():
+            if k not in allowed and v:
+                return False
+        return key in repeat and repeat[key]
 
 def main():
     if len(sys.argv) < 2:

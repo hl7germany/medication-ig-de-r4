@@ -14,8 +14,8 @@ Folgende weitere Beispiele sind in diesem IG dargestellt:
 
 ## Angabe und Erkennung der Dosierart
 
-Diese Dosierungsart wird daran erkannt, dass ausschließlich ´Dosage.text´ angegeben ist. An diesem Feld wird die Dosierung angegeben, wie vom Arzt/ Apotheker eingetragen.
+Diese Dosierungsart wird daran erkannt, dass ausschließlich `Dosage.text` angegeben ist. An diesem Feld wird die Dosierung angegeben, wie vom Arzt/ Apotheker eingetragen.
 
-Folgende FHIR-Path Expression auf Ebene von ´Dosage´ liefert die Angabe, ob es sich um das Schema handelt: `(text.exists() and timing.empty() and doseAndRate.empty())`
+Folgende FHIR-Path Expression auf Ebene von `Dosage` liefert die Angabe, ob es sich um das Schema handelt: `(text.exists() and timing.empty() and doseAndRate.empty())`
 
-Lesende Systeme werten entsprechend ausschließlich ´Dosage.text´ aus.
+Lesende Systeme werten entsprechend ausschließlich `Dosage.text` aus.

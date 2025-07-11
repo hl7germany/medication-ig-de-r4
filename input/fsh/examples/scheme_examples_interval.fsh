@@ -11,8 +11,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
   * timing.repeat.frequency = 1
   * timing.repeat.period = 8
   * timing.repeat.periodUnit = #d
-  * doseAndRate.doseQuantity.value = 1
-  * doseAndRate.doseQuantity.unit = "Tablette"
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 Instance: Example-MR-Dosage-interval-2wk
 InstanceOf: MedicationRequestDgMP
@@ -27,8 +26,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
   * timing.repeat.frequency = 1
   * timing.repeat.period = 2
   * timing.repeat.periodUnit = #wk
-  * doseAndRate.doseQuantity.value = 1
-  * doseAndRate.doseQuantity.unit = "Tablette"
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 Instance: Example-MR-Dosage-interval-4times-d
 InstanceOf: MedicationRequestDgMP
@@ -43,8 +41,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
   * timing.repeat.frequency = 4
   * timing.repeat.period = 1
   * timing.repeat.periodUnit = #d
-  * doseAndRate.doseQuantity.value = 1
-  * doseAndRate.doseQuantity.unit = "Tablette"
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 Instance: Example-MR-Dosage-interval-3d
 InstanceOf: MedicationRequestDgMP
@@ -59,8 +56,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
   * timing.repeat.frequency = 1
   * timing.repeat.period = 3
   * timing.repeat.periodUnit = #d
-  * doseAndRate.doseQuantity.value = 1
-  * doseAndRate.doseQuantity.unit = "Tablette"
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 Instance: Example-MR-Dosage-interval-2d-bound
 InstanceOf: MedicationRequestDgMP
@@ -77,5 +73,4 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
   * timing.repeat.periodUnit = #d
   * timing.repeat.boundsDuration.value = 6
   * timing.repeat.boundsDuration.unit = "Woche(n)"
-  * doseAndRate.doseQuantity.value = 2
-  * doseAndRate.doseQuantity.unit = "Tablette"
+  * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"

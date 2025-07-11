@@ -35,7 +35,7 @@ Die Umwandlung der strukturierten Felder erfolgt nur, wenn ausschließlich unter
 
 ### Versionierung des Algorithmus
 
-Die Aktuelle Version des Algortimus mit unterstützten Felder ist in der [Python Referenzimplementierung](./dosage-to-text.py) unter ´__version__´ angegeben und reflektiert die Version des IG's.
+Die Aktuelle Version des Algortimus mit unterstützten Felder ist in der [Python Referenzimplementierung](./dosage-to-text.py) unter `__version__` angegeben und reflektiert die Version des IG's.
 
 ## Komponenten und Trennzeichen
 

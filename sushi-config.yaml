@@ -81,6 +81,15 @@ menu:
     Fachliche Rahmenbedingungen: dosage-concept.html
     Textgenerierung: dosage-to-text.html
     Beispielliste Dosierung: dosage-to-text-examples.html
+    Mehrere Dosierungen: multiple-dosages.html
+  Dosierschemata:
+    Freitext-Dosierung: timing-freetext-scheme.html
+    Schema mit Tageszeiten-Bezug: timing-mman-scheme.html
+    Schema mit Uhrzeiten-Bezug: timing-timeofday-scheme.html
+    Schema mit Wochentags-Bezug: timing-weekday-scheme.html
+    Schema für wiederkehrende Intervalle: timing-interval-scheme.html
+    Schema für Kombinationen von Zeitintervallen: timing-comb-interval-scheme.html
+    Schema für Kombinationen von Wochentagen: timing-comb-dayofweek-scheme.html
   FHIR-Artefakte: artifacts.html
   Downloads: downloads.html
 

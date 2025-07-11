@@ -42,6 +42,8 @@ Ein Patient soll morgens 1 Tablette und abends 2 Tabletten einnehmen.
 Jede dieser Instanzen beschreibt ein eigenes Dosierschema, auch wenn sie im selben Medikationsauftrag stehen.
 Eine Instanz dieser Dosierung ist im Beispiel [MedicationRequest-Example-MR-Dosage-1010](./MedicationRequest-Example-MR-Dosage-1010.html) einzusehen.
 
+Für weitere Details siehe [Erstellen und Auswerten mehrerer Dosierungen](./multiple-dosages.html).
+
 ## Nutzung von Sequenzen
 
 In der aktuellen Ausbaustufe und im Kontext dgMP ist die Verwendung von `Dosage.sequence` nicht erlaubt. Dieses Feld dient beispielsweise dazu, aufeinander aufbauende Dosierungen (wie Ein- oder Ausschleichen) zu kennzeichnen. Die Nutzung kann in zukünftigen Ausbaustufen geprüft werden.

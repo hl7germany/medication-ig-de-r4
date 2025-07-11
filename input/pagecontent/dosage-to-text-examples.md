@@ -1,9 +1,9 @@
-# Beispiele für Dosierungen
+## Beispiele für Dosierungen
 
-## Aktuell unterstützte Dosierkonfigurationen
+### Aktuell unterstützte Dosierkonfigurationen
 
 {% include dosage-timing-matrix.md %}
 
-## Zukünftig unterstützte Dosierkonfigurationen
+### Zukünftig unterstützte Dosierkonfigurationen
 
 {% include unsupported-dosage-examples.md %}

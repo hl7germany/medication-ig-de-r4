@@ -1,4 +1,4 @@
-# Schema für Tageszeiten Bezug
+## Schema für Tageszeiten Bezug
 
 Dieses Schema unterteilt den Tag in die Tageszeiten "Morgen", "Mittag", "Abend" und "Nacht".
 Es gibt an, zu welchen dieser vier Tageszeiten das Medikament angewandt werden soll. Das Tageszeitenschema wird auch "Viererschema" oder "MMAN-Schema" genannt und häufig als Kette von vier Zahlen abgebildet (z.B. 1-0-1-0). 
@@ -7,7 +7,7 @@ In diesem Anwendungsfall wird davon ausgegangen, dass das Arzneimittel (für die
 - eine abweichende Dosis abhängig von der Tageszeit anzugeben
 - die geplante Dauer der Anwendung zu begrenzen (bsp. in Tagen). 
 
-## Beipiel
+### Beipiel
 
 {% fragment MedicationRequest/Example-MR-Dosage-1010 JSON %}
 
@@ -22,7 +22,7 @@ Folgende weitere Beispiele sind in diesem IG dargestellt:
 | 1-1-1-1    | [Example-MR-Dosage-1111](./MedicationRequest-Example-MR-Dosage-1111.html)    |
 | 1-0-1-0 für 10 Tage   | [Example-MR-Dosage-1010-10-Days](./MedicationRequest-Example-MR-Dosage-1010-10-Days.html)    |
 
-## Angabe und Erkennung der Dosierart
+### Angabe und Erkennung der Dosierart
 
 Diese Dosierungsart wird daran erkannt, dass unter `Dosage.timing.repeat`
 

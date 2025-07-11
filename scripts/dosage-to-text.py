@@ -6,6 +6,12 @@ import os
 class GermanDosageTextGenerator:
     def generate_single_dosage_text(self, dosage):
         elements = []
+        # Check for unsupported features
+        unsupported_fields = self.get_unsupported_fields(dosage)
+        if unsupported_fields:
+            felder = ", ".join(unsupported_fields)
+            return f"Die Dosiskonfiguration mit den Feldern {felder} wird in der aktuellen Ausbaustufe nicht unterstützt."
+        
         # Frequency
         frequency = self.get_frequency(dosage)
         if frequency:
@@ -37,6 +43,43 @@ class GermanDosageTextGenerator:
         if dosage.get('text'):
             elements.append(dosage['text'])
         return " — ".join(elements)
+    
+    def get_unsupported_fields(self, dosage):
+        deny_dosage_fields = {
+            "asNeededBoolean", "asNeededCodeableConcept", "method", "route", "site",
+            "additionalInstruction", "maxDosePerPeriod", "maxDosePerAdministration", "maxDosePerLifetime"
+        }
+        deny_timing_fields = {"event"}
+        deny_timing_repeat_fields = {
+            "count", "countMax", "boundsPeriod", "boundsRange", "offset"
+        }
+        deny_doseAndRate_subfields = {"doseRange", "rateQuantity", "rateRange", "rateRatio"}
+
+        unsupported = set()
+        
+        # Top-level deny fields
+        for key in dosage.keys():
+            if key in deny_dosage_fields:
+                unsupported.add(key)
+        # doseAndRate subfields
+        if "doseAndRate" in dosage:
+            for dr in dosage["doseAndRate"]:
+                for subkey in dr.keys():
+                    if subkey in deny_doseAndRate_subfields:
+                        unsupported.add(f"doseAndRate.{subkey}")
+        # timing deny fields
+        timing = dosage.get('timing', {})
+        for key in timing.keys():
+            if key in deny_timing_fields:
+                unsupported.add(f"timing.{key}")
+        # timing.repeat deny fields
+        repeat = timing.get('repeat', {})
+        for key in repeat.keys():
+            if key in deny_timing_repeat_fields:
+                unsupported.add(f"timing.repeat.{key}")
+            
+        return list(unsupported)
+
 
     def get_dose(self, dosage):
         dose_and_rate = dosage.get('doseAndRate', [])
@@ -102,7 +145,10 @@ class GermanDosageTextGenerator:
         times = repeat.get('timeOfDay', [])
         if not times:
             return ""
-        return "um " + ", ".join([self.format_time(time) for time in times])
+        # Sort the times as strings (works for HH:MM or HH:MM:SS)
+        sorted_times = sorted(times)
+        return "um " + ", ".join([self.format_time(time) for time in sorted_times])
+
 
     def get_when_and_offset(self, dosage):
         timing = dosage.get('timing', {})
@@ -127,14 +173,17 @@ class GermanDosageTextGenerator:
         timing = dosage.get('timing', {})
         repeat = timing.get('repeat', {})
         if repeat.get('boundsDuration'):
-            dur = self.format_quantity(repeat['boundsDuration'])
+            dur = self.format_quantity(repeat['boundsDuration'], with_je=False)
             return f"für {dur}" if dur else ""
         return ""
 
-    def format_quantity(self, quantity):
+
+    def format_quantity(self, quantity, with_je=True):
         value = quantity.get('value', 0)
         unit = quantity.get('unit') or quantity.get('code') or ""
-        return f"je {value}{' ' + unit if unit else ''}"
+        prefix = "je " if with_je else ""
+        return f"{prefix}{value}{' ' + unit if unit else ''}"
+
 
     def format_time(self, time):
         try:
@@ -175,6 +224,7 @@ class GermanDosageTextGenerator:
         return f"{period} {unit_text}"
 
     def format_days_of_week(self, days):
+        day_order = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
         day_names = {
             'mon': 'Montag',
             'tue': 'Dienstag',
@@ -184,7 +234,11 @@ class GermanDosageTextGenerator:
             'sat': 'Samstag',
             'sun': 'Sonntag'
         }
-        names = [day_names.get(day.lower(), day) for day in days]
+        # Lowercase all input days for matching
+        days_lower = [d.lower() for d in days]
+        # Sort by the canonical order
+        sorted_days = sorted(days_lower, key=lambda d: day_order.index(d) if d in day_order else 99)
+        names = [day_names.get(day, day) for day in sorted_days]
         if not names:
             return ""
         if len(names) == 1:
@@ -192,6 +246,7 @@ class GermanDosageTextGenerator:
         if len(names) == 2:
             return f"{names[0]} und {names[1]}"
         return f"{', '.join(names[:-1])} und {names[-1]}"
+
 
     def translate_when_code(self, when):
         when_codes = {

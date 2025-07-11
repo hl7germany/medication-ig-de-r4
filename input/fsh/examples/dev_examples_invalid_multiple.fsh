@@ -1,4 +1,4 @@
-Instance: Invalid-Dosage-multiple-01-of-09-when
+Instance: Invalid-Dosage-multiple-01-of-10-when
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Two dosages with the same period of day"
@@ -19,7 +19,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
       * when[+] = #MORN
       * when[+] = #EVE
 
-Instance: Invalid-Dosage-multiple-02-of-09-timeOfDay
+Instance: Invalid-Dosage-multiple-02-of-10-timeOfDay
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Two dosages with the same time of day"
@@ -40,7 +40,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * timeOfDay[+] = "14:00:00"
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: Invalid-Dosage-multiple-03-of-09-dayOfWeek
+Instance: Invalid-Dosage-multiple-03-of-10-dayOfWeek
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Two dosages with the same period of day on the same day"
@@ -61,7 +61,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * dayOfWeek[+] = #fri
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
-Instance: Invalid-Dosage-multiple-04-of-09-dayOfWeekAndWhen
+Instance: Invalid-Dosage-multiple-04-of-10-dayOfWeekAndWhen
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Two dosages with the same period of day on the same day"
@@ -85,7 +85,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * when[+] = #MORN
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
-Instance: Invalid-Dosage-multiple-05-of-09-dayOfWeekAndTimeOfDay
+Instance: Invalid-Dosage-multiple-05-of-10-dayOfWeekAndTimeOfDay
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Two dosages with the same time of day on the same day"
@@ -109,7 +109,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * timeOfDay[+] = "08:00:00"
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
-Instance: Invalid-Dosage-multiple-06-of-09-Interval
+Instance: Invalid-Dosage-multiple-06-of-10-Interval
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Two Interval Dosages"
@@ -132,7 +132,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
     * periodUnit = #d
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
-Instance: Invalid-Dosage-multiple-07-of-09-IntervalAndSamePeriodOfDay
+Instance: Invalid-Dosage-multiple-07-of-10-IntervalAndSamePeriodOfDay
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Two interval Dosages same period of day"
@@ -158,7 +158,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
     * when[+] = #EVE
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
-Instance: Invalid-Dosage-multiple-08-of-09-IntervalAndSameTimeOfDay
+Instance: Invalid-Dosage-multiple-08-of-10-IntervalAndSameTimeOfDay
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Two interval Dosages same time"
@@ -183,7 +183,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
     * timeOfDay[+] = "08:00:00"
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
-Instance: Invalid-Dosage-multiple-09-of-09-IntervalAndDifInterval
+Instance: Invalid-Dosage-multiple-09-of-10-IntervalAndDifInterval
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Two interval Dosages same time"
@@ -206,4 +206,25 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
     * period = 3
     * periodUnit = #d
     * timeOfDay[+] = "20:00:00"
+  * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
+
+Instance: Invalid-Dosage-multiple-10-of-10-DiffBounds
+InstanceOf: MedicationRequestDgMP
+Usage: #example
+Title: "Two interval Dosages different boundsDuration"
+Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung mit verschiedener Dauer dar"
+* subject.display = "Patient"
+* status = #active
+* intent = #order
+* medicationCodeableConcept.text = "Ibuprofen 400mg"
+* dosageInstruction[+]
+  * timing.repeat
+    * timeOfDay[+] = "08:00:00"
+    * boundsDuration = 2 $ucum#wk "Woche(n)"
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
+
+* dosageInstruction[+]
+  * timing.repeat
+    * timeOfDay[+] = "20:00:00"
+    * boundsDuration = 3 $ucum#wk "Woche(n)"
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"

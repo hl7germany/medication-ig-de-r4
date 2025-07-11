@@ -38,8 +38,7 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
 
 Invariant: DosageStructuredOrFreeText
 Description: "Die Dosierungsangabe darf entweder nur als Freitext oder nur als vollständige strukturierte Information erfolgen — eine Mischung ist nicht erlaubt."
-Expression: "
-(%resource.ofType(MedicationRequest).dosageInstruction | 
+Expression: "(%resource.ofType(MedicationRequest).dosageInstruction | 
  ofType(MedicationDispense).dosageInstruction | 
  ofType(MedicationStatement).dosage).all(
   (text.exists() and timing.empty() and doseAndRate.empty()) or
@@ -50,8 +49,7 @@ Severity: #error
 
 Invariant: DosageStructuredRequiresBoth
 Description: "Wenn eine strukturierte Dosierungsangabe erfolgt, müssen sowohl timing als auch doseAndRate angegeben werden."
-Expression: "
-(%resource.ofType(MedicationRequest).dosageInstruction | 
+Expression: "(%resource.ofType(MedicationRequest).dosageInstruction | 
  ofType(MedicationDispense).dosageInstruction | 
  ofType(MedicationStatement).dosage).all(
   (timing.exists() implies doseAndRate.exists()) and

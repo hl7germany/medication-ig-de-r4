@@ -541,8 +541,7 @@ Severity: #error
 
 Invariant: TimingIs4Schema
 Description: "INFO: Dosierung bilded den Tageszeiten Bezug (nur 'when' ist gesetzt) ab."
-Expression: "
-(%resource.ofType(MedicationRequest).dosageInstruction | 
+Expression: "(%resource.ofType(MedicationRequest).dosageInstruction | 
  ofType(MedicationDispense).dosageInstruction | 
  ofType(MedicationStatement).dosage).all(
   timing.repeat.when.exists() and
@@ -551,14 +550,13 @@ Expression: "
   timing.repeat.periodUnit.empty() and
   timing.repeat.timeOfDay.empty() and
   timing.repeat.dayOfWeek.empty()
-)
+).not()
 "
 Severity: #warning
 
 Invariant: TimingIsTimeOfDay
 Description: "INFO: Dosierung bilded den Uhrzeiten Bezug (nur 'timeOfDay' ist gesetzt) ab."
-Expression: "
-(%resource.ofType(MedicationRequest).dosageInstruction | 
+Expression: "(%resource.ofType(MedicationRequest).dosageInstruction | 
  ofType(MedicationDispense).dosageInstruction | 
  ofType(MedicationStatement).dosage).all(
   timing.repeat.timeOfDay.exists() and
@@ -567,14 +565,13 @@ Expression: "
   timing.repeat.periodUnit.empty() and
   timing.repeat.when.empty() and
   timing.repeat.dayOfWeek.empty()
-)
+).not()
 "
 Severity: #warning
 
 Invariant: TimingIsDayOfWeek
 Description: "INFO: Dosierung bilded den Wochentags Bezug (nur 'dayOfWeek' ist gesetzt) ab."
-Expression: "
-(%resource.ofType(MedicationRequest).dosageInstruction | 
+Expression: "(%resource.ofType(MedicationRequest).dosageInstruction | 
  ofType(MedicationDispense).dosageInstruction | 
  ofType(MedicationStatement).dosage).all(
   timing.repeat.dayOfWeek.exists() and
@@ -583,14 +580,13 @@ Expression: "
   timing.repeat.periodUnit.empty() and
   timing.repeat.when.empty() and
   timing.repeat.timeOfDay.empty()
-)
+).not()
 "
 Severity: #warning
 
 Invariant: TimingIsInterval
 Description: "INFO: Dosierung bilded das wiederkehrende Intervall-Schema ('frequency', 'period' und 'periodUnit' sind gesetzt) ab."
-Expression: "
-(%resource.ofType(MedicationRequest).dosageInstruction | 
+Expression: "(%resource.ofType(MedicationRequest).dosageInstruction | 
  ofType(MedicationDispense).dosageInstruction | 
  ofType(MedicationStatement).dosage).all(
   timing.repeat.frequency.exists() and
@@ -599,14 +595,13 @@ Expression: "
   timing.repeat.when.empty() and
   timing.repeat.timeOfDay.empty() and
   timing.repeat.dayOfWeek.empty()
-)
+).not()
 "
 Severity: #warning
 
 Invariant: TimingIsDayOfWeekAndTimeOr4Schema
 Description: "INFO: Dosierung bilded das Schema für Kombination des Wochentags ('dayOfWeek' ist gesetzt und entweder 'timeOfDay' oder 'when') ab."
-Expression: "
-(%resource.ofType(MedicationRequest).dosageInstruction | 
+Expression: "(%resource.ofType(MedicationRequest).dosageInstruction | 
  ofType(MedicationDispense).dosageInstruction | 
  ofType(MedicationStatement).dosage).all(
   timing.repeat.dayOfWeek.exists() and
@@ -615,16 +610,15 @@ Expression: "
   timing.repeat.periodUnit.empty() and
     (
       (timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()) or
-      (timing.repeat.when.exists() and timing.repeat.timeOfDay.empty())
+     (timing.repeat.when.exists() and timing.repeat.timeOfDay.empty())
     )
-)
+).not()
 "
 Severity: #warning
 
 Invariant: TimingIsIntervalAndTimeOr4Schema
 Description: "INFO: Dosierung bilded das Schema für Kombination von Zeitintervallen ('frequency', 'period' und 'periodUnit' sind gesetzt, dazu entweder 'timeOfDay' oder 'when') ab."
-Expression: "
-(%resource.ofType(MedicationRequest).dosageInstruction | 
+Expression: "(%resource.ofType(MedicationRequest).dosageInstruction | 
  ofType(MedicationDispense).dosageInstruction | 
  ofType(MedicationStatement).dosage).all(
   timing.repeat.frequency.exists() and
@@ -635,6 +629,6 @@ Expression: "
       (timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()) or
       (timing.repeat.when.exists() and timing.repeat.timeOfDay.empty())
     )
-)
+).not()
 "
 Severity: #warning

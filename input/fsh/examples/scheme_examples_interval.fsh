@@ -71,6 +71,5 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
   * timing.repeat.frequency = 1
   * timing.repeat.period = 2
   * timing.repeat.periodUnit = #d
-  * timing.repeat.boundsDuration.value = 6
-  * timing.repeat.boundsDuration.unit = "Woche(n)"
+  * timing.repeat.boundsDuration = 6 $ucum#wk "Woche(n)"
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"

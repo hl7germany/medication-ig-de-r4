@@ -17,6 +17,9 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * bounds[x] MS
   * bounds[x] only Duration
   * boundsDuration MS
+  * boundsDuration.code 1..1 MS
+  * boundsDuration.system 1..1 MS
+  * boundsDuration.unit 1..1 MS
   * boundsDuration.code from DurationUnitsOfTimeDgMPVS (required)
 
   * frequency MS
@@ -206,6 +209,33 @@ Expression: "
       %resource.ofType(MedicationStatement).exists()
       implies
       (%resource.dosage.timing.repeat.dayOfWeek.distinct().count() = %resource.dosage.timing.repeat.dayOfWeek.count())
+    )
+  )
+)"
+Severity: #error
+
+Invariant: TimingOnlyOneBounds
+Description: "Dosages Timings must not state the same bounds duration across multiple dosage instances"
+Expression: "
+/* Detect DayOfWeek */
+(
+  %resource.ofType(MedicationRequest).dosageInstruction
+  | %resource.ofType(MedicationDispense).dosageInstruction
+  | %resource.ofType(MedicationStatement).dosage
+).all(
+  (
+    (
+      (%resource.ofType(MedicationRequest).exists() or %resource.ofType(MedicationDispense).exists())
+      implies
+      (%resource.dosageInstruction.timing.repeat.boundsDuration.value.distinct().count() = %resource.dosageInstruction.timing.repeat.boundsDuration.value.count())
+      (%resource.dosageInstruction.timing.repeat.boundsDuration.code.distinct().count() = %resource.dosageInstruction.timing.repeat.boundsDuration.code.count())
+    )
+    and
+    (
+      %resource.ofType(MedicationStatement).exists()
+      implies
+      (%resource.dosage.timing.repeat.boundsDuration.value.distinct().count() = %resource.dosage.timing.repeat.boundsDuration.value.count())
+      (%resource.dosage.timing.repeat.boundsDuration.code.distinct().count() = %resource.dosage.timing.repeat.boundsDuration.code.count())
     )
   )
 )"

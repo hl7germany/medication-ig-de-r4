@@ -5,7 +5,7 @@ Description: "Diese Extension enthält die automatisch generierte textuelle Dosi
 Context: Dosage
 * extension contains 
   text 1..1 MS and
-  algorithm 1..1 MS
+  algorithm 0..1 MS
 * extension[text]
   * valueString 1.. MS
 * extension[algorithm]

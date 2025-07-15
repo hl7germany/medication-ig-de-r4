@@ -43,8 +43,8 @@ Die einzelnen Komponenten der Dosierungsanweisung werden durch „ — “ (Leer
 Die Reihenfolge der Komponenten entspricht der folgenden Logik:
 
   1. Zeitabschnitt  
-     a) frequency UND period UND/ODER  
-     b) dayOfWeek
+     a) frequency UND period UND/ODER 
+     b) dayOfWeek 
      c) falls kein Zeitabschnitt angegeben wird, wird "täglich" gesetzt
   2. Dosis (doseAndRate.doseQuantity)
   3. Geplante Frequenz innerhalb des Zeitabschnitts  

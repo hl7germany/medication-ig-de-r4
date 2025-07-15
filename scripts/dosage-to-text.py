@@ -252,17 +252,8 @@ class GermanDosageTextGenerator:
         when_codes = {
             'MORN': 'morgens',
             'NOON': 'mittags',
-            'AFT': 'nachmittags',
             'EVE': 'abends',
-            'NIGHT': 'nachts',
-            'AC': 'vor den Mahlzeiten',
-            'PC': 'nach den Mahlzeiten',
-            'HS': 'vor dem Schlafengehen',
-            'WAKE': 'beim Aufwachen',
-            'C': 'zu den Mahlzeiten',
-            'CM': 'zu den Mahlzeiten',
-            'CD': 'zum Abendessen',
-            'CV': 'zum Abendessen'
+            'NIGHT': 'nachts'
         }
         return when_codes.get(when.upper(), when)
     

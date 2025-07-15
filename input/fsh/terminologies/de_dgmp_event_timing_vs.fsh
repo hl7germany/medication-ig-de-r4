@@ -1,6 +1,6 @@
 ValueSet: TimingWhenDgMPVS
 Id: TimingWhenDgMP
-Title: "TimingWhenDgMP"
+Title: "Timing When dgMP"
 Description: "Tageszeiten für Zeitmuster"
 * $cs-event-timing#MORN
 * $cs-event-timing#NOON

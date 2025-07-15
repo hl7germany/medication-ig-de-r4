@@ -2,7 +2,7 @@
 //TODO: Übersetzungen der Codes und VS bei bfarm anfragen
 ValueSet: EDQMUnitOfPresentationVS
 Id: EDQMUnitOfPresentation
-Title: "EDQM Unit of Presentation"
+Title: "EDQM Unit of Presentation ValueSet"
 Description: "ValueSet Einheit der Darreichungsform gemäß EDQM, UOP, siehe https://standardterms.edqm.eu/#"
 * ^experimental = true
 * $edqm#15001000 "Actuation"

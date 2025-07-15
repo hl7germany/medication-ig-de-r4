@@ -33,20 +33,36 @@ def add_extension_to_medicationresource(file_path, dosage_text):
     # Handle MedicationRequest: dosageInstruction
     if "dosageInstruction" in data and data["dosageInstruction"]:
         for dosage in data["dosageInstruction"]:
+            # Filter existing extensions
             if "extension" in dosage:
-                dosage["extension"] = filter_extensions(dosage["extension"])
+                existing_exts = filter_extensions(dosage["extension"])
             else:
-                dosage["extension"] = []
-            dosage["extension"].append(extension)
+                existing_exts = []
+            # Only add the new extension if dosage_text is non-empty
+            if dosage_text:
+                existing_exts.append(extension)
+            # Only set the extension property if there's at least one extension
+            if existing_exts:
+                dosage["extension"] = existing_exts
+            else:
+                dosage.pop("extension", None)
 
     # Handle MedicationStatement: dosage
     if "dosage" in data and data["dosage"]:
         for dosage in data["dosage"]:
+            # Filter existing extensions
             if "extension" in dosage:
-                dosage["extension"] = filter_extensions(dosage["extension"])
+                existing_exts = filter_extensions(dosage["extension"])
             else:
-                dosage["extension"] = []
-            dosage["extension"].append(extension)
+                existing_exts = []
+            # Only add the new extension if dosage_text is non-empty
+            if dosage_text:
+                existing_exts.append(extension)
+            # Only set the extension property if there's at least one extension
+            if existing_exts:
+                dosage["extension"] = existing_exts
+            else:
+                dosage.pop("extension", None)
 
     # Overwrite the file (or write to a new file)
     with open(file_path, 'w', encoding='utf-8') as f:

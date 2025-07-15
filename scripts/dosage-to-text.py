@@ -12,6 +12,10 @@ class GermanDosageTextGenerator:
             felder = ", ".join(unsupported_fields)
             return f"Die Dosiskonfiguration mit den Feldern {felder} wird in der aktuellen Ausbaustufe nicht unterstützt."
         
+        # If free-text override is present, return empty string
+        if dosage.get('text'):
+            return ""
+        
         # Frequency
         frequency = self.get_frequency(dosage)
         if frequency:
@@ -39,9 +43,6 @@ class GermanDosageTextGenerator:
         bounds = self.get_bounds(dosage)
         if bounds:
             elements.append(bounds)
-        # Free text
-        if dosage.get('text'):
-            elements.append(dosage['text'])
         return " — ".join(elements)
     
     def get_unsupported_fields(self, dosage):

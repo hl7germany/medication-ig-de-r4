@@ -29,7 +29,7 @@ Die Generierung und Bereitstellung des Dosierungstextes im Verordnungsprozess er
 ### Annahmen und Rahmenbedingungen
 
 - **Primärsysteme (PVS und AVS)** müssen in der Lage sein, strukturierte Dosierungsdaten zu verarbeiten und den zugehörigen Dosierungstext lokal, regelkonform und standardisiert zu generieren.
-- **Zentrale Dienste** (wie E-Rezept-Fachdienst und ePA-Aktensysteme) validieren die Korrektheit des gelieferten Textes und sind in der Lage, diesen bei Bedarf selbst zu generieren.
+- **Zentrale Dienste** (wie E-Rezept-Fachdienst und ePA-Aktensysteme) validieren die Korrektheit des gelieferten Textes.
 - **Frontend-Dienste für Versicherte (FdV)** und andere nachgelagerte Systeme, die keine strukturierte Anzeige unterstützen, greifen auf den generierten Text zurück.
 - Die zentrale Validierung und ggf. Generierung des Dosierungstextes stellt die Einheitlichkeit der Information im gesamten dgMP-Prozess sicher.
 - Der zugrundeliegende Algorithmus zur Textgenerierung ist standardisiert und muss von allen relevanten Systemen identisch implementiert werden.

@@ -60,7 +60,7 @@ class GermanDosageTextGenerator:
         }
         deny_timing_fields = {"event"}
         deny_timing_repeat_fields = {
-            "count", "countMax", "boundsPeriod", "boundsRange", "offset"
+            "count", "countMax", "boundsPeriod", "boundsRange", "offset", "frequencyMax", "periodMax"
         }
         deny_doseAndRate_subfields = {"doseRange", "rateQuantity", "rateRange", "rateRatio"}
 

@@ -49,6 +49,8 @@ pages:
     title: Einführung
   dosage-concept.md:
     title: Fachliche Rahmenbedingungen
+  dosage-differences.md:
+    title: Dosis Profile
   dosage-to-text.md:
     title: Textgenerierung
   dosage-to-text-examples.md:
@@ -109,6 +111,7 @@ menu:
   Dosierungen: 
     Einführung: dosage-index.html
     Fachliche Rahmenbedingungen: dosage-concept.html
+    Dosis Profile: dosage-differences.html
     Textgenerierung: dosage-to-text.html
     Hinzufügen des Dosistextes: dosage-to-text-system.html
     Beispielliste Dosierung: dosage-to-text-examples.html

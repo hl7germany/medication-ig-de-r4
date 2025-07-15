@@ -17,3 +17,6 @@ cp scripts/dosage-to-text.py input/content
 
 # Generate IG Publisher Content
 ./_genonce.sh -no-sushi
+
+# Run Error checks
+python3 scripts/error-check.py

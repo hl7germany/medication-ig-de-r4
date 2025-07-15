@@ -3,45 +3,54 @@ import json
 import sys
 import os
 
+__version__ = "1.0.0"
+
 class GermanDosageTextGenerator:
     def generate_single_dosage_text(self, dosage):
+        
         elements = []
-        # Check for unsupported features
+    # Nicht unterstützte Felder dürfen nicht angegeben werden
         unsupported_fields = self.get_unsupported_fields(dosage)
         if unsupported_fields:
             felder = ", ".join(unsupported_fields)
             return f"Die Dosiskonfiguration mit den Feldern {felder} wird in der aktuellen Ausbaustufe nicht unterstützt."
         
-        # Frequency
+    # Rückgabe der Freitextdosierung, falls vorhanden
+        freeText = dosage.get('text', {})
+        if freeText:
+            return freeText
+        
+    # 1. Bestimmen des Zeitabschnitts
+        # a) Frequency
         frequency = self.get_frequency(dosage)
         if frequency:
             elements.append(frequency)
-        # Days of week
+        # b) Days of week
         days_of_week = self.get_days_of_week(dosage)
         if days_of_week:
             elements.append(days_of_week)
-         # Wenn weder frequency noch days_of_week gesetzt sind, "täglich" einfügen
+         # c) Wenn weder frequency noch days_of_week gesetzt sind, "täglich" einfügen
         if not frequency and not days_of_week:
             elements.append("täglich")
-        # Dose
+    # 2. Dosis
         dose = self.get_dose(dosage)
         if dose:
             elements.append(dose)
-        # Times of day
+    # 3. Geplante Frequenz innerhalb des Zeitabschnitts
+        # a) Times of day
         times_of_day = self.get_times_of_day(dosage)
         if times_of_day:
             elements.append(times_of_day)
-        # When/offset
-        when_and_offset = self.get_when_and_offset(dosage)
-        if when_and_offset:
-            elements.append(when_and_offset)
-        # Duration
+        # b) When
+        when = self.get_when(dosage)
+        if when:
+            elements.append(when)
+        
+    # 4. Gesamtdauer der Anwendung
         bounds = self.get_bounds(dosage)
         if bounds:
             elements.append(bounds)
-        # Free text
-        if dosage.get('text'):
-            elements.append(dosage['text'])
+
         return " — ".join(elements)
     
     def get_unsupported_fields(self, dosage):
@@ -80,7 +89,6 @@ class GermanDosageTextGenerator:
             
         return list(unsupported)
 
-
     def get_dose(self, dosage):
         dose_and_rate = dosage.get('doseAndRate', [])
         if not dose_and_rate:
@@ -96,9 +104,7 @@ class GermanDosageTextGenerator:
         if not repeat:
             return ""
         frequency = repeat.get('frequency')
-        frequency_max = repeat.get('frequencyMax')
         period = repeat.get('period')
-        period_max = repeat.get('periodMax')
         period_unit = repeat.get('periodUnit')
         if frequency is None and period is None and period_unit is None:
             return ""
@@ -111,8 +117,6 @@ class GermanDosageTextGenerator:
                 return "dreimal täglich"
             elif frequency == 4:
                 return "viermal täglich"
-            elif frequency_max:
-                return f"{frequency}-{frequency_max}mal täglich"
             else:
                 return f"{frequency}mal täglich"
         if period_unit == 'wk' and period == 1:
@@ -120,15 +124,13 @@ class GermanDosageTextGenerator:
                 return "einmal wöchentlich"
             elif frequency == 2:
                 return "zweimal wöchentlich"
-            elif frequency_max:
-                return f"{frequency}-{frequency_max}mal wöchentlich"
             else:
                 return f"{frequency}mal wöchentlich"
         if frequency == 1:
-            period_text = self.format_period_unit(period, period_max, period_unit)
+            period_text = self.format_period_unit(period, period_unit)
             return f"alle {period_text}"
-        freq_text = f"{frequency}-{frequency_max}mal" if frequency_max and frequency_max != frequency else f"{frequency}mal"
-        period_text = self.format_period_unit(period, period_max, period_unit)
+        freq_text = f"{frequency}mal"
+        period_text = self.format_period_unit(period, period_unit)
         return f"{freq_text} pro {period_text}"
 
     def get_days_of_week(self, dosage):
@@ -150,7 +152,7 @@ class GermanDosageTextGenerator:
         return "um " + ", ".join([self.format_time(time) for time in sorted_times])
 
 
-    def get_when_and_offset(self, dosage):
+    def get_when(self, dosage):
         timing = dosage.get('timing', {})
         repeat = timing.get('repeat', {})
         parts = []
@@ -177,13 +179,11 @@ class GermanDosageTextGenerator:
             return f"für {dur}" if dur else ""
         return ""
 
-
     def format_quantity(self, quantity, with_je=True):
         value = quantity.get('value', 0)
         unit = quantity.get('unit') or quantity.get('code') or ""
         prefix = "je " if with_je else ""
         return f"{prefix}{value}{' ' + unit if unit else ''}"
-
 
     def format_time(self, time):
         try:
@@ -217,10 +217,8 @@ class GermanDosageTextGenerator:
         units_name = multi_units.get(unit, unit)
         return unit_name if value == 1 else f"{units_name}"
 
-    def format_period_unit(self, period, period_max, unit):
+    def format_period_unit(self, period, unit):
         unit_text = self.format_time_unit(period, unit)
-        if period_max and period_max != period:
-            return f"{period}-{period_max} {unit_text}"
         return f"{period} {unit_text}"
 
     def format_days_of_week(self, days):
@@ -257,16 +255,6 @@ class GermanDosageTextGenerator:
         }
         return when_codes.get(when.upper(), when)
     
-    def is_only_key_and_bounds(self, repeat, key):
-        allowed = {key}
-        # boundsDuration, boundsRange, boundsPeriod sind erlaubt
-        allowed.update([k for k in repeat if k.startswith('bounds')])
-        # Gibt es noch andere Schlüssel mit Wert?
-        for k, v in repeat.items():
-            if k not in allowed and v:
-                return False
-        return key in repeat and repeat[key]
-
 def main():
     if len(sys.argv) < 2:
         print('Verwendung: python dosage-generator.py <dosage.json>', file=sys.stderr)

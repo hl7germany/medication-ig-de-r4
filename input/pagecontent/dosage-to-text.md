@@ -15,8 +15,8 @@ Für Informationen wie im dgMP sichergestellt wird, dass der Text an einer Dosie
 
 Das Skript unterstützt aktuell nur eine Teilmenge der möglichen Felder für Dosierungsangaben.  
 Nicht unterstützte Felder führen dazu, dass die Konfiguration als „nicht unterstützt“ zurückgewiesen wird. Die nicht unterstützten Felder werden explizit benannt.
+
 Die unterstützten Felder in Dosage sind:
-  - text
   - doseAndRate.doseQuantity
   - timing.repeat.boundsDuration
   - timing.repeat.frequency
@@ -33,6 +33,8 @@ Die Dosiskonfiguration mit den Feldern <Liste> wird derzeit nicht unterstützt. 
 
 Die Umwandlung der strukturierten Felder erfolgt nur, wenn ausschließlich unterstützte Felder verwendet werden.
 
+Freitext-Dosierungen mit einer Angabe in `.text` werden so dargestellt, dass der enthaltene Text ausgegeben wird.
+
 #### Versionierung des Algorithmus
 
 Die Aktuelle Version des Algortimus mit unterstützten Felder ist in der [Python Referenzimplementierung](./dosage-to-text.py) unter `__version__` angegeben und reflektiert die Version des IG's.
@@ -45,6 +47,7 @@ Die Reihenfolge der Komponenten entspricht der folgenden Logik:
   1. Zeitabschnitt  
      a) frequency UND period UND/ODER  
      b) dayOfWeek
+     c) falls kein Zeitabschnitt angegeben wird, wird "täglich" gesetzt
   2. Dosis (doseAndRate.doseQuantity)
   3. Geplante Frequenz innerhalb des Zeitabschnitts  
      a) timeOfDay  

@@ -4,8 +4,9 @@ Id: TimingDgMP
 Title: "Timing dgMP"
 Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne werden verwendet, um festzuhalten, wann etwas geplant, erwartet oder angefordert ist. Die häufigste Anwendung ist in Dosierungsanweisungen für Medikamente. Sie werden aber auch für die Planung verschiedener Versorgungsleistungen genutzt und können zur Dokumentation von bereits erfolgten oder laufenden Aktivitäten verwendet werden."
 * event 0..0
+  * ^comment = "Begründung Einschränkung Kardinalität: Der Zeitpunkt des Ereignisses ist in der ersten Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
 * code 0..0
-
+  * ^comment = "Begründung Einschränkung Kardinalität: Ein Timing-Code ist in der ersten Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen. Stattdessen muss das Zeitmuster explizit strukturiert angegeben werden."
 * repeat 1..1 MS
   * obeys TimingOnlyOneType
   * obeys TimingIntervalOnlyOneFrequency
@@ -17,12 +18,12 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * obeys TimingOnlyOneBounds
   * bounds[x] MS
   * bounds[x] only Duration
+    * ^comment = "Begründung Einschränkung Datentyp: Nur eine Angabe zur Dauer ist in der ersten Ausbaustufe des dgMP vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
   * boundsDuration MS
   * boundsDuration.code 1..1 MS
   * boundsDuration.system 1..1 MS
   * boundsDuration.unit 1..1 MS
   * boundsDuration.code from DurationUnitsOfTimeDgMPVS (required)
-
   * frequency MS
   * period MS
   * periodUnit MS
@@ -34,15 +35,23 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
 
   // Restrict all elements in the repeat backbone to 0..0
   * count 0..0
+    * ^comment = "Begründung Einschränkung Kardinalität: Wiederholungen sind in der ersten Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
   * countMax 0..0
+    * ^comment = "Begründung Einschränkung Kardinalität: Maximale Wiederholungen sind in der ersten Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
   * duration 0..0
+    * ^comment = "Begründung Einschränkung Kardinalität: Angaben zur Dauer einer Einzelgabe sind in der ersten Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
   * durationMax 0..0
+    * ^comment = "Begründung Einschränkung Kardinalität: Angaben zur maximalen Dauer einer Einzelgabe sind in der ersten Ausbaustufe desdgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
   * durationUnit 0..0
+    * ^comment = "Begründung Einschränkung Kardinalität: Angaben zur Einheit der Dauer einer Einzelgabe sind in der ersten Ausbaustufe desdgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
   * frequencyMax 0..0
+    * ^comment = "Begründung Einschränkung Kardinalität: Eine maximale Frequenz ist in der ersten Ausbaustufe des dgMP nicht vorgesehen – es wird immer eine Frequenz explizit gesetzt, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
   * periodMax 0..0
+    * ^comment = "Begründung Einschränkung Kardinalität: Eine maximale Periodendauer ist in der ersten Ausbaustufe des dgMP nicht vorgesehen – es wird immer eine Dauer explizit gesetzt, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
   * offset 0..0
+    * ^short = "Zeitversatz"
+    * ^comment = "Begründung Einschränkung Kardinalität: Ein Zeitversatz ist in der ersten Ausbaustufe desdgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
 
-//TODO Invariant info auf Teile der Invariante.
 Invariant: TimingOnlyOneType
 Description: "Only one kind of Timing is allowed. Current allowed timings: 4-Scheme, TimeOfDay, DayOfWeek, Interval, DayOfWeek and Time/4-Schema, Interval and Time/4-Schema"
 Expression: "( /* 4-Schema */

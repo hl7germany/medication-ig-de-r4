@@ -5,7 +5,7 @@ Parent: Dosage
 Id: DosageDE
 Title: "Dosage DE"
 Description: "Gibt an, wie das Medikament eingenommen oder verabreicht wurde bzw. eingenommen oder verabreicht werden soll – entweder selbst vom Patienten eingenommen oder bei Fremdverabreichung von Dritten (z. B. Leistungserbringer, Angehörige) verabreicht."
-* extension contains GeneratedDosageInstructions named generatedDosageInstructions 0..1 MS
+* extension contains GeneratedDosageInstructionsEx named generatedDosageInstructions 0..1 MS
 * text 0..1 MS
   * ^short = "Freitext-Dosierungsanweisungen, z. B. 'Maximal 3x täglich 1 Tablette bei Bedarf'"
   * ^definition = "Freitext-Dosierungsanweisungen, z. B. 'Maximal 3x täglich 1 Tablette bei Bedarf'. Als Quelle dient hier ausschließlich der Arzt oder Apotheker"

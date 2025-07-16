@@ -2,7 +2,7 @@
 
 ### Kurzbeschreibung
 
-Dieser Implementation Guide (IG) beschreibt die standardisierte und interoperable Abbildung medikationsbezogener Informationen und Prozesse im deutschen Gesundheitswesen auf Basis von HL7® FHIR®. Ziel ist es, sektorenübergreifende Anwendungsfälle – wie beispielsweise die strukturierte Dosierungsinformation im E-Rezept oder den elektronischen Medikationsplan – zu ermöglichen und zu harmonisieren.
+Dieser Implementation Guide (IG) beschreibt die standardisierte und interoperable Abbildung medikationsbezogener Informationen und Prozesse im deutschen Gesundheitswesen auf Basis von HL7® FHIR®. Ziel ist es, sektorenübergreifende Anwendungsfälle – wie beispielsweise die strukturierte Dosierungsinformation im E-Rezept, den elektronischen Medikationsplan oder den den Austausch mittels ISiK – zu ermöglichen und zu harmonisieren.
 
 Der IG enthält die Beschreibung der jeweiligen Anwendungsfälle sowie begleitende Dokumentation.
 

@@ -8,33 +8,45 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
 * obeys DosageDoseUnitSameCode
 
 * extension[generatedDosageInstructions]
-  * extension[algorithm]
-    * valueCoding 1..1 MS // The algorithm used to generate the text
+  * extension[algorithm] 1..
+    * valueCoding  // The algorithm used to generate the text
       * ^patternCoding.system = Canonical(DosageTextAlgorithmsCS)
       * ^patternCoding.code = #GermanDosageTextGenerator
       * version 1..1 MS
 * timing only TimingDgMP
 * doseAndRate 0..1 // Nur eine Dosierung für eine Medikation erlauben
+  * ^comment = "Begründung Einschränkung Kardinalität: Nur eine Dosierung pro Medikation ist in der ersten Ausbaustufe des dgMP vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
   * type 0..0
+    * ^comment = "Begründung Einschränkung Kardinalität: Eine 'type'-Angabe ist in der ersten Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
   * dose[x] only SimpleQuantity
+    * ^comment = "Begründung Einschränkung Datentyp: Nur einfache Mengenangaben sind in der ersten Ausbaustufe des dgMP vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
   * doseQuantity
   * doseQuantity from $kbv-dosiereinheit-vs
     * system 1..1 MS
     * code 1..1 MS
     * unit 1..1 MS
   * rate[x] 0..0
+    * ^comment = "Begründung Einschränkung Kardinalität: Eine Verabreichungsmenge pro Zeiteinheit ist in der ersten Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
 
 // Remove unused Fields
 * sequence 0..0
+  * ^comment = "Begründung Einschränkung Kardinalität: Eine Dosier-Sequenz ist in der ersten Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
 * additionalInstruction 0..0
 * patientInstruction 0..0
 * asNeeded[x] 0..0
+  * ^comment = "Begründung Einschränkung Kardinalität: Eine Bedarfsdosis ist in der ersten Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
 * site 0..0
+  * ^comment = "Begründung Einschränkung Kardinalität: Eine Verabreichungsstelle ist in der ersten Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
 * route 0..0
+  * ^comment = "Begründung Einschränkung Kardinalität: Ein Verabreichungsweg ist in der ersten Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
 * method 0..0
+  * ^comment = "Begründung Einschränkung Kardinalität: Eine Verabreichungsmethode ist in der ersten Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
 * maxDosePerPeriod 0..0
+  * ^comment = "Begründung Einschränkung Kardinalität: Eine maximale Dosis pro Zeitraum ist in der ersten Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
 * maxDosePerAdministration 0..0
+  * ^comment = "Begründung Einschränkung Kardinalität: Eine maximale Dosis pro Verabreichung ist in der ersten Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
 * maxDosePerLifetime 0..0
+  * ^comment = "Begründung Einschränkung Kardinalität: Eine maximale Dosis über die Lebenszeit ist in der ersten Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
 
 Invariant: DosageStructuredOrFreeText
 Description: "Die Dosierungsangabe darf entweder nur als Freitext oder nur als vollständige strukturierte Information erfolgen — eine Mischung ist nicht erlaubt."

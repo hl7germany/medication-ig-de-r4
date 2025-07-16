@@ -31,8 +31,6 @@ Die Dosiskonfiguration mit den Feldern <Liste> wird derzeit nicht unterstützt. 
 
 Die Umwandlung der strukturierten Felder erfolgt nur, wenn ausschließlich unterstützte Felder verwendet werden.
 
-Freitext-Dosierungen mit einer Angabe in `.text` werden so dargestellt, dass der enthaltene Text ausgegeben wird.
-
 #### Versionierung des Algorithmus
 
 Die Aktuelle Version des Algortimus mit unterstützten Felder ist in der [Python Referenzimplementierung](./dosage-to-text.py) unter `__version__` angegeben und reflektiert die Version des IG's.

@@ -15,14 +15,12 @@ Für Informationen wie im dgMP sichergestellt wird, dass der Text an einer Dosie
 
 Das Skript unterstützt aktuell nur eine Teilmenge der möglichen Felder für Dosierungsangaben.  
 Nicht unterstützte Felder führen dazu, dass die Konfiguration als „nicht unterstützt“ zurückgewiesen wird. Die nicht unterstützten Felder werden explizit benannt.
+
 Die unterstützten Felder in Dosage sind:
-  - text
   - doseAndRate.doseQuantity
   - timing.repeat.boundsDuration
   - timing.repeat.frequency
-  - timing.repeat.frequencyMax
   - timing.repeat.period
-  - timing.repeat.periodMax
   - timing.repeat.periodUnit
   - timing.repeat.dayOfWeek
   - timing.repeat.timeOfDay
@@ -43,8 +41,9 @@ Die einzelnen Komponenten der Dosierungsanweisung werden durch „ — “ (Leer
 Die Reihenfolge der Komponenten entspricht der folgenden Logik:
 
   1. Zeitabschnitt  
-     a) frequency UND period UND/ODER  
-     b) dayOfWeek
+     a) frequency UND period UND/ODER 
+     b) dayOfWeek 
+     c) falls kein Zeitabschnitt angegeben wird, wird "täglich" gesetzt
   2. Dosis (doseAndRate.doseQuantity)
   3. Geplante Frequenz innerhalb des Zeitabschnitts  
      a) timeOfDay  
@@ -80,4 +79,26 @@ und wird kontinuierlich weiterentwickelt.
 
 Hinweis:  
 Diese Seite beschreibt den aktuellen Stand der unterstützten Felder und die daraus resultierende Textgenerierung.  
-Für die vollständige Abdeckung aller FHIR-Dosierungsfelder ist eine schrittweise Erweiterung des Skripts vorgesehen. 
+Für die vollständige Abdeckung aller FHIR-Dosierungsfelder ist eine schrittweise Erweiterung des Skripts vorgesehen.
+
+### Übersetzungslogik
+
+Im folgenden wird für jedes Element ein Beispiel angegeben, wie die Überführung von strukturierter Angabe zu textueller Repräsentation aussieht.
+
+#### Dosage
+
+| Element                       | Darstellung (Deutsch)         | Beispiel(e)           |
+|-------------------------------|-------------------------------|-----------------------|
+| **doseAndRate.doseQuantity**  | `{value} {unit}`              | `50 Milligramm`<br>`2 Tabletten` |
+
+#### Timing
+
+| Element                | Darstellung (Deutsch)                    | Beispiel(e)                    |
+|------------------------|------------------------------------------|--------------------------------|
+| **repeat.boundsDuration** | `für {value} {unit}`                 | `für 7 Tage`                   |
+| **repeat.frequency**      | `{frequency} mal`<br>oder, wenn `period`/`periodUnit` gesetzt:<br>`{frequency} mal pro {period} {periodUnit}` | `3 mal täglich`<br>`2 mal pro Woche` |
+| **repeat.period**         | (falls `frequency` gesetzt)<br>`{frequency} mal alle {period} {periodUnit}` | `3 mal alle 8 Stunden`         |
+| **repeat.periodUnit**     | Zeit-Einheiten:<br>- `s` = Sekunden<br>- `min` = Minuten<br>- `h` = Stunden<br>- `d` = Tage<br>- `wk` = Wochen<br>- `mo` = Monate<br>- `a` = Jahre |                                |
+| **repeat.dayOfWeek**      | `am {dayOfWeek}`<br>Bei mehreren Tagen:<br>`am Montag, Mittwoch und Freitag`<br>(vollständige deutsche Wochentagsnamen verwenden) | `am Dienstag`<br>`am Montag, Mittwoch und Freitag` |
+| **repeat.timeOfDay**      | `um {timeOfDay}`<br>Bei mehreren Zeiten:<br>`um 10:00 und 15:00` | `um 8:00`<br>`um 10:00 und 15:00` |
+| **repeat.when**           | `{when}`<br>(z. B. `morgens`, `mittags`, `abends`, `nachts`)<br>Bei mehreren:<br>`morgens und abends` | `morgens`<br>`morgens und abends` |

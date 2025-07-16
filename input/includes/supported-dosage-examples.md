@@ -11,7 +11,7 @@
 |[MedicationRequest-Example-MR-Dosage-UnitStueck-1020](./MedicationRequest-Example-MR-Dosage-UnitStueck-1020.html) | täglich — je 1 Stück — morgens<br><br>täglich — je 2 Stück — abends |
 |[MedicationRequest-Example-MR-Dosage-comb-dayofweek-2](./MedicationRequest-Example-MR-Dosage-comb-dayofweek-2.html) | Montag und Freitag — je 1 Stück — morgens und abends<br><br>Dienstag und Samstag — je 2 Stück — morgens und abends |
 |[MedicationRequest-Example-MR-Dosage-10120](./MedicationRequest-Example-MR-Dosage-10120.html) | täglich — je 1 Stück — morgens<br><br>täglich — je 0.5 Stück — abends |
-|[MedicationRequest-Example-MR-Dosage-Freetext](./MedicationRequest-Example-MR-Dosage-Freetext.html) | täglich — 2 Tabletten morgens zum Frühstück |
+|[MedicationRequest-Example-MR-Dosage-Freetext](./MedicationRequest-Example-MR-Dosage-Freetext.html) |  |
 |[MedicationRequest-Example-MR-Dosage-comb-dayofweek-3](./MedicationRequest-Example-MR-Dosage-comb-dayofweek-3.html) | Montag und Freitag — je 1 Stück — morgens — für 3 Woche(n)<br><br>Montag und Freitag — je 2 Stück — mittags — für 3 Woche(n) |
 |[MedicationRequest-Example-MR-Dosage-1010-10-Days](./MedicationRequest-Example-MR-Dosage-1010-10-Days.html) | täglich — je 1 Stück — morgens und abends — für 10 Woche(n) |
 |[MedicationRequest-Example-MR-Dosage-tod-2-12am](./MedicationRequest-Example-MR-Dosage-tod-2-12am.html) | täglich — je 2 Stück — um 12:00 Uhr |

@@ -49,6 +49,7 @@ class GermanDosageTextGenerator:
         bounds = self.get_bounds(dosage)
         if bounds:
             elements.append(bounds)
+
         return " — ".join(elements)
     
     def get_unsupported_fields(self, dosage):

@@ -1,7 +1,7 @@
 Profile: DosageDgMP
 Parent: DosageDE
 Id: DosageDgMP
-Title: "Dosage für dgMP"
+Title: "Dosage dgMP"
 Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenommen wird/wurde oder eingenommen werden soll."
 * obeys DosageStructuredOrFreeText
 * obeys DosageStructuredRequiresBoth

@@ -3,8 +3,8 @@
 Profile: DosageDE
 Parent: Dosage
 Id: DosageDE
-Title: "Dosage für deutschlandweite Nutzung"
-Description: "Gibt an, wie das Medikament vom Patienten eingenommen wird/wurde oder eingenommen werden soll."
+Title: "Dosage DE"
+Description: "Gibt an, wie das Medikament eingenommen oder verabreicht wurde bzw. eingenommen oder verabreicht werden soll – entweder selbst vom Patienten eingenommen oder bei Fremdverabreichung von Dritten (z. B. Leistungserbringer, Angehörige) verabreicht."
 * extension contains GeneratedDosageInstructionsEx named generatedDosageInstructions 0..1 MS
 * text 0..1 MS
   * ^short = "Freitext-Dosierungsanweisungen, z. B. 'Maximal 3x täglich 1 Tablette bei Bedarf'"

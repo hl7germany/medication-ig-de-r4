@@ -1,6 +1,6 @@
 Extension: GeneratedDosageInstructionsEx
 Id: GeneratedDosageInstructions
-Title: "Maschinell erzeugte Dosieranweisung"
+Title: "Generated Dosage Instructions"
 Description: "Diese Extension enthält die automatisch generierte textuelle Dosierungsanweisung, die auf Basis der bereitgestellten strukturierten Dosierungsinformationen erstellt wurde."
 Context: Dosage
 * extension contains 

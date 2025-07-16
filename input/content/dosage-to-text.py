@@ -7,7 +7,7 @@ __version__ = "1.0.0"
 
 class GermanDosageTextGenerator:
     def generate_single_dosage_text(self, dosage):
-        
+
         elements = []
     # Nicht unterstützte Felder dürfen nicht angegeben werden
         unsupported_fields = self.get_unsupported_fields(dosage)
@@ -15,11 +15,10 @@ class GermanDosageTextGenerator:
             felder = ", ".join(unsupported_fields)
             return f"Die Dosiskonfiguration mit den Feldern {felder} wird in der aktuellen Ausbaustufe nicht unterstützt."
         
-    # Rückgabe der Freitextdosierung, falls vorhanden
-        freeText = dosage.get('text', {})
-        if freeText:
-            return freeText
-        
+        # If free-text override is present, return empty string
+        if dosage.get('text'):
+            return ""
+
     # 1. Bestimmen des Zeitabschnitts
         # a) Frequency
         frequency = self.get_frequency(dosage)
@@ -45,12 +44,11 @@ class GermanDosageTextGenerator:
         when = self.get_when(dosage)
         if when:
             elements.append(when)
-        
+
     # 4. Gesamtdauer der Anwendung
         bounds = self.get_bounds(dosage)
         if bounds:
             elements.append(bounds)
-
         return " — ".join(elements)
     
     def get_unsupported_fields(self, dosage):
@@ -254,7 +252,7 @@ class GermanDosageTextGenerator:
             'NIGHT': 'nachts'
         }
         return when_codes.get(when.upper(), when)
-    
+
 def main():
     if len(sys.argv) < 2:
         print('Verwendung: python dosage-generator.py <dosage.json>', file=sys.stderr)

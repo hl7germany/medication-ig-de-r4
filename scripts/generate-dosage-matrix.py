@@ -85,7 +85,8 @@ def generate_matrix(input_folder, script_path, output_path):
             dosages = extract_dosages(resource)
             if not dosages:
                 continue  # skip if no dosages
-            add_suffix = len(dosages) > 1
+            display_name = os.path.splitext(filename)[0]
+            file_link = f"[{display_name}](./{filename.replace('.json', '.html')})"
             for idx, dosage in enumerate(dosages, start=1):
                 if "timing" not in dosage:
                     continue  # skip if no timing
@@ -107,14 +108,11 @@ def generate_matrix(input_folder, script_path, output_path):
                         os.unlink(temp_path)
                 except Exception as e:
                     result = f"Fehler beim Schreiben/Verarbeiten der Dosierung: {e}"
-                # Only add -dosage-n to the display name if there are multiple dosages
-                display_name = os.path.splitext(filename)[0]
-                if add_suffix:
-                    display_name = f"{display_name}-dosage-{idx}"
-                file_link = f"[{display_name}](./{filename.replace('.json', '.html')})"
                 dose_quantity = extract_dose_quantity(dosage)
                 fields = extract_timing_matrix_fields(timing)
-                row = [file_link, result, dose_quantity]
+                # Only show the file link for the first dosage, blank for others
+                this_file_link = file_link if idx == 1 else ""
+                row = [this_file_link, result, dose_quantity]
                 row += [str(fields.get(key, "")) for key in COLUMN_KEYS]
                 matrix_rows.append(row)
         except Exception as e:

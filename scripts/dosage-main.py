@@ -21,9 +21,9 @@ def main():
     subprocess.run(['python3', unsupported_table_script, input_folder, output_folder, dosage_to_text_script], check=True)
 
     # # 3. Generate the dosage matrix
-    # print("Generating dosage matrix...")
-    # matrix_script = os.path.join(base_dir, "generate-dosage-matrix.py")
-    # subprocess.run(['python3', matrix_script], check=True)
+    print("Generating dosage matrix...")
+    matrix_script = os.path.join(base_dir, "generate-dosage-matrix.py")
+    subprocess.run(['python3', matrix_script, input_folder, output_folder, dosage_to_text_script], check=True)
 
     print("All steps completed.")
 

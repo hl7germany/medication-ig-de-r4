@@ -128,11 +128,18 @@ def generate_matrix(input_folder, script_path, output_path):
         f.write(md_table)
     print(f"Matrix table written")
 
+def main():
+    if len(sys.argv) != 4:
+        print("Usage: python script.py <input_folder> <output_folder> <dosage_to_text_script>")
+        sys.exit(1)
+
+    input_folder = sys.argv[1]
+    output_folder = sys.argv[2]
+    dosage_to_text_script = sys.argv[3]
+    os.makedirs(output_folder, exist_ok=True)
+
+    matrix_md_path = os.path.join(output_folder, "dosage-timing-matrix.md")
+    generate_matrix(input_folder, dosage_to_text_script, matrix_md_path)
+
 if __name__ == "__main__":
-    base_dir = os.path.dirname(os.path.abspath(__file__))
-    input_folder = os.path.normpath(os.path.join(base_dir, "../fsh-generated/resources"))
-    script_path = os.path.join(base_dir, "dosage-to-text.py")
-    output_dir = os.path.normpath(os.path.join(base_dir, "../input/includes"))
-    os.makedirs(output_dir, exist_ok=True)
-    matrix_md_path = os.path.join(output_dir, "dosage-timing-matrix.md")
-    generate_matrix(input_folder, script_path, matrix_md_path)
+    main()

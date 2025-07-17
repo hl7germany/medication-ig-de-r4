@@ -11,6 +11,9 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
   * timing.repeat
     * dayOfWeek[+] = #tue
     * dayOfWeek[+] = #thu
+    * frequency = 2
+    * period = 1
+    * periodUnit = #wk
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
 Instance: Example-MR-Dosage-weekday-3t
@@ -27,6 +30,9 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
     * dayOfWeek[+] = #tue
     * dayOfWeek[+] = #thu
     * dayOfWeek[+] = #sat
+    * frequency = 3
+    * period = 1
+    * periodUnit = #wk
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
 Instance: Example-MR-Dosage-weekday-2t-1t
@@ -41,11 +47,17 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
 * dosageInstruction[+]
   * timing.repeat
     * dayOfWeek[+] = #mon
+    * frequency = 1
+    * period = 1
+    * periodUnit = #wk
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
 * dosageInstruction[+]
   * timing.repeat
     * dayOfWeek[+] = #thu
+    * frequency = 1
+    * period = 1
+    * periodUnit = #wk
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 Instance: Example-MR-Dosage-weekday-2t-bound
@@ -60,6 +72,9 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
 * dosageInstruction[+]
   * timing.repeat
     * dayOfWeek[+] = #mon
+    * frequency = 1
+    * period = 1
+    * periodUnit = #wk
     * boundsDuration = 10 $ucum#wk "Woche(n)"
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
@@ -78,4 +93,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
     * dayOfWeek[+] = #tue
     * dayOfWeek[+] = #thu
     * dayOfWeek[+] = #mon
+    * frequency = 4
+    * period = 1
+    * periodUnit = #wk
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"

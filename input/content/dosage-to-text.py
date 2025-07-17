@@ -28,9 +28,7 @@ class GematikDosageTextGenerator:
         days_of_week = self.get_days_of_week(dosage)
         if days_of_week:
             elements.append(days_of_week)
-         # c) Wenn weder frequency noch days_of_week gesetzt sind, "täglich" einfügen
-        if not frequency and not days_of_week:
-            elements.append("täglich")
+         
     # 2. Dosis
         dose = self.get_dose(dosage)
         if dose:
@@ -108,11 +106,11 @@ class GematikDosageTextGenerator:
         if frequency is None and period is None and period_unit is None:
             return ""
         if period_unit == 'd' and period == 1:
-            return f"{frequency} x täglich"
-
+            return "täglich" if frequency == 1 else f"{frequency} x täglich"
+                
         if period_unit == 'wk' and period == 1:
-            return f"{frequency} x wöchentlich"
-
+            return "wöchentlich" if frequency == 1 else f"{frequency} x wöchentlich"
+                
         if frequency == 1:
             period_text = self.format_period_unit(period, period_unit)
             return f"alle {period_text}"

@@ -145,14 +145,12 @@ Expression: "( /* Detect 4-Schema */
   | %resource.ofType(MedicationDispense).dosageInstruction
   | %resource.ofType(MedicationStatement).dosage
 ).all(
-  (
-    timing.repeat.when.exists() and
-    timing.repeat.frequency.empty() and
-    timing.repeat.period.empty() and
-    timing.repeat.periodUnit.empty() and
-    timing.repeat.timeOfDay.empty() and
-    timing.repeat.dayOfWeek.empty()
-  )
+    timing.repeat.frequency.exists() and
+    timing.repeat.period.exists() and
+    timing.repeat.periodUnit.exists() and
+    timing.repeat.dayOfWeek.empty() and
+    timing.repeat.when.exists() and 
+    timing.repeat.timeOfDay.empty()
   implies
   (
     (
@@ -179,12 +177,12 @@ Expression: "( /* Detect TimeOfDay */
   | %resource.ofType(MedicationStatement).dosage
 ).all(
   (
-    timing.repeat.timeOfDay.exists() and
-    timing.repeat.frequency.empty() and
-    timing.repeat.period.empty() and
-    timing.repeat.periodUnit.empty() and
-    timing.repeat.when.empty() and
-    timing.repeat.dayOfWeek.empty()
+    timing.repeat.frequency.exists() and
+    timing.repeat.period.exists() and
+    timing.repeat.periodUnit.exists() and
+    timing.repeat.dayOfWeek.empty() and
+    timing.repeat.timeOfDay.exists()
+    timing.repeat.when.empty() and 
   )
   implies
   (
@@ -211,11 +209,11 @@ Expression: "( /* Detect DayOfWeek */
   | %resource.ofType(MedicationStatement).dosage
 ).all(
   (
+    timing.repeat.frequency.exists() and
+    timing.repeat.period.exists() and
+    timing.repeat.periodUnit.exists() and
     timing.repeat.dayOfWeek.exists() and
-    timing.repeat.frequency.empty() and
-    timing.repeat.period.empty() and
-    timing.repeat.periodUnit.empty() and
-    timing.repeat.when.empty() and
+    timing.repeat.when.empty() and 
     timing.repeat.timeOfDay.empty()
   )
   implies

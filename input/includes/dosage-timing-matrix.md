@@ -12,7 +12,7 @@
 | [MedicationRequest-Example-MR-Dosage-UnitStueck-1020](./MedicationRequest-Example-MR-Dosage-UnitStueck-1020.html) | täglich: morgens — je 1 Stück | 1 Stück |  |  | 1 | 1 | d |  |  | MORN |  |
 |  | täglich: abends — je 2 Stück | 2 Stück |  |  | 1 | 1 | d |  |  | EVE |  |
 | [MedicationRequest-Example-MR-Dosage-comb-dayofweek-2](./MedicationRequest-Example-MR-Dosage-comb-dayofweek-2.html) | 4 x wöchentlich: Montag und Freitag — morgens und abends — je 1 Stück | 1 Stück |  |  | 4 | 1 | wk | mon, fri |  | MORN, EVE |  |
-|  | 2 x wöchentlich: Montag und Freitag — mittags — je 2 Stück | 2 Stück |  |  | 2 | 1 | wk | mon, fri |  | NOON |  |
+|  | 4 x wöchentlich: Montag und Freitag — morgens und abends — je 2 Stück | 2 Stück |  |  | 4 | 1 | wk | mon, fri |  | MORN, EVE |  |
 | [MedicationRequest-Example-MR-Dosage-10120](./MedicationRequest-Example-MR-Dosage-10120.html) | täglich: morgens — je 1 Stück | 1 Stück |  |  | 1 | 1 | d |  |  | MORN |  |
 |  | täglich: abends — je 0.5 Stück | 0.5 Stück |  |  | 1 | 1 | d |  |  | EVE |  |
 | [MedicationRequest-Example-MR-Dosage-comb-dayofweek-3](./MedicationRequest-Example-MR-Dosage-comb-dayofweek-3.html) | für 3 Woche(n) 2 x wöchentlich: Montag und Freitag — morgens — je 1 Stück | 1 Stück |  |  | 2 | 1 | wk | mon, fri |  | MORN | {'system': 'http://unitsofmeasure.org', 'value': 3, 'code': 'wk', 'unit': 'Woche(n)'} |

@@ -114,7 +114,7 @@ class GematikDosageTextGenerator:
             return f"alle {period_text}"
         freq_text = f"{frequency} x"
         period_text = self.format_period_unit(period, period_unit)
-        return f"{freq_text} pro {period_text}"
+        return f"{freq_text} alle {period_text}"
 
     def get_days_of_week(self, dosage):
         timing = dosage.get('timing', {})

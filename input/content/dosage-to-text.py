@@ -5,7 +5,7 @@ import os
 
 __version__ = "1.0.0"
 
-class GermanDosageTextGenerator:
+class GematikDosageTextGenerator:
     def generate_single_dosage_text(self, dosage):
 
         elements = []
@@ -251,7 +251,7 @@ def main():
     try:
         with open(file_path, 'r', encoding='utf-8') as file:
             dosage = json.load(file)
-        generator = GermanDosageTextGenerator()
+        generator = GematikDosageTextGenerator()
         result = generator.generate_single_dosage_text(dosage)
         print(result)
     except json.JSONDecodeError as e:

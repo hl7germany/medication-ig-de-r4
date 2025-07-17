@@ -17,13 +17,21 @@ def build_extension(dosage_text):
                 "url": "text",
                 "valueString": dosage_text
             },
+                        {
+                "url": "language",
+                "valueCode": "de-DE"
+            },
             {
                 "url": "algorithm",
                 "valueCoding": {
-                    "code": "GermanDosageTextGenerator",
-                    "system": "http://ig.fhir.de/igs/medication/CodeSystem/DosageTextAlgorithms",
+                    "code": "GematikDosageTextGenerator",
+                    "system": "http://ig.fhir.de/igs/medication/CodeSystem/DosageTextAlgorithm",
                     "version": "1.0.0"
                 }
+            },
+                                   {
+                "url": "algorithmVersion",
+                "valueString": "1.0.0"
             }
         ]
     }

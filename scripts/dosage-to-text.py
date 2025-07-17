@@ -7,9 +7,7 @@ __version__ = "1.0.0"
 
 class GematikDosageTextGenerator:
     def generate_single_dosage_text(self, dosage):
-
-        elements = []
-    # Nicht unterstützte Felder dürfen nicht angegeben werden
+        # Nicht unterstützte Felder dürfen nicht angegeben werden
         unsupported_fields = self.get_unsupported_fields(dosage)
         if unsupported_fields:
             felder = ", ".join(unsupported_fields)
@@ -19,36 +17,36 @@ class GematikDosageTextGenerator:
         if dosage.get('text'):
             return ""
 
-    # 1. Bestimmen des Zeitabschnitts
-        # a) Frequency
-        frequency = self.get_frequency(dosage)
-        if frequency:
-            elements.append(frequency)
-        # b) Days of week
-        days_of_week = self.get_days_of_week(dosage)
-        if days_of_week:
-            elements.append(days_of_week)
-         
-    # 2. Dosis
-        dose = self.get_dose(dosage)
-        if dose:
-            elements.append(dose)
-    # 3. Geplante Frequenz innerhalb des Zeitabschnitts
-        # a) Times of day
-        times_of_day = self.get_times_of_day(dosage)
-        if times_of_day:
-            elements.append(times_of_day)
-        # b) When
-        when = self.get_when(dosage)
-        if when:
-            elements.append(when)
-
-    # 4. Gesamtdauer der Anwendung
+        # 1. Gesamtdauer der Anwendung
         bounds = self.get_bounds(dosage)
-        if bounds:
-            elements.append(bounds)
 
-        return " — ".join(elements)
+        # 2. Bestimmen des Zeitabschnitts
+        frequency = self.get_frequency(dosage)
+        
+        # Wochentag
+        days_of_week = self.get_days_of_week(dosage)
+
+        # 3. Geplante Frequenz innerhalb des Zeitabschnitts (Times of day + When)
+        times_of_day = self.get_times_of_day(dosage)
+        when = self.get_when(dosage)
+        geplante_frequenz = " ".join(filter(None, [times_of_day, when])).strip()
+
+        # 4. Angaben zur Einzeldosis
+        dose = self.get_dose(dosage)
+
+        # Zusammenbauen im gewünschten Format
+        left = " ".join(filter(None, [bounds, frequency])).strip()
+        right = " — ".join(filter(None, [days_of_week, geplante_frequenz, dose])).strip()
+
+        if left and right:
+            return f"{left}: {right}"
+        elif left:
+            return left
+        elif right:
+            return right
+        else:
+            return ""
+
     
     def get_unsupported_fields(self, dosage):
         deny_dosage_fields = {
@@ -236,7 +234,7 @@ class GematikDosageTextGenerator:
             'MORN': 'morgens',
             'NOON': 'mittags',
             'EVE': 'abends',
-            'NIGHT': 'zur nachts'
+            'NIGHT': 'zur nacht'
         }
         return when_codes.get(when.upper(), when)
 

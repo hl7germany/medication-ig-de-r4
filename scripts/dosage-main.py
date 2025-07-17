@@ -7,7 +7,7 @@ def main():
     input_folder = os.path.normpath(os.path.join(base_dir, "../fsh-generated/resources"))
     output_folder = os.path.normpath(os.path.join(base_dir, "../input/includes"))
     dosage_to_text_script = os.path.join(base_dir, "dosage-to-text.py")
-    extension_script = os.path.join(base_dir, "add-dosage-extension.py")
+    extension_script = os.path.join(base_dir, "dosage-add-extension.py")
 
     # 1. Add dosage extensions to resources
     print("Adding dosage extensions...")
@@ -17,12 +17,12 @@ def main():
 
     # 2. Generate the supported/unsupported table
     print("Generating unsupported table...")
-    unsupported_table_script = os.path.join(base_dir, "generate-unsupported-table.py")
+    unsupported_table_script = os.path.join(base_dir, "dosage-generate-unsupported-table.py")
     subprocess.run(['python3', unsupported_table_script, input_folder, output_folder, dosage_to_text_script], check=True)
 
     # # 3. Generate the dosage matrix
     print("Generating dosage matrix...")
-    matrix_script = os.path.join(base_dir, "generate-dosage-matrix.py")
+    matrix_script = os.path.join(base_dir, "dosage-generate-matrix.py")
     subprocess.run(['python3', matrix_script, input_folder, output_folder, dosage_to_text_script], check=True)
 
     print("All steps completed.")

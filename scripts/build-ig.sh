@@ -9,7 +9,7 @@ Abfolge der Erstellung von Ressourcen und Dokumenten
 sushi .
 
 # Build Dosage Files
-python3 scripts/run-dosage-generate.py
+python3 scripts/dosage-main.py
 
 # Copy current script into the IG
 rm input/content/dosage-to-text.py
@@ -19,4 +19,4 @@ cp scripts/dosage-to-text.py input/content
 ./_genonce.sh -no-sushi
 
 # Run Error checks
-python3 scripts/error-check.py
+python3 scripts/ig-expected-error-check.py

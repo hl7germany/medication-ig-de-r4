@@ -1,14 +1,16 @@
-import json
+import os
 import sys
+import json
+import subprocess
+import shutil
 
-# The URL to filter/remove and use in the new extension
 REMOVE_EXTENSION_URL = "http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructions"
 
-def add_extension_to_medicationresource(file_path, dosage_text):
-    with open(file_path, 'r', encoding='utf-8') as f:
-        data = json.load(f)
-    # Build the extension, using the variable
-    extension = {
+def filter_extensions(extensions):
+    return [ext for ext in extensions if ext.get("url") != REMOVE_EXTENSION_URL]
+
+def build_extension(dosage_text):
+    return {
         "url": REMOVE_EXTENSION_URL,
         "extension": [
             {
@@ -26,50 +28,96 @@ def add_extension_to_medicationresource(file_path, dosage_text):
         ]
     }
 
-    # Helper function to filter extensions
-    def filter_extensions(extensions):
-        return [ext for ext in extensions if ext.get("url") != REMOVE_EXTENSION_URL]
+def get_dosage_arrays(resource):
+    rtype = resource.get("resourceType")
+    if rtype == "MedicationRequest" or rtype == "MedicationDispense":
+        return [resource.get("dosageInstruction", [])]
+    elif rtype == "MedicationStatement":
+        return [resource.get("dosage", [])]
+    return []
 
-    # Handle MedicationRequest: dosageInstruction
-    if "dosageInstruction" in data and data["dosageInstruction"]:
-        for dosage in data["dosageInstruction"]:
-            # Filter existing extensions
+def run_dosage_to_text(script_path, dosage):
+    import tempfile
+    with tempfile.NamedTemporaryFile("w", delete=False, suffix=".json", encoding="utf-8") as tf:
+        json.dump(dosage, tf, ensure_ascii=False, indent=2)
+        temp_path = tf.name
+    try:
+        output = subprocess.check_output(['python3', script_path, temp_path], text=True).strip()
+        return output.replace('\n', '\n')
+    except Exception as e:
+        return f"Fehler beim Verarbeiten der Dosierung: {e}"
+    finally:
+        os.unlink(temp_path)
+
+def process_file(input_path, output_path, script_path):
+    with open(input_path, 'r', encoding='utf-8') as f:
+        resource = json.load(f)
+
+    changed = False
+    for dosage_array in get_dosage_arrays(resource):
+        for dosage in dosage_array:
+            # Skip dosages with a "text" field
+            if "text" in dosage:
+                continue
+            # Remove existing extension
             if "extension" in dosage:
-                existing_exts = filter_extensions(dosage["extension"])
-            else:
-                existing_exts = []
-            # Only add the new extension if dosage_text is non-empty
+                old = len(dosage["extension"])
+                dosage["extension"] = filter_extensions(dosage["extension"])
+                if len(dosage["extension"]) != old:
+                    changed = True
+                if not dosage["extension"]:
+                    del dosage["extension"]
+                    changed = True
+
+            # Generate text for this dosage
+            dosage_text = run_dosage_to_text(script_path, dosage)
+            # Only add if there's a result
             if dosage_text:
-                existing_exts.append(extension)
-            # Only set the extension property if there's at least one extension
-            if existing_exts:
-                dosage["extension"] = existing_exts
-            else:
-                dosage.pop("extension", None)
+                if "extension" not in dosage:
+                    dosage["extension"] = []
+                dosage["extension"].append(build_extension(dosage_text))
+                changed = True
+    print(resource)
+    # Write to output folder (overwrite or new file)
+    with open(output_path, 'w', encoding='utf-8') as f:
+        json.dump(resource, f, indent=2, ensure_ascii=False)
 
-    # Handle MedicationStatement: dosage
-    if "dosage" in data and data["dosage"]:
-        for dosage in data["dosage"]:
-            # Filter existing extensions
-            if "extension" in dosage:
-                existing_exts = filter_extensions(dosage["extension"])
-            else:
-                existing_exts = []
-            # Only add the new extension if dosage_text is non-empty
-            if dosage_text:
-                existing_exts.append(extension)
-            # Only set the extension property if there's at least one extension
-            if existing_exts:
-                dosage["extension"] = existing_exts
-            else:
-                dosage.pop("extension", None)
-
-    # Overwrite the file (or write to a new file)
-    with open(file_path, 'w', encoding='utf-8') as f:
-        json.dump(data, f, indent=2, ensure_ascii=False)
-
-if __name__ == "__main__":
-    if len(sys.argv) < 3:
-        print("Usage: python3 add_dosage_extension.py path-to-medicationresource-file dosage-text")
+def main():
+    if len(sys.argv) != 4:
+        print("Usage: python3 add-dosage-extensions.py input_folder output_folder dosage-to-text.py")
         sys.exit(1)
-    add_extension_to_medicationresource(sys.argv[1], sys.argv[2])
+
+    input_folder = sys.argv[1]
+    output_folder = sys.argv[2]
+    dosage_to_text_script_path = sys.argv[3]
+
+    os.makedirs(output_folder, exist_ok=True)
+    
+    # Filter only Valid files
+    RESOURCE_PREFIXES = ("MedicationRequest", "MedicationDispense", "MedicationStatement")
+
+    files = [
+        f for f in os.listdir(input_folder)
+        if (
+            f.endswith('.json') and
+            os.path.isfile(os.path.join(input_folder, f)) and
+            f.startswith(RESOURCE_PREFIXES) and
+            "Invalid" not in f and
+            "Unsupported" not in f
+        )
+    ]
+
+
+    for filename in files:
+        input_path = os.path.join(input_folder, filename)
+        output_path = os.path.join(output_folder, filename)
+        try:
+            process_file(input_path, output_path, dosage_to_text_script_path)
+        except Exception as e:
+            print(f"Error processing {filename}: {e}")
+            shutil.copy2(input_path, output_path)
+
+    print(f"Processed add dosage extension.")
+    
+if __name__ == "__main__":
+    main()

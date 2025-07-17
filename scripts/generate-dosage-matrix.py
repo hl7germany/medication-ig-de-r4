@@ -126,7 +126,7 @@ def generate_matrix(input_folder, script_path, output_path):
         md_table += "| " + " | ".join(row) + " |\n"
     with open(output_path, "w", encoding="utf-8") as f:
         f.write(md_table)
-    print(f"Matrix table written to: {output_path}")
+    print(f"Matrix table written")
 
 if __name__ == "__main__":
     base_dir = os.path.dirname(os.path.abspath(__file__))

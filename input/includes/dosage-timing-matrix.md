@@ -3,10 +3,10 @@
 | [MedicationRequest-Example-MR-Dosage-comb-interval-1-dosage-1](./MedicationRequest-Example-MR-Dosage-comb-interval-1.html) | alle 2 Tage — je 1 Stück — um 08:00 Uhr | 1 Stück |  |  | 1 | 2 | d |  | 08:00:00 |  |  |
 | [MedicationRequest-Example-MR-Dosage-comb-interval-1-dosage-2](./MedicationRequest-Example-MR-Dosage-comb-interval-1.html) | alle 2 Tage — je 2 Stück — um 18:00 Uhr | 2 Stück |  |  | 1 | 2 | d |  | 18:00:00 |  |  |
 | [MedicationRequest-Example-MR-Dosage-interval-3d](./MedicationRequest-Example-MR-Dosage-interval-3d.html) | alle 3 Tage — je 1 Stück | 1 Stück |  |  | 1 | 3 | d |  |  |  |  |
-| [MedicationRequest-Example-MR-Dosage-1111](./MedicationRequest-Example-MR-Dosage-1111.html) | täglich — je 1 Stück — morgens, mittags, abends und nachts | 1 Stück |  |  |  |  |  |  |  | EVE, MORN, NIGHT, NOON |  |
+| [MedicationRequest-Example-MR-Dosage-1111](./MedicationRequest-Example-MR-Dosage-1111.html) | täglich — je 1 Stück — morgens, mittags, abends und zur nachts | 1 Stück |  |  |  |  |  |  |  | EVE, MORN, NIGHT, NOON |  |
 | [MedicationRequest-Example-MR-Dosage-UnitMg-1000](./MedicationRequest-Example-MR-Dosage-UnitMg-1000.html) | täglich — je 400 mg — morgens | 400 mg |  |  |  |  |  |  |  | MORN |  |
 | [MedicationRequest-Example-MR-Dosage-interval-2d-bound](./MedicationRequest-Example-MR-Dosage-interval-2d-bound.html) | alle 2 Tage — je 2 Stück — für 6 Woche(n) | 2 Stück |  |  | 1 | 2 | d |  |  |  | {'system': 'http://unitsofmeasure.org', 'value': 6, 'code': 'wk', 'unit': 'Woche(n)'} |
-| [MedicationRequest-Example-MR-Dosage-interval-4times-d](./MedicationRequest-Example-MR-Dosage-interval-4times-d.html) | viermal täglich — je 1 Stück | 1 Stück |  |  | 4 | 1 | d |  |  |  |  |
+| [MedicationRequest-Example-MR-Dosage-interval-4times-d](./MedicationRequest-Example-MR-Dosage-interval-4times-d.html) | 4 x täglich — je 1 Stück | 1 Stück |  |  | 4 | 1 | d |  |  |  |  |
 | [MedicationRequest-Example-MR-Dosage-1010-Unsorted](./MedicationRequest-Example-MR-Dosage-1010-Unsorted.html) | täglich — je 1 Stück — morgens und abends | 1 Stück |  |  |  |  |  |  |  | EVE, MORN |  |
 | [MedicationRequest-Example-MR-Dosage-interval-2wk](./MedicationRequest-Example-MR-Dosage-interval-2wk.html) | alle 2 Wochen — je 1 Stück | 1 Stück |  |  | 1 | 2 | wk |  |  |  |  |
 | [MedicationRequest-Example-MR-Dosage-UnitStueck-1020-dosage-1](./MedicationRequest-Example-MR-Dosage-UnitStueck-1020.html) | täglich — je 1 Stück — morgens | 1 Stück |  |  |  |  |  |  |  | MORN |  |
@@ -39,6 +39,6 @@
 | [MedicationRequest-Example-MR-Dosage-1000](./MedicationRequest-Example-MR-Dosage-1000.html) | täglich — je 1 Stück — morgens | 1 Stück |  |  |  |  |  |  |  | MORN |  |
 | [MedicationRequest-Example-MR-Dosage-1020-dosage-1](./MedicationRequest-Example-MR-Dosage-1020.html) | täglich — je 1 Stück — morgens | 1 Stück |  |  |  |  |  |  |  | MORN |  |
 | [MedicationRequest-Example-MR-Dosage-1020-dosage-2](./MedicationRequest-Example-MR-Dosage-1020.html) | täglich — je 2 Stück — abends | 2 Stück |  |  |  |  |  |  |  | EVE |  |
-| [MedicationRequest-Example-MR-Dosage-comb-interval-2](./MedicationRequest-Example-MR-Dosage-comb-interval-2.html) | einmal wöchentlich — je 1 Stück — morgens | 1 Stück |  |  | 1 | 1 | wk |  |  | MORN |  |
+| [MedicationRequest-Example-MR-Dosage-comb-interval-2](./MedicationRequest-Example-MR-Dosage-comb-interval-2.html) | 1 x wöchentlich — je 1 Stück — morgens | 1 Stück |  |  | 1 | 1 | wk |  |  | MORN |  |
 | [MedicationRequest-Example-MR-Dosage-tod-multi-bound-dosage-1](./MedicationRequest-Example-MR-Dosage-tod-multi-bound.html) | täglich — je 2 Stück — um 08:00 Uhr — für 10 Tag(e) | 2 Stück |  |  |  |  |  |  | 08:00:00 |  | {'system': 'http://unitsofmeasure.org', 'value': 10, 'code': 'd', 'unit': 'Tag(e)'} |
 | [MedicationRequest-Example-MR-Dosage-tod-multi-bound-dosage-2](./MedicationRequest-Example-MR-Dosage-tod-multi-bound.html) | täglich — je 1 Stück — um 11:00 Uhr, 14:00 Uhr, 17:00 Uhr, 20:00 Uhr, 23:00 Uhr — für 10 Tag(e) | 1 Stück |  |  |  |  |  |  | 11:00:00, 14:00:00, 17:00:00, 20:00:00, 23:00:00 |  | {'system': 'http://unitsofmeasure.org', 'value': 10, 'code': 'd', 'unit': 'Tag(e)'} |

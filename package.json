@@ -2,10 +2,12 @@
   "name": "dosageig",
   "version": "0.1.0",
   "description": "Put a description here",
-  "dependencies": {
-    "hl7.fhir.r4.core": "4.0.1"
-  },
   "fhirVersions": [
     "4.0.1"
-  ]
+  ],
+  "dependencies": {
+    "hl7.fhir.r4.core": "4.0.1",
+    "de.basisprofil.r4": "1.5.0",
+    "de.gematik.epa.medication": "1.1.5"
+  }
 }

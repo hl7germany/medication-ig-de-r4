@@ -16,14 +16,15 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * obeys TimingOnlyOnePeriodForDayOfWeek
   * obeys TimingOnlyOneTimeForInterval
   * obeys TimingOnlyOneBounds
+  * obeys TimingFrequencyCount
   * bounds[x] MS
   * bounds[x] only Duration
     * ^comment = "Begründung Einschränkung Datentyp: Nur eine Angabe zur Dauer ist in der ersten Ausbaustufe des dgMP vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
   * boundsDuration MS
-  * boundsDuration.code 1..1 MS
-  * boundsDuration.system 1..1 MS
-  * boundsDuration.unit 1..1 MS
-  * boundsDuration.code from DurationUnitsOfTimeDgMPVS (required)
+    * code 1..1 MS
+    * system 1..1 MS
+    * unit 1..1 MS
+    * code from DurationUnitsOfTimeDgMPVS (required)
   * frequency MS
   * period MS
   * periodUnit MS
@@ -52,34 +53,27 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
     * ^short = "Zeitversatz"
     * ^comment = "Begründung Einschränkung Kardinalität: Ein Zeitversatz ist in der ersten Ausbaustufe desdgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
 
+Invariant: TimingFrequencyCount
+Description: "The frequency of the timing needs to reflect the count of timeOfDay or when"
+Expression: "(when.exists() and dayOfWeek.empty() implies when.count() = frequency)
+and
+(when.exists() and dayOfWeek.exists() implies (when.count() * dayOfWeek.count()) = frequency)
+and
+(timeOfDay.exists() and dayOfWeek.empty() implies timeOfDay.count() = frequency)
+and
+(timeOfDay.exists() and dayOfWeek.exists() implies (timeOfDay.count() * dayOfWeek.count()) = frequency)
+and
+(dayOfWeek.exists() and timeOfDay.empty() and when.empty implies dayOfWeek.count() = frequency)"
+Severity: #error
+
 Invariant: TimingOnlyOneType
 Description: "Only one kind of Timing is allowed. Current allowed timings: 4-Scheme, TimeOfDay, DayOfWeek, Interval, DayOfWeek and Time/4-Schema, Interval and Time/4-Schema"
-Expression: "( /* 4-Schema */
-%resource.ofType(MedicationRequest).dosageInstruction | ofType(MedicationDispense).dosageInstruction | ofType(MedicationStatement).dosage).all(
-timing.repeat.when.exists() and
-timing.repeat.frequency.empty() and
-timing.repeat.period.empty() and
-timing.repeat.periodUnit.empty() and
-timing.repeat.timeOfDay.empty() and
-timing.repeat.dayOfWeek.empty()
-) or
-
-/* TimeOfDay */
-(%resource.ofType(MedicationRequest).dosageInstruction | ofType(MedicationDispense).dosageInstruction | ofType(MedicationStatement).dosage).all(
-timing.repeat.timeOfDay.exists() and
-timing.repeat.frequency.empty() and
-timing.repeat.period.empty() and
-timing.repeat.periodUnit.empty() and
-timing.repeat.when.empty() and
-timing.repeat.dayOfWeek.empty()
-) or
-
-/* DayOfWeek */
+Expression: "(/* DayOfWeek */
 (%resource.ofType(MedicationRequest).dosageInstruction | ofType(MedicationDispense).dosageInstruction | ofType(MedicationStatement).dosage).all(
 timing.repeat.dayOfWeek.exists() and
-timing.repeat.frequency.empty() and
-timing.repeat.period.empty() and
-timing.repeat.periodUnit.empty() and
+(timing.repeat.frequency.exist()) and
+(timing.repeat.period.exist() and timing.repeat.period = 1) and
+(timing.repeat.periodUnit.exist() and timing.repeat.periodUnit = 'wk' ) and
 timing.repeat.when.empty() and
 timing.repeat.timeOfDay.empty()
 ) or
@@ -97,9 +91,9 @@ timing.repeat.dayOfWeek.empty()
 /* DayOfWeek and Time/4-Schema */
 (%resource.ofType(MedicationRequest).dosageInstruction | ofType(MedicationDispense).dosageInstruction | ofType(MedicationStatement).dosage).all(
 timing.repeat.dayOfWeek.exists() and
-timing.repeat.frequency.empty() and
-timing.repeat.period.empty() and
-timing.repeat.periodUnit.empty() and
+timing.repeat.frequency.exist() and
+(timing.repeat.period.exist() timing.repeat.period = 1) and
+(timing.repeat.periodUnit.exist() timing.repeat.periodUnit = 'wk') and
   (
     (timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()) or
     (timing.repeat.when.exists() and timing.repeat.timeOfDay.empty())

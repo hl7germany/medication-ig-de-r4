@@ -53,7 +53,7 @@ Instance: Example-MR-Dosage-1220
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-1020"
-Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung 1-0-2-0 dar"
+Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung 1-2-2-0 dar"
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -96,7 +96,7 @@ Instance: Example-MR-Dosage-1111
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-1111"
-Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung 1-0-0-0 dar"
+Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung 1-1-1-1 dar"
 * subject.display = "Patient"
 * status = #active
 * intent = #order

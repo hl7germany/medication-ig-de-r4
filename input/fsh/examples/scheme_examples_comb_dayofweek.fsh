@@ -62,8 +62,8 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
 
 * dosageInstruction[+]
   * timing.repeat
-    * dayOfWeek[+] = #tue
-    * dayOfWeek[+] = #sat
+    * dayOfWeek[+] = #mon
+    * dayOfWeek[+] = #fri
     * when[+] = #MORN
     * when[+] = #EVE
     * frequency = 4
@@ -75,7 +75,7 @@ Instance: Example-MR-Dosage-comb-dayofweek-3
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-comb-dayofweek-3"
-Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von Montags und Freitags 1 Tablette um 08:00 Uhr und 2 Tabletten um 10:00 Uhr - für 3 Wochen dar"
+Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von Montags und Freitags 1 Tablette Morgens und 2 Tabletten Mittags (1-1-0-0) - für 3 Wochen dar"
 * subject.display = "Patient"
 * status = #active
 * intent = #order

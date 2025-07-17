@@ -77,7 +77,7 @@ def process_file(input_path, output_path, script_path):
                     dosage["extension"] = []
                 dosage["extension"].append(build_extension(dosage_text))
                 changed = True
-    print(resource)
+
     # Write to output folder (overwrite or new file)
     with open(output_path, 'w', encoding='utf-8') as f:
         json.dump(resource, f, indent=2, ensure_ascii=False)

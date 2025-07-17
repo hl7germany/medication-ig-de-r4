@@ -5,7 +5,7 @@ def main():
     base_dir = os.path.dirname(os.path.abspath(__file__))
 
     input_folder = os.path.normpath(os.path.join(base_dir, "../fsh-generated/resources"))
-    output_folder = os.path.normpath(os.path.join(base_dir, "../output/resources"))
+    output_folder = os.path.normpath(os.path.join(base_dir, "../input/includes"))
     dosage_to_text_script = os.path.join(base_dir, "dosage-to-text.py")
     extension_script = os.path.join(base_dir, "add-dosage-extension.py")
 
@@ -16,9 +16,9 @@ def main():
     ], check=True)
 
     # 2. Generate the supported/unsupported table
-    # print("Generating unsupported table...")
-    # unsupported_table_script = os.path.join(base_dir, "generate-unsupported-table.py")
-    # subprocess.run(['python3', unsupported_table_script], check=True)
+    print("Generating unsupported table...")
+    unsupported_table_script = os.path.join(base_dir, "generate-unsupported-table.py")
+    subprocess.run(['python3', unsupported_table_script, input_folder, output_folder, dosage_to_text_script], check=True)
 
     # # 3. Generate the dosage matrix
     # print("Generating dosage matrix...")

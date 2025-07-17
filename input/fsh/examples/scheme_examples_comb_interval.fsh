@@ -93,4 +93,3 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
     * timeOfDay[+] = "22:00:00"
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
-  //TODO Negativ

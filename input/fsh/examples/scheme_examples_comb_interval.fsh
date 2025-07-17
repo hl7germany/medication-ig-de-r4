@@ -69,7 +69,7 @@ Instance: Example-MR-Dosage-comb-interval-4
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-comb-interval-4"
-Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von Jeden 2. Tag 1 Tablette um 08:00 Uhr und jeden 2. Tag 1 Tablette um 08:00 Uhr dar"
+Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von Jeden 2. Tag 1 Tablette um 08:00 & 20:00 Uhr und jeden 2. Tag 1 Tablette um 08:00, 14:00 und 22:00 Uhr dar"
 * subject.display = "Patient"
 * status = #active
 * intent = #order

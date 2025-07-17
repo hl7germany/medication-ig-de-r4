@@ -39,6 +39,8 @@ timing.repeat.dayOfWeek.empty() and
   )
 ```
 
+Der Wert von frequency entspricht dabei der Anzahl an Elementen in `when`, bzw. `timeOfDay`.
+
 und entweder `when` oder `timeOfDay`. Damit kann diese Dosierangabe verwendet werden um eine Interval angabe auf Tageszeit oder Uhrzeit zu kombinieren.
 
 Lesende Systeme werten entsprechend auch `Dosage.timing.repeat` aus. 

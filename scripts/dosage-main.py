@@ -20,10 +20,15 @@ def main():
     unsupported_table_script = os.path.join(base_dir, "dosage-generate-unsupported-table.py")
     subprocess.run(['python3', unsupported_table_script, input_folder, output_folder, dosage_to_text_script], check=True)
 
-    # # 3. Generate the dosage matrix
+    # 3. Generate the dosage matrix
     print("Generating dosage matrix...")
     matrix_script = os.path.join(base_dir, "dosage-generate-matrix.py")
     subprocess.run(['python3', matrix_script, input_folder, output_folder, dosage_to_text_script], check=True)
+    
+    # 4. Generate the dosage matrix for constraint examples
+    print("Generating dosage matrix for constraint examples...")
+    matrix_constraint_script = os.path.join(base_dir, "dosage-generate-constraint-matrix.py")
+    subprocess.run(['python3', matrix_constraint_script, input_folder, output_folder, dosage_to_text_script], check=True)
 
     print("All steps completed.")
 

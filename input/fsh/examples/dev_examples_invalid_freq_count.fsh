@@ -1,4 +1,4 @@
-Instance: Invalid-Dosage-01-of-10-TimingFrequencyCount
+Instance: Invalid-Dosage-TimingFrequencyCount-01-of-10
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid Dosage"
@@ -15,7 +15,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * periodUnit = #d
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: Invalid-Dosage-02-of-10-TimingFrequencyCount
+Instance: Invalid-Dosage-TimingFrequencyCount-02-of-10
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid Dosage"
@@ -32,7 +32,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * periodUnit = #d
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: Invalid-Dosage-03-of-10-TimingFrequencyCount
+Instance: Invalid-Dosage-TimingFrequencyCount-03-of-10
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid Dosage"
@@ -49,7 +49,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * periodUnit = #wk
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: Invalid-Dosage-04-of-10-TimingFrequencyCount
+Instance: Invalid-Dosage-TimingFrequencyCount-04-of-10
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid Dosage"
@@ -66,7 +66,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * periodUnit = #wk
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: Invalid-Dosage-05-of-10-TimingFrequencyCount
+Instance: Invalid-Dosage-TimingFrequencyCount-05-of-10
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid Dosage"
@@ -84,7 +84,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * periodUnit = #wk
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
-Instance: Invalid-Dosage-06-of-10-TimingFrequencyCount
+Instance: Invalid-Dosage-TimingFrequencyCount-06-of-10
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid Dosage"
@@ -102,7 +102,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * periodUnit = #d
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
-Instance: Invalid-Dosage-07-of-10-TimingFrequencyCount
+Instance: Invalid-Dosage-TimingFrequencyCount-07-of-10
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid Dosage"
@@ -130,7 +130,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * timeOfDay[+] = "22:00:00"
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
-Instance: Invalid-Dosage-08-of-10-TimingFrequencyCount
+Instance: Invalid-Dosage-TimingFrequencyCount-08-of-10
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid Dosage"
@@ -150,7 +150,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * boundsDuration = 3 $ucum#wk "Woche(n)"
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: Invalid-Dosage-09-of-10-TimingFrequencyCount
+Instance: Invalid-Dosage-TimingFrequencyCount-09-of-10
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid Dosage"
@@ -170,7 +170,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * boundsDuration = 3 $ucum#wk "Woche(n)"
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: Invalid-Dosage-10-of-10-TimingFrequencyCount
+Instance: Invalid-Dosage-TimingFrequencyCount-10-of-10
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid Dosage"

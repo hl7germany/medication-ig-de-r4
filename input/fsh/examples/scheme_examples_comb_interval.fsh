@@ -36,7 +36,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
   * timing.repeat
     * frequency = 1
     * period = 1
-    * periodUnit = #wk
+    * periodUnit = #d
     * when[+] = #MORN
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 

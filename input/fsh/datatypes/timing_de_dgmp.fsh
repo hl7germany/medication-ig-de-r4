@@ -64,14 +64,14 @@ and
 and
 (timeOfDay.exists() and dayOfWeek.exists() implies (timeOfDay.count() * dayOfWeek.count()) = frequency)
 and
-(dayOfWeek.exists() and timeOfDay.empty() and when.empty implies dayOfWeek.count() = frequency)"
+(dayOfWeek.exists() and timeOfDay.empty() and when.empty() implies dayOfWeek.count() = frequency)"
 Severity: #error
 
 Invariant: TimingPeriodUnit
-Description: "The frequency of the timing needs to reflect the count of timeOfDay or when"
+Description: "If weekdays are given the periodUnit must be week, otherwise day"
 Expression: "(dayOfWeek.exists() implies periodUnit = 'wk')
 and
-(dayOfWeek.empty implies periodUnit = 'd')"
+((dayOfWeek.empty() and (when.exists() or timeOfDay.exists())) implies periodUnit = 'd')"
 Severity: #error
 
 Invariant: TimingOnlyOneType
@@ -506,49 +506,37 @@ Expression: "( /* Detect DayOfWeek and Time/4-Schema */
 Severity: #error
 
 Invariant: TimingOnlyOneTimeForInterval
-Description: "Dosages Timings must not state the same time of day across multiple dosage instances"
-Expression: "/* 
-  Detect DayOfWeek and Time/4-Schema
-  This logic checks for dosage instructions that specify either timeOfDay or when, 
-  but not both, and ensures certain consistency rules for frequency, period, and periodUnit.
-*/
+Description: "Dosage Interval Timings must not state the same time of day across multiple dosage instances"
+Expression: "/* Detect Interval and Time/4-Schema */
 (
-  /* Combine dosage instructions from all relevant resource types */
   %resource.ofType(MedicationRequest).dosageInstruction
   | %resource.ofType(MedicationDispense).dosageInstruction
   | %resource.ofType(MedicationStatement).dosage
 )
 .all(
   (
-    /* Check for required timing fields and ensure dayOfWeek is not used */
-    timing.repeat.frequency.exists()
-    and timing.repeat.period.exists()
-    and timing.repeat.periodUnit.exists()
-    and timing.repeat.dayOfWeek.empty()
-    and (
-      /* Either timeOfDay is set (and when is not), or when is set (and timeOfDay is not) */
-      (timing.repeat.timeOfDay.exists() and timing.repeat.when.empty())
-      or
+    timing.repeat.frequency.exists() and
+    timing.repeat.period.exists() and
+    timing.repeat.periodUnit.exists() and
+    timing.repeat.dayOfWeek.empty() and
+    (
+      (timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()) or
       (timing.repeat.when.exists() and timing.repeat.timeOfDay.empty())
     )
   )
   implies
   (
-    /* For MedicationRequest or MedicationDispense */
     (
       %resource.ofType(MedicationRequest).exists()
       or %resource.ofType(MedicationDispense).exists()
     )
     implies
     (
-      /* All intervals must be the same across instructions */
-      %resource.dosageInstruction.timing.repeat.frequency.distinct().count() = 1
-      and %resource.dosageInstruction.timing.repeat.period.distinct().count() = 1
+      %resource.dosageInstruction.timing.repeat.period.distinct().count() = 1
       and %resource.dosageInstruction.timing.repeat.periodUnit.distinct().count() = 1
     )
     and
     (
-      /* Each instruction must have a unique timeOfDay and when value */
       (%resource.dosageInstruction.timing.repeat.timeOfDay.distinct().count() = %resource.dosageInstruction.timing.repeat.timeOfDay.count())
       and
       (%resource.dosageInstruction.timing.repeat.when.distinct().count() = %resource.dosageInstruction.timing.repeat.when.count())
@@ -556,25 +544,20 @@ Expression: "/*
   )
   and
   (
-    /* For MedicationStatement resources */
     %resource.ofType(MedicationStatement).exists()
     implies
     (
-      /* If MedicationRequest or MedicationDispense also exists */
       (
         %resource.ofType(MedicationRequest).exists()
         or %resource.ofType(MedicationDispense).exists()
       )
       implies
       (
-        /* All intervals must be the same across statements */
-        %resource.dosage.timing.repeat.frequency.distinct().count() = 1
-        and %resource.dosage.timing.repeat.period.distinct().count() = 1
+        %resource.dosage.timing.repeat.period.distinct().count() = 1
         and %resource.dosage.timing.repeat.periodUnit.distinct().count() = 1
       )
       and
       (
-        /* Each statement must have a unique timeOfDay and when value */
         (%resource.dosage.timing.repeat.timeOfDay.distinct().count() = %resource.dosage.timing.repeat.timeOfDay.count())
         and
         (%resource.dosage.timing.repeat.when.distinct().count() = %resource.dosage.timing.repeat.when.count())

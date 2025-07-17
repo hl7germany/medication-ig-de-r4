@@ -16,14 +16,16 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * obeys TimingOnlyOnePeriodForDayOfWeek
   * obeys TimingOnlyOneTimeForInterval
   * obeys TimingOnlyOneBounds
+  * obeys TimingFrequencyCount
+  * obeys TimingPeriodUnit
   * bounds[x] MS
   * bounds[x] only Duration
     * ^comment = "Begründung Einschränkung Datentyp: Nur eine Angabe zur Dauer ist in der ersten Ausbaustufe des dgMP vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
   * boundsDuration MS
-  * boundsDuration.code 1..1 MS
-  * boundsDuration.system 1..1 MS
-  * boundsDuration.unit 1..1 MS
-  * boundsDuration.code from DurationUnitsOfTimeDgMPVS (required)
+    * code 1..1 MS
+    * system 1..1 MS
+    * unit 1..1 MS
+    * code from DurationUnitsOfTimeDgMPVS (required)
   * frequency MS
   * period MS
   * periodUnit MS
@@ -52,54 +54,66 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
     * ^short = "Zeitversatz"
     * ^comment = "Begründung Einschränkung Kardinalität: Ein Zeitversatz ist in der ersten Ausbaustufe desdgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
 
+Invariant: TimingFrequencyCount
+Description: "The frequency of the timing needs to reflect the count of timeOfDay or when"
+Expression: "(when.exists() and dayOfWeek.empty() implies when.count() = frequency)
+and
+(when.exists() and dayOfWeek.exists() implies (when.count() * dayOfWeek.count()) = frequency)
+and
+(timeOfDay.exists() and dayOfWeek.empty() implies timeOfDay.count() = frequency)
+and
+(timeOfDay.exists() and dayOfWeek.exists() implies (timeOfDay.count() * dayOfWeek.count()) = frequency)
+and
+(dayOfWeek.exists() and timeOfDay.empty() and when.empty() implies dayOfWeek.count() = frequency)"
+Severity: #error
+
+Invariant: TimingPeriodUnit
+Description: "If weekdays are given the periodUnit must be week, otherwise day"
+Expression: "(dayOfWeek.exists() implies periodUnit = 'wk')
+and
+((dayOfWeek.empty() and (when.exists() or timeOfDay.exists())) implies periodUnit = 'd')"
+Severity: #error
+
 Invariant: TimingOnlyOneType
 Description: "Only one kind of Timing is allowed. Current allowed timings: 4-Scheme, TimeOfDay, DayOfWeek, Interval, DayOfWeek and Time/4-Schema, Interval and Time/4-Schema"
-Expression: "( /* 4-Schema */
-%resource.ofType(MedicationRequest).dosageInstruction | ofType(MedicationDispense).dosageInstruction | ofType(MedicationStatement).dosage).all(
-timing.repeat.when.exists() and
-timing.repeat.frequency.empty() and
-timing.repeat.period.empty() and
-timing.repeat.periodUnit.empty() and
-timing.repeat.timeOfDay.empty() and
-timing.repeat.dayOfWeek.empty()
-) or
-
-/* TimeOfDay */
-(%resource.ofType(MedicationRequest).dosageInstruction | ofType(MedicationDispense).dosageInstruction | ofType(MedicationStatement).dosage).all(
-timing.repeat.timeOfDay.exists() and
-timing.repeat.frequency.empty() and
-timing.repeat.period.empty() and
-timing.repeat.periodUnit.empty() and
-timing.repeat.when.empty() and
-timing.repeat.dayOfWeek.empty()
-) or
-
-/* DayOfWeek */
-(%resource.ofType(MedicationRequest).dosageInstruction | ofType(MedicationDispense).dosageInstruction | ofType(MedicationStatement).dosage).all(
-timing.repeat.dayOfWeek.exists() and
-timing.repeat.frequency.empty() and
-timing.repeat.period.empty() and
-timing.repeat.periodUnit.empty() and
-timing.repeat.when.empty() and
-timing.repeat.timeOfDay.empty()
+Expression: "/* DayOfWeek */
+(
+  %resource.ofType(MedicationRequest).dosageInstruction | 
+  ofType(MedicationDispense).dosageInstruction | 
+  ofType(MedicationStatement).dosage
+).all(
+  timing.repeat.dayOfWeek.exists() and
+  timing.repeat.frequency.exists() and
+  (timing.repeat.period.exists() and timing.repeat.period = 1) and
+  (timing.repeat.periodUnit.exists() and timing.repeat.periodUnit = 'wk') and
+  timing.repeat.when.empty() and
+  timing.repeat.timeOfDay.empty()
 ) or
 
 /* Interval */
-(%resource.ofType(MedicationRequest).dosageInstruction | ofType(MedicationDispense).dosageInstruction | ofType(MedicationStatement).dosage).all(
-timing.repeat.frequency.exists() and
-timing.repeat.period.exists() and
-timing.repeat.periodUnit.exists() and
-timing.repeat.when.empty() and
-timing.repeat.timeOfDay.empty() and
-timing.repeat.dayOfWeek.empty()
+(
+  %resource.ofType(MedicationRequest).dosageInstruction | 
+  ofType(MedicationDispense).dosageInstruction | 
+  ofType(MedicationStatement).dosage
+).all(
+  timing.repeat.frequency.exists() and
+  timing.repeat.period.exists() and
+  timing.repeat.periodUnit.exists() and
+  timing.repeat.when.empty() and
+  timing.repeat.timeOfDay.empty() and
+  timing.repeat.dayOfWeek.empty()
 ) or
 
 /* DayOfWeek and Time/4-Schema */
-(%resource.ofType(MedicationRequest).dosageInstruction | ofType(MedicationDispense).dosageInstruction | ofType(MedicationStatement).dosage).all(
-timing.repeat.dayOfWeek.exists() and
-timing.repeat.frequency.empty() and
-timing.repeat.period.empty() and
-timing.repeat.periodUnit.empty() and
+(
+  %resource.ofType(MedicationRequest).dosageInstruction | 
+  ofType(MedicationDispense).dosageInstruction | 
+  ofType(MedicationStatement).dosage
+).all(
+  timing.repeat.dayOfWeek.exists() and
+  timing.repeat.frequency.exists() and
+  (timing.repeat.period.exists() and timing.repeat.period = 1) and
+  (timing.repeat.periodUnit.exists() and timing.repeat.periodUnit = 'wk') and
   (
     (timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()) or
     (timing.repeat.when.exists() and timing.repeat.timeOfDay.empty())
@@ -107,11 +121,15 @@ timing.repeat.periodUnit.empty() and
 ) or
 
 /* Interval and Time/4-Schema */
-(%resource.ofType(MedicationRequest).dosageInstruction | ofType(MedicationDispense).dosageInstruction | ofType(MedicationStatement).dosage).all(
-timing.repeat.frequency.exists() and
-timing.repeat.period.exists() and
-timing.repeat.periodUnit.exists() and
-timing.repeat.dayOfWeek.empty() and
+(
+  %resource.ofType(MedicationRequest).dosageInstruction | 
+  ofType(MedicationDispense).dosageInstruction | 
+  ofType(MedicationStatement).dosage
+).all(
+  timing.repeat.frequency.exists() and
+  timing.repeat.period.exists() and
+  timing.repeat.periodUnit.exists() and
+  timing.repeat.dayOfWeek.empty() and
   (
     (timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()) or
     (timing.repeat.when.exists() and timing.repeat.timeOfDay.empty())
@@ -127,14 +145,12 @@ Expression: "( /* Detect 4-Schema */
   | %resource.ofType(MedicationDispense).dosageInstruction
   | %resource.ofType(MedicationStatement).dosage
 ).all(
-  (
-    timing.repeat.when.exists() and
-    timing.repeat.frequency.empty() and
-    timing.repeat.period.empty() and
-    timing.repeat.periodUnit.empty() and
-    timing.repeat.timeOfDay.empty() and
-    timing.repeat.dayOfWeek.empty()
-  )
+    timing.repeat.frequency.exists() and
+    timing.repeat.period.exists() and
+    timing.repeat.periodUnit.exists() and
+    timing.repeat.dayOfWeek.empty() and
+    timing.repeat.when.exists() and 
+    timing.repeat.timeOfDay.empty()
   implies
   (
     (
@@ -161,12 +177,12 @@ Expression: "( /* Detect TimeOfDay */
   | %resource.ofType(MedicationStatement).dosage
 ).all(
   (
+    timing.repeat.frequency.exists() and
+    timing.repeat.period.exists() and
+    timing.repeat.periodUnit.exists() and
+    timing.repeat.dayOfWeek.empty() and
     timing.repeat.timeOfDay.exists() and
-    timing.repeat.frequency.empty() and
-    timing.repeat.period.empty() and
-    timing.repeat.periodUnit.empty() and
-    timing.repeat.when.empty() and
-    timing.repeat.dayOfWeek.empty()
+    timing.repeat.when.empty() 
   )
   implies
   (
@@ -193,11 +209,11 @@ Expression: "( /* Detect DayOfWeek */
   | %resource.ofType(MedicationStatement).dosage
 ).all(
   (
+    timing.repeat.frequency.exists() and
+    timing.repeat.period.exists() and
+    timing.repeat.periodUnit.exists() and
     timing.repeat.dayOfWeek.exists() and
-    timing.repeat.frequency.empty() and
-    timing.repeat.period.empty() and
-    timing.repeat.periodUnit.empty() and
-    timing.repeat.when.empty() and
+    timing.repeat.when.empty() and 
     timing.repeat.timeOfDay.empty()
   )
   implies
@@ -488,49 +504,37 @@ Expression: "( /* Detect DayOfWeek and Time/4-Schema */
 Severity: #error
 
 Invariant: TimingOnlyOneTimeForInterval
-Description: "Dosages Timings must not state the same time of day across multiple dosage instances"
-Expression: "/* 
-  Detect DayOfWeek and Time/4-Schema
-  This logic checks for dosage instructions that specify either timeOfDay or when, 
-  but not both, and ensures certain consistency rules for frequency, period, and periodUnit.
-*/
+Description: "Dosage Interval Timings must not state the same time of day across multiple dosage instances"
+Expression: "/* Detect Interval and Time/4-Schema */
 (
-  /* Combine dosage instructions from all relevant resource types */
   %resource.ofType(MedicationRequest).dosageInstruction
   | %resource.ofType(MedicationDispense).dosageInstruction
   | %resource.ofType(MedicationStatement).dosage
 )
 .all(
   (
-    /* Check for required timing fields and ensure dayOfWeek is not used */
-    timing.repeat.frequency.exists()
-    and timing.repeat.period.exists()
-    and timing.repeat.periodUnit.exists()
-    and timing.repeat.dayOfWeek.empty()
-    and (
-      /* Either timeOfDay is set (and when is not), or when is set (and timeOfDay is not) */
-      (timing.repeat.timeOfDay.exists() and timing.repeat.when.empty())
-      or
+    timing.repeat.frequency.exists() and
+    timing.repeat.period.exists() and
+    timing.repeat.periodUnit.exists() and
+    timing.repeat.dayOfWeek.empty() and
+    (
+      (timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()) or
       (timing.repeat.when.exists() and timing.repeat.timeOfDay.empty())
     )
   )
   implies
   (
-    /* For MedicationRequest or MedicationDispense */
     (
       %resource.ofType(MedicationRequest).exists()
       or %resource.ofType(MedicationDispense).exists()
     )
     implies
     (
-      /* All intervals must be the same across instructions */
-      %resource.dosageInstruction.timing.repeat.frequency.distinct().count() = 1
-      and %resource.dosageInstruction.timing.repeat.period.distinct().count() = 1
+      %resource.dosageInstruction.timing.repeat.period.distinct().count() = 1
       and %resource.dosageInstruction.timing.repeat.periodUnit.distinct().count() = 1
     )
     and
     (
-      /* Each instruction must have a unique timeOfDay and when value */
       (%resource.dosageInstruction.timing.repeat.timeOfDay.distinct().count() = %resource.dosageInstruction.timing.repeat.timeOfDay.count())
       and
       (%resource.dosageInstruction.timing.repeat.when.distinct().count() = %resource.dosageInstruction.timing.repeat.when.count())
@@ -538,25 +542,20 @@ Expression: "/*
   )
   and
   (
-    /* For MedicationStatement resources */
     %resource.ofType(MedicationStatement).exists()
     implies
     (
-      /* If MedicationRequest or MedicationDispense also exists */
       (
         %resource.ofType(MedicationRequest).exists()
         or %resource.ofType(MedicationDispense).exists()
       )
       implies
       (
-        /* All intervals must be the same across statements */
-        %resource.dosage.timing.repeat.frequency.distinct().count() = 1
-        and %resource.dosage.timing.repeat.period.distinct().count() = 1
+        %resource.dosage.timing.repeat.period.distinct().count() = 1
         and %resource.dosage.timing.repeat.periodUnit.distinct().count() = 1
       )
       and
       (
-        /* Each statement must have a unique timeOfDay and when value */
         (%resource.dosage.timing.repeat.timeOfDay.distinct().count() = %resource.dosage.timing.repeat.timeOfDay.count())
         and
         (%resource.dosage.timing.repeat.when.distinct().count() = %resource.dosage.timing.repeat.when.count())

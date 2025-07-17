@@ -13,6 +13,9 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
     * dayOfWeek[+] = #fri
     * when[+] = #MORN
     * when[+] = #EVE
+    * frequency = 4
+    * period = 1
+    * periodUnit = #wk
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 Instance: Example-MR-Dosage-comb-dayofweek-unsorted
@@ -31,6 +34,9 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
     * dayOfWeek[+] = #thu
     * when[+] = #EVE
     * when[+] = #MORN
+    * frequency = 6
+    * period = 1
+    * periodUnit = #wk
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 
@@ -49,21 +55,27 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
     * dayOfWeek[+] = #fri
     * when[+] = #MORN
     * when[+] = #EVE
+    * frequency = 4
+    * period = 1
+    * periodUnit = #wk
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 * dosageInstruction[+]
   * timing.repeat
-    * dayOfWeek[+] = #tue
-    * dayOfWeek[+] = #sat
+    * dayOfWeek[+] = #mon
+    * dayOfWeek[+] = #fri
     * when[+] = #MORN
     * when[+] = #EVE
+    * frequency = 4
+    * period = 1
+    * periodUnit = #wk
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
 Instance: Example-MR-Dosage-comb-dayofweek-3
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-comb-dayofweek-3"
-Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von Montags und Freitags 1 Tablette um 08:00 Uhr und 2 Tabletten um 10:00 Uhr - für 3 Wochen dar"
+Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von Montags und Freitags 1 Tablette Morgens und 2 Tabletten Mittags (1-1-0-0) - für 3 Wochen dar"
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -73,6 +85,9 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
     * dayOfWeek[+] = #mon
     * dayOfWeek[+] = #fri
     * when[+] = #MORN
+    * frequency = 2
+    * period = 1
+    * periodUnit = #wk
     * boundsDuration = 3 $ucum#wk "Woche(n)"
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
@@ -81,5 +96,8 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
     * dayOfWeek[+] = #mon
     * dayOfWeek[+] = #fri
     * when[+] = #NOON
+    * frequency = 2
+    * period = 1
+    * periodUnit = #wk
     * boundsDuration = 3 $ucum#wk "Woche(n)"
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"

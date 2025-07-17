@@ -12,12 +12,18 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
   * timing
     * repeat
       * when[+] = #MORN
+      * frequency = 1
+      * period = 1
+      * periodUnit = #d
 * dosageInstruction[+]
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
   * timing
     * repeat
       * when[+] = #MORN
       * when[+] = #EVE
+      * frequency = 1
+      * period = 1
+      * periodUnit = #d
 
 Instance: Invalid-Dosage-multiple-02-of-10-timeOfDay
 InstanceOf: MedicationRequestDgMP
@@ -31,13 +37,18 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
 * dosageInstruction[+]
   * timing.repeat
     * timeOfDay[+] = "08:00:00"
+    * frequency = 1
+    * period = 1
+    * periodUnit = #d
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
 * dosageInstruction[+]
   * timing.repeat
     * timeOfDay[+] = "08:00:00"
-  * timing.repeat
     * timeOfDay[+] = "14:00:00"
+    * frequency = 2
+    * period = 1
+    * periodUnit = #d
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 Instance: Invalid-Dosage-multiple-03-of-10-dayOfWeek
@@ -76,6 +87,9 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * dayOfWeek[+] = #fri
     * when[+] = #MORN
     * when[+] = #EVE
+    * frequency = 2
+    * period = 1
+    * periodUnit = #d
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 * dosageInstruction[+]
@@ -83,6 +97,9 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * dayOfWeek[+] = #mon
     * dayOfWeek[+] = #sat
     * when[+] = #MORN
+    * frequency = 1
+    * period = 1
+    * periodUnit = #d
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
 Instance: Invalid-Dosage-multiple-05-of-10-dayOfWeekAndTimeOfDay
@@ -100,6 +117,9 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * dayOfWeek[+] = #fri
     * timeOfDay[+] = "08:00:00"
     * timeOfDay[+] = "12:00:00"
+    * frequency = 2
+    * period = 1
+    * periodUnit = #d
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 * dosageInstruction[+]
@@ -107,6 +127,9 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * dayOfWeek[+] = #mon
     * dayOfWeek[+] = #sat
     * timeOfDay[+] = "08:00:00"
+    * frequency = 1
+    * period = 1
+    * periodUnit = #d
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
 Instance: Invalid-Dosage-multiple-06-of-10-Interval
@@ -220,11 +243,17 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
 * dosageInstruction[+]
   * timing.repeat
     * timeOfDay[+] = "08:00:00"
+    * frequency = 1
+    * period = 1
+    * periodUnit = #d
     * boundsDuration = 2 $ucum#wk "Woche(n)"
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 * dosageInstruction[+]
   * timing.repeat
     * timeOfDay[+] = "20:00:00"
+    * frequency = 1
+    * period = 1
+    * periodUnit = #d
     * boundsDuration = 3 $ucum#wk "Woche(n)"
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"

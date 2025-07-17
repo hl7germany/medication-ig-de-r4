@@ -5,7 +5,7 @@ import os
 
 __version__ = "1.0.0"
 
-class GermanDosageTextGenerator:
+class GematikDosageTextGenerator:
     def generate_single_dosage_text(self, dosage):
 
         elements = []
@@ -109,10 +109,10 @@ class GermanDosageTextGenerator:
             return ""
         if period_unit == 'd' and period == 1:
             return f"{frequency} x täglich"
-                
+
         if period_unit == 'wk' and period == 1:
             return f"{frequency} x wöchentlich"
-                
+
         if frequency == 1:
             period_text = self.format_period_unit(period, period_unit)
             return f"alle {period_text}"
@@ -253,7 +253,7 @@ def main():
     try:
         with open(file_path, 'r', encoding='utf-8') as file:
             dosage = json.load(file)
-        generator = GermanDosageTextGenerator()
+        generator = GematikDosageTextGenerator()
         result = generator.generate_single_dosage_text(dosage)
         print(result)
     except json.JSONDecodeError as e:

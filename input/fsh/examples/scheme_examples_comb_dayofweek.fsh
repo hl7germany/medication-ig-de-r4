@@ -64,9 +64,8 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
   * timing.repeat
     * dayOfWeek[+] = #mon
     * dayOfWeek[+] = #fri
-    * when[+] = #MORN
-    * when[+] = #EVE
-    * frequency = 4
+    * when[+] = #NOON
+    * frequency = 2
     * period = 1
     * periodUnit = #wk
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"

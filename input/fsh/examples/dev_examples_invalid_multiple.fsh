@@ -134,7 +134,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
     * periodUnit = #d
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
-Instance: Invalid-multiple-07-of-10-C-TimingOnlyOneTimeForInterval
+Instance: Invalid-multiple-07-of-10-C-TimingOnlyOneWhen
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Two interval Dosages same period of day"
@@ -153,14 +153,14 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
 
 * dosageInstruction[+]
   * timing.repeat
-    * frequency = 1
+    * frequency = 2
     * period = 2
     * periodUnit = #d
     * when[+] = #MORN
     * when[+] = #EVE
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
-Instance: Invalid-multiple-08-of-10-C-TimingOnlyOneTimeForInterval
+Instance: Invalid-multiple-08-of-10-C-TimingOnlyOneTimeOfDay
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Two interval Dosages same time"

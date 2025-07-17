@@ -181,8 +181,8 @@ Expression: "( /* Detect TimeOfDay */
     timing.repeat.period.exists() and
     timing.repeat.periodUnit.exists() and
     timing.repeat.dayOfWeek.empty() and
-    timing.repeat.timeOfDay.exists()
-    timing.repeat.when.empty() and 
+    timing.repeat.timeOfDay.exists() and
+    timing.repeat.when.empty() 
   )
   implies
   (

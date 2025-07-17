@@ -37,18 +37,18 @@ Die Aktuelle Version des Algortimus mit unterstützten Felder ist in der [Python
 
 ### Komponenten und Trennzeichen
 
-Die einzelnen Komponenten der Dosierungsanweisung werden durch „ — “ (Leerzeichen-Gedankenstrich-Leerzeichen) getrennt.
 Die Reihenfolge der Komponenten entspricht der folgenden Logik:
 
-  1. Zeitabschnitt  
-     a) frequency UND period UND/ODER 
-     b) dayOfWeek 
-     c) falls kein Zeitabschnitt angegeben wird, wird "täglich" gesetzt
-  2. Dosis (doseAndRate.doseQuantity)
-  3. Geplante Frequenz innerhalb des Zeitabschnitts  
-     a) timeOfDay  
-     b) when
-  4. Gesamtdauer der Anwendung (timing.repeat.boundsDuration)
+  1. Gesamtdauer der Anwendung (timing.repeat.boundsDuration)
+  2. Interval (frequency, period, periodUnit)
+  3. Wochentag (dayOfWeek)
+  4. Uhrzeit ODER Tageszeit (timeOfDay ODER when)
+  5. Angaben zur Einzeldosis (doseAndRate)
+
+Das Format des Strings entspricht folgender Struktur:
+```
+<Gesamtdauer der Anwendung> <Interval>: <Wochentag> — <Uhrzeit ODER Tageszeit> - <Angaben zur Einzeldosis>
+```
 
 ### Validierung und Fehlerbehandlung
 

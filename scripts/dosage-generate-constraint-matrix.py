@@ -79,7 +79,7 @@ def extract_constraint_keys(sd):
     return []
 
 def generate_matrix_for_constraint(input_folder, script_path, output_path, constraint_key):
-    """Generate matrix for a specific constraint key."""
+    """Generate matrix for a specific constraint key. Throws if there are no examples."""
     all_files = [
         f for f in os.listdir(input_folder)
         if (
@@ -133,6 +133,8 @@ def generate_matrix_for_constraint(input_folder, script_path, output_path, const
                 matrix_rows.append(row)
         except Exception as e:
             print(f"Error processing {filename}: {e}", file=sys.stderr)
+    if not matrix_rows:
+        raise ValueError(f"No examples found for constraint '{constraint_key}'. Table would be empty.")
     header = "| File | description | doseQuantity | " + " | ".join(MATRIX_COLUMNS) + " |"
     sep = "| :---: | :--- | :---: | " + " | ".join([":---:"] * len(MATRIX_COLUMNS)) + " |"
     md_table = header + "\n" + sep + "\n"
@@ -164,10 +166,20 @@ def main():
         print("ERROR: No constraint keys found in Timing.repeat element.")
         sys.exit(1)
 
-    # Step 3: Generate a matrix for each constraint key
+    # Step 3: Generate a matrix for each constraint key, collect failures
+    failures = []
     for key in constraint_keys:
         matrix_md_path = os.path.join(output_folder, f"dosage-constraint-{key}-examples.md")
-        generate_matrix_for_constraint(input_folder, dosage_to_text_script, matrix_md_path, key)
+        try:
+            generate_matrix_for_constraint(input_folder, dosage_to_text_script, matrix_md_path, key)
+        except ValueError as e:
+            failures.append(f"Constraint '{key}': {e}")
+
+    if failures:
+        print("\nThe following constraints have no example files and would produce empty tables:\n", file=sys.stderr)
+        for failure in failures:
+            print(failure, file=sys.stderr)
+        sys.exit(2)
 
 if __name__ == "__main__":
     main()

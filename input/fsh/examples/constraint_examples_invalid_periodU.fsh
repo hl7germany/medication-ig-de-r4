@@ -44,8 +44,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
 * dosageInstruction[+]
   * timing.repeat
     * dayOfWeek[+] = #tue
-    * dayOfWeek[+] = #thu
-    * frequency = 2
+    * frequency = 1
     * period = 1
     * periodUnit = #d
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
@@ -64,7 +63,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * dayOfWeek[+] = #mon
     * dayOfWeek[+] = #fri
     * when[+] = #MORN
-    * frequency = 3
+    * frequency = 2
     * period = 1
     * periodUnit = #d
     * boundsDuration = 3 $ucum#wk "Woche(n)"

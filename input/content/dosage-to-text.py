@@ -108,27 +108,15 @@ class GermanDosageTextGenerator:
         if frequency is None and period is None and period_unit is None:
             return ""
         if period_unit == 'd' and period == 1:
-            if frequency == 1:
-                return "einmal täglich"
-            elif frequency == 2:
-                return "zweimal täglich"
-            elif frequency == 3:
-                return "dreimal täglich"
-            elif frequency == 4:
-                return "viermal täglich"
-            else:
-                return f"{frequency}mal täglich"
+            return f"{frequency} x täglich"
+                
         if period_unit == 'wk' and period == 1:
-            if frequency == 1:
-                return "einmal wöchentlich"
-            elif frequency == 2:
-                return "zweimal wöchentlich"
-            else:
-                return f"{frequency}mal wöchentlich"
+            return f"{frequency} x wöchentlich"
+                
         if frequency == 1:
             period_text = self.format_period_unit(period, period_unit)
             return f"alle {period_text}"
-        freq_text = f"{frequency}mal"
+        freq_text = f"{frequency} x"
         period_text = self.format_period_unit(period, period_unit)
         return f"{freq_text} pro {period_text}"
 
@@ -250,7 +238,7 @@ class GermanDosageTextGenerator:
             'MORN': 'morgens',
             'NOON': 'mittags',
             'EVE': 'abends',
-            'NIGHT': 'nachts'
+            'NIGHT': 'zur nachts'
         }
         return when_codes.get(when.upper(), when)
 

@@ -182,7 +182,7 @@ Expression: "(
     timing.repeat.periodUnit.exists() and
     timing.repeat.dayOfWeek.empty() and
     (timing.repeat.when.exists() or 
-    timing.repeat.timeOfDay.empty())
+    timing.repeat.timeOfDay.exists())
   implies
   (
     (

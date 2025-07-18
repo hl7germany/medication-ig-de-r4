@@ -57,6 +57,8 @@ pages:
     title: Beispielliste Dosierung
   dosage-examples.md:
     title: Dosage Beispiele
+  dosage-constraints.md:
+    title: Dosage Constraints
   dosage-to-text-system.md:
     title: Hinzufügen des Dosistextes
   multiple-dosages.md:
@@ -116,6 +118,7 @@ menu:
     Hinzufügen des Dosistextes: dosage-to-text-system.html
     Beispielliste Dosierung: dosage-to-text-examples.html
     Mehrere Dosierungen: multiple-dosages.html
+    Constraints: dosage-constraints.html
 #   TODO: Duration
   Dosierschemata:
     Freitext-Dosierung: timing-freetext-scheme.html

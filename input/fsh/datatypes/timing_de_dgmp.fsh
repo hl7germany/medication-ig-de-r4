@@ -26,9 +26,9 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
     * system 1..1 MS
     * unit 1..1 MS
     * code from DurationUnitsOfTimeDgMPVS (required)
-  * frequency MS
-  * period MS
-  * periodUnit MS
+  * frequency 1..1 MS
+  * period 1..1 MS
+  * periodUnit 1..1 MS
   * periodUnit from PeriodUnitsOfTimeDgMPVS (required)
   * dayOfWeek MS
   * timeOfDay MS
@@ -85,7 +85,7 @@ Expression: "/* DayOfWeek */
   timing.repeat.dayOfWeek.exists() and
   timing.repeat.frequency.exists() and
   (timing.repeat.period.exists() and timing.repeat.period = 1) and
-  (timing.repeat.periodUnit.exists() and timing.repeat.periodUnit = 'wk') and
+  (timing.repeat.periodUnit.exists()) and
   timing.repeat.when.empty() and
   timing.repeat.timeOfDay.empty()
 ) or
@@ -113,7 +113,7 @@ Expression: "/* DayOfWeek */
   timing.repeat.dayOfWeek.exists() and
   timing.repeat.frequency.exists() and
   (timing.repeat.period.exists() and timing.repeat.period = 1) and
-  (timing.repeat.periodUnit.exists() and timing.repeat.periodUnit = 'wk') and
+  (timing.repeat.periodUnit.exists()) and
   (
     (timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()) or
     (timing.repeat.when.exists() and timing.repeat.timeOfDay.empty())
@@ -202,7 +202,7 @@ Expression: "( /* Detect TimeOfDay */
 Severity: #error
 
 Invariant: TimingOnlyOneDayOfWeek
-Description: "Dosages Timings must not state the same time of day across multiple dosage instances"
+Description: "Dosages Timings must not state the same day across multiple dosage instances"
 Expression: "( /* Detect DayOfWeek */
   %resource.ofType(MedicationRequest).dosageInstruction
   | %resource.ofType(MedicationDispense).dosageInstruction
@@ -267,7 +267,7 @@ Expression: "(
 Severity: #error
 
 Invariant: TimingIntervalOnlyOneFrequency
-Description: "Dosages Timings must not state the same time of day across multiple dosage instances"
+Description: "If a dosage is defined by a pure interval, then only one dosage is allowed in the resource."
 Expression: "( /* Detect Interval */
   %resource.ofType(MedicationRequest).dosageInstruction
   | %resource.ofType(MedicationDispense).dosageInstruction
@@ -307,7 +307,7 @@ Severity: #error
 
 
 Invariant: TimingOnlyOnePeriodForDayOfWeek
-Description: "Dosages Timings must not state the same time of day across multiple dosage instances"
+Description: "For schedules using only dayOfWeek with either timeOfDay or when, each (day + period of day/time) combination must be unique across all dosage instructions."
 Expression: "( /* Detect DayOfWeek and Time/4-Schema */
   %resource.ofType(MedicationRequest).dosageInstruction
   | %resource.ofType(MedicationDispense).dosageInstruction
@@ -315,9 +315,9 @@ Expression: "( /* Detect DayOfWeek and Time/4-Schema */
 ).all(
   (
     timing.repeat.dayOfWeek.exists() and
-    timing.repeat.frequency.empty() and
-    timing.repeat.period.empty() and
-    timing.repeat.periodUnit.empty() and
+    timing.repeat.frequency.exists() and
+    timing.repeat.period.exists() and
+    timing.repeat.periodUnit.exists() and
       (
         (timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()) or
         (timing.repeat.when.exists() and timing.repeat.timeOfDay.empty())

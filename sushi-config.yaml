@@ -44,7 +44,7 @@ publisher:
 
 pages:
   index.md:
-    title: Home
+    title: FHIR Implementation Guide für medikationsbezogene Anwendungsfälle im deutschen Gesundheitswesen
   dosage-index.md:
     title: Einführung
   dosage-concept.md:

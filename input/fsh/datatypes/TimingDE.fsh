@@ -22,7 +22,7 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
 * repeat.period MS
   * ^short = "Ereignis tritt frequency-mal pro Zeitraum auf"
   * ^definition = "Gibt die Zeitspanne an, über die die Wiederholungen stattfinden sollen; z. B. um „3-mal täglich“ auszudrücken, wäre 3 die Häufigkeit und „1 Tag“ der Zeitraum. Falls periodMax vorhanden ist, gibt dieses Element die Untergrenze des zulässigen Bereichs der Zeitspanne an."
-* repeat.periodUnit
+* repeat.periodUnit MS
   * ^short = "s | min | h | d | wk | mo | a - Zeiteinheit (UCUM)"
   * ^definition = "Die Zeiteinheit für den Zeitraum, in UCUM-Einheiten."
 * repeat.dayOfWeek MS

@@ -31,14 +31,16 @@ Folgende FHIR-Path Expression auf Ebene von `Dosage.timing.repeat` liefert die A
 
 ```
 timing.repeat.dayOfWeek.exists() and
-timing.repeat.frequency.empty() and
-timing.repeat.period.empty() and
-timing.repeat.periodUnit.empty() and
+timing.repeat.frequency.exists() and
+timing.repeat.period.exists() and
+timing.repeat.periodUnit = 'wk' and
   (
     (timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()) or
     (timing.repeat.when.exists() and timing.repeat.timeOfDay.empty())
   )
 ```
+
+Der Wert von frequency entspricht dabei dem Produkt aus der Anzahl von Elementen in `when`, bzw. `timeOfDay` und `dayOfWeek`.
 
 und entweder `when` oder `timeOfDay`. Damit kann diese Dosierangabe verwendet werden um eine Interval angabe auf Tageszeit oder Uhrzeit zu kombinieren.
 

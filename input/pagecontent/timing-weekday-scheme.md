@@ -38,12 +38,13 @@ Folgende FHIR-Path Expression auf Ebene von `Dosage.timing.repeat` liefert die A
 
 ```
 timing.repeat.dayOfWeek.exists() and
-timing.repeat.frequency.empty() and
-timing.repeat.period.empty() and
-timing.repeat.periodUnit.empty() and
+timing.repeat.frequency.exists() and
+timing.repeat.period = 1 and
+timing.repeat.periodUnit = 'wk' and
 timing.repeat.when.empty() and
 timing.repeat.timeOfDay.empty()
 ```
+Der Wert von frequency entspricht dabei der Anzahl an Elementen in `dayOfWeek`.
 
 Soll das Arzneimittel in derselben Dosierung an mehreren Tagen angewandt werden, wird dies über mehrere Angaben von `dayOfWeek` ausgedrückt. Die angegebene Dosierung ist dann zu jedem der genannten Tage anzuwenden.
 

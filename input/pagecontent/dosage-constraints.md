@@ -44,6 +44,16 @@ Dadurch wird verhindert, dass Dosierungen mehrfach für denselben Zeitraum angeg
 
 {% include dosage-constraint-TimingOnlyOneWhen-examples.md%}
 
+### TimingOnlyWhenOrTimeOfDay
+
+**Beschreibung:**  
+Es darf nicht die Tageszeit `timeOfDay` und der Zeitraum des Tages `when` in mehreren Dosierungsinstanzen gleichzeitig vorkommen.
+
+**Warum?**  
+Dadurch wird verhindert, dass Dosierungen gemischte Schemata anzeigen.
+
+{% include dosage-constraint-TimingOnlyWhenOrTimeOfDay-examples.md%}
+
 ### TimingOnlyOneTimeOfDay
 
 **Beschreibung:**  

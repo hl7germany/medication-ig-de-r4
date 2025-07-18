@@ -1,0 +1,869 @@
+{
+  "profiles": [
+    {
+      "url": "http://ig.fhir.de/igs/medication/StructureDefinition/MedicationRequestDgMP",
+      "tests": [
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Unsupported-Dosage-14-of-20-MaxDosePerLifetime.json",
+          "description": "MedicationRequest Unsupported Dosage 14 of 20 MaxDosePerLifetime",
+          "valid": false
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Unsupported-Dosage-16-of-20-CountMax.json",
+          "description": "MedicationRequest Unsupported Dosage 16 of 20 CountMax",
+          "valid": false
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Unsupported-Dosage-10-of-20-RateRatio.json",
+          "description": "MedicationRequest Unsupported Dosage 10 of 20 RateRatio",
+          "valid": false
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Example-MR-Dosage-comb-interval-1.json",
+          "description": "MedicationRequest Example MR Dosage comb interval 1",
+          "valid": true
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Invalid-Dosage-07-of-12-timing-no-dose.json",
+          "description": "MedicationRequest Invalid Dosage 07 of 12 timing no dose",
+          "valid": false
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Unsupported-Dosage-06-of-20-Site.json",
+          "description": "MedicationRequest Unsupported Dosage 06 of 20 Site",
+          "valid": false
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Example-MR-Dosage-interval-3d.json",
+          "description": "MedicationRequest Example MR Dosage interval 3d",
+          "valid": true
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Invalid-Dosage-C-TimingFrequencyCount-03-of-05.json",
+          "description": "MedicationRequest Invalid Dosage C TimingFrequencyCount 03 of 05",
+          "valid": false,
+          "outcome": {
+            "resourceType": "OperationOutcome",
+            "issue": [
+              {
+                "severity": "error",
+                "code": "invariant",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+                    "valueCode": "http://ig.fhir.de/igs/medication/StructureDefinition/TimingDgMP#TimingFrequencyCount"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Example-MR-Dosage-1111.json",
+          "description": "MedicationRequest Example MR Dosage 1111",
+          "valid": true
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Example-MR-Dosage-UnitMg-1000.json",
+          "description": "MedicationRequest Example MR Dosage UnitMg 1000",
+          "valid": true
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Invalid-C-TimingOnlyOneType-02-of-08.json",
+          "description": "MedicationRequest Invalid C TimingOnlyOneType 02 of 08",
+          "valid": false,
+          "outcome": {
+            "resourceType": "OperationOutcome",
+            "issue": [
+              {
+                "severity": "error",
+                "code": "invariant",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+                    "valueCode": "http://ig.fhir.de/igs/medication/StructureDefinition/TimingDgMP#TimingOnlyOneType"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Unsupported-Dosage-04-of-20-Method.json",
+          "description": "MedicationRequest Unsupported Dosage 04 of 20 Method",
+          "valid": false
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Example-MR-Dosage-interval-2d-bound.json",
+          "description": "MedicationRequest Example MR Dosage interval 2d bound",
+          "valid": true
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Example-MR-Dosage-interval-4times-d.json",
+          "description": "MedicationRequest Example MR Dosage interval 4times d",
+          "valid": true
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Invalid-multiple-10-of-10-C-TimingOnlyOneBounds.json",
+          "description": "MedicationRequest Invalid multiple 10 of 10 C TimingOnlyOneBounds",
+          "valid": false,
+          "outcome": {
+            "resourceType": "OperationOutcome",
+            "issue": [
+              {
+                "severity": "error",
+                "code": "invariant",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+                    "valueCode": "http://ig.fhir.de/igs/medication/StructureDefinition/TimingDgMP#TimingOnlyOneBounds"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Invalid-multiple-08-of-10-C-TimingOnlyOneTimeOfDay.json",
+          "description": "MedicationRequest Invalid multiple 08 of 10 C TimingOnlyOneTimeOfDay",
+          "valid": false,
+          "outcome": {
+            "resourceType": "OperationOutcome",
+            "issue": [
+              {
+                "severity": "error",
+                "code": "invariant",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+                    "valueCode": "http://ig.fhir.de/igs/medication/StructureDefinition/TimingDgMP#TimingOnlyOneTimeOfDay"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Example-MR-Dosage-1010-Unsorted.json",
+          "description": "MedicationRequest Example MR Dosage 1010 Unsorted",
+          "valid": true
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Invalid-Dosage-C-TimingPeriodUnit-02-of-05.json",
+          "description": "MedicationRequest Invalid Dosage C TimingPeriodUnit 02 of 05",
+          "valid": false,
+          "outcome": {
+            "resourceType": "OperationOutcome",
+            "issue": [
+              {
+                "severity": "error",
+                "code": "invariant",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+                    "valueCode": "http://ig.fhir.de/igs/medication/StructureDefinition/TimingDgMP#TimingPeriodUnit"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Invalid-Dosage-11-of-12-C-TimingOnlyOneWhen.json",
+          "description": "MedicationRequest Invalid Dosage 11 of 12 C TimingOnlyOneWhen",
+          "valid": false,
+          "outcome": {
+            "resourceType": "OperationOutcome",
+            "issue": [
+              {
+                "severity": "error",
+                "code": "invariant",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+                    "valueCode": "http://ig.fhir.de/igs/medication/StructureDefinition/TimingDgMP#TimingOnlyOneWhen"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Example-MR-Dosage-interval-2wk.json",
+          "description": "MedicationRequest Example MR Dosage interval 2wk",
+          "valid": true
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Example-MR-Dosage-UnitStueck-1020.json",
+          "description": "MedicationRequest Example MR Dosage UnitStueck 1020",
+          "valid": true
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Unsupported-Dosage-18-of-20-BoundsRange.json",
+          "description": "MedicationRequest Unsupported Dosage 18 of 20 BoundsRange",
+          "valid": false
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Invalid-multiple-09-of-10-C-TimingOnlyOneTimeForInterval.json",
+          "description": "MedicationRequest Invalid multiple 09 of 10 C TimingOnlyOneTimeForInterval",
+          "valid": false,
+          "outcome": {
+            "resourceType": "OperationOutcome",
+            "issue": [
+              {
+                "severity": "error",
+                "code": "invariant",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+                    "valueCode": "http://ig.fhir.de/igs/medication/StructureDefinition/TimingDgMP#TimingOnlyOneTimeForInterval"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Invalid-Dosage-C-TimingPeriodUnit-05-of-05.json",
+          "description": "MedicationRequest Invalid Dosage C TimingPeriodUnit 05 of 05",
+          "valid": false,
+          "outcome": {
+            "resourceType": "OperationOutcome",
+            "issue": [
+              {
+                "severity": "error",
+                "code": "invariant",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+                    "valueCode": "http://ig.fhir.de/igs/medication/StructureDefinition/TimingDgMP#TimingPeriodUnit"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Invalid-Dosage-C-TimingFrequencyCount-01-of-05.json",
+          "description": "MedicationRequest Invalid Dosage C TimingFrequencyCount 01 of 05",
+          "valid": false,
+          "outcome": {
+            "resourceType": "OperationOutcome",
+            "issue": [
+              {
+                "severity": "error",
+                "code": "invariant",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+                    "valueCode": "http://ig.fhir.de/igs/medication/StructureDefinition/TimingDgMP#TimingFrequencyCount"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Unsupported-Dosage-03-of-20-asNeededCodeableConcept.json",
+          "description": "MedicationRequest Unsupported Dosage 03 of 20 asNeededCodeableConcept",
+          "valid": false
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Example-MR-Dosage-comb-dayofweek-2.json",
+          "description": "MedicationRequest Example MR Dosage comb dayofweek 2",
+          "valid": true
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Invalid-multiple-02-of-10-C-TimingOnlyOneTimeOfDay.json",
+          "description": "MedicationRequest Invalid multiple 02 of 10 C TimingOnlyOneTimeOfDay",
+          "valid": false,
+          "outcome": {
+            "resourceType": "OperationOutcome",
+            "issue": [
+              {
+                "severity": "error",
+                "code": "invariant",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+                    "valueCode": "http://ig.fhir.de/igs/medication/StructureDefinition/TimingDgMP#TimingOnlyOneTimeOfDay"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Invalid-multiple-05-of-10-C-TimingOnlyOnePeriodForDayOfWeek.json",
+          "description": "MedicationRequest Invalid multiple 05 of 10 C TimingOnlyOnePeriodForDayOfWeek",
+          "valid": false,
+          "outcome": {
+            "resourceType": "OperationOutcome",
+            "issue": [
+              {
+                "severity": "error",
+                "code": "invariant",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+                    "valueCode": "http://ig.fhir.de/igs/medication/StructureDefinition/TimingDgMP#TimingOnlyOnePeriodForDayOfWeek"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Invalid-C-TimingOnlyOneType-05-of-08.json",
+          "description": "MedicationRequest Invalid C TimingOnlyOneType 05 of 08",
+          "valid": false,
+          "outcome": {
+            "resourceType": "OperationOutcome",
+            "issue": [
+              {
+                "severity": "error",
+                "code": "invariant",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+                    "valueCode": "http://ig.fhir.de/igs/medication/StructureDefinition/TimingDgMP#TimingOnlyOneType"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Example-MR-Dosage-10120.json",
+          "description": "MedicationRequest Example MR Dosage 10120",
+          "valid": true
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Invalid-Dosage-C-TimingFrequencyCount-04-of-05.json",
+          "description": "MedicationRequest Invalid Dosage C TimingFrequencyCount 04 of 05",
+          "valid": false,
+          "outcome": {
+            "resourceType": "OperationOutcome",
+            "issue": [
+              {
+                "severity": "error",
+                "code": "invariant",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+                    "valueCode": "http://ig.fhir.de/igs/medication/StructureDefinition/TimingDgMP#TimingFrequencyCount"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Example-MR-Dosage-Freetext.json",
+          "description": "MedicationRequest Example MR Dosage Freetext",
+          "valid": true
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Example-MR-Dosage-comb-dayofweek-3.json",
+          "description": "MedicationRequest Example MR Dosage comb dayofweek 3",
+          "valid": true
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Unsupported-Dosage-15-of-20-Count.json",
+          "description": "MedicationRequest Unsupported Dosage 15 of 20 Count",
+          "valid": false
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Invalid-multiple-06-of-10-C-TimingIntervalOnlyOneFrequency.json",
+          "description": "MedicationRequest Invalid multiple 06 of 10 C TimingIntervalOnlyOneFrequency",
+          "valid": false,
+          "outcome": {
+            "resourceType": "OperationOutcome",
+            "issue": [
+              {
+                "severity": "error",
+                "code": "invariant",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+                    "valueCode": "http://ig.fhir.de/igs/medication/StructureDefinition/TimingDgMP#TimingIntervalOnlyOneFrequency"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Example-MR-Dosage-1010-10-Days.json",
+          "description": "MedicationRequest Example MR Dosage 1010 10 Days",
+          "valid": true
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Invalid-Dosage-06-of-12-multiple-dosagecodes.json",
+          "description": "MedicationRequest Invalid Dosage 06 of 12 multiple dosagecodes",
+          "valid": false
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Unsupported-Dosage-05-of-20-Route.json",
+          "description": "MedicationRequest Unsupported Dosage 05 of 20 Route",
+          "valid": false
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Unsupported-Dosage-01-of-20-Count.json",
+          "description": "MedicationRequest Unsupported Dosage 01 of 20 Count",
+          "valid": false
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Example-MR-Dosage-tod-2-12am.json",
+          "description": "MedicationRequest Example MR Dosage tod 2 12am",
+          "valid": true
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Unsupported-Dosage-19-of-20-Offset.json",
+          "description": "MedicationRequest Unsupported Dosage 19 of 20 Offset",
+          "valid": false
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Invalid-Dosage-01-of-12-FreqPeriod-When.json",
+          "description": "MedicationRequest Invalid Dosage 01 of 12 FreqPeriod When",
+          "valid": false
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Example-MR-Dosage-tod-multi.json",
+          "description": "MedicationRequest Example MR Dosage tod multi",
+          "valid": true
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Invalid-C-TimingOnlyOneType-03-of-08.json",
+          "description": "MedicationRequest Invalid C TimingOnlyOneType 03 of 08",
+          "valid": false,
+          "outcome": {
+            "resourceType": "OperationOutcome",
+            "issue": [
+              {
+                "severity": "error",
+                "code": "invariant",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+                    "valueCode": "http://ig.fhir.de/igs/medication/StructureDefinition/TimingDgMP#TimingOnlyOneType"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Example-MR-Dosage-weekday-2t.json",
+          "description": "MedicationRequest Example MR Dosage weekday 2t",
+          "valid": true
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Invalid-Dosage-C-TimingPeriodUnit-03-of-05.json",
+          "description": "MedicationRequest Invalid Dosage C TimingPeriodUnit 03 of 05",
+          "valid": false,
+          "outcome": {
+            "resourceType": "OperationOutcome",
+            "issue": [
+              {
+                "severity": "error",
+                "code": "invariant",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+                    "valueCode": "http://ig.fhir.de/igs/medication/StructureDefinition/TimingDgMP#TimingPeriodUnit"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Example-MR-Dosage-tod-1t-8am.json",
+          "description": "MedicationRequest Example MR Dosage tod 1t 8am",
+          "valid": true
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Invalid-multiple-07-of-10-C-TimingOnlyOneWhen.json",
+          "description": "MedicationRequest Invalid multiple 07 of 10 C TimingOnlyOneWhen",
+          "valid": false,
+          "outcome": {
+            "resourceType": "OperationOutcome",
+            "issue": [
+              {
+                "severity": "error",
+                "code": "invariant",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+                    "valueCode": "http://ig.fhir.de/igs/medication/StructureDefinition/TimingDgMP#TimingOnlyOneWhen"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Example-MR-Dosage-weekday-2t-1t.json",
+          "description": "MedicationRequest Example MR Dosage weekday 2t 1t",
+          "valid": true
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Example-MR-Dosage-tod-unsorted.json",
+          "description": "MedicationRequest Example MR Dosage tod unsorted",
+          "valid": true
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Unsupported-Dosage-07-of-20-DoseRange.json",
+          "description": "MedicationRequest Unsupported Dosage 07 of 20 DoseRange",
+          "valid": false
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Unsupported-Dosage-12-of-20-MaxDosePerPeriod.json",
+          "description": "MedicationRequest Unsupported Dosage 12 of 20 MaxDosePerPeriod",
+          "valid": false
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Example-MR-Dosage-weekday-unsorted.json",
+          "description": "MedicationRequest Example MR Dosage weekday unsorted",
+          "valid": true
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Unsupported-Dosage-20-of-20-Event.json",
+          "description": "MedicationRequest Unsupported Dosage 20 of 20 Event",
+          "valid": false
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Example-MR-Dosage-interval-8d.json",
+          "description": "MedicationRequest Example MR Dosage interval 8d",
+          "valid": true
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Unsupported-Dosage-13-of-20-MaxDosePerAdministration.json",
+          "description": "MedicationRequest Unsupported Dosage 13 of 20 MaxDosePerAdministration",
+          "valid": false
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Unsupported-Dosage-11-of-20-AdditionalInstruction.json",
+          "description": "MedicationRequest Unsupported Dosage 11 of 20 AdditionalInstruction",
+          "valid": false
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Example-MR-Dosage-comb-dayofweek-1.json",
+          "description": "MedicationRequest Example MR Dosage comb dayofweek 1",
+          "valid": true
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Example-MR-Dosage-comb-interval-4.json",
+          "description": "MedicationRequest Example MR Dosage comb interval 4",
+          "valid": true
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Invalid-C-TimingOnlyWhenOrTimeOfDay-01-of-08.json",
+          "description": "MedicationRequest Invalid C TimingOnlyWhenOrTimeOfDay 01 of 08",
+          "valid": false,
+          "outcome": {
+            "resourceType": "OperationOutcome",
+            "issue": [
+              {
+                "severity": "error",
+                "code": "invariant",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+                    "valueCode": "http://ig.fhir.de/igs/medication/StructureDefinition/TimingDgMP#TimingOnlyWhenOrTimeOfDay"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Invalid-C-TimingOnlyOneType-06-of-08.json",
+          "description": "MedicationRequest Invalid C TimingOnlyOneType 06 of 08",
+          "valid": false,
+          "outcome": {
+            "resourceType": "OperationOutcome",
+            "issue": [
+              {
+                "severity": "error",
+                "code": "invariant",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+                    "valueCode": "http://ig.fhir.de/igs/medication/StructureDefinition/TimingDgMP#TimingOnlyOneType"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Invalid-multiple-04-of-10-C-TimingOnlyOnePeriodForDayOfWeek.json",
+          "description": "MedicationRequest Invalid multiple 04 of 10 C TimingOnlyOnePeriodForDayOfWeek",
+          "valid": false,
+          "outcome": {
+            "resourceType": "OperationOutcome",
+            "issue": [
+              {
+                "severity": "error",
+                "code": "invariant",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+                    "valueCode": "http://ig.fhir.de/igs/medication/StructureDefinition/TimingDgMP#TimingOnlyOnePeriodForDayOfWeek"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Unsupported-Dosage-02-of-20-asNeededBoolean.json",
+          "description": "MedicationRequest Unsupported Dosage 02 of 20 asNeededBoolean",
+          "valid": false
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Invalid-Dosage-02-of-12-FreqPeriod-ToD-DayOfWeek.json",
+          "description": "MedicationRequest Invalid Dosage 02 of 12 FreqPeriod ToD DayOfWeek",
+          "valid": false
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Invalid-Dosage-10-of-12-When-DiffPeriodU.json",
+          "description": "MedicationRequest Invalid Dosage 10 of 12 When DiffPeriodU",
+          "valid": false
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Example-MR-Dosage-1010.json",
+          "description": "MedicationRequest Example MR Dosage 1010",
+          "valid": true
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Invalid-Dosage-05-of-12-multiple-types.json",
+          "description": "MedicationRequest Invalid Dosage 05 of 12 multiple types",
+          "valid": false
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Invalid-Dosage-C-TimingFrequencyCount-02-of-05.json",
+          "description": "MedicationRequest Invalid Dosage C TimingFrequencyCount 02 of 05",
+          "valid": false,
+          "outcome": {
+            "resourceType": "OperationOutcome",
+            "issue": [
+              {
+                "severity": "error",
+                "code": "invariant",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+                    "valueCode": "http://ig.fhir.de/igs/medication/StructureDefinition/TimingDgMP#TimingFrequencyCount"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Example-MR-Dosage-comb-dayofweek-unsorted.json",
+          "description": "MedicationRequest Example MR Dosage comb dayofweek unsorted",
+          "valid": true
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Invalid-Dosage-C-TimingPeriodUnit-01-of-05.json",
+          "description": "MedicationRequest Invalid Dosage C TimingPeriodUnit 01 of 05",
+          "valid": false,
+          "outcome": {
+            "resourceType": "OperationOutcome",
+            "issue": [
+              {
+                "severity": "error",
+                "code": "invariant",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+                    "valueCode": "http://ig.fhir.de/igs/medication/StructureDefinition/TimingDgMP#TimingPeriodUnit"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Invalid-Dosage-C-TimingFrequencyCount-05-of-05.json",
+          "description": "MedicationRequest Invalid Dosage C TimingFrequencyCount 05 of 05",
+          "valid": false,
+          "outcome": {
+            "resourceType": "OperationOutcome",
+            "issue": [
+              {
+                "severity": "error",
+                "code": "invariant",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+                    "valueCode": "http://ig.fhir.de/igs/medication/StructureDefinition/TimingDgMP#TimingFrequencyCount"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Invalid-Dosage-04-of-12-FreeText-and-structured.json",
+          "description": "MedicationRequest Invalid Dosage 04 of 12 FreeText and structured",
+          "valid": false
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Example-MR-Dosage-1220.json",
+          "description": "MedicationRequest Example MR Dosage 1220",
+          "valid": true
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Example-MR-Dosage-comb-interval-3.json",
+          "description": "MedicationRequest Example MR Dosage comb interval 3",
+          "valid": true
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Example-MR-Dosage-weekday-2t-bound.json",
+          "description": "MedicationRequest Example MR Dosage weekday 2t bound",
+          "valid": true
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Invalid-Dosage-09-of-12-C-TimingOnlyOneTimeForInterval.json",
+          "description": "MedicationRequest Invalid Dosage 09 of 12 C TimingOnlyOneTimeForInterval",
+          "valid": false,
+          "outcome": {
+            "resourceType": "OperationOutcome",
+            "issue": [
+              {
+                "severity": "error",
+                "code": "invariant",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+                    "valueCode": "http://ig.fhir.de/igs/medication/StructureDefinition/TimingDgMP#TimingOnlyOneTimeForInterval"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Invalid-Dosage-03-of-12-FreqPeriod-When-DayOfWeek.json",
+          "description": "MedicationRequest Invalid Dosage 03 of 12 FreqPeriod When DayOfWeek",
+          "valid": false
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Unsupported-Dosage-17-of-20-BoundsPeriod.json",
+          "description": "MedicationRequest Unsupported Dosage 17 of 20 BoundsPeriod",
+          "valid": false
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Example-MR-Dosage-weekday-3t.json",
+          "description": "MedicationRequest Example MR Dosage weekday 3t",
+          "valid": true
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Unsupported-Dosage-09-of-20-RateRange.json",
+          "description": "MedicationRequest Unsupported Dosage 09 of 20 RateRange",
+          "valid": false
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Example-MR-Dosage-UnitTasse-1000.json",
+          "description": "MedicationRequest Example MR Dosage UnitTasse 1000",
+          "valid": true
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Invalid-Dosage-12-of-12-C-TimingOnlyOneDayOfWeek.json",
+          "description": "MedicationRequest Invalid Dosage 12 of 12 C TimingOnlyOneDayOfWeek",
+          "valid": false,
+          "outcome": {
+            "resourceType": "OperationOutcome",
+            "issue": [
+              {
+                "severity": "error",
+                "code": "invariant",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+                    "valueCode": "http://ig.fhir.de/igs/medication/StructureDefinition/TimingDgMP#TimingOnlyOneDayOfWeek"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Example-MR-Dosage-1000.json",
+          "description": "MedicationRequest Example MR Dosage 1000",
+          "valid": true
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Unsupported-Dosage-08-of-20-RateQuantity.json",
+          "description": "MedicationRequest Unsupported Dosage 08 of 20 RateQuantity",
+          "valid": false
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Example-MR-Dosage-1020.json",
+          "description": "MedicationRequest Example MR Dosage 1020",
+          "valid": true
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Invalid-Dosage-C-TimingPeriodUnit-04-of-05.json",
+          "description": "MedicationRequest Invalid Dosage C TimingPeriodUnit 04 of 05",
+          "valid": false,
+          "outcome": {
+            "resourceType": "OperationOutcome",
+            "issue": [
+              {
+                "severity": "error",
+                "code": "invariant",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+                    "valueCode": "http://ig.fhir.de/igs/medication/StructureDefinition/TimingDgMP#TimingPeriodUnit"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Invalid-multiple-01-of-10-when.json",
+          "description": "MedicationRequest Invalid multiple 01 of 10 when",
+          "valid": false
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Example-MR-Dosage-comb-interval-2.json",
+          "description": "MedicationRequest Example MR Dosage comb interval 2",
+          "valid": true
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Invalid-C-TimingOnlyOneType-04-of-08.json",
+          "description": "MedicationRequest Invalid C TimingOnlyOneType 04 of 08",
+          "valid": false,
+          "outcome": {
+            "resourceType": "OperationOutcome",
+            "issue": [
+              {
+                "severity": "error",
+                "code": "invariant",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+                    "valueCode": "http://ig.fhir.de/igs/medication/StructureDefinition/TimingDgMP#TimingOnlyOneType"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Example-MR-Dosage-tod-multi-bound.json",
+          "description": "MedicationRequest Example MR Dosage tod multi bound",
+          "valid": true
+        }
+      ]
+    }
+  ]
+}

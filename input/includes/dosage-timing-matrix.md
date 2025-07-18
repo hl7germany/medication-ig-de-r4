@@ -29,8 +29,8 @@
 | [MedicationRequest-Example-MR-Dosage-weekday-unsorted](./MedicationRequest-Example-MR-Dosage-weekday-unsorted.html) | 4 x wöchentlich: Montag, Dienstag, Donnerstag und Freitag — je 2 Stück | 2 Stück |  |  | 4 | 1 | wk | fri, tue, thu, mon |  |  |  |
 | [MedicationRequest-Example-MR-Dosage-interval-8d](./MedicationRequest-Example-MR-Dosage-interval-8d.html) | alle 8 Tage: je 1 Stück | 1 Stück |  |  | 1 | 8 | d |  |  |  |  |
 | [MedicationRequest-Example-MR-Dosage-comb-dayofweek-1](./MedicationRequest-Example-MR-Dosage-comb-dayofweek-1.html) | 4 x wöchentlich: Montag und Freitag — morgens und abends — je 1 Stück | 1 Stück |  |  | 4 | 1 | wk | mon, fri |  | MORN, EVE |  |
-| [MedicationRequest-Example-MR-Dosage-comb-interval-4](./MedicationRequest-Example-MR-Dosage-comb-interval-4.html) | 2 x pro 2 Tage: um 08:00 Uhr, 20:00 Uhr — je 1 Stück | 1 Stück |  |  | 2 | 2 | d |  | 08:00:00, 20:00:00 |  |  |
-|  | 3 x pro 2 Tage: um 10:00 Uhr, 14:00 Uhr, 22:00 Uhr — je 2 Stück | 2 Stück |  |  | 3 | 2 | d |  | 10:00:00, 14:00:00, 22:00:00 |  |  |
+| [MedicationRequest-Example-MR-Dosage-comb-interval-4](./MedicationRequest-Example-MR-Dosage-comb-interval-4.html) | 2 x alle 2 Tage: um 08:00 Uhr, 20:00 Uhr — je 1 Stück | 1 Stück |  |  | 2 | 2 | d |  | 08:00:00, 20:00:00 |  |  |
+|  | 3 x alle 2 Tage: um 10:00 Uhr, 14:00 Uhr, 22:00 Uhr — je 2 Stück | 2 Stück |  |  | 3 | 2 | d |  | 10:00:00, 14:00:00, 22:00:00 |  |  |
 | [MedicationRequest-Example-MR-Dosage-1010](./MedicationRequest-Example-MR-Dosage-1010.html) | 2 x täglich: morgens und abends — je 1 Stück | 1 Stück |  |  | 2 | 1 | d |  |  | MORN, EVE |  |
 | [MedicationRequest-Example-MR-Dosage-comb-dayofweek-unsorted](./MedicationRequest-Example-MR-Dosage-comb-dayofweek-unsorted.html) | 6 x wöchentlich: Montag, Donnerstag und Samstag — morgens und abends — je 1 Stück | 1 Stück |  |  | 6 | 1 | wk | sat, mon, thu |  | EVE, MORN |  |
 | [MedicationRequest-Example-MR-Dosage-1220](./MedicationRequest-Example-MR-Dosage-1220.html) | täglich: morgens — je 1 Stück | 1 Stück |  |  | 1 | 1 | d |  |  | MORN |  |

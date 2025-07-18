@@ -135,6 +135,8 @@ menu:
 parameters:
   path-pages:
     - input/content
+  profile-test-cases:
+    - input/testcases/timing-dgmp.json
     
 # ╭───────────────────────────Less Common Implementation Guide Properties──────────────────────────╮
 # │  Uncomment the properties below to configure additional properties on the ImplementationGuide  │

@@ -169,6 +169,37 @@ Expression: "( /* Detect 4-Schema */
 "
 Severity: #error
 
+Invariant: TimingOnlyWhenOrTimeOfDay
+Description: "Dosages Timings must not state a time of day and period of day across multiple dosage instances"
+Expression: "(
+  %resource.ofType(MedicationRequest).dosageInstruction
+  | %resource.ofType(MedicationDispense).dosageInstruction
+  | %resource.ofType(MedicationStatement).dosage
+).all(
+    timing.repeat.frequency.exists() and
+    timing.repeat.period.exists() and
+    timing.repeat.periodUnit.exists() and
+    timing.repeat.dayOfWeek.empty() and
+    (timing.repeat.when.exists() or 
+    timing.repeat.timeOfDay.empty())
+  implies
+  (
+    (
+      (%resource.ofType(MedicationRequest).exists() or %resource.ofType(MedicationDispense).exists())
+      implies
+      (%resource.dosageInstruction.timing.repeat.when.exists() xor %resource.dosageInstruction.timing.repeat.timeOfDay.exists())
+    )
+    and
+    (
+      %resource.ofType(MedicationStatement).exists()
+      implies
+      (%resource.dosage.timing.repeat.when.exists() xor %resource.dosage.timing.repeat.timeOfDay.exists())
+    )
+  )
+)
+"
+Severity: #error
+
 Invariant: TimingOnlyOneTimeOfDay
 Description: "Dosages Timings must not state the same time of day across multiple dosage instances"
 Expression: "( /* Detect TimeOfDay */

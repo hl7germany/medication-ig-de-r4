@@ -11,6 +11,7 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * obeys TimingOnlyOneType
   * obeys TimingIntervalOnlyOneFrequency
   * obeys TimingOnlyOneWhen
+  * obeys TimingOnlyWhenOrTimeOfDay
   * obeys TimingOnlyOneTimeOfDay
   * obeys TimingOnlyOneDayOfWeek
   * obeys TimingOnlyOnePeriodForDayOfWeek
@@ -181,7 +182,7 @@ Expression: "(
     timing.repeat.periodUnit.exists() and
     timing.repeat.dayOfWeek.empty() and
     (timing.repeat.when.exists() or 
-    timing.repeat.timeOfDay.empty())
+    timing.repeat.timeOfDay.exists())
   implies
   (
     (

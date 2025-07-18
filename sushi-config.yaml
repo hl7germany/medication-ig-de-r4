@@ -60,7 +60,7 @@ pages:
   dosage-constraints.md:
     title: Dosage Constraints
   dosage-to-text-system.md:
-    title: Hinzufügen des Dosistextes
+    title: Bereitstellung des Dosierungstextes
   multiple-dosages.md:
     title: Mehrere Dosierungen
   timing-freetext-scheme.md:

@@ -1,5 +1,5 @@
 // when + timeOfDay
-Instance: Invalid-C-TimingOnlyOneType-01-of-08
+Instance: Invalid-C-TimingOnlyWhenOrTimeOfDay-01-of-08
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid: when + timeOfDay"

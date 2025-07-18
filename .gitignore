@@ -7,3 +7,4 @@ Thumbs.db
 /temp
 /template
 /medication-no-sushi/
+*.out.json

@@ -36,42 +36,33 @@ def build_outcome_block(key):
 
 def main(input_path, output_path):
     profiles = {}
-
     for filename in os.listdir(input_path):
-        if not filename.endswith(".json"):
-            continue
-        if is_conformance_resource(filename):
-            continue
-        
-        filepath = os.path.join(input_path, filename)
-        profile_url = get_profile_from_file(filepath)
-        if not profile_url:
-            continue
+      if not filename.endswith(".json"):
+          continue
+      if is_conformance_resource(filename):
+          continue
 
-        test_entry = {
-            "source": f"/{filename}",
-            "description": os.path.splitext(filename)[0].replace("-", " "),
-            "valid": not (("Invalid" in filename) or ("Unsupported" in filename))
-        }
+      filepath = os.path.join(input_path, filename)
+      profile_url = get_profile_from_file(filepath)
+      if not profile_url:
+          continue
 
-        # If Invalid or Unsupported, valid should be False
-        if ("Invalid" in filename) or ("Unsupported" in filename):
-            test_entry["valid"] = False
-        else:
-            test_entry["valid"] = True
+      test_entry = {
+          "source": f"/fsh-generated/resources/{filename}",
+          "description": os.path.splitext(filename)[0].replace("-", " "),
+          "valid": not (("Invalid" in filename) or ("Unsupported" in filename))
+      }
 
-        # Check for -C-<key>
-        c_key_match = re.search(r"-C-([A-Za-z0-9]+)", filename)
-        if c_key_match:
-            key = c_key_match.group(1)
-            test_entry["outcome"] = build_outcome_block(key)
-        
-        # Add to profiles
-        if profile_url not in profiles:
-            profiles[profile_url] = []
-        profiles[profile_url].append(test_entry)
+      c_key_match = re.search(r"-C-([A-Za-z0-9]+)", filename)
+      if c_key_match:
+          key = c_key_match.group(1)
+          test_entry["outcome"] = build_outcome_block(key)
 
-    # Build final structure
+      if profile_url not in profiles:
+          profiles[profile_url] = []
+      profiles[profile_url].append(test_entry)
+
+
     result = {
         "profiles": [
             {
@@ -82,9 +73,11 @@ def main(input_path, output_path):
         ]
     }
 
-    # Write output
-    with open(output_path, "w", encoding="utf-8") as out_f:
+    # Always write test.json inside the output directory
+    output_file = os.path.join(output_path, "test.json")
+    with open(output_file, "w", encoding="utf-8") as out_f:
         json.dump(result, out_f, indent=2, ensure_ascii=False)
+
 
 if __name__ == "__main__":
     if len(sys.argv) != 3:

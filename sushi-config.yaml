@@ -1,47 +1,15 @@
-# ╭─────────────────────────Commonly Used ImplementationGuide Properties───────────────────────────╮
-# │  The properties below are used to create the ImplementationGuide resource. The most commonly   │
-# │  used properties are included. For a list of all supported properties and their functions,     │
-# │  see: https://fshschool.org/docs/sushi/configuration/.                                         │
-# ╰────────────────────────────────────────────────────────────────────────────────────────────────╯
 id: de.fhir.medication
 canonical: http://ig.fhir.de/igs/medication
 name: MedicationDE
 title: Medication IG DE
-# description: Example Implementation Guide for getting started with SUSHI
-status: draft # draft | active | retired | unknown
+status: draft
 version: 1.0.0-ballot1
-fhirVersion: 4.0.1 # https://www.hl7.org/fhir/valueset-FHIR-version.html
+fhirVersion: 4.0.1
 copyrightYear: 2025+
 releaseLabel: 1.0.0
-# license: CC0-1.0 # https://www.hl7.org/fhir/valueset-spdx-license.html
-# jurisdiction: urn:iso:std:iso:3166#US "United States of America" # https://www.hl7.org/fhir/valueset-jurisdiction.html
 publisher:
   name: HL7 Deutschland
   url: https://hl7.de
-  # email: test@example.org
-
-# The dependencies property corresponds to IG.dependsOn. The key is the
-# package id and the value is the version (or dev/current). For advanced
-# use cases, the value can be an object with keys for id, uri, and version.
-#
-# dependencies:
-#   hl7.fhir.us.mcode:
-#     id: mcode
-#     uri: http://hl7.org/fhir/us/mcode/ImplementationGuide/hl7.fhir.us.mcode
-#     version: 1.0.0
-#
-#
-# The pages property corresponds to IG.definition.page. SUSHI can
-# auto-generate the page list, but if the author includes pages in
-# this file, it is assumed that the author will fully manage the
-# pages section and SUSHI will not generate any page entries.
-# The page file name is used as the key. If title is not provided,
-# then the title will be generated from the file name.  If a
-# generation value is not provided, it will be inferred from the
-# file name extension.  Any subproperties that are valid filenames
-# with supported extensions (e.g., .md/.xml) will be treated as
-# sub-pages.
-
 pages:
   index.md:
     title: Home
@@ -83,34 +51,9 @@ pages:
     title: FHIR Summary
   downloads.md:
     title: Downloads
-
-#
-#
-#
-# The parameters property represents IG.definition.parameter. Rather
-# than a list of code/value pairs (as in the ImplementationGuide
-# resource), the code is the YAML key. If a parameter allows repeating
-# values, the value in the YAML should be a sequence/array.
-# For parameters defined by core FHIR see:
-# http://build.fhir.org/codesystem-guide-parameter-code.html
-# For parameters defined by the FHIR Tools IG see:
-# http://build.fhir.org/ig/FHIR/fhir-tools-ig/branches/master/CodeSystem-ig-parameters.html
-#
-# parameters:
-#   excludettl: true
-#   validation: [allow-any-extensions, no-broken-links]
-#
-# ╭────────────────────────────────────────────menu.xml────────────────────────────────────────────╮
-# │ The menu property will be used to generate the input/menu.xml file. The menu is represented    │
-# │ as a simple structure where the YAML key is the menu item name and the value is the URL.       │
-# │ The IG publisher currently only supports one level deep on sub-menus. To provide a             │
-# │ custom menu.xml file, do not include this property and include a `menu.xml` file in            │
-# │ input/includes. To use a provided input/includes/menu.xml file, delete the "menu"              │
-# │ property below.                                                                                │
-# ╰────────────────────────────────────────────────────────────────────────────────────────────────╯
 menu:
   Home: index.html
-  Dosierungen: 
+  Dosierungen:
     Einführung: dosage-index.html
     Fachliche Rahmenbedingungen: dosage-concept.html
     Dosis Profile: dosage-differences.html
@@ -119,7 +62,6 @@ menu:
     Beispielliste Dosierung: dosage-to-text-examples.html
     Mehrere Dosierungen: multiple-dosages.html
     Constraints: dosage-constraints.html
-#   TODO: Duration
   Dosierschemata:
     Freitext-Dosierung: timing-freetext-scheme.html
     Schema mit Tageszeiten-Bezug: timing-mman-scheme.html
@@ -131,143 +73,67 @@ menu:
     Beispiel Dosierungen: dosage-examples.html
   FHIR-Artefakte: artifacts.html
   Downloads: downloads.html
-
 parameters:
   path-pages:
     - input/content
   profile-test-cases:
-    - input/testcases/timing-dgmp.json
-    
-# ╭───────────────────────────Less Common Implementation Guide Properties──────────────────────────╮
-# │  Uncomment the properties below to configure additional properties on the ImplementationGuide  │
-# │  resource. These properties are less commonly needed than those above.                         │
-# ╰────────────────────────────────────────────────────────────────────────────────────────────────╯
-#
-# Those who need more control or want to add additional details to the contact values can use
-# contact directly and follow the format outlined in the ImplementationGuide resource and
-# ContactDetail.
-#
-# contact:
-#   - name: Bob Smith
-#     telecom:
-#       - system: email # phone | fax | email | pager | url | sms | other
-#         value: bobsmith@example.org
-#         use: work
-#
-#
-# The global property corresponds to the IG.global property, but it
-# uses the type as the YAML key and the profile as its value. Since
-# FHIR does not explicitly disallow more than one profile per type,
-# neither do we; the value can be a single profile URL or an array
-# of profile URLs. If a value is an id or name, SUSHI will replace
-# it with the correct canonical when generating the IG JSON.
-#
-# global:
-#   Patient: http://example.org/fhir/StructureDefinition/my-patient-profile
-#   Encounter: http://example.org/fhir/StructureDefinition/my-encounter-profile
-#
-#
-# The resources property corresponds to IG.definition.resource.
-# SUSHI can auto-generate all of the resource entries based on
-# the FSH definitions and/or information in any user-provided
-# JSON or XML resource files. If the generated entries are not
-# sufficient or complete, however, the author can add entries
-# here. If the reference matches a generated entry, it will
-# replace the generated entry. If it doesn't match any generated
-# entries, it will be added to the generated entries. The format
-# follows IG.definition.resource with the following differences:
-#   * use IG.definition.resource.reference.reference as the YAML key.
-#   * if the key is an id or name, SUSHI will replace it with the
-#     correct URL when generating the IG JSON.
-#   * specify "omit" to omit a FSH-generated resource from the
-#     resource list.
-#   * if the exampleCanonical is an id or name, SUSHI will replace
-#     it with the correct canonical when generating the IG JSON.
-#   * groupingId can be used, but top-level groups syntax may be a
-#     better option (see below).
-# The following are simple examples to demonstrate what this might
-# look like:
-#
-# resources:
-#   Patient/my-example-patient:
-#     name: My Example Patient
-#     description: An example Patient
-#     exampleBoolean: true
-#   Patient/bad-example: omit
-#
-#
-# Groups can control certain aspects of the IG generation.  The IG
-# documentation recommends that authors use the default groups that
-# are provided by the templating framework, but if authors want to
-# use their own instead, they can use the mechanism below.  This will
-# create IG.definition.grouping entries and associate the individual
-# resource entries with the corresponding groupIds. If a resource
-# is specified by id or name, SUSHI will replace it with the correct
-# URL when generating the IG JSON.
-#
-# groups:
-#   GroupA:
-#     name: Group A
-#     description: The Alpha Group
-#     resources:
-#     - StructureDefinition/animal-patient
-#     - StructureDefinition/arm-procedure
-#   GroupB:
-#     name: Group B
-#     description: The Beta Group
-#     resources:
-#     - StructureDefinition/bark-control
-#     - StructureDefinition/bee-sting
-#
-#
-# The ImplementationGuide resource defines several other properties
-# not represented above. These properties can be used as-is and
-# should follow the format defined in ImplementationGuide:
-# * date
-# * meta
-# * implicitRules
-# * language
-# * text
-# * contained
-# * extension
-# * modifierExtension
-# * experimental
-# * useContext
-# * copyright
-# * packageId
-#
-#
-# ╭──────────────────────────────────────────SUSHI flags───────────────────────────────────────────╮
-# │  The flags below configure aspects of how SUSHI processes FSH.                                 │
-# ╰────────────────────────────────────────────────────────────────────────────────────────────────╯
-# The FSHOnly flag indicates if only FSH resources should be exported.
-# If set to true, no IG related content will be generated.
-# The default value for this property is false.
-#
-# FSHOnly: false
-#
-#
-# When set to true, the "short" and "definition" field on the root element of an Extension will
-# be set to the "Title" and "Description" of that Extension. Default is true.
-#
-# applyExtensionMetadataToRoot: true
-#
-#
-# The instanceOptions property is used to configure certain aspects of how SUSHI processes instances.
-# See the individual option definitions below for more detail.
-#
+    - input/testcases/test.json
+  no-validate:
+    - MedicationRequest/Invalid-C-TimingOnlyOneType-02-of-08
+    - MedicationRequest/Invalid-C-TimingOnlyOneType-03-of-08
+    - MedicationRequest/Invalid-C-TimingOnlyOneType-04-of-08
+    - MedicationRequest/Invalid-C-TimingOnlyOneType-05-of-08
+    - MedicationRequest/Invalid-C-TimingOnlyOneType-06-of-08
+    - MedicationRequest/Invalid-C-TimingOnlyWhenOrTimeOfDay-01-of-08
+    - MedicationRequest/Invalid-Dosage-01-of-12-FreqPeriod-When
+    - MedicationRequest/Invalid-Dosage-02-of-12-FreqPeriod-ToD-DayOfWeek
+    - MedicationRequest/Invalid-Dosage-03-of-12-FreqPeriod-When-DayOfWeek
+    - MedicationRequest/Invalid-Dosage-04-of-12-FreeText-and-structured
+    - MedicationRequest/Invalid-Dosage-05-of-12-multiple-types
+    - MedicationRequest/Invalid-Dosage-06-of-12-multiple-dosagecodes
+    - MedicationRequest/Invalid-Dosage-07-of-12-timing-no-dose
+    - MedicationRequest/Invalid-Dosage-09-of-12-C-TimingOnlyOneTimeForInterval
+    - MedicationRequest/Invalid-Dosage-10-of-12-When-DiffPeriodU
+    - MedicationRequest/Invalid-Dosage-11-of-12-C-TimingOnlyOneWhen
+    - MedicationRequest/Invalid-Dosage-12-of-12-C-TimingOnlyOneDayOfWeek
+    - MedicationRequest/Invalid-Dosage-C-TimingFrequencyCount-01-of-05
+    - MedicationRequest/Invalid-Dosage-C-TimingFrequencyCount-02-of-05
+    - MedicationRequest/Invalid-Dosage-C-TimingFrequencyCount-03-of-05
+    - MedicationRequest/Invalid-Dosage-C-TimingFrequencyCount-04-of-05
+    - MedicationRequest/Invalid-Dosage-C-TimingFrequencyCount-05-of-05
+    - MedicationRequest/Invalid-Dosage-C-TimingPeriodUnit-01-of-05
+    - MedicationRequest/Invalid-Dosage-C-TimingPeriodUnit-02-of-05
+    - MedicationRequest/Invalid-Dosage-C-TimingPeriodUnit-03-of-05
+    - MedicationRequest/Invalid-Dosage-C-TimingPeriodUnit-04-of-05
+    - MedicationRequest/Invalid-Dosage-C-TimingPeriodUnit-05-of-05
+    - MedicationRequest/Invalid-multiple-01-of-10-when
+    - MedicationRequest/Invalid-multiple-02-of-10-C-TimingOnlyOneTimeOfDay
+    - MedicationRequest/Invalid-multiple-04-of-10-C-TimingOnlyOnePeriodForDayOfWeek
+    - MedicationRequest/Invalid-multiple-05-of-10-C-TimingOnlyOnePeriodForDayOfWeek
+    - MedicationRequest/Invalid-multiple-06-of-10-C-TimingIntervalOnlyOneFrequency
+    - MedicationRequest/Invalid-multiple-07-of-10-C-TimingOnlyOneWhen
+    - MedicationRequest/Invalid-multiple-08-of-10-C-TimingOnlyOneTimeOfDay
+    - MedicationRequest/Invalid-multiple-09-of-10-C-TimingOnlyOneTimeForInterval
+    - MedicationRequest/Invalid-multiple-10-of-10-C-TimingOnlyOneBounds
+    - MedicationRequest/Unsupported-Dosage-01-of-20-Count
+    - MedicationRequest/Unsupported-Dosage-02-of-20-asNeededBoolean
+    - MedicationRequest/Unsupported-Dosage-03-of-20-asNeededCodeableConcept
+    - MedicationRequest/Unsupported-Dosage-04-of-20-Method
+    - MedicationRequest/Unsupported-Dosage-05-of-20-Route
+    - MedicationRequest/Unsupported-Dosage-06-of-20-Site
+    - MedicationRequest/Unsupported-Dosage-07-of-20-DoseRange
+    - MedicationRequest/Unsupported-Dosage-08-of-20-RateQuantity
+    - MedicationRequest/Unsupported-Dosage-09-of-20-RateRange
+    - MedicationRequest/Unsupported-Dosage-10-of-20-RateRatio
+    - MedicationRequest/Unsupported-Dosage-11-of-20-AdditionalInstruction
+    - MedicationRequest/Unsupported-Dosage-12-of-20-MaxDosePerPeriod
+    - MedicationRequest/Unsupported-Dosage-13-of-20-MaxDosePerAdministration
+    - MedicationRequest/Unsupported-Dosage-14-of-20-MaxDosePerLifetime
+    - MedicationRequest/Unsupported-Dosage-15-of-20-Count
+    - MedicationRequest/Unsupported-Dosage-16-of-20-CountMax
+    - MedicationRequest/Unsupported-Dosage-17-of-20-BoundsPeriod
+    - MedicationRequest/Unsupported-Dosage-18-of-20-BoundsRange
+    - MedicationRequest/Unsupported-Dosage-19-of-20-Offset
+    - MedicationRequest/Unsupported-Dosage-20-of-20-Event
 instanceOptions:
-  # When set to true, slices must be referred to by name and not only by a numeric index in order to be used
-  # in an Instance's assignment rule. All slices appear in the order in which they are specified in FSH rules.
-  # While SUSHI defaults to false for legacy reasons, manualSliceOrding is recommended for new projects.
-  manualSliceOrdering: true # true | false
-  # Determines for which types of Instances SUSHI will automatically set meta.profile
-  # if InstanceOf references a profile:
-  #
-  # setMetaProfile: always # always | never | inline-only | standalone-only
-  #
-  #
-  # Determines for which types of Instances SUSHI will automatically set id
-  # if InstanceOf references a profile:
-  #
-  # setId: always # always | standalone-only
+  manualSliceOrdering: true

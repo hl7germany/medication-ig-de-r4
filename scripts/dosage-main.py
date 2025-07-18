@@ -35,6 +35,11 @@ def main():
     print("Generating test cases for examples...")
     test_case_script = os.path.join(base_dir, "test-generate-test-cases.py")
     subprocess.run(['python3', test_case_script, input_folder, testcases_folder], check=True)
+    
+    # 6. No Validate for Invalid files
+    print("Setting no validate for invalid files...")
+    no_validate_script = os.path.join(base_dir, "test-exclude-validation.py")
+    subprocess.run(['python3', no_validate_script, input_folder], check=True)
 
     print("All steps completed.")
 

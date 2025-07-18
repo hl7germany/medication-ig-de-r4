@@ -150,12 +150,210 @@
           }
         },
         {
-          "source" : "/fsh-generated/resources/MedicationRequest-Invalid-C-TimingOnlyOneType-01-of-08.json",
-          "description" : "Invalid Dosage",
+          "source" : "/fsh-generated/resources/MedicationRequest-Example-MR-Dosage-1111.json",
+          "description" : "Valid Dosage 1-1-1-1",
           "valid" : true,
           "outcome" : {
             "resourceType" : "OperationOutcome",
             "issue" : [
+              {
+                "extension" : [
+                  {
+                    "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line",
+                    "valueInteger" : 1
+                  },
+                  {
+                    "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col",
+                    "valueInteger" : 2
+                  },
+                  {
+                    "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source",
+                    "valueString" : "InstanceValidator"
+                  },
+                  {
+                    "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+                    "valueCode" : "VALIDATION_VAL_PROFILE_SIGNPOST"
+                  }
+                ],
+                "severity" : "information",
+                "code" : "informational",
+                "details" : {
+                  "text" : "Validate resource against profile http://ig.fhir.de/igs/medication/StructureDefinition/MedicationRequestDgMP|1.0.0-ballot1"
+                },
+                "expression" : ["MedicationRequest"]
+              },
+              {
+                "extension" : [
+                  {
+                    "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line",
+                    "valueInteger" : 32
+                  },
+                  {
+                    "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col",
+                    "valueInteger" : 12
+                  },
+                  {
+                    "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source",
+                    "valueString" : "InstanceValidator"
+                  },
+                  {
+                    "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+                    "valueCode" : "UNKNOWN_CODESYSTEM"
+                  }
+                ],
+                "severity" : "information",
+                "code" : "unknown",
+                "details" : {
+                  "text" : "A definition for CodeSystem 'https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT' could not be found, so the code cannot be validated"
+                },
+                "expression" : [
+                  "MedicationRequest.dosageInstruction[0].doseAndRate[0].dose.ofType(Quantity)"
+                ]
+              },
+              {
+                "extension" : [
+                  {
+                    "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line",
+                    "valueInteger" : 32
+                  },
+                  {
+                    "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col",
+                    "valueInteger" : 12
+                  },
+                  {
+                    "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source",
+                    "valueString" : "InstanceValidator"
+                  },
+                  {
+                    "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+                    "valueCode" : "Terminology_TX_ValueSet_NotFound"
+                  }
+                ],
+                "severity" : "warning",
+                "code" : "code-invalid",
+                "details" : {
+                  "text" : "ValueSet 'https://fhir.kbv.de/ValueSet/KBV_VS_SFHIR_BMP_DOSIEREINHEIT' not found"
+                },
+                "expression" : [
+                  "MedicationRequest.dosageInstruction[0].doseAndRate[0].dose.ofType(Quantity)"
+                ]
+              },
+              {
+                "extension" : [
+                  {
+                    "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line",
+                    "valueInteger" : 35
+                  },
+                  {
+                    "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col",
+                    "valueInteger" : 86
+                  },
+                  {
+                    "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source",
+                    "valueString" : "InstanceValidator"
+                  },
+                  {
+                    "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+                    "valueCode" : "Type_Specific_Checks_DT_URL_Resolve"
+                  }
+                ],
+                "severity" : "warning",
+                "code" : "invalid",
+                "details" : {
+                  "text" : "No definition could be found for URL value 'https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT'"
+                },
+                "expression" : [
+                  "MedicationRequest.dosageInstruction[0].doseAndRate[0].dose.ofType(Quantity).system"
+                ]
+              },
+              {
+                "extension" : [
+                  {
+                    "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line",
+                    "valueInteger" : 1
+                  },
+                  {
+                    "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col",
+                    "valueInteger" : 2
+                  },
+                  {
+                    "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source",
+                    "valueString" : "InstanceValidator"
+                  },
+                  {
+                    "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+                    "valueCode" : "http://hl7.org/fhir/StructureDefinition/DomainResource#dom-6"
+                  }
+                ],
+                "severity" : "warning",
+                "code" : "invariant",
+                "details" : {
+                  "text" : "Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)"
+                },
+                "expression" : ["MedicationRequest"]
+              }
+            ]
+          }
+        },
+        {
+          "source" : "/fsh-generated/resources/MedicationRequest-Invalid-C-TimingOnlyOneType-01-of-08.json",
+          "description" : "Invalid Dosage",
+          "valid" : false,
+          "outcome" : {
+            "resourceType" : "OperationOutcome",
+            "issue" : [
+              {
+                "extension" : [
+                  {
+                    "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line",
+                    "valueInteger" : 28
+                  },
+                  {
+                    "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col",
+                    "valueInteger" : 10
+                  },
+                  {
+                    "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source",
+                    "valueString" : "InstanceValidator"
+                  },
+                  {
+                    "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+                    "valueCode" : "http://ig.fhir.de/igs/medication/StructureDefinition/TimingDgMP#TimingOnlyWhenOrTimeOfDay"
+                  }
+                ],
+                "severity" : "error",
+                "code" : "invariant",
+                "details" : {
+                  "text" : "Constraint failed: TimingOnlyWhenOrTimeOfDay: 'Dosages Timings must not state a time of day and period of day across multiple dosage instances' (defined in http://ig.fhir.de/igs/medication/StructureDefinition/TimingDgMP)"
+                },
+                "expression" : ["MedicationRequest.dosageInstruction[0].timing.repeat"]
+              },
+              {
+                "extension" : [
+                  {
+                    "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line",
+                    "valueInteger" : 50
+                  },
+                  {
+                    "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col",
+                    "valueInteger" : 10
+                  },
+                  {
+                    "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source",
+                    "valueString" : "InstanceValidator"
+                  },
+                  {
+                    "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+                    "valueCode" : "http://ig.fhir.de/igs/medication/StructureDefinition/TimingDgMP#TimingOnlyWhenOrTimeOfDay"
+                  }
+                ],
+                "severity" : "error",
+                "code" : "invariant",
+                "details" : {
+                  "text" : "Constraint failed: TimingOnlyWhenOrTimeOfDay: 'Dosages Timings must not state a time of day and period of day across multiple dosage instances' (defined in http://ig.fhir.de/igs/medication/StructureDefinition/TimingDgMP)"
+                },
+                "expression" : ["MedicationRequest.dosageInstruction[1].timing.repeat"]
+              },
               {
                 "extension" : [
                   {
@@ -375,33 +573,6 @@
                   "text" : "Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)"
                 },
                 "expression" : ["MedicationRequest"]
-              }
-            ]
-          },
-          "outcome-test" : {
-            "resourceType" : "OperationOutcome",
-            "issue" : [
-              {
-                "extension" : [
-                  {
-                    "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-line",
-                    "valueInteger" : 1
-                  },
-                  {
-                    "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-col",
-                    "valueInteger" : 5728
-                  },
-                  {
-                    "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-issue-source",
-                    "valueString" : "MatchetypeValidator"
-                  }
-                ],
-                "severity" : "error",
-                "code" : "value",
-                "details" : {
-                  "text" : "The expected item at outcome.issue at index 0 was not found: actual[0] != expected[0]: code property values differ at outcome.issue[0].severity: expected 'error' but found 'information';string property values differ at outcome.issue[0].details.text: expected 'Constraint failed: TimingOnlyOneType: 'Only one kind of Timing is allowed. Current allowed timings: 4-Scheme, TimeOfDay, DayOfWeek, Interval, DayOfWeek and Time/4-Schema, Interval and Time/4-Schema' (defined in http://ig.fhir.de/igs/medication/StructureDefinition/TimingDgMP)' but found 'Validate resource against profile http://ig.fhir.de/igs/medication/StructureDefinition/MedicationRequestDgMP|1.0.0-ballot1'\r\nactual[1] != expected[0]: code property values differ at outcome.issue[0].severity: expected 'error' but found 'information';string property values differ at outcome.issue[0].details.text: expected 'Constraint failed: TimingOnlyOneType: 'Only one kind of Timing is allowed. Current allowed timings: 4-Scheme, TimeOfDay, DayOfWeek, Interval, DayOfWeek and Time/4-Schema, Interval and Time/4-Schema' (defined in http://ig.fhir.de/igs/medication/StructureDefinition/TimingDgMP)' but found 'A definition for CodeSystem 'https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT' could not be found, so the code cannot be validated'\r\nactual[2] != expected[0]: code property values differ at outcome.issue[0].severity: expected 'error' but found 'information';string property values differ at outcome.issue[0].details.text: expected 'Constraint failed: TimingOnlyOneType: 'Only one kind of Timing is allowed. Current allowed timings: 4-Scheme, TimeOfDay, DayOfWeek, Interval, DayOfWeek and Time/4-Schema, Interval and Time/4-Schema' (defined in http://ig.fhir.de/igs/medication/StructureDefinition/TimingDgMP)' but found 'A definition for CodeSystem 'https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT' could not be found, so the code cannot be validated'\r\nactual[3] != expected[0]: code property values differ at outcome.issue[0].severity: expected 'error' but found 'warning';string property values differ at outcome.issue[0].details.text: expected 'Constraint failed: TimingOnlyOneType: 'Only one kind of Timing is allowed. Current allowed timings: 4-Scheme, TimeOfDay, DayOfWeek, Interval, DayOfWeek and Time/4-Schema, Interval and Time/4-Schema' (defined in http://ig.fhir.de/igs/medication/StructureDefinition/TimingDgMP)' but found 'ValueSet 'https://fhir.kbv.de/ValueSet/KBV_VS_SFHIR_BMP_DOSIEREINHEIT' not found'\r\nactual[4] != expected[0]: code property values differ at outcome.issue[0].severity: expected 'error' but found 'warning';string property values differ at outcome.issue[0].details.text: expected 'Constraint failed: TimingOnlyOneType: 'Only one kind of Timing is allowed. Current allowed timings: 4-Scheme, TimeOfDay, DayOfWeek, Interval, DayOfWeek and Time/4-Schema, Interval and Time/4-Schema' (defined in http://ig.fhir.de/igs/medication/StructureDefinition/TimingDgMP)' but found 'ValueSet 'https://fhir.kbv.de/ValueSet/KBV_VS_SFHIR_BMP_DOSIEREINHEIT' not found'\r\nactual[5] != expected[0]: code property values differ at outcome.issue[0].severity: expected 'error' but found 'warning';string property values differ at outcome.issue[0].details.text: expected 'Constraint failed: TimingOnlyOneType: 'Only one kind of Timing is allowed. Current allowed timings: 4-Scheme, TimeOfDay, DayOfWeek, Interval, DayOfWeek and Time/4-Schema, Interval and Time/4-Schema' (defined in http://ig.fhir.de/igs/medication/StructureDefinition/TimingDgMP)' but found 'No definition could be found for URL value 'https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT''\r\nactual[6] != expected[0]: code property values differ at outcome.issue[0].severity: expected 'error' but found 'warning';string property values differ at outcome.issue[0].details.text: expected 'Constraint failed: TimingOnlyOneType: 'Only one kind of Timing is allowed. Current allowed timings: 4-Scheme, TimeOfDay, DayOfWeek, Interval, DayOfWeek and Time/4-Schema, Interval and Time/4-Schema' (defined in http://ig.fhir.de/igs/medication/StructureDefinition/TimingDgMP)' but found 'No definition could be found for URL value 'https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT''\r\nactual[7] != expected[0]: code property values differ at outcome.issue[0].severity: expected 'error' but found 'warning';string property values differ at outcome.issue[0].details.text: expected 'Constraint failed: TimingOnlyOneType: 'Only one kind of Timing is allowed. Current allowed timings: 4-Scheme, TimeOfDay, DayOfWeek, Interval, DayOfWeek and Time/4-Schema, Interval and Time/4-Schema' (defined in http://ig.fhir.de/igs/medication/StructureDefinition/TimingDgMP)' but found 'Constraint failed: dom-6: 'A resource should have narrative for robust management' (defined in http://hl7.org/fhir/StructureDefinition/DomainResource) (Best Practice Recommendation)'"
-                },
-                "expression" : ["outcome.issue"]
               }
             ]
           }

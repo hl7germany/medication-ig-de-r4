@@ -1,77 +1,42 @@
 {
-  "profiles" : [
+  "profiles": [
     {
-      "url" : "http://ig.fhir.de/igs/medication/StructureDefinition/MedicationRequestDgMP",
+      "url": "http://ig.fhir.de/igs/medication/StructureDefinition/MedicationRequestDgMP",
       "tests": [
         {
-          "source" : "/fsh-generated/resources/MedicationRequest-Example-MR-Dosage-1000.json",
-          "description" : "Valid Dosage 1-0-0-0",
-          "valid" : true
+          "source": "/fsh-generated/resources/MedicationRequest-Example-MR-Dosage-1000.json",
+          "description": "Valid Dosage 1-0-0-0",
+          "valid": true
         },
         {
-          "source" : "/fsh-generated/resources/MedicationRequest-Invalid-C-TimingOnlyOneType-01-of-08.json",
-          "description" : "Invalid Dosage",
-          "valid" : false,
-          "outcome" : {
-            "resourceType" : "OperationOutcome",
-            "issue" : [
+          "source": "/fsh-generated/resources/MedicationRequest-Example-MR-Dosage-1111.json",
+          "description": "Valid Dosage 1-1-1-1",
+          "valid": true
+        },
+        {
+          "source": "/fsh-generated/resources/MedicationRequest-Invalid-C-TimingOnlyOneType-01-of-08.json",
+          "description": "Invalid Dosage",
+          "valid": false,
+          "outcome": {
+            "resourceType": "OperationOutcome",
+            "issue": [
               {
-              "severity": "error",
-              "code": "invariant",
-              "details": {
-                "text": "Constraint failed: TimingOnlyOneType: 'Only one kind of Timing is allowed. Current allowed timings: 4-Scheme, TimeOfDay, DayOfWeek, Interval, DayOfWeek and Time/4-Schema, Interval and Time/4-Schema' (defined in http://ig.fhir.de/igs/medication/StructureDefinition/TimingDgMP)"
-              }
+                "severity": "error",
+                "code": "invariant",
+                "extension": [
+                  {
+                    "url": "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+                    "valueCode": "http://ig.fhir.de/igs/medication/StructureDefinition/TimingDgMP#TimingOnlyWhenOrTimeOfDay"
+                  }
+                ]
               }
             ]
           }
         },
         {
-          "source" : "/fsh-generated/resources/MedicationRequest-Invalid-C-TimingOnlyOneType-02-of-08.json",
-          "description" : "Invalid Dosage",
-          "valid" : true,
-          "outcome" : {
-            "resourceType" : "OperationOutcome",
-            "issue" : [
-              {
-              "severity": "error",
-              "details": {
-                "text": "Constraint failed: TimingOnlyOneType: 'Only one kind of Timing is allowed. Current allowed timings: 4-Scheme, TimeOfDay, DayOfWeek, Interval, DayOfWeek and Time/4-Schema, Interval and Time/4-Schema' (defined in http://ig.fhir.de/igs/medication/StructureDefinition/TimingDgMP)"
-              }
-              }
-            ]
-          }
-        },
-        {
-          "source" : "/fsh-generated/resources/MedicationRequest-Invalid-C-TimingOnlyOneType-03-of-08.json",
-          "description" : "Invalid Dosage",
-          "valid" : false,
-          "outcome" : {
-            "resourceType" : "OperationOutcome",
-            "issue" : [
-              {
-              "severity": "warning",
-              "details": {
-                "text": "Constraint failed: TimingOnlyOneType: 'Only one kind of Timing is allowed. Current allowed timings: 4-Scheme, TimeOfDay, DayOfWeek, Interval, DayOfWeek and Time/4-Schema, Interval and Time/4-Schema' (defined in http://ig.fhir.de/igs/medication/StructureDefinition/TimingDgMP)"
-              }
-              }
-            ]
-          }
-        },
-        {
-          "source" : "/fsh-generated/resources/MedicationRequest-Invalid-C-TimingOnlyOneType-04-of-08.json",
-          "description" : "Invalid Dosage",
-          "valid" : false,
-          "outcome" : {
-            "resourceType" : "OperationOutcome",
-            "issue" : [
-              {
-              "severity": "error",
-              "details": {
-                "text": "Constraint failed: JO MAMA: 'Only one kind of Timing is allowed. Current allowed timings: 4-Scheme, TimeOfDay, DayOfWeek, Interval, DayOfWeek and Time/4-Schema, Interval and Time/4-Schema' (defined in http://ig.fhir.de/igs/medication/StructureDefinition/TimingDgMP)"
-              }
-              }
-            ]
-          }
+          "source": "/fsh-generated/resources/MedicationRequest-Invalid-Dosage-05-of-12-multiple-types.json",
+          "description": "Invalid Dosage",
+          "valid": false
         }
       ]
     }

@@ -22,7 +22,7 @@ Die beteiligten Akteure und Systeme stimmen die Einführung neuer Ausbaustufen f
 ### Unterstützte Dosierungen
 
 Die Abbildung strukturierter Dosierungen wird kontinuierlich weiterentwickelt. Ziel ist es, die strukturierte Angabe von Dosierungen schrittweise in den dgMP-Anwendungsfällen einzuführen. Beteiligte Projekte und Systeme stimmen sich hierzu ab und führen Erweiterungen koordiniert ein.  
-Da die Ausbaustufen rückwärtskompatibel sind, können nachgelagerte Systeme (z.B. ePA) schon vor den erzeugenden Systemen neue Ausbaustufen unterstützen.
+Da die Ausbaustufen rückwärtskompatibel sind, können nachgelagerte Systeme (z. B. ePA oder ISiK-konforme Systeme) schon vor den erzeugenden Systemen neue Ausbaustufen unterstützen.
 
 Der digital gestützte Medikationsprozess unterstützt aktuell die folgenden Dosierschemata, gegliedert nach Ausbaustufen. Die jeweiligen Seiten enthalten eine fachliche Beschreibung, Beispiele und technische Hinweise zur Instanziierung.
 

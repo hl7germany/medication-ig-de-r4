@@ -24,9 +24,9 @@ Folgende weitere Beispiele sind in diesem IG dargestellt:
 
 Diese Dosierungsart wird daran erkannt, dass folgende Felder unter `Dosage.timing.repeat` angegeben sind:
 
-- frequency
-- period
-- periodUnit
+- `frequency`
+- `period`
+- `periodUnit`
 - opt. Angabe von `bounds[x]`
 
 Folgende FHIR-Path Expression auf Ebene von `Dosage.timing.repeat` liefert die Angabe, ob es sich um das Schema handelt: 

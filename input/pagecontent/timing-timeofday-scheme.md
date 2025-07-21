@@ -25,7 +25,10 @@ Folgende weitere Beispiele sind in diesem IG dargestellt:
 
 Diese Dosierungsart wird daran erkannt, dass unter `Dosage.timing.repeat`
 
-- ausschließliche Angabe von `timeOfDay`
+- `frequency`
+- `period`
+- `periodUnit` in Tagen (d)
+- `timeOfDay`
 - opt. Angabe von `bounds[x]`
 
 angegeben ist. An diesem Feld wird dann kodiert die Uhrzeit angegeben an der eine konkrete Dosierung einzunehmen ist.

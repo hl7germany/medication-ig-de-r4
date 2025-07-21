@@ -29,7 +29,10 @@ Folgende Beispiele sind in diesem IG dargestellt:
 
 Diese Dosierungsart wird daran erkannt, dass unter `Dosage.timing.repeat`
 
-- ausschließliche Angabe von `dayOfWeek`
+- `dayOfWeek`
+- `frequency`
+- `period`
+- `periodUnit` in Wochen (wk)
 - opt. Angabe von `bounds[x]`
 
 angegeben ist. An diesem Feld wird dann kodiert der Wochentag angegeben an der eine konkrete Dosierung einzunehmen ist.

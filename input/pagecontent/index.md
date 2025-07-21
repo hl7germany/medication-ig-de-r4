@@ -38,7 +38,7 @@ Durch Input und Feedback haben folgende Organisationen an der Erstellung dieses 
 - GKV-Spitzenverband  
 - HL7 Deutschland  
 - Kassenärztliche Bundesvereinigung  
-- Koordinierungsgremium Interoperabilität im Gesundheitswesen (KIG)  
+- Kompetenzzentrum für Interoperabilität im Gesundheitswesen (KIG) 
 - Verband der Privaten Krankenversicherung  
 
 ### Abhängigkeiten

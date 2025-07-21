@@ -1,5 +1,3 @@
-## Schema für Kombinationen des Wochentags
-
 Dieses Schema gibt an, an welchen Wochentagen einer Kalenderwoche das Medikament angewandt werden soll und trifft zudem eine Aussage, zu welchen Uhrzeiten oder Tageszeiten die Anwendung an den betreffenden Kalendertagen erfolgen soll. 
 
 In diesem Anwendungsfall wird davon ausgegangen, dass das Arzneimittel wöchentlich (für die geplante Dauer) in einem gleichbleibenden Wochentagsschema angewandt wird. Es wird zudem ermöglicht:

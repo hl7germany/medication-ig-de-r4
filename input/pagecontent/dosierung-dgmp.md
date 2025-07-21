@@ -1,8 +1,8 @@
 Diese Seite beschreibt fachliche Aspekte und Entscheidungen zur Handhabung von strukturierten Dosierungen im dgMP-Kontext.
 
-## Vorgaben
+### Vorgaben
 
-### Nutzung des Feldes `.text`
+#### Nutzung des Feldes `.text`
 
 Die textuelle Angabe von Dosierungen wird in diesem Projekt in zwei Varianten unterschieden:
 - Vom Menschen beschriebene Dosierung (Freitext)
@@ -14,39 +14,39 @@ Das Feld `Dosage.text` ist **ausschließlich** für vom Menschen erstelleten Fre
 
 Im Kontext des dgMP sorgt die [Infrastruktur zur Bereitstellung des Dosierungstextes](./dosierung-text-hinzufuegen.html) dafür, dass zu jeder strukturierten Dosierung auch eine einheitliche, maschinell generierte textuelle Repräsentation bereitgestellt wird. Dieser Text wird in der Extension `Dosage.extension[GeneratedDosageInstructionsEx]` hinterlegt.
 
-### Nutzung von Sequenzen
+#### Nutzung von Sequenzen
 
 In der aktuellen Ausbaustufe und im Kontext dgMP ist die Verwendung von `Dosage.sequence` nicht erlaubt. Dieses Feld dient beispielsweise dazu, aufeinander aufbauende Dosierungen (wie Ein- oder Ausschleichen) zu kennzeichnen. Die Nutzung kann in zukünftigen Ausbaustufen geprüft werden.
 
-### Strukturierte Angabe der Einheit
+#### Strukturierte Angabe der Einheit
 
 Für die Berechnung der Reichweite einer Medikation ist es erforderlich, dass Dosierungseinheiten (z.B. „1 Tablette“) strukturiert über ein Codesystem angegeben werden.  
 Dafür wird das ValueSet `KBV_VS_SFHIR_BMP_DOSIEREINHEIT` genutzt.
 
-### Beispiele
+#### Beispiele
 
 Zur Unterstützung der Implementierenden werden in diesem Projekt verschiedene Beispiele bereitgestellt. Die [Übersicht der Beispiele](./dosierung-beispiele.html) zeigt alle validen Beispiele in einer Matrix mit generierter Dosisinstruktion und einer Übersicht der belegten Felder.  
 Darüber hinaus finden sich auf der Seite [Beispiele für Dosierungen](./dosierung-beispiele.html) vollständige Listen von Positiv- und Negativbeispielen, inklusive solcher, die in der aktuellen Ausbaustufe noch nicht unterstützt werden.
 
-## Technische Validierung der Dosierungen
+### Technische Validierung der Dosierungen
 
 Um sicherzustellen, dass Dosierungen syntaktisch korrekt und den Vorgaben der jeweiligen Ausbaustufe entsprechend erstellt werden, sind folgende technische Prüfungen implementiert:
 
-### Freitext oder strukturierte Dosierung
+#### Freitext oder strukturierte Dosierung
 
 Der Constraint `DosageStructuredOrFreeText` im Profil [DosageDgMP](./StructureDefinition-DosageDgMP.html) stellt sicher, dass entweder das Element `.text` oder eine strukturierte Angabe der Dosierung befüllt wird – nicht jedoch beides gleichzeitig. So wird ausgeschlossen, dass widersprüchliche Angaben gemacht werden.
 
-### Nur ein Dosierungsschema pro Instanz
+#### Nur ein Dosierungsschema pro Instanz
 
 Die Constraints im Profil [TimingDgMP](./StructureDefinition-TimingDgMP.html) stellen sicher, dass eine Dosierung ausschließlich einem zulässigen Dosierungsschema der aktuellen Ausbaustufe entspricht. Außerdem wird sichergestellt, dass alle Dosierungen innerhalb einer übergeordneten Ressource (z.B. alle Einträge in `MedicationRequest.dosageInstruction`) demselben Dosierungsschema folgen.
 
 Es ist somit bspw. nicht möglich, in einer `MedicationRequest`-Ressource, im dgMP Kontext, gleichzeitig Dosierungen mit Uhrzeiten- und Tageszeiten-Schema zu kombinieren.
 
-## Ausbaustufen
+### Ausbaustufen
 
 Der digital gestützte Medikationsprozess unterstützt aktuell die folgenden Dosierschemata, gegliedert nach Ausbaustufen. Die jeweiligen Seiten enthalten eine fachliche Beschreibung, Beispiele und technische Hinweise zur Instanziierung.
 
-### Ausbaustufe 1
+#### Ausbaustufe 1
 
 - [Freitext-Dosierung](./schema-freitext.html)
 - [Schema mit Tageszeiten-Bezug](./schema-tageszeit.html)
@@ -56,7 +56,7 @@ Der digital gestützte Medikationsprozess unterstützt aktuell die folgenden Dos
 - [Schema für Kombinationen von Zeitintervallen](./schema-intervall-kombination.html)
 - [Schema für Kombinationen von Wochentagen](./schema-wochentag-kombination.html)
 
-### Folgende Ausbaustufe
+#### Folgende Ausbaustufe
 
 In weiteren Ausbaustufen sollen weitere Schemata entwickelt, die bestehenden Schemata ergänzt und Regeln für die übergeordnete Beziehung zwischen mehreren Schemata aufgebaut werden. Untenstehend findet sich eine Übersicht über Erweiterungen, die in zukünftigen Ausbaustufen berücksichtigt werden sollen, mitsamt Erläuterungen und/oder Beispielen. Diese Liste kann in der Zukunft erweitert oder angepasst werden. Für eine zweite Ausbaustufe wird empfohlen, die folgenden zwei bzw. drei Punkte anzugehen:
 
@@ -70,7 +70,7 @@ In weiteren Ausbaustufen sollen weitere Schemata entwickelt, die bestehenden Sch
 
 Sobald diesbezüglich eine Entscheidung getroffen wurde, wird die Planung zur zweiten Ausbaustufe hier kommuniziert.
 
-#### Weitere Schemata und Erläuterungen
+##### Weitere Schemata und Erläuterungen
 
 | Weitere Schemata                                   | Erläuterungen                                                                                                                                                                                                                                                                                                                                 |
 |----------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -78,7 +78,7 @@ Sobald diesbezüglich eine Entscheidung getroffen wurde, wird die Planung zur zw
 | Konkreter Anwendungszeitpunkt                     | Bei manchen Arzneimitteln kann es sinnvoll sein, einen konkreten Anwendungszeitpunkt inkl. Datum und ggf. Uhrzeit zu benennen. Dies kann bspw. bei Arzneimitteln der Fall sein, für welche ein Termin in einer medizinischen Einrichtung vereinbart wird (bspw. Infusionen).                                                                       |
 | Festlegung der Dosis einer Anwendung in Abhängigkeit zu bestimmten Bedingungen | Bestimmte Arzneimittel werden bspw. in Abhängigkeit von Labor- oder Selbstmesswerten oder von Art und Menge einer Mahlzeit dosiert. Hierzu gehören bspw. Insulinschemata, deren Dosis in Abhängigkeit zum Blut-Glukose-Wert und zum Kohlenhydrat-Gehalt einer Mahlzeit bestimmt wird.                                                               |
 
-#### Ergänzung bestehender Schemata
+##### Ergänzung bestehender Schemata
 
 **Alternative Zeitangaben und Dosierungen**
 
@@ -100,14 +100,14 @@ Sobald diesbezüglich eine Entscheidung getroffen wurde, wird die Planung zur zw
 | Laufzeit einzelner Anwendungen                           | Infusion mit Gesamtmenge 500 ml, max. Laufrate 125 ml/h|
 
 
-#### Übergeordnete Beziehung zwischen bestehenden Schemata
+##### Übergeordnete Beziehung zwischen bestehenden Schemata
 
 | Übergeordnete Beziehung zwischen bestehenden Schemata           | Beispiel                                                                                                 |
 |-----------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|
 | Änderung von Dosis oder Anwendungshäufigkeit im Zeitverlauf     | Täglich 1 Tablette morgens für 1 Woche. Anschließend täglich 2 Tabletten morgens für 1 Woche. (Einschleichen) |
 | Kombination verschiedener Anwendungsintervalle                  | Abwechselnd: Jeden zweiten Tag 1 Tablette morgens und jeden zweiten Tag 2 Tabletten morgens              |
 
-#### Beispiele für komplexe Beziehungen zwischen Arzneimitteln
+##### Beispiele für komplexe Beziehungen zwischen Arzneimitteln
 
 | Beziehungstyp                                        | Beispiel                                                                                                             |
 |------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|

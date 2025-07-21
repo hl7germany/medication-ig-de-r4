@@ -111,9 +111,9 @@ menu:
     Fachliche Rahmenvorgaben: dosierung-rahmenvorgaben.html
     dgMP Rahmenvorgaben: dosierung-dgmp.html
     Dosis Textgenerierung: dosierung-textgenerierung.html
-    Hinzufügen des Dosistextes: dosierung-text-hinzufuegen.html
+    Bereitstellung des Dosierungstextes: dosierung-text-hinzufuegen.html
     Beispielliste Dosierung: dosierung-beispiele.html
-    Constraints: dosierung-constraints.html
+    Übersicht der Timing-Invarianten: dosierung-constraints.html
   Dosierschemata:
     Freitext-Dosierung: schema-freitext.html
     Schema mit Tageszeiten-Bezug: schema-tageszeit.html

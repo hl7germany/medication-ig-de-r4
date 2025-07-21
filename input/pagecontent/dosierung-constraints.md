@@ -1,7 +1,4 @@
-## Übersicht der Timing-Invarianten
-
 Im Folgenden werden alle definierten Invarianten für das Timing-Profil aufgelistet, jeweils mit einer kurzen Beschreibung und der Begründung für ihre Existenz. Diese Regeln sorgen für eine konsistente und eindeutige Modellierung von Dosierungszeitpunkten im FHIR-Kontext.
-
 
 ### TimingFrequencyCount
 

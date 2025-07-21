@@ -1,5 +1,3 @@
-## Beispiele für Dosierungen
-
 ### Aktuell unterstützte Dosierkonfigurationen
 
 {% include dosage-timing-matrix.md %}

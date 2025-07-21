@@ -46,7 +46,7 @@ pages:
   index.md:
     title: FHIR Implementation Guide für medikationsbezogene Anwendungsfälle im deutschen Gesundheitswesen
   dosage-index.md:
-    title: Einführung
+    title: FHIR Dosierungen für den digital gestützten Medikationsprozess
   dosage-concept.md:
     title: Fachliche Rahmenbedingungen
   dosage-differences.md:

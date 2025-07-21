@@ -52,15 +52,11 @@ pages:
   dosierung-dgmp.md:
     title: Fachliche Rahmenvorgaben des dgMP
   dosierung-textgenerierung.md:
-    title: Überführung von Dosierung zu Text
-  dosierung-beispiele.md:
-    title: Beispielliste Dosierung
-  schema-beispiele.md:
-    title: Dosage Beispiele
-  dosierung-constraints.md:
-    title: Dosage Constraints
+    title: Dosis Textgenerierung
   dosierung-text-hinzufuegen.md:
     title: Bereitstellung des Dosierungstextes
+  dosierung-constraints.md:
+    title: Übersicht der Timing-Invarianten
   schema-freitext.md:
     title: Freitext-Dosierung
   schema-tageszeit.md:
@@ -75,6 +71,8 @@ pages:
     title: Schema für Kombinationen von Zeitintervallen
   schema-wochentag-kombination.md:
     title: Schema für Kombinationen von Wochentagen
+  dosierung-beispiele.md:
+    title: Beispielliste Dosierung
   artifacts.html:
     title: FHIR Summary
   downloads.md:
@@ -112,7 +110,6 @@ menu:
     dgMP Rahmenvorgaben: dosierung-dgmp.html
     Dosis Textgenerierung: dosierung-textgenerierung.html
     Bereitstellung des Dosierungstextes: dosierung-text-hinzufuegen.html
-    Beispielliste Dosierung: dosierung-beispiele.html
     Übersicht der Timing-Invarianten: dosierung-constraints.html
   Dosierschemata:
     Freitext-Dosierung: schema-freitext.html

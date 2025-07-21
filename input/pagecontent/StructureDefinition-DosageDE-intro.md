@@ -5,4 +5,4 @@ Dieses Profil beschreibt die Verwendung der FHIR-Ressource `Dosage` im deutschen
 **Empfehlung:**  
 Nutzen Sie dieses Profil für alle Anwendungsfälle, in denen Dosierungsinformationen interoperabel ausgetauscht werden sollen. Orientieren Sie sich bei der Umsetzung an den empfohlenen Dosierschemata, um eine konsistente und verständliche Darstellung zu gewährleisten.
 
-Weitere Hinweise und Beispiele zu bewährten Dosierschemata ist unter [Unterstützte Dosierungen](./dosage-index.html#unterst%C3%BCtzte-dosierungen) beschrieben.
+Weitere Hinweise und Beispiele zu bewährten Dosierschemata ist unter [Unterstützte Dosierungen](./dosierung-einfuehrung.html#unterst%C3%BCtzte-dosierungen) beschrieben.

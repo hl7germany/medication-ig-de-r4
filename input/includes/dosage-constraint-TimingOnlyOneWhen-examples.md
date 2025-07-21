@@ -1,4 +1,4 @@
-| File | description | doseQuantity | duration | durationUnit | frequency | period | periodUnit | Day<br>of<br>Week | Time<br>Of<br>Day | when | bounds[x] |
+| File | generated dosage instruction text | doseQuantity | duration | durationUnit | frequency | period | periodUnit | Day<br>of<br>Week | Time<br>Of<br>Day | when | bounds[x] |
 | :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | [MedicationRequest-Invalid-Dosage-11-of-12-C-TimingOnlyOneWhen](./MedicationRequest-Invalid-Dosage-11-of-12-C-TimingOnlyOneWhen.html) | täglich: morgens — je 1 Stück | 1 Stück |  |  | 1 | 1 | d |  |  | MORN |  |
 |  | täglich: morgens und abends — je 2 Stück | 2 Stück |  |  | 1 | 1 | d |  |  | MORN, EVE |  |

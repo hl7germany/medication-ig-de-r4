@@ -77,7 +77,7 @@ def main():
     unsupported_table = process_files(input_folder, dosage_to_text_script)
     
     # Write markdown tables
-    output_path = os.path.join(output_folder, "unsupported-dosage-examples.md")
+    output_path = os.path.join(output_folder, "unsupported-schema-beispiele.md")
     with open(output_path, "w") as f:
         f.write(unsupported_table)
     print(f"Markdown tables written to {output_path}")

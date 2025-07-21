@@ -8,7 +8,7 @@ Der IG enthält die Beschreibung der jeweiligen Anwendungsfälle sowie begleiten
 
 Dieser Implementation Guide wird kontinuierlich weiterentwickelt und verbessert. Aktuell werden folgende Anwendungsfälle unterstützt:
 
-- Strukturierte und textuelle Darstellung von [Dosierungen](./dosage-index.html)
+- Strukturierte und textuelle Darstellung von [Dosierungen](./dosierung-einfuehrung.html)
 
 ## Must Support
 

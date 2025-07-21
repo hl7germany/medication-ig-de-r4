@@ -1,4 +1,4 @@
-| File | description | doseQuantity | duration | durationUnit | frequency | period | periodUnit | Day<br>of<br>Week | Time<br>Of<br>Day | when | bounds[x] |
+| File | generated dosage instruction text | doseQuantity | duration | durationUnit | frequency | period | periodUnit | Day<br>of<br>Week | Time<br>Of<br>Day | when | bounds[x] |
 | :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | [MedicationRequest-Example-MR-Dosage-comb-interval-1](./MedicationRequest-Example-MR-Dosage-comb-interval-1.html) | alle 2 Tage: um 08:00 Uhr — je 1 Stück | 1 Stück |  |  | 1 | 2 | d |  | 08:00:00 |  |  |
 |  | alle 2 Tage: um 18:00 Uhr — je 2 Stück | 2 Stück |  |  | 1 | 2 | d |  | 18:00:00 |  |  |

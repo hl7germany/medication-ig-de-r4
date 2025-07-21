@@ -45,40 +45,36 @@ publisher:
 pages:
   index.md:
     title: FHIR Implementation Guide für medikationsbezogene Anwendungsfälle im deutschen Gesundheitswesen
-  dosage-index.md:
+  dosierung-einfuehrung.md:
     title: FHIR Dosierungen für den digital gestützten Medikationsprozess
-  dosage-concept.md:
-    title: Fachliche Rahmenbedingungen
-  dosage-differences.md:
-    title: Dosis Profile
-  dosage-to-text.md:
-    title: Textgenerierung
-  dosage-to-text-examples.md:
+  dosierung-rahmenvorgaben.md:
+    title: Fachliche Rahmenvorgaben für Dosierungen
+  dosierung-dgmp.md:
+    title: Fachliche Rahmenvorgaben des dgMP
+  dosierung-textgenerierung.md:
+    title: Überführung von Dosierung zu Text
+  dosierung-beispiele.md:
     title: Beispielliste Dosierung
-  dosage-examples.md:
+  schema-beispiele.md:
     title: Dosage Beispiele
-  dosage-constraints.md:
+  dosierung-constraints.md:
     title: Dosage Constraints
-  dosage-to-text-system.md:
+  dosierung-text-hinzufuegen.md:
     title: Bereitstellung des Dosierungstextes
-  multiple-dosages.md:
-    title: Mehrere Dosierungen
-  timing-freetext-scheme.md:
+  schema-freitext.md:
     title: Freitext-Dosierung
-  timing-mman-scheme.md:
+  schema-tageszeit.md:
     title: Schema mit Tageszeiten-Bezug
-  timing-timeofday-scheme.md:
+  schema-uhrzeit.md:
     title: Schema mit Uhrzeiten-Bezug
-  timing-weekday-scheme.md:
+  schema-wochentag.md:
     title: Schema mit Wochentags-Bezug
-  timing-interval-scheme.md:
+  schema-intervall.md:
     title: Schema für wiederkehrende Intervalle
-  timing-comb-interval-scheme.md:
+  schema-intervall-kombination.md:
     title: Schema für Kombinationen von Zeitintervallen
-  timing-comb-dayofweek-scheme.md:
+  schema-wochentag-kombination.md:
     title: Schema für Kombinationen von Wochentagen
-  duration.md:
-    title: Duration
   artifacts.html:
     title: FHIR Summary
   downloads.md:
@@ -110,25 +106,23 @@ pages:
 # ╰────────────────────────────────────────────────────────────────────────────────────────────────╯
 menu:
   Home: index.html
-  Dosierungen: 
-    Einführung: dosage-index.html
-    Fachliche Rahmenbedingungen: dosage-concept.html
-    Dosis Profile: dosage-differences.html
-    Textgenerierung: dosage-to-text.html
-    Hinzufügen des Dosistextes: dosage-to-text-system.html
-    Beispielliste Dosierung: dosage-to-text-examples.html
-    Mehrere Dosierungen: multiple-dosages.html
-    Constraints: dosage-constraints.html
-#   TODO: Duration
+  Dosierung:
+    Einführung: dosierung-einfuehrung.html
+    Fachliche Rahmenvorgaben: dosierung-rahmenvorgaben.html
+    dgMP Rahmenvorgaben: dosierung-dgmp.html
+    Dosis Textgenerierung: dosierung-textgenerierung.html
+    Hinzufügen des Dosistextes: dosierung-text-hinzufuegen.html
+    Beispielliste Dosierung: dosierung-beispiele.html
+    Constraints: dosierung-constraints.html
   Dosierschemata:
-    Freitext-Dosierung: timing-freetext-scheme.html
-    Schema mit Tageszeiten-Bezug: timing-mman-scheme.html
-    Schema mit Uhrzeiten-Bezug: timing-timeofday-scheme.html
-    Schema mit Wochentags-Bezug: timing-weekday-scheme.html
-    Schema für wiederkehrende Intervalle: timing-interval-scheme.html
-    Schema für Kombinationen von Zeitintervallen: timing-comb-interval-scheme.html
-    Schema für Kombinationen von Wochentagen: timing-comb-dayofweek-scheme.html
-    Beispiel Dosierungen: dosage-examples.html
+    Freitext-Dosierung: schema-freitext.html
+    Schema mit Tageszeiten-Bezug: schema-tageszeit.html
+    Schema mit Uhrzeiten-Bezug: schema-uhrzeit.html
+    Schema mit Wochentags-Bezug: schema-wochentag.html
+    Schema für wiederkehrende Intervalle: schema-intervall.html
+    Schema für Kombinationen von Zeitintervallen: schema-intervall-kombination.html
+    Schema für Kombinationen von Wochentagen: schema-wochentag-kombination.html
+    Beispiel Dosierungen: dosierung-beispiele.html
   FHIR-Artefakte: artifacts.html
   Downloads: downloads.html
 

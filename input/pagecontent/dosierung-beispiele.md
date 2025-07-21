@@ -6,4 +6,4 @@
 
 ### Zukünftig unterstützte Dosierkonfigurationen
 
-{% include unsupported-dosage-examples.md %}
+{% include unsupported-schema-beispiele.md %}

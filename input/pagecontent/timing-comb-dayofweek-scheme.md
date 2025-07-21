@@ -25,7 +25,12 @@ Folgende weitere Beispiele sind in diesem IG dargestellt:
 
 Diese Dosierungsart wird daran erkannt, dass folgende Felder unter `Dosage.timing.repeat` angegeben sind:
 
-- `when` ODER `dayOfWeek` existieren
+- `dayOfWeek`
+- `frequency`
+- `period`
+- `periodUnit` in Wochen (wk)
+- und `when` ODER `timeOfDay` existieren
+- opt. Angabe von `bounds[x]`
 
 Folgende FHIR-Path Expression auf Ebene von `Dosage.timing.repeat` liefert die Angabe, ob es sich um das Schema handelt: 
 

@@ -11,6 +11,7 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * obeys TimingOnlyOneType
   * obeys TimingIntervalOnlyOneFrequency
   * obeys TimingOnlyOneWhen
+  * obeys TimingOnlyWhenOrTimeOfDay
   * obeys TimingOnlyOneTimeOfDay
   * obeys TimingOnlyOneDayOfWeek
   * obeys TimingOnlyOnePeriodForDayOfWeek
@@ -163,6 +164,37 @@ Expression: "( /* Detect 4-Schema */
       %resource.ofType(MedicationStatement).exists()
       implies
       (%resource.dosage.timing.repeat.when.distinct().count() = %resource.dosage.timing.repeat.when.count())
+    )
+  )
+)
+"
+Severity: #error
+
+Invariant: TimingOnlyWhenOrTimeOfDay
+Description: "Dosages Timings must not state a time of day and period of day across multiple dosage instances"
+Expression: "(
+  %resource.ofType(MedicationRequest).dosageInstruction
+  | %resource.ofType(MedicationDispense).dosageInstruction
+  | %resource.ofType(MedicationStatement).dosage
+).all(
+    timing.repeat.frequency.exists() and
+    timing.repeat.period.exists() and
+    timing.repeat.periodUnit.exists() and
+    timing.repeat.dayOfWeek.empty() and
+    (timing.repeat.when.exists() or 
+    timing.repeat.timeOfDay.exists())
+  implies
+  (
+    (
+      (%resource.ofType(MedicationRequest).exists() or %resource.ofType(MedicationDispense).exists())
+      implies
+      (%resource.dosageInstruction.timing.repeat.when.exists() xor %resource.dosageInstruction.timing.repeat.timeOfDay.exists())
+    )
+    and
+    (
+      %resource.ofType(MedicationStatement).exists()
+      implies
+      (%resource.dosage.timing.repeat.when.exists() xor %resource.dosage.timing.repeat.timeOfDay.exists())
     )
   )
 )

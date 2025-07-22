@@ -10,4 +10,4 @@ Description: "Dieses ValueSet enthält dgMP PeriodUnit Zeiteinheiten aus dem UCU
   * ^designation.value = "Woche(n)"
 * include $ucum#mo
   * ^designation.language = #de-DE
-  * ^designation.value = "Monat"
+  * ^designation.value = "Monat(e)"

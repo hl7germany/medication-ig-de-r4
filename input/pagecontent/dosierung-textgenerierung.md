@@ -1,5 +1,3 @@
-## Überführung von Dosierung zu Text
-
 *Hinweis:*  
 Ein Großteil der Logik basiert auf den Empfehlungen aus Dose to Text Translation ([UK Core Implementation Guide for Medicines](https://simplifier.net/guide/ukcoreimplementationguideformedicines/ReferenceArchitectures2?version=current)).
 
@@ -9,7 +7,7 @@ Diese Seite beschreibt den Algorithmus, wie die strukturierten Dosierinformation
 ### Grundlegende Festlegungen
 
 Der generierte Text, der sich aus einer Dosierung ableitet muss im digital gestützten Medikationsprozess (dgMP) immer exakt der strukturierten Darstellung entsprechen. Diese Seite beschreibt die Spezifikation dieses Algorithmus, der in einer [Python Referenzimplementierung](./dosage-to-text.py) umgesetzt wurde.
-Für Informationen wie im dgMP sichergestellt wird, dass der Text an einer Dosierung korrekt ist siehe [Infrastruktur zur Bereitstellung des Textes der Dosierung](./dosage-to-text-system.html).
+Für Informationen wie im dgMP sichergestellt wird, dass der Text an einer Dosierung korrekt ist siehe [Infrastruktur zur Bereitstellung des Textes der Dosierung](./dosierung-text-hinzufuegen.html).
 
 ### Algorithmus zur Textgenerierung
 
@@ -64,7 +62,7 @@ Die Liste der unterstützten Felder sollte mit jeder Version gepflegt und dokume
 
 ### Beispiel für unterstützte Felder
 
-Für eine Auflistung von Unterstüzten und nicht-unterstützten Dosierkonfigurationen siehe [Beispiele für Dosierungen](./dosage-to-text-examples.html).
+Für eine Auflistung von Unterstüzten und nicht-unterstützten Dosierkonfigurationen siehe [Beispiele für Dosierungen](./dosierung-beispiele.html).
 
 ### Weiterführende Hinweise
 
@@ -74,10 +72,9 @@ Die Logik zur eigentlichen Textgenerierung (z. B. Pluralbildung, Formatierung de
 - [Medications Management – Medications List, User Interface Design Guidance, NHS CUI Programme Team, June 2015](https://webarchive.nationalarchives.gov.uk/ukgwa/20160921150545/http://systems.digital.nhs.uk/data/cui/uig)
 - [National Guidelines for On-Screen Display of Medicines Information, Australian Commission on Safety and Quality in Health Care, December 2017](https://www.safetyandquality.gov.au/sites/default/files/migrated/National-guidelines-for-on-screen-display-of-medicines-information.pdf)
 
-
 und wird kontinuierlich weiterentwickelt.
 
-Hinweis:  
+*Hinweis:*  
 Diese Seite beschreibt den aktuellen Stand der unterstützten Felder und die daraus resultierende Textgenerierung.  
 Für die vollständige Abdeckung aller FHIR-Dosierungsfelder ist eine schrittweise Erweiterung des Skripts vorgesehen.
 

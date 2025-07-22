@@ -117,7 +117,7 @@ def generate_matrix(input_folder, script_path, output_path):
                 matrix_rows.append(row)
         except Exception as e:
             print(f"Error processing {filename}: {e}", file=sys.stderr)
-    header = "| File | description | doseQuantity | " + " | ".join(MATRIX_COLUMNS) + " |"
+    header = "| File | generated dosage instruction text | doseQuantity | " + " | ".join(MATRIX_COLUMNS) + " |"
     sep = "| :---: | :--- | :---: | " + " | ".join([":---:"] * len(MATRIX_COLUMNS)) + " |"
     md_table = header + "\n" + sep + "\n"
     for row in matrix_rows:

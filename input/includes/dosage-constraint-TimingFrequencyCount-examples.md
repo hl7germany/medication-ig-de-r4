@@ -1,4 +1,4 @@
-| File | description | doseQuantity | duration | durationUnit | frequency | period | periodUnit | Day<br>of<br>Week | Time<br>Of<br>Day | when | bounds[x] |
+| File | generated dosage instruction text | doseQuantity | duration | durationUnit | frequency | period | periodUnit | Day<br>of<br>Week | Time<br>Of<br>Day | when | bounds[x] |
 | :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | [MedicationRequest-Invalid-Dosage-C-TimingFrequencyCount-03-of-05](./MedicationRequest-Invalid-Dosage-C-TimingFrequencyCount-03-of-05.html) | 3 x wöchentlich: Dienstag und Donnerstag — je 2 Stück | 2 Stück |  |  | 3 | 1 | wk | tue, thu |  |  |  |
 | [MedicationRequest-Invalid-Dosage-C-TimingFrequencyCount-01-of-05](./MedicationRequest-Invalid-Dosage-C-TimingFrequencyCount-01-of-05.html) | 2 x täglich: morgens — je 1 Stück | 1 Stück |  |  | 2 | 1 | d |  |  | MORN |  |

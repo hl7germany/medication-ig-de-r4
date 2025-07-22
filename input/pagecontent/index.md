@@ -1,5 +1,3 @@
-## FHIR Implementation Guide für medikationsbezogene Anwendungsfälle im deutschen Gesundheitswesen
-
 ### Kurzbeschreibung
 
 Dieser Implementation Guide (IG) beschreibt die standardisierte und interoperable Abbildung medikationsbezogener Informationen und Prozesse im deutschen Gesundheitswesen auf Basis von HL7® FHIR®. Ziel ist es, sektorenübergreifende Anwendungsfälle – wie beispielsweise die strukturierte Dosierungsinformation im E-Rezept oder den elektronischen Medikationsplan – zu ermöglichen und zu harmonisieren.
@@ -10,7 +8,7 @@ Der IG enthält die Beschreibung der jeweiligen Anwendungsfälle sowie begleiten
 
 Dieser Implementation Guide wird kontinuierlich weiterentwickelt und verbessert. Aktuell werden folgende Anwendungsfälle unterstützt:
 
-- Strukturierte und textuelle Darstellung von [Dosierungen](./dosage-index.html)
+- Strukturierte und textuelle Darstellung von [Dosierungen](./dosierung-einfuehrung.html)
 
 ### Must Support
 
@@ -29,6 +27,20 @@ Sind Must-Support-Elemente in einer Instanz vorhanden, dürfen sie nicht zu Fehl
 - Ärzt:innen, Apotheker:innen, Pflegekräfte
 - Fachexpert:innen für Interoperabilität und Arzneimitteltherapie
 
+### Mitwirkende Organisationen
+
+Durch Input und Feedback haben folgende Organisationen an der Erstellung dieses Implementation Guides mitgewirkt:
+
+- Bundesvereinigung Deutscher Apothekerverbände  
+- Deutscher Apothekerverband  
+- Deutsche Krankenhausgesellschaft  
+- gematik GmbH  
+- GKV-Spitzenverband  
+- HL7 Deutschland  
+- Kassenärztliche Bundesvereinigung  
+- Kompetenzzentrum für Interoperabilität im Gesundheitswesen (KIG) 
+- Verband der Privaten Krankenversicherung  
+
 ### Abhängigkeiten
 
 Dieser IG verwendet zur Kodierung der doseQuantity [KBV_VS_SFHIR_BMP_DOSIEREINHEIT](https://fhir.kbv.de/ValueSet/KBV_VS_SFHIR_BMP_DOSIEREINHEIT) & [KBV_CS_SFHIR_BMP_DOSIEREINHEIT](https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT) welche bewusst nicht als Abhängigkeit deklariert worden sind.
@@ -41,7 +53,7 @@ Für Fragen und Feedback wenden Sie sich bitte an [info@hl7.de](mailto:info@hl7.
 
 ### Rechtliche Hinweise
 
-Dieser Implementation Guide wurde in Zusammenarbeit von  
+Dieser Implementation Guide wurde in Zusammenarbeit zwischen   
 - [HL7 Deutschland e.V.](https://hl7.de/)  
 - [gematik GmbH](https://www.gematik.de/)  
 

@@ -1,4 +1,4 @@
-| File | description | doseQuantity | duration | durationUnit | frequency | period | periodUnit | Day<br>of<br>Week | Time<br>Of<br>Day | when | bounds[x] |
+| File | generated dosage instruction text | doseQuantity | duration | durationUnit | frequency | period | periodUnit | Day<br>of<br>Week | Time<br>Of<br>Day | when | bounds[x] |
 | :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | [MedicationRequest-Invalid-multiple-08-of-10-C-TimingOnlyOneTimeOfDay](./MedicationRequest-Invalid-multiple-08-of-10-C-TimingOnlyOneTimeOfDay.html) | alle 2 Tage: um 08:00 Uhr — je 1 Stück | 1 Stück |  |  | 1 | 2 | d |  | 08:00:00 |  |  |
 |  | alle 2 Tage: um 08:00 Uhr — je 2 Stück | 2 Stück |  |  | 1 | 2 | d |  | 08:00:00 |  |  |

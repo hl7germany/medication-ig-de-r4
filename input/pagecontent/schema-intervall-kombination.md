@@ -1,5 +1,3 @@
-## Schema für Kombinationen des Zeitintervalls
-
 Es wird ermöglicht, einen Tageszeiten-Bezug oder einen Uhrzeiten-Bezug mit einem Zeitintervall (Einheit mind. „Tag“) zu kombinieren.
 
 Es wird ermöglicht, die geplante Dauer der Anwendung zu begrenzen.

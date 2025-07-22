@@ -135,7 +135,7 @@ def generate_matrix_for_constraint(input_folder, script_path, output_path, const
             print(f"Error processing {filename}: {e}", file=sys.stderr)
     if not matrix_rows:
         raise ValueError(f"No examples found for constraint '{constraint_key}'. Table would be empty.")
-    header = "| File | description | doseQuantity | " + " | ".join(MATRIX_COLUMNS) + " |"
+    header = "| File | generated dosage instruction text | doseQuantity | " + " | ".join(MATRIX_COLUMNS) + " |"
     sep = "| :---: | :--- | :---: | " + " | ".join([":---:"] * len(MATRIX_COLUMNS)) + " |"
     md_table = header + "\n" + sep + "\n"
     for row in matrix_rows:

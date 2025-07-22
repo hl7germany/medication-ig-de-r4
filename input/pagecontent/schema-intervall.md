@@ -1,5 +1,3 @@
-## Schema für Wiederkehrendes Zeitinterval
-
 Dieses Schema basiert auf definierten Zeitintervallen, anhand derer sich die Anwendung des Arzneimittels wiederholt. Das Intervall kann in verschiedenen Zeiteinheiten angegeben werden, also z.B. in Tagen, Wochen oder Monaten. Für jedes Intervall wird angegeben, in welcher Frequenz die Anwendung innerhalb des Intervalls erfolgen soll. Es trifft  keine Aussage darüber, zu welchem spezifischen Zeitpunkt das Arzneimittel anzuwenden ist (bspw. als Uhrzeit, Tageszeit oder Wochentag). 
 
 In diesem Anwendungsfall wird davon ausgegangen, dass sich das Schema ohne Variation der Länge eines Intervalls oder der Frequenz der Anwendung wiederholt. Es wird zudem ermöglicht:

@@ -1,4 +1,4 @@
-| File | description | doseQuantity | duration | durationUnit | frequency | period | periodUnit | Day<br>of<br>Week | Time<br>Of<br>Day | when | bounds[x] |
+| File | generated dosage instruction text | doseQuantity | duration | durationUnit | frequency | period | periodUnit | Day<br>of<br>Week | Time<br>Of<br>Day | when | bounds[x] |
 | :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | [MedicationRequest-Invalid-Dosage-C-TimingPeriodUnit-02-of-05](./MedicationRequest-Invalid-Dosage-C-TimingPeriodUnit-02-of-05.html) | wöchentlich: um 08:00 Uhr — je 1 Stück | 1 Stück |  |  | 1 | 1 | wk |  | 08:00:00 |  |  |
 | [MedicationRequest-Invalid-Dosage-C-TimingPeriodUnit-05-of-05](./MedicationRequest-Invalid-Dosage-C-TimingPeriodUnit-05-of-05.html) | für 3 Woche(n) 2 x wöchentlich: Montag und Freitag — morgens — je 1 Stück | 1 Stück |  |  | 2 | 1 | wk | mon, fri |  | MORN | {'system': 'http://unitsofmeasure.org', 'value': 3, 'code': 'wk', 'unit': 'Woche(n)'} |

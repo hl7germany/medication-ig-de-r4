@@ -234,7 +234,7 @@ class GematikDosageTextGenerator:
             'MORN': 'morgens',
             'NOON': 'mittags',
             'EVE': 'abends',
-            'NIGHT': 'zur nacht'
+            'NIGHT': 'zur Nacht'
         }
         return when_codes.get(when.upper(), when)
 

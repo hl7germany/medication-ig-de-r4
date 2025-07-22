@@ -3,7 +3,7 @@
 | [MedicationRequest-Example-MR-Dosage-comb-interval-1](./MedicationRequest-Example-MR-Dosage-comb-interval-1.html) | alle 2 Tage: um 08:00 Uhr — je 1 Stück | 1 Stück |  |  | 1 | 2 | d |  | 08:00:00 |  |  |
 |  | alle 2 Tage: um 18:00 Uhr — je 2 Stück | 2 Stück |  |  | 1 | 2 | d |  | 18:00:00 |  |  |
 | [MedicationRequest-Example-MR-Dosage-interval-3d](./MedicationRequest-Example-MR-Dosage-interval-3d.html) | alle 3 Tage: je 1 Stück | 1 Stück |  |  | 1 | 3 | d |  |  |  |  |
-| [MedicationRequest-Example-MR-Dosage-1111](./MedicationRequest-Example-MR-Dosage-1111.html) | 4 x täglich: morgens, mittags, abends und zur nacht — je 1 Stück | 1 Stück |  |  | 4 | 1 | d |  |  | EVE, MORN, NIGHT, NOON |  |
+| [MedicationRequest-Example-MR-Dosage-1111](./MedicationRequest-Example-MR-Dosage-1111.html) | 4 x täglich: morgens, mittags, abends und zur Nacht — je 1 Stück | 1 Stück |  |  | 4 | 1 | d |  |  | EVE, MORN, NIGHT, NOON |  |
 | [MedicationRequest-Example-MR-Dosage-UnitMg-1000](./MedicationRequest-Example-MR-Dosage-UnitMg-1000.html) | täglich: morgens — je 400 mg | 400 mg |  |  | 1 | 1 | d |  |  | MORN |  |
 | [MedicationRequest-Example-MR-Dosage-interval-2d-bound](./MedicationRequest-Example-MR-Dosage-interval-2d-bound.html) | für 6 Woche(n) alle 2 Tage: je 2 Stück | 2 Stück |  |  | 1 | 2 | d |  |  |  | {'system': 'http://unitsofmeasure.org', 'value': 6, 'code': 'wk', 'unit': 'Woche(n)'} |
 | [MedicationRequest-Example-MR-Dosage-interval-4times-d](./MedicationRequest-Example-MR-Dosage-interval-4times-d.html) | 4 x täglich: je 1 Stück | 1 Stück |  |  | 4 | 1 | d |  |  |  |  |

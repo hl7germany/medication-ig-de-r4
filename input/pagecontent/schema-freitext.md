@@ -1,6 +1,6 @@
 Es ist Möglich die Dosierung als Freitext anzugeben. Hierbei wird ausschließlich das Feld ".text" befüllt. .timing und .doseAndRate werden nicht gesetzt.
 
-### Beipiel
+### Beispiel
 
 {% fragment MedicationRequest/Example-MR-Dosage-Freetext JSON %}
 

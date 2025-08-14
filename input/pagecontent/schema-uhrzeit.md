@@ -1,5 +1,3 @@
-## Schema für Uhrzeit Bezug
-
 Dieses Schema bietet die Möglichkeit, die Dosierung zu exakt festgelegten Zeiten an einem Tag zu planen (z.B. 08:00 und 12:00 Uhr).
 
 In diesem Anwendungsfall wird davon ausgegangen, dass das Arzneimittel (für die geplante Dauer) täglich in einem gleichbleibenden Uhrzeitenschema angewandt wird. Es wird zudem ermöglicht:
@@ -25,7 +23,10 @@ Folgende weitere Beispiele sind in diesem IG dargestellt:
 
 Diese Dosierungsart wird daran erkannt, dass unter `Dosage.timing.repeat`
 
-- ausschließliche Angabe von `timeOfDay`
+- `frequency`
+- `period`
+- `periodUnit` in Tagen (d)
+- `timeOfDay`
 - opt. Angabe von `bounds[x]`
 
 angegeben ist. An diesem Feld wird dann kodiert die Uhrzeit angegeben an der eine konkrete Dosierung einzunehmen ist.
@@ -34,12 +35,14 @@ Folgende FHIR-Path Expression auf Ebene von `Dosage.timing.repeat` liefert die A
 
 ```
 timing.repeat.timeOfDay.exists() and
-timing.repeat.frequency.empty() and
-timing.repeat.period.empty() and
-timing.repeat.periodUnit.empty() and
+timing.repeat.frequency.exists() and
+timing.repeat.period = 1 and
+timing.repeat.periodUnit = 'd' and
 timing.repeat.when.empty() and
 timing.repeat.dayOfWeek.empty()
 ```
+
+Der Wert von frequency entspricht dabei der Anzahl an Elementen in `timeOfDay`.
 
 Soll das Arzneimittel in derselben Dosierung zu mehreren Uhrzeiten angewandt werden, wird dies über mehrere Angaben von `.timeOfDay` ausgedrückt. Die angegebene Dosierung ist dann zu jeder der genannten Uhrzeiten anzuwenden.
 

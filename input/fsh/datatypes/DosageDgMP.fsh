@@ -4,15 +4,18 @@ Id: DosageDgMP
 Title: "Dosage dgMP"
 Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenommen wird/wurde oder eingenommen werden soll."
 * obeys DosageStructuredOrFreeText
-* obeys DosageStructuredRequiresBoth
-* obeys DosageDoseUnitSameCode
 
 * extension[generatedDosageInstructions]
   * extension[algorithm] 1..
     * valueCoding  // The algorithm used to generate the text
-      * ^patternCoding.system = Canonical(DosageTextAlgorithmsCS)
-      * ^patternCoding.code = #GermanDosageTextGenerator
-      * version 1..1 MS
+      * ^patternCoding.system = Canonical(DosageTextAlgorithmCS)
+      * ^patternCoding.code = #GematikDosageTextGenerator
+  * extension[algorithmVersion] 1.. 
+    * valueString // The version of the algorithm used to generate the text
+  * extension[language] 1.. 
+    * valueCode from AlgorithmLanguageCodesDgMPVS
+
+  
 * timing only TimingDgMP
 * doseAndRate 0..1 // Nur eine Dosierung für eine Medikation erlauben
   * ^comment = "Begründung Einschränkung Kardinalität: Nur eine Dosierung pro Medikation ist in der ersten Ausbaustufe des dgMP vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
@@ -57,23 +60,4 @@ Expression: "(%resource.ofType(MedicationRequest).dosageInstruction |
   (text.empty() and (timing.exists() or doseAndRate.exists()))
 )
 "
-Severity: #error
-
-Invariant: DosageStructuredRequiresBoth
-Description: "Wenn eine strukturierte Dosierungsangabe erfolgt, müssen sowohl timing als auch doseAndRate angegeben werden."
-Expression: "(%resource.ofType(MedicationRequest).dosageInstruction | 
- ofType(MedicationDispense).dosageInstruction | 
- ofType(MedicationStatement).dosage).all(
-  (timing.exists() implies doseAndRate.exists()) and
-  (doseAndRate.exists() implies timing.exists())
-)
-"
-Severity: #error
-
-Invariant: DosageDoseUnitSameCode
-Description: "Die Dosiereinheit muss über alle Dosierungen gleich sein."
-Expression: "(%resource.ofType(MedicationRequest).dosageInstruction | ofType(MedicationDispense).dosageInstruction | ofType(MedicationStatement).dosage).all(
-doseAndRate.exists() implies
-  %resource.dosageInstruction.doseAndRate.dose.ofType(Quantity).code.distinct().count() = 1
-)"
 Severity: #error

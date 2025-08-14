@@ -1,5 +1,3 @@
-## Schema für Tageszeiten Bezug
-
 Dieses Schema unterteilt den Tag in die Tageszeiten "Morgen", "Mittag", "Abend" und "Nacht".
 Es gibt an, zu welchen dieser vier Tageszeiten das Medikament angewandt werden soll. Das Tageszeitenschema wird auch "Viererschema" oder "MMAN-Schema" genannt und häufig als Kette von vier Zahlen abgebildet (z.B. 1-0-1-0). 
 
@@ -28,7 +26,10 @@ Folgende weitere Beispiele sind in diesem IG dargestellt:
 
 Diese Dosierungsart wird daran erkannt, dass unter `Dosage.timing.repeat`
 
-- ausschließliche Angabe von `when`
+- `when`
+- `frequency`
+- `period`
+- `periodUnit` in Tagen (d)
 - opt. Angabe von `bounds[x]`
   
 angegeben ist. An diesem Feld wird dann kodiert die Tageszeit angegeben an der eine konkrete Dosierung einzunehmen ist.
@@ -37,12 +38,14 @@ Folgende FHIR-Path Expression auf Ebene von `Dosage.timing.repeat` liefert die A
 
 ```
 timing.repeat.when.exists() and
-timing.repeat.frequency.empty() and
-timing.repeat.period.empty() and
-timing.repeat.periodUnit.empty() and
+timing.repeat.frequency.exists() and
+timing.repeat.period = 1 and
+timing.repeat.periodUnit = 'd' and
 timing.repeat.timeOfDay.empty() and
 timing.repeat.dayOfWeek.empty()
 ```
+
+Der Wert von frequency entspricht dabei der Anzahl an Elementen in `when`.
 
 Soll das Arzneimittel in derselben Dosierung zu mehreren Tageszeiten angewandt werden, wird dies über mehrere Angaben von "when" ausgedrückt. Die angegebene Dosierung ist dann zu jeder der genannten Tageszeiten anzuwenden. 
 

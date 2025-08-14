@@ -1,5 +1,3 @@
-## Schema für Kombinationen des Wochentags
-
 Dieses Schema gibt an, an welchen Wochentagen einer Kalenderwoche das Medikament angewandt werden soll und trifft zudem eine Aussage, zu welchen Uhrzeiten oder Tageszeiten die Anwendung an den betreffenden Kalendertagen erfolgen soll. 
 
 In diesem Anwendungsfall wird davon ausgegangen, dass das Arzneimittel wöchentlich (für die geplante Dauer) in einem gleichbleibenden Wochentagsschema angewandt wird. Es wird zudem ermöglicht:
@@ -25,20 +23,27 @@ Folgende weitere Beispiele sind in diesem IG dargestellt:
 
 Diese Dosierungsart wird daran erkannt, dass folgende Felder unter `Dosage.timing.repeat` angegeben sind:
 
-- `when` ODER `dayOfWeek` existieren
+- `dayOfWeek`
+- `frequency`
+- `period`
+- `periodUnit` in Wochen (wk)
+- und `when` ODER `timeOfDay` existieren
+- opt. Angabe von `bounds[x]`
 
 Folgende FHIR-Path Expression auf Ebene von `Dosage.timing.repeat` liefert die Angabe, ob es sich um das Schema handelt: 
 
 ```
 timing.repeat.dayOfWeek.exists() and
-timing.repeat.frequency.empty() and
-timing.repeat.period.empty() and
-timing.repeat.periodUnit.empty() and
+timing.repeat.frequency.exists() and
+timing.repeat.period.exists() and
+timing.repeat.periodUnit = 'wk' and
   (
     (timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()) or
     (timing.repeat.when.exists() and timing.repeat.timeOfDay.empty())
   )
 ```
+
+Der Wert von frequency entspricht dabei dem Produkt aus der Anzahl von Elementen in `when`, bzw. `timeOfDay` und `dayOfWeek`.
 
 und entweder `when` oder `timeOfDay`. Damit kann diese Dosierangabe verwendet werden um eine Interval angabe auf Tageszeit oder Uhrzeit zu kombinieren.
 

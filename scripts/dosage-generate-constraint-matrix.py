@@ -1,0 +1,185 @@
+import os
+import sys
+import json
+import subprocess
+import tempfile
+
+MATRIX_COLUMNS = [
+    "duration", "durationUnit", "frequency", "period", "periodUnit",
+    "Day<br>of<br>Week", "Time<br>Of<br>Day", "when", "bounds[x]"
+]
+COLUMN_KEYS = [
+    "duration", "durationUnit", "frequency", "period", "periodUnit",
+    "Day of Week", "Time Of Day", "when", "bounds[x]"
+]
+
+def extract_timing_matrix_fields(timing):
+    def get(val, default=""):
+        return val if val is not None else default
+    fields = {}
+    fields["duration"] = str(get(timing.get("repeat", {}).get("duration", "")))
+    fields["durationUnit"] = get(timing.get("repeat", {}).get("durationUnit", ""))
+    fields["frequency"] = str(get(timing.get("repeat", {}).get("frequency", "")))
+    fields["period"] = str(get(timing.get("repeat", {}).get("period", "")))
+    fields["periodUnit"] = get(timing.get("repeat", {}).get("periodUnit", ""))
+    fields["Day of Week"] = ", ".join(timing.get("repeat", {}).get("dayOfWeek", []))
+    fields["Time Of Day"] = ", ".join(timing.get("repeat", {}).get("timeOfDay", []))
+    fields["when"] = ", ".join(timing.get("repeat", {}).get("when", []))
+    bounds = timing.get("repeat", {}).get("boundsDuration") \
+        or timing.get("repeat", {}).get("boundsPeriod") \
+        or timing.get("repeat", {}).get("boundsRange")
+    if bounds:
+        if "duration" in bounds:
+            fields["bounds[x]"] = f"Duration = {bounds['duration']} {bounds.get('unit', '')}"
+        elif "start" in bounds:
+            fields["bounds[x]"] = f"Period.start = {bounds['start']}"
+        else:
+            fields["bounds[x]"] = str(bounds)
+    else:
+        fields["bounds[x]"] = ""
+    return fields
+
+def extract_dose_quantity(dosage):
+    dq = dosage.get("doseAndRate", [{}])[0].get("doseQuantity")
+    if dq:
+        value = dq.get("value", "")
+        unit = dq.get("unit", "")
+        return f"{value} {unit}".strip()
+    return ""
+
+def extract_dosages(resource):
+    """Extract dosage objects from supported FHIR resource types."""
+    if not isinstance(resource, dict):
+        return []
+    resource_type = resource.get("resourceType")
+    if resource_type == "MedicationRequest":
+        return resource.get("dosageInstruction", [])
+    elif resource_type == "MedicationStatement":
+        return resource.get("dosage", []) or resource.get("dosageInstruction", [])
+    elif resource_type == "MedicationDispense":
+        return resource.get("dosageInstruction", [])
+    return []
+
+def find_timing_sd(input_folder):
+    """Finds the StructureDefinition with name TimingDgMP."""
+    for filename in os.listdir(input_folder):
+        if filename.startswith("StructureDefinition-") and filename.endswith(".json"):
+            path = os.path.join(input_folder, filename)
+            with open(path, "r", encoding="utf-8") as f:
+                sd = json.load(f)
+            if sd.get("name") == "TimingDgMP":
+                return sd
+    return None
+
+def extract_constraint_keys(sd):
+    """Extracts constraint keys from the Timing.repeat element of the StructureDefinition."""
+    for element in sd.get("differential", {}).get("element", []):
+        if element.get("id") == "Timing.repeat":
+            return [c.get("key") for c in element.get("constraint", []) if "key" in c]
+    return []
+
+def generate_matrix_for_constraint(input_folder, script_path, output_path, constraint_key):
+    """Generate matrix for a specific constraint key. Throws if there are no examples."""
+    all_files = [
+        f for f in os.listdir(input_folder)
+        if (
+            (
+                f.startswith('MedicationRequest-') or
+                f.startswith('MedicationDispense-') or
+                f.startswith('MedicationStatement-')
+            )
+            and os.path.isfile(os.path.join(input_folder, f))
+            and f"-C-{constraint_key}" in f
+        )
+    ]
+    matrix_rows = []
+    for filename in all_files:
+        file_path = os.path.join(input_folder, filename)
+        try:
+            with open(file_path, "r", encoding="utf-8") as f:
+                resource = json.load(f)
+            dosages = extract_dosages(resource)
+            if not dosages:
+                continue  # skip if no dosages
+            display_name = os.path.splitext(filename)[0]
+            file_link = f"[{display_name}](./{filename.replace('.json', '.html')})"
+            for idx, dosage in enumerate(dosages, start=1):
+                if "timing" not in dosage:
+                    continue  # skip if no timing
+                timing = dosage["timing"]
+                # Write dosage to temp file and call script
+                try:
+                    with tempfile.NamedTemporaryFile("w", delete=False, suffix=".json", encoding="utf-8") as tf:
+                        json.dump(dosage, tf, ensure_ascii=False, indent=2)
+                        temp_path = tf.name
+                    try:
+                        result = subprocess.check_output(
+                            ['python3', script_path, temp_path],
+                            text=True
+                        ).strip()
+                        result = result.replace('\n', '<br>')
+                    except Exception as e:
+                        result = f"Fehler beim Verarbeiten der Datei: {e}"
+                    finally:
+                        os.unlink(temp_path)
+                except Exception as e:
+                    result = f"Fehler beim Schreiben/Verarbeiten der Dosierung: {e}"
+                dose_quantity = extract_dose_quantity(dosage)
+                fields = extract_timing_matrix_fields(timing)
+                # Only show the file link for the first dosage, blank for others
+                this_file_link = file_link if idx == 1 else ""
+                row = [this_file_link, result, dose_quantity]
+                row += [str(fields.get(key, "")) for key in COLUMN_KEYS]
+                matrix_rows.append(row)
+        except Exception as e:
+            print(f"Error processing {filename}: {e}", file=sys.stderr)
+    if not matrix_rows:
+        raise ValueError(f"No examples found for constraint '{constraint_key}'. Table would be empty.")
+    header = "| File | generated dosage instruction text | doseQuantity | " + " | ".join(MATRIX_COLUMNS) + " |"
+    sep = "| :---: | :--- | :---: | " + " | ".join([":---:"] * len(MATRIX_COLUMNS)) + " |"
+    md_table = header + "\n" + sep + "\n"
+    for row in matrix_rows:
+        md_table += "| " + " | ".join(row) + " |\n"
+    with open(output_path, "w", encoding="utf-8") as f:
+        f.write(md_table)
+    print(f"Matrix table for constraint '{constraint_key}' written to {output_path}")
+
+def main():
+    if len(sys.argv) != 4:
+        print("Usage: python script.py <input_folder> <output_folder> <dosage_to_text_script>")
+        sys.exit(1)
+
+    input_folder = sys.argv[1]
+    output_folder = sys.argv[2]
+    dosage_to_text_script = sys.argv[3]
+    os.makedirs(output_folder, exist_ok=True)
+
+    # Step 1: Find StructureDefinition
+    sd = find_timing_sd(input_folder)
+    if not sd:
+        print("ERROR: StructureDefinition with name 'TimingDgMP' not found in input folder.")
+        sys.exit(1)
+
+    # Step 2: Extract constraint keys
+    constraint_keys = extract_constraint_keys(sd)
+    if not constraint_keys:
+        print("ERROR: No constraint keys found in Timing.repeat element.")
+        sys.exit(1)
+
+    # Step 3: Generate a matrix for each constraint key, collect failures
+    failures = []
+    for key in constraint_keys:
+        matrix_md_path = os.path.join(output_folder, f"dosage-constraint-{key}-examples.md")
+        try:
+            generate_matrix_for_constraint(input_folder, dosage_to_text_script, matrix_md_path, key)
+        except ValueError as e:
+            failures.append(f"Constraint '{key}': {e}")
+
+    if failures:
+        print("\nThe following constraints have no example files and would produce empty tables:\n", file=sys.stderr)
+        for failure in failures:
+            print(failure, file=sys.stderr)
+        sys.exit(2)
+
+if __name__ == "__main__":
+    main()

@@ -85,7 +85,8 @@ def generate_matrix(input_folder, script_path, output_path):
             dosages = extract_dosages(resource)
             if not dosages:
                 continue  # skip if no dosages
-            add_suffix = len(dosages) > 1
+            display_name = os.path.splitext(filename)[0]
+            file_link = f"[{display_name}](./{filename.replace('.json', '.html')})"
             for idx, dosage in enumerate(dosages, start=1):
                 if "timing" not in dosage:
                     continue  # skip if no timing
@@ -107,32 +108,36 @@ def generate_matrix(input_folder, script_path, output_path):
                         os.unlink(temp_path)
                 except Exception as e:
                     result = f"Fehler beim Schreiben/Verarbeiten der Dosierung: {e}"
-                # Only add -dosage-n to the display name if there are multiple dosages
-                display_name = os.path.splitext(filename)[0]
-                if add_suffix:
-                    display_name = f"{display_name}-dosage-{idx}"
-                file_link = f"[{display_name}](./{filename.replace('.json', '.html')})"
                 dose_quantity = extract_dose_quantity(dosage)
                 fields = extract_timing_matrix_fields(timing)
-                row = [file_link, result, dose_quantity]
+                # Only show the file link for the first dosage, blank for others
+                this_file_link = file_link if idx == 1 else ""
+                row = [this_file_link, result, dose_quantity]
                 row += [str(fields.get(key, "")) for key in COLUMN_KEYS]
                 matrix_rows.append(row)
         except Exception as e:
             print(f"Error processing {filename}: {e}", file=sys.stderr)
-    header = "| File | description | doseQuantity | " + " | ".join(MATRIX_COLUMNS) + " |"
+    header = "| File | generated dosage instruction text | doseQuantity | " + " | ".join(MATRIX_COLUMNS) + " |"
     sep = "| :---: | :--- | :---: | " + " | ".join([":---:"] * len(MATRIX_COLUMNS)) + " |"
     md_table = header + "\n" + sep + "\n"
     for row in matrix_rows:
         md_table += "| " + " | ".join(row) + " |\n"
     with open(output_path, "w", encoding="utf-8") as f:
         f.write(md_table)
-    print(f"Matrix table written to: {output_path}")
+    print(f"Matrix table written")
+
+def main():
+    if len(sys.argv) != 4:
+        print("Usage: python script.py <input_folder> <output_folder> <dosage_to_text_script>")
+        sys.exit(1)
+
+    input_folder = sys.argv[1]
+    output_folder = sys.argv[2]
+    dosage_to_text_script = sys.argv[3]
+    os.makedirs(output_folder, exist_ok=True)
+
+    matrix_md_path = os.path.join(output_folder, "dosage-timing-matrix.md")
+    generate_matrix(input_folder, dosage_to_text_script, matrix_md_path)
 
 if __name__ == "__main__":
-    base_dir = os.path.dirname(os.path.abspath(__file__))
-    input_folder = os.path.normpath(os.path.join(base_dir, "../fsh-generated/resources"))
-    script_path = os.path.join(base_dir, "dosage-to-text.py")
-    output_dir = os.path.normpath(os.path.join(base_dir, "../input/includes"))
-    os.makedirs(output_dir, exist_ok=True)
-    matrix_md_path = os.path.join(output_dir, "dosage-timing-matrix.md")
-    generate_matrix(input_folder, script_path, matrix_md_path)
+    main()

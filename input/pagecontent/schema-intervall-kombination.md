@@ -1,5 +1,3 @@
-## Schema für Kombinationen des Zeitintervalls
-
 Es wird ermöglicht, einen Tageszeiten-Bezug oder einen Uhrzeiten-Bezug mit einem Zeitintervall (Einheit mind. „Tag“) zu kombinieren.
 
 Es wird ermöglicht, die geplante Dauer der Anwendung zu begrenzen.
@@ -38,6 +36,8 @@ timing.repeat.dayOfWeek.empty() and
     (timing.repeat.when.exists() and timing.repeat.timeOfDay.empty())
   )
 ```
+
+Der Wert von frequency entspricht dabei der Anzahl an Elementen in `when`, bzw. `timeOfDay`.
 
 und entweder `when` oder `timeOfDay`. Damit kann diese Dosierangabe verwendet werden um eine Interval angabe auf Tageszeit oder Uhrzeit zu kombinieren.
 

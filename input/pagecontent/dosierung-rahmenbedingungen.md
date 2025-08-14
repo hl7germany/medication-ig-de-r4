@@ -5,7 +5,7 @@ Diese Seite beschreibt fachliche Aspekte und Entscheidungen zur Handhabung von s
 ### Kardinalitäten und Weiterentwicklung der dgMP-Profile
 
 Das Projekt wird iterativ weiterentwickelt. In den dgMP-Profilen werden Felder, die in der aktuellen Ausbaustufe nicht berücksichtigt werden, durch die Kardinalität 0..0 ausgeschlossen.  
-Dies bedeutet jedoch nicht, dass diese Felder in zukünftigen Ausbaustufen nicht relevant werden. Implementierungen sollten daher so gestaltet sein, dass sie zusätzliche, bislang nicht genutzte Angaben beim Lesen ignorieren und keine Fehler verursachen. Es gilt: Verarbeitet werden soll, was verarbeitet werden kann – alles Weitere wird ignoriert.
+Dies bedeutet jedoch nicht, dass diese Felder in zukünftigen Ausbaustufen nicht relevant werden. Implementierungen sollen daher so gestaltet sein, dass sie zusätzliche, bislang nicht genutzte Angaben beim Lesen ignorieren und keine Fehler verursachen. Es gilt: Verarbeitet werden soll, was verarbeitet werden kann – alles Weitere wird ignoriert.
 
 ### Nutzung des Feldes `.text`
 
@@ -13,11 +13,11 @@ Die textuelle Angabe von Dosierungen wird in diesem Projekt in zwei Varianten un
 - Vom Menschen beschriebene Dosierung (Freitext)
 - Automatisch aus der strukturierten Angabe generierte textuelle Repräsentation
 
-Sofern eine Dosierung strukturiert abgebildet werden kann muss diese strukturiert erzeugt und darf nicht als Freitext in `Dosage.text` erfasst werden.
+Softwaresysteme müssen Dosierungsangaben stets strukturiert erfassen, sofern eine strukturierte Abbildung möglich ist. Eine Erfassung als Freitext in Dosage.text ist in diesem Fall nicht zulässig. Das System soll den Nutzenden durch geeignete Eingabemasken bei der strukturierten Erfassung unterstützen.
 
-Das Feld `Dosage.text` ist ausschließlich für vom Menschen erzeugten Freitext vorgesehen. Es darf nicht gleichzeitig mit einer strukturierten Angabe verwendet werden, um widersprüchliche Informationen zu vermeiden.
+Das Feld `Dosage.text` ist **ausschließlich** für vom Menschen erzeugten Freitext vorgesehen. Es darf nicht gleichzeitig mit einer strukturierten Angabe verwendet werden, um widersprüchliche Informationen zu vermeiden.
 
-Im Kontext des dgMP sorgt die [Infrastruktur zur Bereitstellung des Dosierungstextes](./dosage-to-text-system.html) dafür, dass zu jeder strukturierten Dosierung auch eine einheitliche, maschinell generierte textuelle Repräsentation bereitgestellt wird. Dieser Text wird in der Extension `Dosage.extension[GeneratedDosageInstructionsEx]` hinterlegt.
+Im Kontext des dgMP sorgt die [Infrastruktur zur Bereitstellung des Dosierungstextes](./dosierung-text-hinzufuegen.html) dafür, dass zu jeder strukturierten Dosierung auch eine einheitliche, maschinell generierte textuelle Repräsentation bereitgestellt wird. Dieser Text wird in der Extension `Dosage.extension[GeneratedDosageInstructionsEx]` hinterlegt.
 
 ### Verwendung mehrerer Dosages
 

@@ -115,7 +115,7 @@ Instance: Invalid-multiple-06-of-10-C-TimingIntervalOnlyOneFrequency
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Two Interval Dosages"
-Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von jeden 2. Tag 1 Tablette und 3. Tag 2 Tabletten dar"
+Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von jeden 2. Tag 1 Stück und 3. Tag 2 Stück dar"
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -138,7 +138,7 @@ Instance: Invalid-multiple-07-of-10-C-TimingOnlyOneWhen
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Two interval Dosages same period of day"
-Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von Jeden 2. Tag 1 Tablette um 08:00 Uhr und 1 Tablette um 10:00 Uhr dar"
+Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von Jeden 2. Tag 1 Stück um 08:00 Uhr und 1 Stück um 10:00 Uhr dar"
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -164,7 +164,7 @@ Instance: Invalid-multiple-08-of-10-C-TimingOnlyOneTimeOfDay
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Two interval Dosages same time"
-Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von Jeden 2. Tag 1 Tablette um 08:00 Uhr und 1 Tablette um 10:00 Uhr dar"
+Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von Jeden 2. Tag 1 Stück um 08:00 Uhr und 1 Stück um 10:00 Uhr dar"
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -189,7 +189,7 @@ Instance: Invalid-multiple-09-of-10-C-TimingOnlyOneTimeForInterval
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Two interval Dosages same time"
-Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von Jeden 2. Tag 1 Tablette um 08:00 Uhr und 1 Tablette um 10:00 Uhr dar"
+Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von Jeden 2. Tag 1 Stück um 08:00 Uhr und 1 Stück um 10:00 Uhr dar"
 * subject.display = "Patient"
 * status = #active
 * intent = #order

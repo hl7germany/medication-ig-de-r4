@@ -2,7 +2,7 @@ Instance: Example-MR-Dosage-comb-interval-1
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-comb-interval-1"
-Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von Jeden 2. Tag 1 Tablette um 08:00 Uhr und 1 Tablette um 18:00 Uhr dar"
+Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von Jeden 2. Tag 1 Stück um 08:00 Uhr und 1 Stück um 18:00 Uhr dar"
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -27,7 +27,7 @@ Instance: Example-MR-Dosage-comb-interval-2
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-comb-interval-2"
-Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von 1 x pro Woche 1 Tablette morgens dar"
+Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von 1 x pro Woche 1 Stück morgens dar"
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -44,7 +44,7 @@ Instance: Example-MR-Dosage-comb-interval-3
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-comb-interval-3"
-Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von Jeden 2. Tag 1 Tablette um 08:00 Uhr und jeden 2. Tag 1 Tablette um 20:00 Uhr dar"
+Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von Jeden 2. Tag 1 Stück um 08:00 Uhr und jeden 2. Tag 1 Stück um 20:00 Uhr dar"
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -69,7 +69,7 @@ Instance: Example-MR-Dosage-comb-interval-4
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-comb-interval-4"
-Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von Jeden 2. Tag 1 Tablette um 08:00 & 20:00 Uhr und jeden 2. Tag 1 Tablette um 08:00, 14:00 und 22:00 Uhr dar"
+Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von Jeden 2. Tag 1 Stück um 08:00 & 20:00 Uhr und jeden 2. Tag 1 Stück um 08:00, 14:00 und 22:00 Uhr dar"
 * subject.display = "Patient"
 * status = #active
 * intent = #order

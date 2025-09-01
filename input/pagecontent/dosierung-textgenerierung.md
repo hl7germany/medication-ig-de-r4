@@ -1,5 +1,5 @@
 *Hinweis:*  
-Ein Großteil der Logik basiert auf den Empfehlungen aus Dose to Text Translation ([UK Core Implementation Guide for Medicines](https://simplifier.net/guide/ukcoreimplementationguideformedicines/ReferenceArchitectures2?version=current)).
+Ein Großteil der Logik basiert auf den Empfehlungen aus Dose to Text Translation ([UK Core Implementation Guide for Medicines](https://simplifier.net/guide/ukcoreimplementationguideformedicines/DosetoTextTranslation?version=current)).
 
 Für eine menschenlesbare Darstellung der Dosierung ist das Feld .text derart zu befüllen, dass die strukturierten Dosierinformationen textuell dargestellt werden.  
 Diese Seite beschreibt den Algorithmus, wie die strukturierten Dosierinformationen in einen String überführt werden können.

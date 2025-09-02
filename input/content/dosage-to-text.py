@@ -82,6 +82,19 @@ class GematikDosageTextGenerator:
             if key in deny_timing_repeat_fields:
                 unsupported.add(f"timing.repeat.{key}")
             
+    # only allow specific 'when' codes
+    supported_when = {"MORN", "NOON", "EVE", "NIGHT"}
+    when_list = repeat.get("when", [])
+    invalid_when = []
+    for w in when_list:
+        w_up = str(w).upper()
+        if w_up not in supported_when:
+            invalid_when.append(w_up)
+    # add each invalid code separately so they alle erscheinen in der Meldung
+    for w_up in sorted(set(invalid_when)):
+        unsupported.add(f"timing.repeat.when={w_up}")
+    # <<< NEW
+
         return list(unsupported)
 
     def get_dose(self, dosage):

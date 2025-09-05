@@ -9,7 +9,7 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
   * extension[algorithm] 1..
     * valueCoding  // The algorithm used to generate the text
       * ^patternCoding.system = Canonical(DosageTextAlgorithmCS)
-      * ^patternCoding.code = #DgmpDosageTextGenerator
+      * ^patternCoding.code = #DgMPDosageTextGenerator
   * extension[algorithmVersion] 1.. 
     * valueString // The version of the algorithm used to generate the text
   * extension[language] 1.. 

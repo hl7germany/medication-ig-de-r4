@@ -6,7 +6,7 @@ Diese Seite beschreibt den Algorithmus, wie die strukturierten Dosierinformation
 
 ### Grundlegende Festlegungen
 
-Der generierte Text, der sich aus einer Dosierung ableitet muss im digital gestützten Medikationsprozess (dgMP) immer exakt der strukturierten Darstellung entsprechen. Diese Seite beschreibt die Spezifikation dieses Algorithmus, der in einer [Python Referenzimplementierung](./dosage-to-text.py) umgesetzt wurde.
+Der generierte Text, der sich aus einer Dosierung ableitet, muss im digital gestützten Medikationsprozess (dgMP) immer exakt der strukturierten Darstellung entsprechen. Diese Seite beschreibt die Spezifikation dieses Algorithmus, der in einer [Python Referenzimplementierung](./dosage-to-text.py) umgesetzt wurde.
 Für Informationen wie im dgMP sichergestellt wird, dass der Text an einer Dosierung korrekt ist siehe [Infrastruktur zur Bereitstellung des Textes der Dosierung](./dosierung-text-hinzufuegen.html).
 
 ### Algorithmus zur Textgenerierung

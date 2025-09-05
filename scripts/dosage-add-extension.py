@@ -24,7 +24,7 @@ def build_extension(dosage_text):
             {
                 "url": "algorithm",
                 "valueCoding": {
-                    "code": "GematikDosageTextGenerator",
+                    "code": "DgmpDosageTextGenerator",
                     "system": "http://ig.fhir.de/igs/medication/CodeSystem/DosageTextAlgorithm",
                     "version": "1.0.0"
                 }

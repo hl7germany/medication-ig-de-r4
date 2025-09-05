@@ -90,10 +90,9 @@ class GematikDosageTextGenerator:
         w_up = str(w).upper()
         if w_up not in supported_when:
             invalid_when.append(w_up)
-    # add each invalid code separately so they alle erscheinen in der Meldung
+    # add each invalid code separately so they all appear in the error message
     for w_up in sorted(set(invalid_when)):
         unsupported.add(f"timing.repeat.when={w_up}")
-    # <<< NEW
 
         return list(unsupported)
 

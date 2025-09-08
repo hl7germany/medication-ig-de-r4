@@ -110,8 +110,7 @@ def main():
             f.endswith('.json') and
             os.path.isfile(os.path.join(input_folder, f)) and
             f.startswith(RESOURCE_PREFIXES) and
-            "Invalid" not in f and
-            "Unsupported" not in f
+            "C-DosageStructuredRequiresGeneratedText" not in f
         )
     ]
 

@@ -1,4 +1,4 @@
-Instance: Invalid-Dosage-C-DosageStructuredRequiresGeneratedText-01-of-02
+Instance: Invalid-Dosage-C-DosageStructuredRequiresGeneratedText-01-of-01
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid Dosage"

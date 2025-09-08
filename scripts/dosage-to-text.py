@@ -240,7 +240,7 @@ class GematikDosageTextGenerator:
 
 def main():
     if len(sys.argv) < 2:
-        print('Verwendung: python dosage-generator.py <dosage.json>', file=sys.stderr)
+        print('Verwendung: python dosage-to-text.py <dosage.json>', file=sys.stderr)
         sys.exit(1)
     file_path = sys.argv[1]
     if not os.path.exists(file_path):

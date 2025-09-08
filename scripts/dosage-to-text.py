@@ -50,14 +50,16 @@ class DgMPDosageTextGenerator:
     
     def get_unsupported_fields(self, dosage):
         deny_dosage_fields = {
+            "sequence", "patientInstruction",
             "asNeededBoolean", "asNeededCodeableConcept", "method", "route", "site",
             "additionalInstruction", "maxDosePerPeriod", "maxDosePerAdministration", "maxDosePerLifetime"
         }
-        deny_timing_fields = {"event"}
+        deny_timing_fields = {"event", "code"}
         deny_timing_repeat_fields = {
-            "count", "countMax", "boundsPeriod", "boundsRange", "offset", "frequencyMax", "periodMax"
+            "count", "countMax", "boundsPeriod", "boundsRange", "offset", "frequencyMax", "periodMax",
+            "duration", "durationMax", "durationUnit"
         }
-        deny_doseAndRate_subfields = {"doseRange", "rateQuantity", "rateRange", "rateRatio"}
+        deny_doseAndRate_subfields = {"doseRange", "rateQuantity", "rateRange", "rateRatio", "type"}
 
         unsupported = set()
         

@@ -266,7 +266,7 @@ Expression: "( /* Detect DayOfWeek */
 Severity: #error
 
 Invariant: TimingOnlyOneBounds
-Description: "Dosages Timings must not state the same bounds duration across multiple dosage instances"
+Description: "Dosages Timings must state the same bounds duration across multiple dosage instances"
 Expression: "(
   %resource.ofType(MedicationRequest).dosageInstruction
   | %resource.ofType(MedicationDispense).dosageInstruction

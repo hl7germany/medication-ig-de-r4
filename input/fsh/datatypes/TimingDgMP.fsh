@@ -28,6 +28,7 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
     * system 1..1 MS
     * unit 1..1 MS
     * value 1..1 MS
+    * comparator 0..0
   * frequency 1..1 MS
   * period 1..1 MS
   * periodUnit 1..1 MS

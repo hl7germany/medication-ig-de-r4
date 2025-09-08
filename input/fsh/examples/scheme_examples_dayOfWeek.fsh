@@ -2,7 +2,7 @@ Instance: Example-MR-Dosage-weekday-2t
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-weekday-2t"
-Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von Dienstags und Donnerstags je 2 Tabletten dar"
+Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von Dienstags und Donnerstags je 2 Stück dar"
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -20,7 +20,7 @@ Instance: Example-MR-Dosage-weekday-3t
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-weekday-3t"
-Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von Dienstags, Donnerstags und Samstag je 2 Tabletten dar"
+Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von Dienstags, Donnerstags und Samstag je 2 Stück dar"
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -39,7 +39,7 @@ Instance: Example-MR-Dosage-weekday-2t-1t
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-2t-1t"
-Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von Montags 2 Tabletten, Donnerstags 1 Tablette dar"
+Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von Montags 2 Stück, Donnerstags 1 Stück dar"
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -82,7 +82,7 @@ Instance: Example-MR-Dosage-weekday-unsorted
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-weekday-unsorted"
-Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von unsortierten Wochentagen je 2 Tabletten dar"
+Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von unsortierten Wochentagen je 2 Stück dar"
 * subject.display = "Patient"
 * status = #active
 * intent = #order

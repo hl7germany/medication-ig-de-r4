@@ -5,7 +5,7 @@ import os
 
 __version__ = "1.0.0"
 
-class GematikDosageTextGenerator:
+class DgMPDosageTextGenerator:
     def generate_single_dosage_text(self, dosage):
         # Nicht unterstützte Felder dürfen nicht angegeben werden
         unsupported_fields = self.get_unsupported_fields(dosage)
@@ -261,7 +261,7 @@ def main():
     try:
         with open(file_path, 'r', encoding='utf-8') as file:
             dosage = json.load(file)
-        generator = GematikDosageTextGenerator()
+        generator = DgMPDosageTextGenerator()
         result = generator.generate_single_dosage_text(dosage)
         print(result)
     except json.JSONDecodeError as e:

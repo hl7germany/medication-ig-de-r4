@@ -80,38 +80,38 @@ Severity: #error
 
 Invariant: TimingBoundsUnitMatchesCode
 Description: "boundsDuration.unit muss zur UCUM boundsDuration.code passen (z. B. 'Woche(n)' nur mit code='wk')."
-Expression: "repeat.bounds.ofType(Duration).exists().not() or (
+Expression: "bounds.ofType(Duration).exists().not() or (
   (
-    repeat.bounds.ofType(Duration).code = 'd'
+    bounds.ofType(Duration).code = 'd'
     implies 
     (
-      repeat.bounds.ofType(Duration).unit = 'Tag(e)' or
-      repeat.bounds.ofType(Duration).unit = 'Tag' or
-      repeat.bounds.ofType(Duration).unit = 'Tage'
+      bounds.ofType(Duration).unit = 'Tag(e)' or
+      bounds.ofType(Duration).unit = 'Tag' or
+      bounds.ofType(Duration).unit = 'Tage'
     )
   ) and (
-    repeat.bounds.ofType(Duration).code = 'wk'
+    bounds.ofType(Duration).code = 'wk'
     implies 
     (
-      repeat.bounds.ofType(Duration).unit = 'Woche(n)' or
-      repeat.bounds.ofType(Duration).unit = 'Woche' or
-      repeat.bounds.ofType(Duration).unit = 'Wochen'
+      bounds.ofType(Duration).unit = 'Woche(n)' or
+      bounds.ofType(Duration).unit = 'Woche' or
+      bounds.ofType(Duration).unit = 'Wochen'
     )
   ) and (
-    repeat.bounds.ofType(Duration).code = 'mo'
+    bounds.ofType(Duration).code = 'mo'
     implies 
     (
-      repeat.bounds.ofType(Duration).unit = 'Monat(e)' or
-      repeat.bounds.ofType(Duration).unit = 'Monat' or
-      repeat.bounds.ofType(Duration).unit = 'Monate'
+      bounds.ofType(Duration).unit = 'Monat(e)' or
+      bounds.ofType(Duration).unit = 'Monat' or
+      bounds.ofType(Duration).unit = 'Monate'
     )
   ) and (
-    repeat.bounds.ofType(Duration).code = 'a'
+    bounds.ofType(Duration).code = 'a'
     implies 
     (
-      repeat.bounds.ofType(Duration).unit = 'Jahr(e)' or
-      repeat.bounds.ofType(Duration).unit = 'Jahr' or
-      repeat.bounds.ofType(Duration).unit = 'Jahre'
+      bounds.ofType(Duration).unit = 'Jahr(e)' or
+      bounds.ofType(Duration).unit = 'Jahr' or
+      bounds.ofType(Duration).unit = 'Jahre'
     )
   )
 )"

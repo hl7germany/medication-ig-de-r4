@@ -13,9 +13,13 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
 * repeat.boundsDuration MS
   * ^short = "Dauer der Dosieranweisung ausgedrückt in UCUM-Einheiten"
   * ^definition = "Entweder eine Dauer für die Länge des Zeitplans, ein Bereich möglicher Längen oder äußere Begrenzungen für Start- und/oder Endgrenzen des Zeitplans."
+  * system MS
   * system = $ucum (exactly)
     * ^short = "UCUM-Einheit für die Dauer"
     * ^comment = "Die UCUM-Einheit für die Dauer, z. B. d für Tag, h für Stunde, min für Minute."
+  * code MS
+  * unit MS
+  * value MS
 * repeat.frequency MS
   * ^short = "Ereignis tritt frequency-mal pro Zeitraum auf"
   * ^definition = "Die Anzahl der Wiederholungen innerhalb des angegebenen Zeitraums. Falls frequencyMax vorhanden ist, gibt dieses Element die Untergrenze des zulässigen Bereichs der Häufigkeit an."

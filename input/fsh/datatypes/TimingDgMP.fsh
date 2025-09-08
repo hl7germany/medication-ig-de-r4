@@ -24,9 +24,10 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
     * ^comment = "Begründung Einschränkung Datentyp: Nur eine Angabe zur Dauer ist in der ersten Ausbaustufe des dgMP vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
   * boundsDuration MS
     * code 1..1 MS
+    * code from DurationUnitsOfTimeDgMPVS (required)
     * system 1..1 MS
     * unit 1..1 MS
-    * code from DurationUnitsOfTimeDgMPVS (required)
+    * value 1..1 MS
   * frequency 1..1 MS
   * period 1..1 MS
   * periodUnit 1..1 MS

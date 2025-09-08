@@ -9,6 +9,17 @@ Diese Seite beschreibt den Algorithmus, wie die strukturierten Dosierinformation
 Der generierte Text, der sich aus einer Dosierung ableitet, muss im digital gestützten Medikationsprozess (dgMP) immer exakt der strukturierten Darstellung entsprechen. Diese Seite beschreibt die Spezifikation dieses Algorithmus, der in einer [Python Referenzimplementierung](./dosage-to-text.py) umgesetzt wurde.
 Für Informationen wie im dgMP sichergestellt wird, dass der Text an einer Dosierung korrekt ist siehe [Infrastruktur zur Bereitstellung des Textes der Dosierung](./dosierung-text-hinzufuegen.html).
 
+#### Verwendung der Python Referenzimplementierung
+Das Skript kann genau eine FHIR-Dosage Instanz auswerten und den Text beschreiben. Hierzu wird die gewünschte FHIR-Dosage Instanz bspw. als JSON-Datei übergeben. Die Anwendung erfolgt über die Kommandozeile:
+
+```bash
+python path-to/dosage-to-text.py <dosage.json>
+```
+
+Das Skript liest die Datei `<dosage.json>`, prüft die Felder gemäß den oben beschriebenen Regeln und gibt den generierten Dosierungstext auf der Konsole aus. Bei nicht unterstützten Feldern wird eine entsprechende Fehlermeldung ausgegeben.
+
+Die Ausgabe ist entweder der generierte Dosierungstext oder eine Fehlermeldung mit Angabe der nicht unterstützten Felder.
+
 ### Algorithmus zur Textgenerierung
 
 Das Skript unterstützt aktuell nur eine Teilmenge der möglichen Felder für Dosierungsangaben.  

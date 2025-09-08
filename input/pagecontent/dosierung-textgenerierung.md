@@ -93,9 +93,8 @@ Im folgenden wird für jedes Element ein Beispiel angegeben, wie die Überführu
 | Element                | Darstellung (Deutsch)                    | Beispiel(e)                    |
 |------------------------|------------------------------------------|--------------------------------|
 | **repeat.boundsDuration** | `für {value} {unit}`                 | `für 7 Tage`                   |
-| **repeat.frequency**      | `{frequency} mal`<br>oder, wenn `period`/`periodUnit` gesetzt:<br>`{frequency} mal pro {period} {periodUnit}` | `3 mal täglich`<br>`2 mal pro Woche` |
-| **repeat.period**         | (falls `frequency` gesetzt)<br>`{frequency} mal alle {period} {periodUnit}` | `3 mal alle 8 Stunden`         |
-| **repeat.periodUnit**     | Zeit-Einheiten:<br>- `s` = Sekunden<br>- `min` = Minuten<br>- `h` = Stunden<br>- `d` = Tage<br>- `wk` = Wochen<br>- `mo` = Monate<br>- `a` = Jahre |                                |
-| **repeat.dayOfWeek**      | `am {dayOfWeek}`<br>Bei mehreren Tagen:<br>`am Montag, Mittwoch und Freitag`<br>(vollständige deutsche Wochentagsnamen verwenden) | `am Dienstag`<br>`am Montag, Mittwoch und Freitag` |
-| **repeat.timeOfDay**      | `um {timeOfDay}`<br>Bei mehreren Zeiten:<br>`um 10:00 und 15:00` | `um 8:00`<br>`um 10:00 und 15:00` |
-| **repeat.when**           | `{when}`<br>(z. B. `morgens`, `mittags`, `abends`, `nachts`)<br>Bei mehreren:<br>`morgens und abends` | `morgens`<br>`morgens und abends` |
+| **repeat.frequency/period/periodUnit**      | `periodUnit='d', period=1, frequency=1` `täglich`<br>`periodUnit='d', period=1, frequency>1` `{frequency} x täglich`<br>`periodUnit='wk', period=1, frequency=1` `wöchentlich`<br>`periodUnit='wk', period=1, frequency>1` `{frequency} x wöchentlich`<br>Sonst, frequency=1 `alle {period} {Einheit}`<br>Sonst, frequency>1 `{frequency} x alle {period} {Einheit}` | `täglich`<br>`2 x wöchentlich`<br>`alle 8 Stunden`<br>`3 x alle 8 Stunden` |
+| **repeat.periodUnit**     | Zeit-Einheiten (mit Singular/Plural):<br>`s` = Sekunde/Sekunden<br>`min` = Minute/Minuten<br>`h` = Stunde/Stunden<br>`d` = Tag/Tage<br>`wk` = Woche/Wochen<br>`mo` = Monat/Monate<br>`a` = Jahr/Jahre | |                                |
+| **repeat.dayOfWeek**      | `{dayOfWeek}`<br>Bei mehreren Tagen:<br>`Montag, Mittwoch und Freitag`<br>(vollständige deutsche Wochentagsnamen verwenden) | `Dienstag`<br>`Montag, Mittwoch und Freitag` |
+| **repeat.timeOfDay**      | `um HH:MM Uhr[, HH:MM Uhr …]` (kommagetrennt, immer mit „Uhr“) | `um 10:00 Uhr`<br>`um 08:00 Uhr, 15:00 Uhr`                    |
+| **repeat.when**           | `MORN` = morgens, `NOON` = mittags, `EVE` = abends, `NIGHT` = zur Nacht<br>Mehrere Werte: bei 2 mit „und“, bei >2 mit Kommata und „und“ | `morgens`<br>`morgens und abends`<br>`morgens, mittags und abends`        |

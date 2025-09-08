@@ -19,6 +19,7 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * obeys TimingOnlyOneBounds
   * obeys TimingFrequencyCount
   * obeys TimingPeriodUnit
+  * obeys TimingBoundsUnitMatchesCode
   * bounds[x] MS
   * bounds[x] only Duration
     * ^comment = "Begründung Einschränkung Datentyp: Nur eine Angabe zur Dauer ist in der ersten Ausbaustufe des dgMP vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
@@ -75,6 +76,45 @@ Description: "If weekdays are given the periodUnit must be week, otherwise day"
 Expression: "(dayOfWeek.exists() implies periodUnit = 'wk')
 and
 ((dayOfWeek.empty() and (when.exists() or timeOfDay.exists())) implies periodUnit = 'd')"
+Severity: #error
+
+Invariant: TimingBoundsUnitMatchesCode
+Description: "boundsDuration.unit muss zur UCUM boundsDuration.code passen (z. B. 'Woche(n)' nur mit code='wk')."
+Expression: "repeat.bounds.ofType(Duration).exists().not() or (
+  (
+    repeat.bounds.ofType(Duration).code = 'd'
+    implies 
+    (
+      repeat.bounds.ofType(Duration).unit = 'Tag(e)' or
+      repeat.bounds.ofType(Duration).unit = 'Tag' or
+      repeat.bounds.ofType(Duration).unit = 'Tage'
+    )
+  ) and (
+    repeat.bounds.ofType(Duration).code = 'wk'
+    implies 
+    (
+      repeat.bounds.ofType(Duration).unit = 'Woche(n)' or
+      repeat.bounds.ofType(Duration).unit = 'Woche' or
+      repeat.bounds.ofType(Duration).unit = 'Wochen'
+    )
+  ) and (
+    repeat.bounds.ofType(Duration).code = 'mo'
+    implies 
+    (
+      repeat.bounds.ofType(Duration).unit = 'Monat(e)' or
+      repeat.bounds.ofType(Duration).unit = 'Monat' or
+      repeat.bounds.ofType(Duration).unit = 'Monate'
+    )
+  ) and (
+    repeat.bounds.ofType(Duration).code = 'a'
+    implies 
+    (
+      repeat.bounds.ofType(Duration).unit = 'Jahr(e)' or
+      repeat.bounds.ofType(Duration).unit = 'Jahr' or
+      repeat.bounds.ofType(Duration).unit = 'Jahre'
+    )
+  )
+)"
 Severity: #error
 
 Invariant: TimingOnlyOneType

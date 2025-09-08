@@ -4,7 +4,7 @@ Id: DosageDgMP
 Title: "Dosage dgMP"
 Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenommen wird/wurde oder eingenommen werden soll."
 * obeys DosageStructuredOrFreeText
-
+* obeys DosageStructuredRequiresGeneratedText
 * extension[generatedDosageInstructions]
   * extension[algorithm] 1..
     * valueCoding  // The algorithm used to generate the text
@@ -58,6 +58,18 @@ Expression: "(%resource.ofType(MedicationRequest).dosageInstruction |
  ofType(MedicationStatement).dosage).all(
   (text.exists() and timing.empty() and doseAndRate.empty()) or
   (text.empty() and (timing.exists() or doseAndRate.exists()))
+)
+"
+Severity: #error
+
+Invariant: DosageStructuredRequiresGeneratedText
+Description: "Liegt eine strukturierte Dosierungsangabe vor (timing und doseAndRate belegt, text leer), muss die Extension GeneratedDosageInstructions vorhanden sein."
+Expression: "(%resource.ofType(MedicationRequest).dosageInstruction | 
+ ofType(MedicationDispense).dosageInstruction | 
+ ofType(MedicationStatement).dosage).all(
+  (timing.exists() and doseAndRate.exists() and text.empty()) 
+  implies 
+  extension.where(url = 'http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructions').exists()
 )
 "
 Severity: #error

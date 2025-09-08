@@ -10,7 +10,7 @@ Description: "Dieses ValueSet enthält dgMPV DurationUnit Zeiteinheiten aus dem 
   * ^designation.value = "Woche(n)"
 * include $ucum#mo
   * ^designation.language = #de-DE
-  * ^designation.value = "Monat"
+  * ^designation.value = "Monat(e)"
 * include $ucum#a
   * ^designation.language = #de-DE
   * ^designation.value = "Jahr(e)"

@@ -12,13 +12,11 @@ Dieser Implementation Guide wird kontinuierlich weiterentwickelt und verbessert.
 
 ### Must Support
 
-In diesem Implementation Guide – insbesondere in den anwendungsfallspezifischen Profilen – werden [Must Support Flags](https://www.hl7.org/fhir/profiling.html#mustsupport) verwendet. Implementierende Systeme sollen sicherstellen, dass Elemente mit diesem Flag sowohl lesend als auch schreibend unterstützt werden.
+Elemente mit der Eigenschaft [mustSupport](https://www.hl7.org/fhir/profiling.html#mustsupport) müssen immer implementiert werden. Hierbei handelt es sich um Elemente, die unabhängig von der Kardinalität (Ausnahme: 0…0) unterstützt werden müssen, sofern die entsprechenden Informationen vorliegen.
 
-**Für schreibende Systeme gilt:**  
-Nutzende sollen dabei unterstützt werden, alle verfügbaren Informationen in Must-Support-Elemente einzutragen. Ist eine Information nicht vorhanden, kann das entsprechende Feld ausgelassen werden.
+Die Software, welche die Dateien erstellt, muss die mit „mustSupport“ gekennzeichneten Elemente (mustSupport value="true") unterstützen – befüllen und übermitteln können.
 
-**Für lesende Systeme gilt:**  
-Sind Must-Support-Elemente in einer Instanz vorhanden, dürfen sie nicht zu Fehlern in der Anwendung führen. Die enthaltenen Informationen sollen dem Nutzenden angezeigt werden.
+Die Software, welche die Dateien verarbeitet, muss die mit „mustSupport“ gekennzeichneten Elemente (mustSupport value="true") unterstützen – auslesen und verarbeiten können.
 
 ### Zielgruppen
 

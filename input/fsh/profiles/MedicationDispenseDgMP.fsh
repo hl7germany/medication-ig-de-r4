@@ -7,5 +7,8 @@ Description: "Dieses Profil dient ausschließlich der Validierung des Implementa
 * extension contains $medicationDispense-renderedDosageInstruction-r5 named renderedDosageInstruction 0..1 MS //TODO: 1..1??
   and GeneratedDosageInstructionsMeta named generatedDosageInstructionsMeta 0..1 MS
 
+* extension[generatedDosageInstructionsMeta]
+  * ^short = "Metadaten zu den generierten Dosierungsanweisungen"
+  * ^definition = "Diese Extension enthält zusätzliche Metadaten zu den automatisch generierten Dosierungsanweisungen, wie z.B. Informationen zur Generierung oder zum Ursprung der Daten."
 * dosageInstruction only DosageDgMP
   * ^short = "Angabe der Dosierinformationen strukturiert oder als Freitext"

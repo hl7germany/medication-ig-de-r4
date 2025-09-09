@@ -7,10 +7,16 @@ Description: "Dieses Profil dient ausschließlich der Validierung des Implementa
 * extension contains $medicationStatement-renderedDosageInstruction-r5 named renderedDosageInstruction 0..1 MS //TODO: 1..1??
   and GeneratedDosageInstructionsMeta named generatedDosageInstructionsMeta 0..1 MS
 
+* extension[renderedDosageInstruction]
+  * ^short = "Dosierungsanweisung"
+  * ^definition = "Diese R5‑Backport‑Extension enthält die gerenderten Dosierungsanweisungen für den Patienten, um eine klare und verständliche Einnahmeanweisung bereitzustellen."
+  * valueMarkdown
+    * ^short = "Hinweis: In der ersten Ausbaustufe des dgMP ist nur einfacher Text (String) zulässig; Markdown wird nicht unterstützt."
+    * ^definition = "Abweichend von FHIR R5 (Typ Markdown) darf in der ersten Ausbaustufe des dgMP ausschließlich Klartext ohne Markdown‑Formatierungen (z. B. Überschriften, Listen, Links) geliefert werden."
+
 * extension[generatedDosageInstructionsMeta]
   * ^short = "Metadaten zu den generierten Dosierungsanweisungen"
   * ^definition = "Diese Extension enthält zusätzliche Metadaten zu den automatisch generierten Dosierungsanweisungen, wie z.B. Informationen zur Generierung oder zum Ursprung der Daten."
 
 * dosage only DosageDgMP
   * ^short = "Angabe der Dosierinformationen strukturiert oder als Freitext"
-  

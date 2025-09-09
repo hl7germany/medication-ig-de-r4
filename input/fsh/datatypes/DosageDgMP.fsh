@@ -65,9 +65,17 @@ implies
 %resource.extension.where(
   url = 'http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta'
 ).exists() and
-%resource.extension.where(
-  url = 'http://hl7.org/fhir/5.0/StructureDefinition/extension-MedicationRequest.renderedDosageInstruction'
-).exists()
+(
+  %resource.extension.where(
+    url = 'http://hl7.org/fhir/5.0/StructureDefinition/extension-MedicationRequest.renderedDosageInstruction'
+  ).exists() or
+  %resource.extension.where(
+    url = 'http://hl7.org/fhir/5.0/StructureDefinition/extension-MedicationDispense.renderedDosageInstruction'
+  ).exists() or
+  %resource.extension.where(
+    url = 'http://hl7.org/fhir/5.0/StructureDefinition/extension-MedicationStatement.renderedDosageInstruction'
+  ).exists() 
+)
 )
 "
 Severity: #error

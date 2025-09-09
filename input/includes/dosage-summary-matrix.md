@@ -21,7 +21,6 @@
 | [MedicationRequest-Example-MR-Dosage-1220](./MedicationRequest-Example-MR-Dosage-1220.html) | 1-2-2-0 Stück | 1 Stück | 1 | 1 | d |  |  | MORN |  |
 |  |  | 2 Stück | 2 | 1 | d |  |  | NOON, EVE |  |
 | [MedicationRequest-Example-MR-Dosage-Freetext](./MedicationRequest-Example-MR-Dosage-Freetext.html) | 2 Stück morgens zum Frühstück |  |  |  |  |  |  |  |  |
-| [MedicationRequest-Example-MR-Dosage-UnitMg-1000](./MedicationRequest-Example-MR-Dosage-UnitMg-1000.html) | 400-0-0-0 mg | 400 mg | 1 | 1 | d |  |  | MORN |  |
 | [MedicationRequest-Example-MR-Dosage-UnitStueck-1020](./MedicationRequest-Example-MR-Dosage-UnitStueck-1020.html) | 1-0-2-0 Stück | 1 Stück | 1 | 1 | d |  |  | MORN |  |
 |  |  | 2 Stück | 1 | 1 | d |  |  | EVE |  |
 | [MedicationRequest-Example-MR-Dosage-UnitTasse-1000](./MedicationRequest-Example-MR-Dosage-UnitTasse-1000.html) | 2-0-0-0 Teelöffel | 2 Teelöffel | 1 | 1 | d |  |  | MORN |  |
@@ -56,6 +55,7 @@
 | [MedicationRequest-Example-MR-Dosage-weekday-2t](./MedicationRequest-Example-MR-Dosage-weekday-2t.html) | dienstags — je 2 Stück, donnerstags — je 2 Stück | 2 Stück | 2 | 1 | wk | tue, thu |  |  |  |
 | [MedicationRequest-Example-MR-Dosage-weekday-3t](./MedicationRequest-Example-MR-Dosage-weekday-3t.html) | dienstags — je 2 Stück, donnerstags — je 2 Stück, samstags — je 2 Stück | 2 Stück | 3 | 1 | wk | tue, thu, sat |  |  |  |
 | [MedicationRequest-Example-MR-Dosage-weekday-unsorted](./MedicationRequest-Example-MR-Dosage-weekday-unsorted.html) | montags — je 2 Stück, dienstags — je 2 Stück, donnerstags — je 2 Stück, freitags — je 2 Stück | 2 Stück | 4 | 1 | wk | fri, tue, thu, mon |  |  |  |
+| [MedicationRequest-Example-MR-DosageTr-1000](./MedicationRequest-Example-MR-DosageTr-1000.html) | 20-0-0-0 Tropfen | 20 Tropfen | 1 | 1 | d |  |  | MORN |  |
 | [MedicationRequest-MR-Dosage-4schema-evening-only](./MedicationRequest-MR-Dosage-4schema-evening-only.html) | 0-0-1-0 Stück | 1 Stück | 1 | 1 | d |  |  | EVE |  |
 | [MedicationRequest-MR-Dosage-4schema-ml-units](./MedicationRequest-MR-Dosage-4schema-ml-units.html) | 2-0-1-0 ml | 2 ml | 1 | 1 | d |  |  | MORN |  |
 |  |  | 1 ml | 1 | 1 | d |  |  | EVE |  |

@@ -10,7 +10,6 @@
 |  | wöchentlich: Dienstag — je 3 Stück | 3 Stück |  |  | 1 | 1 | wk | tue |  |  |  |
 | [MedicationRequest-Example-MR-Dosage-1111](./MedicationRequest-Example-MR-Dosage-1111.html) | 4 x täglich: morgens, mittags, abends und zur Nacht — je 1 Stück | 1 Stück |  |  | 4 | 1 | d |  |  | EVE, MORN, NIGHT, NOON |  |
 | [MedicationStatement-MS-Dosage-Interval](./MedicationStatement-MS-Dosage-Interval.html) | alle 3 Tage: je 1 Stück | 1 Stück |  |  | 1 | 3 | d |  |  |  |  |
-| [MedicationRequest-Example-MR-Dosage-UnitMg-1000](./MedicationRequest-Example-MR-Dosage-UnitMg-1000.html) | täglich: morgens — je 400 mg | 400 mg |  |  | 1 | 1 | d |  |  | MORN |  |
 | [MedicationDispense-MD-Dosage-Interval-Time](./MedicationDispense-MD-Dosage-Interval-Time.html) | alle 2 Tage: um 09:00 Uhr — je 1 Stück | 1 Stück |  |  | 1 | 2 | d |  | 09:00:00 |  |  |
 |  | alle 2 Tage: um 21:00 Uhr — je 2 Stück | 2 Stück |  |  | 1 | 2 | d |  | 21:00:00 |  |  |
 | [MedicationRequest-Example-MR-Dosage-interval-2d-bound](./MedicationRequest-Example-MR-Dosage-interval-2d-bound.html) | für 6 Woche(n) alle 2 Tage: je 2 Stück | 2 Stück |  |  | 1 | 2 | d |  |  |  | {'system': 'http://unitsofmeasure.org', 'value': 6, 'code': 'wk', 'unit': 'Woche(n)'} |
@@ -32,6 +31,7 @@
 |  | wöchentlich: Freitag — je 1 Stück | 1 Stück |  |  | 1 | 1 | wk | fri |  |  |  |
 | [MedicationRequest-Example-MR-Dosage-1010-10-Days](./MedicationRequest-Example-MR-Dosage-1010-10-Days.html) | für 10 Woche(n) 2 x täglich: morgens und abends — je 1 Stück | 1 Stück |  |  | 2 | 1 | d |  |  | MORN, EVE | {'system': 'http://unitsofmeasure.org', 'value': 10, 'code': 'wk', 'unit': 'Woche(n)'} |
 | [MedicationRequest-Example-MR-Dosage-tod-2-12am](./MedicationRequest-Example-MR-Dosage-tod-2-12am.html) | täglich: um 12:00 Uhr — je 2 Stück | 2 Stück |  |  | 1 | 1 | d |  | 12:00:00 |  |  |
+| [MedicationRequest-Example-MR-DosageTr-1000](./MedicationRequest-Example-MR-DosageTr-1000.html) | täglich: morgens — je 20 Tropfen | 20 Tropfen |  |  | 1 | 1 | d |  |  | MORN |  |
 | [MedicationRequest-Example-MR-Dosage-tod-multi](./MedicationRequest-Example-MR-Dosage-tod-multi.html) | täglich: um 08:00 Uhr — je 2 Stück | 2 Stück |  |  | 1 | 1 | d |  | 08:00:00 |  |  |
 |  | 5 x täglich: um 11:00 Uhr, 14:00 Uhr, 17:00 Uhr, 20:00 Uhr, 23:00 Uhr — je 1 Stück | 1 Stück |  |  | 5 | 1 | d |  | 11:00:00, 14:00:00, 17:00:00, 20:00:00, 23:00:00 |  |  |
 | [MedicationRequest-Example-MR-Dosage-weekday-2t](./MedicationRequest-Example-MR-Dosage-weekday-2t.html) | 2 x wöchentlich: Dienstag und Donnerstag — je 2 Stück | 2 Stück |  |  | 2 | 1 | wk | tue, thu |  |  |  |

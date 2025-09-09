@@ -80,7 +80,6 @@ and
 ((dayOfWeek.empty() and (when.exists() or timeOfDay.exists())) implies periodUnit = 'd')"
 Severity: #error
 
-/* Enforce a single dosageInstruction when only timeOfDay is used (no dayOfWeek/when) and period/periodUnit and dose are equal */
 Invariant: TimingSingleDosageForTimeOfDay
 Description: "Wenn nur timeOfDay verwendet wird und täglich dosiert wird, ist die Angabe in einem einzigen Dosage-Element zu modellieren. Mehrere Dosage-Elemente sind nur zulässig, wenn sich die Dosis (Wert) unterscheidet."
 Expression: "(
@@ -121,7 +120,6 @@ Expression: "(
 "
 Severity: #error
 
-/* Enforce a single dosageInstruction when only when is used (no dayOfWeek/timeOfDay) and period/periodUnit and dose are equal */
 Invariant: TimingSingleDosageForWhen
 Description: "Wenn nur when verwendet wird und täglich dosiert wird, ist die Angabe in einem einzigen Dosage-Element zu modellieren. Mehrere Dosage-Elemente sind nur zulässig, wenn sich die Dosis (Wert) unterscheidet."
 Expression: "(

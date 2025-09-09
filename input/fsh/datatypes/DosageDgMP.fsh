@@ -5,16 +5,6 @@ Title: "Dosage dgMP"
 Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenommen wird/wurde oder eingenommen werden soll."
 * obeys DosageStructuredOrFreeText
 * obeys DosageStructuredRequiresGeneratedText
-* extension[generatedDosageInstructions]
-  * extension[algorithm] 1..
-    * valueCoding  // The algorithm used to generate the text
-      * ^patternCoding.system = Canonical(DosageTextAlgorithmCS)
-      * ^patternCoding.code = #DgMPDosageTextGenerator
-  * extension[algorithmVersion] 1.. 
-    * valueString // The version of the algorithm used to generate the text
-  * extension[language] 1.. 
-    * valueCode from AlgorithmLanguageCodesDgMPVS
-
   
 * timing only TimingDgMP
 * doseAndRate 0..1 // Nur eine Dosierung für eine Medikation erlauben

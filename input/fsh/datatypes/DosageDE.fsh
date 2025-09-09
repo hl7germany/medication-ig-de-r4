@@ -8,7 +8,6 @@ Description: "Gibt an, wie das Medikament eingenommen oder verabreicht wurde bzw
 * obeys DosageStructuredOrFreeTextWarning
 * obeys DosageStructuredRequiresBoth
 * obeys DosageDoseUnitSameCode
-* extension contains GeneratedDosageInstructionsEx named generatedDosageInstructions 0..1 MS
 * text 0..1 MS
   * ^short = "Freitext-Dosierungsanweisungen, z. B. 'Maximal 3x täglich 1 Stück bei Bedarf'"
   * ^definition = "Freitext-Dosierungsanweisungen, z. B. 'Maximal 3x täglich 1 Stück bei Bedarf'. Als Quelle dient hier ausschließlich der Arzt oder Apotheker"

@@ -59,6 +59,8 @@
 | [MedicationRequest-Example-MR-Bug-EmptyLists](./MedicationRequest-Example-MR-Bug-EmptyLists.html) | täglich: je 1 Stück | 1 Stück |  |  | 1 | 1 | d |  |  |  |  |
 | [MedicationRequest-Example-MR-Dosage-1010](./MedicationRequest-Example-MR-Dosage-1010.html) | 2 x täglich: morgens und abends — je 1 Stück | 1 Stück |  |  | 2 | 1 | d |  |  | MORN, EVE |  |
 | [MedicationRequest-Example-MR-Dosage-comb-dayofweek-unsorted](./MedicationRequest-Example-MR-Dosage-comb-dayofweek-unsorted.html) | 6 x wöchentlich: Montag, Donnerstag und Samstag — morgens und abends — je 1 Stück | 1 Stück |  |  | 6 | 1 | wk | sat, mon, thu |  | EVE, MORN |  |
+| [MedicationRequest-Example-MR-Dosage-1020-Unordered](./MedicationRequest-Example-MR-Dosage-1020-Unordered.html) | täglich: abends — je 2 Stück | 2 Stück |  |  | 1 | 1 | d |  |  | EVE |  |
+|  | täglich: morgens — je 1 Stück | 1 Stück |  |  | 1 | 1 | d |  |  | MORN |  |
 | [MedicationRequest-MR-Dosage-multiple-day-time](./MedicationRequest-MR-Dosage-multiple-day-time.html) | 2 x wöchentlich: Dienstag und Donnerstag — um 08:00 Uhr — je 1 Stück | 1 Stück |  |  | 2 | 1 | wk | tue, thu | 08:00:00 |  |  |
 |  | 4 x wöchentlich: Montag und Freitag — um 08:00 Uhr, 20:00 Uhr — je 2 Stück | 2 Stück |  |  | 4 | 1 | wk | mon, fri | 08:00:00, 20:00:00 |  |  |
 | [MedicationRequest-Example-MR-Dosage-1220](./MedicationRequest-Example-MR-Dosage-1220.html) | täglich: morgens — je 1 Stück | 1 Stück |  |  | 1 | 1 | d |  |  | MORN |  |

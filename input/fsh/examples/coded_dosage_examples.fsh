@@ -23,22 +23,22 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
     * when[+] = #EVE
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
-Instance: Example-MR-Dosage-UnitMg-1000
+Instance: Example-MR-DosageTr-1000
 InstanceOf: MedicationRequestDgMP
 Usage: #example
-Title: "Example-MR-Dosage-UnitMg-1000"
-Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung 1-0-0-0 und kodierter Einheit 'Stück' dar"
+Title: "Example-MR-Dosage-UnitTr-1000"
+Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung 20-0-0-0 und kodierter Einheit 'Tropfen' dar"
 * subject.display = "Patient"
 * status = #active
 * intent = #order
-* medicationCodeableConcept.text = "Ibuprofen 400mg"
+* medicationCodeableConcept.text = "Iberogast"
 * dosageInstruction[+]
   * timing.repeat
     * when[+] = #MORN
     * frequency = 1
     * period = 1
     * periodUnit = #d
-  * doseAndRate.doseQuantity = 400 $kbv-dosiereinheit#v "mg"
+  * doseAndRate.doseQuantity = 20 $kbv-dosiereinheit#6 "Tropfen"
 
 Instance: Example-MR-Dosage-UnitTasse-1000
 InstanceOf: MedicationRequestDgMP

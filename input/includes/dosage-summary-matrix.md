@@ -2,8 +2,8 @@
 | :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | [MedicationDispense-MD-Dosage-1020](./MedicationDispense-MD-Dosage-1020.html) | 1-0-2-0 Stück | 1 Stück | 1 | 1 | d |  |  | MORN |  |
 |  |  | 2 Stück | 1 | 1 | d |  |  | EVE |  |
-| [MedicationDispense-MD-Dosage-Bounds-Decimals](./MedicationDispense-MD-Dosage-Bounds-Decimals.html) | für 2 weeks: 0.5-0-1.5-0 Stück | 0.5 Stück | 1 | 1 | d |  |  | MORN | {'value': 2, 'code': 'wk', 'system': 'http://unitsofmeasure.org', 'unit': 'weeks'} |
-|  |  | 1.5 Stück | 1 | 1 | d |  |  | EVE | {'value': 2, 'code': 'wk', 'system': 'http://unitsofmeasure.org', 'unit': 'weeks'} |
+| [MedicationDispense-MD-Dosage-Bounds-Decimals](./MedicationDispense-MD-Dosage-Bounds-Decimals.html) | für 2 weeks: 0.5-0-1.5-0 Stück | 0.5 Stück | 1 | 1 | d |  |  | MORN | {'system': 'http://unitsofmeasure.org', 'value': 2, 'code': 'wk', 'unit': 'weeks'} |
+|  |  | 1.5 Stück | 1 | 1 | d |  |  | EVE | {'system': 'http://unitsofmeasure.org', 'value': 2, 'code': 'wk', 'unit': 'weeks'} |
 | [MedicationDispense-MD-Dosage-DayOfWeek-Time](./MedicationDispense-MD-Dosage-DayOfWeek-Time.html) | montags 1-0-0-0, mittwochs 0-0-2-0 Stück | 1 Stück | 1 | 1 | wk | mon |  | MORN |  |
 |  |  | 2 Stück | 1 | 1 | wk | wed |  | EVE |  |
 | [MedicationDispense-MD-Dosage-Freetext](./MedicationDispense-MD-Dosage-Freetext.html) | Morgens und abends je 1 Kapsel nach dem Essen |  |  |  |  |  |  |  |  |

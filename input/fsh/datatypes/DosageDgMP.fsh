@@ -54,12 +54,15 @@ Severity: #error
 
 Invariant: DosageStructuredRequiresGeneratedText
 Description: "Liegt eine strukturierte Dosierungsangabe vor (timing und doseAndRate belegt, text leer), muss die Extension GeneratedDosageInstructions vorhanden sein."
-Expression: "(%resource.ofType(MedicationRequest).dosageInstruction | 
- ofType(MedicationDispense).dosageInstruction | 
- ofType(MedicationStatement).dosage).all(
-  (timing.exists() and doseAndRate.exists() and text.empty()) 
-  implies 
-  %resource.extension.where(url = 'http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta').exists()
+Expression: "(
+  (%resource.ofType(MedicationRequest).dosageInstruction |
+   %resource.ofType(MedicationDispense).dosageInstruction |
+   %resource.ofType(MedicationStatement).dosage
+  ).exists(timing.exists() and doseAndRate.exists() and text.empty())
 )
+implies
+%resource.extension.where(
+  url = 'http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta'
+).exists()
 "
 Severity: #error

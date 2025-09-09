@@ -5,7 +5,7 @@
 
 // 1. MedicationStatement with 4-Schema pattern
 Instance: MS-Dosage-1010
-InstanceOf: MedicationStatement
+InstanceOf: MedicationStatementDgMP
 Title: "MedicationStatement Dosage Example - 4-Schema"
 Description: "Example showing 4-Schema pattern in MedicationStatement"
 * subject.display = "Patient"
@@ -24,7 +24,7 @@ Description: "Example showing 4-Schema pattern in MedicationStatement"
 
 // 2. MedicationStatement with FreeText
 Instance: MS-Dosage-Freetext
-InstanceOf: MedicationStatement
+InstanceOf: MedicationStatementDgMP
 Title: "MedicationStatement Dosage Example - FreeText"
 Description: "Example showing FreeText pattern in MedicationStatement"
 * subject.display = "Patient"
@@ -34,7 +34,7 @@ Description: "Example showing FreeText pattern in MedicationStatement"
 
 // 3. MedicationStatement with TimeOfDay
 Instance: MS-Dosage-TimeOfDay
-InstanceOf: MedicationStatement
+InstanceOf: MedicationStatementDgMP
 Title: "MedicationStatement Dosage Example - TimeOfDay"
 Description: "Example showing TimeOfDay pattern in MedicationStatement"
 * subject.display = "Patient"
@@ -53,7 +53,7 @@ Description: "Example showing TimeOfDay pattern in MedicationStatement"
 
 // 4. MedicationStatement with DayOfWeek
 Instance: MS-Dosage-DayOfWeek
-InstanceOf: MedicationStatement
+InstanceOf: MedicationStatementDgMP
 Title: "MedicationStatement Dosage Example - DayOfWeek"
 Description: "Example showing DayOfWeek pattern in MedicationStatement"
 * subject.display = "Patient"
@@ -72,7 +72,7 @@ Description: "Example showing DayOfWeek pattern in MedicationStatement"
 
 // 5. MedicationStatement with Interval
 Instance: MS-Dosage-Interval
-InstanceOf: MedicationStatement
+InstanceOf: MedicationStatementDgMP
 Title: "MedicationStatement Dosage Example - Interval"
 Description: "Example showing Interval pattern in MedicationStatement"
 * subject.display = "Patient"
@@ -87,7 +87,7 @@ Description: "Example showing Interval pattern in MedicationStatement"
 
 // 6. MedicationDispense with 4-Schema pattern
 Instance: MD-Dosage-1020
-InstanceOf: MedicationDispense
+InstanceOf: MedicationDispenseDgMP
 Title: "MedicationDispense Dosage Example - 4-Schema"
 Description: "Example showing 4-Schema pattern in MedicationDispense"
 * subject.display = "Patient"
@@ -106,7 +106,7 @@ Description: "Example showing 4-Schema pattern in MedicationDispense"
 
 // 7. MedicationDispense with FreeText
 Instance: MD-Dosage-Freetext
-InstanceOf: MedicationDispense
+InstanceOf: MedicationDispenseDgMP
 Title: "MedicationDispense Dosage Example - FreeText"
 Description: "Example showing FreeText pattern in MedicationDispense"
 * subject.display = "Patient"
@@ -116,7 +116,7 @@ Description: "Example showing FreeText pattern in MedicationDispense"
 
 // 8. MedicationDispense with Interval and Time
 Instance: MD-Dosage-Interval-Time
-InstanceOf: MedicationDispense
+InstanceOf: MedicationDispenseDgMP
 Title: "MedicationDispense Dosage Example - Interval and Time"
 Description: "Example showing Interval and Time pattern in MedicationDispense"
 * subject.display = "Patient"
@@ -135,7 +135,7 @@ Description: "Example showing Interval and Time pattern in MedicationDispense"
 
 // 9. MedicationDispense with DayOfWeek and Time
 Instance: MD-Dosage-DayOfWeek-Time
-InstanceOf: MedicationDispense
+InstanceOf: MedicationDispenseDgMP
 Title: "MedicationDispense Dosage Example - DayOfWeek and Time"
 Description: "Example showing DayOfWeek and Time pattern in MedicationDispense"
 * subject.display = "Patient"
@@ -156,7 +156,7 @@ Description: "Example showing DayOfWeek and Time pattern in MedicationDispense"
 
 // 10. MedicationDispense with bounds and decimals
 Instance: MD-Dosage-Bounds-Decimals
-InstanceOf: MedicationDispense
+InstanceOf: MedicationDispenseDgMP
 Title: "MedicationDispense Dosage Example - Bounds and Decimals"
 Description: "Example showing bounds and decimal doses in MedicationDispense"
 * subject.display = "Patient"

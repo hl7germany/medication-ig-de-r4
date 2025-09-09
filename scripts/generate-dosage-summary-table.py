@@ -12,6 +12,10 @@ def find_medication_resources(resources_dir):
     resources = []
     
     for file_path in Path(resources_dir).glob("*.json"):
+        # Skip files containing "Invalid" or "Unsupported" in the filename
+        if "Invalid" in file_path.name or "Unsupported" in file_path.name:
+            continue
+            
         try:
             with open(file_path, 'r', encoding='utf-8') as f:
                 resource = json.load(f)

@@ -8,7 +8,7 @@ Eine zentrale fachliche und technische Herausforderung im digital gestützten Me
 
 ### Zielsetzung
 
-Um Missverständnisse und Abweichungen bei der Darstellung von Dosierungsanweisungen zu vermeiden, wird der Text zur strukturierten Dosierung **nach einem einheitlichen, standardisierten Algorithmus erzeugt**. Dabei sind die Primärsysteme verpflichtet, den Dosierungstext einer strukturierten Dosierung lokal zu generieren und in das entsprechende Feld ([Dosage.extension[GeneratedDosageInstructions]](./StructureDefinition-GeneratedDosageInstructions.html)) einzutragen. Die zentralen Dienste validieren dann, ob der generierte Text korrekt ist.
+Um Missverständnisse und Abweichungen bei der Darstellung von Dosierungsanweisungen zu vermeiden, wird der Text zur strukturierten Dosierung **nach einem einheitlichen, standardisierten Algorithmus erzeugt**. Dabei sind die Primärsysteme verpflichtet, den Dosierungstext einer strukturierten Dosierung lokal zu generieren und in das entsprechende Feld ([Dosage.extension[GeneratedDosageInstructionsMeta]](./StructureDefinition-GeneratedDosageInstructionsMeta.html)) einzutragen. Die zentralen Dienste validieren dann, ob der generierte Text korrekt ist.
 
 ### Technische Umsetzung und Ablauf
 

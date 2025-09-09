@@ -9,17 +9,3 @@ Description: "Dieses Profil dient ausschließlich der Validierung des Implementa
 
 * dosageInstruction only DosageDgMP
   * ^short = "Angabe der Dosierinformationen strukturiert oder als Freitext"
-
-Instance: TestMRIns
-InstanceOf: MedicationDispenseDgMP
-Usage: #example
-Title: "Test MR Ins"
-Description: "test"
-* subject.display = "Patient"
-* status = #active
-* medicationCodeableConcept.text = "Ibuprofen 400mg"
-* extension[renderedDosageInstruction].valueMarkdown = "Test"
-* extension[generatedDosageInstructionsMeta]
-  * extension[algorithm].valueCoding = DosageTextAlgorithmCS|1.0.0#DgMPDosageTextGenerator
-  * extension[algorithmVersion].valueString = "1.0.0"
-  * extension[language].valueCode = #de

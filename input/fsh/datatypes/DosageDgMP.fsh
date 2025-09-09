@@ -53,7 +53,7 @@ Expression: "(%resource.ofType(MedicationRequest).dosageInstruction |
 Severity: #error
 
 Invariant: DosageStructuredRequiresGeneratedText
-Description: "Liegt eine strukturierte Dosierungsangabe vor (timing und doseAndRate belegt, text leer), muss die Extension GeneratedDosageInstructions vorhanden sein."
+Description: "Liegt eine strukturierte Dosierungsangabe vor (timing und doseAndRate belegt, text leer), muss die Extension GeneratedDosageInstructionsMeta vorhanden sein."
 Expression: "(
   (%resource.ofType(MedicationRequest).dosageInstruction |
    %resource.ofType(MedicationDispense).dosageInstruction |

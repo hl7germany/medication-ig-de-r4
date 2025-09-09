@@ -15,7 +15,7 @@ Description: "Gibt an, wie das Medikament eingenommen oder verabreicht wurde bzw
 * timing MS
   * ^short = "Wann das Medikament verabreicht werden soll"
   * ^definition = "Wann das Medikament verabreicht werden soll."
-  * ^comment = "Um widersprüchliche Anweisungen zu vermeiden, ist entweder Dosage.timing oder Dosage.text zu befüllen. Falls eine strukturierte Dosierung als Text abgebildet werden soll ist dafür die GeneratedDosageInstructions Extension zu verwenden."
+  * ^comment = "Um widersprüchliche Anweisungen zu vermeiden, ist entweder Dosage.timing oder Dosage.text zu befüllen. Falls eine strukturierte Dosierung als Text abgebildet werden soll ist dafür die GeneratedDosageInstructionsMeta Extension zu verwenden."
 * timing only TimingDE
 * doseAndRate MS
   * ^short = "Menge des verabreichten Medikaments"

@@ -12,7 +12,7 @@ Softwaresysteme müssen Dosierungsangaben stets strukturiert erfassen, sofern ei
 
 Das Feld `Dosage.text` ist **ausschließlich** für vom Menschen erstelleten Freitext vorgesehen. Es darf nicht gleichzeitig mit einer strukturierten Angabe verwendet werden, um widersprüchliche Informationen zu vermeiden.
 
-Im Kontext des dgMP sorgt die [Infrastruktur zur Bereitstellung des Dosierungstextes](./dosierung-text-hinzufuegen.html) dafür, dass zu jeder strukturierten Dosierung auch eine einheitliche, maschinell generierte textuelle Repräsentation bereitgestellt wird. Dieser Text wird in der Extension `Dosage.extension[GeneratedDosageInstructionsEx]` hinterlegt.
+Im Kontext des dgMP sorgt die [Infrastruktur zur Bereitstellung des Dosierungstextes](./dosierung-text-hinzufuegen.html) dafür, dass zu jeder strukturierten Dosierung auch eine einheitliche, maschinell generierte textuelle Repräsentation bereitgestellt wird. Dieser Text wird in der Extension `Dosage.extension[GeneratedDosageInstructionsMeta]` hinterlegt.
 
 #### Nutzung von Sequenzen
 

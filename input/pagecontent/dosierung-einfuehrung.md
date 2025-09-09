@@ -66,7 +66,7 @@ StructureDefinition/TimingDgMP,
 Diese Profile nutzen folgende Extensions:
 
 {% capture extensionsdgmp %}
-StructureDefinition/GeneratedDosageInstructions,
+StructureDefinition/GeneratedDosageInstructionsMeta,
 {% endcapture %}  
 {% include artifacts-table-generator.html render=extensionsdgmp %}
 

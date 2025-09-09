@@ -166,11 +166,11 @@ Description: "Example showing bounds and decimal doses in MedicationDispense"
 * dosageInstruction[0].timing.repeat.period = 1
 * dosageInstruction[0].timing.repeat.periodUnit = #d
 * dosageInstruction[0].timing.repeat.when = #MORN
-* dosageInstruction[0].timing.repeat.boundsDuration = 2 'wk' "weeks"
+* dosageInstruction[0].timing.repeat.boundsDuration = 2 'wk' "Wochen"
 * dosageInstruction[0].doseAndRate[0].doseQuantity = 0.5 '1' "Stück"
 * dosageInstruction[1].timing.repeat.frequency = 1
 * dosageInstruction[1].timing.repeat.period = 1
 * dosageInstruction[1].timing.repeat.periodUnit = #d
 * dosageInstruction[1].timing.repeat.when = #EVE
-* dosageInstruction[1].timing.repeat.boundsDuration = 2 'wk' "weeks"
+* dosageInstruction[1].timing.repeat.boundsDuration = 2 'wk' "Wochen"
 * dosageInstruction[1].doseAndRate[0].doseQuantity = 1.5 '1' "Stück"

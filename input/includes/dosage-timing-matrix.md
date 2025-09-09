@@ -59,8 +59,8 @@
 | [MedicationRequest-Example-MR-Dosage-comb-interval-3](./MedicationRequest-Example-MR-Dosage-comb-interval-3.html) | alle 2 Tage: um 08:00 Uhr — je 1 Stück | 1 Stück |  |  | 1 | 2 | d |  | 08:00:00 |  |  |
 |  | alle 2 Tage: um 20:00 Uhr — je 2 Stück | 2 Stück |  |  | 1 | 2 | d |  | 20:00:00 |  |  |
 | [MedicationRequest-Example-MR-Dosage-weekday-2t-bound](./MedicationRequest-Example-MR-Dosage-weekday-2t-bound.html) | für 10 Woche(n) wöchentlich: Montag — je 2 Stück | 2 Stück |  |  | 1 | 1 | wk | mon |  |  | {'system': 'http://unitsofmeasure.org', 'value': 10, 'code': 'wk', 'unit': 'Woche(n)'} |
-| [MedicationDispense-MD-Dosage-Bounds-Decimals](./MedicationDispense-MD-Dosage-Bounds-Decimals.html) | für 2 weeks täglich: morgens — je 0.5 Stück | 0.5 Stück |  |  | 1 | 1 | d |  |  | MORN | {'system': 'http://unitsofmeasure.org', 'value': 2, 'code': 'wk', 'unit': 'weeks'} |
-|  | für 2 weeks täglich: abends — je 1.5 Stück | 1.5 Stück |  |  | 1 | 1 | d |  |  | EVE | {'system': 'http://unitsofmeasure.org', 'value': 2, 'code': 'wk', 'unit': 'weeks'} |
+| [MedicationDispense-MD-Dosage-Bounds-Decimals](./MedicationDispense-MD-Dosage-Bounds-Decimals.html) | für 2 Wochen täglich: morgens — je 0.5 Stück | 0.5 Stück |  |  | 1 | 1 | d |  |  | MORN | {'system': 'http://unitsofmeasure.org', 'value': 2, 'code': 'wk', 'unit': 'Wochen'} |
+|  | für 2 Wochen täglich: abends — je 1.5 Stück | 1.5 Stück |  |  | 1 | 1 | d |  |  | EVE | {'system': 'http://unitsofmeasure.org', 'value': 2, 'code': 'wk', 'unit': 'Wochen'} |
 | [MedicationDispense-MD-Dosage-1020](./MedicationDispense-MD-Dosage-1020.html) | täglich: morgens — je 1 Stück | 1 Stück |  |  | 1 | 1 | d |  |  | MORN |  |
 |  | täglich: abends — je 2 Stück | 2 Stück |  |  | 1 | 1 | d |  |  | EVE |  |
 | [MedicationRequest-Example-MR-Dosage-weekday-3t](./MedicationRequest-Example-MR-Dosage-weekday-3t.html) | 3 x wöchentlich: Dienstag, Donnerstag und Samstag — je 2 Stück | 2 Stück |  |  | 3 | 1 | wk | tue, thu, sat |  |  |  |

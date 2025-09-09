@@ -21,23 +21,23 @@ Im Kontext des dgMP sorgt die [Infrastruktur zur Bereitstellung des Dosierungste
 
 ### Verwendung mehrerer Dosages
 
-Jede `Dosage`-Instanz beschreibt eine Kombination aus Einnahmerhythmus (z.B. „3x täglich“) und der zugehörigen Dosis pro Einnahmeereignis (z.B. „2 Tabletten“). Der Einnahmerhythmus wird in `Dosage.timing` abgebildet.
+Jede `Dosage`-Instanz beschreibt eine Kombination aus Einnahmerhythmus (z.B. „3x täglich“) und der zugehörigen Dosis pro Einnahmeereignis (z.B. „2 Stück“). Der Einnahmerhythmus wird in `Dosage.timing` abgebildet.
 
 Wichtig:
 - Jede `Dosage`-Instanz bildet *nur ein Dosierschema* ab.
-- Für verschiedene Dosierungen innerhalb desselben Schemas (z.B. morgens 1 Tablette, abends 2 Tabletten) sind separate `Dosage`-Instanzen erforderlich.
+- Für verschiedene Dosierungen innerhalb desselben Schemas (z.B. morgens 1 Stück, abends 2 Stück) sind separate `Dosage`-Instanzen erforderlich.
 
 **Beispiel:**
 
-Ein Patient soll morgens 1 Tablette und abends 2 Tabletten einnehmen.
+Ein Patient soll morgens 1 Stück und abends 2 Stück einnehmen.
 
 - Es werden zwei `Dosage`-Instanzen erstellt:
     1. Erste Dosage:  
         - `Dosage.timing`: morgens  
-        - `Dosage.doseAndRate`: 1 Tablette
+        - `Dosage.doseAndRate`: 1 Stück
     2. Zweite Dosage:  
         - `Dosage.timing`: abends  
-        - `Dosage.doseAndRate`: 2 Tabletten
+        - `Dosage.doseAndRate`: 2 Stück
 
 Jede dieser Instanzen beschreibt ein eigenes Dosierschema, auch wenn sie im selben Medikationsauftrag stehen.
 Eine Instanz dieser Dosierung ist im Beispiel [MedicationRequest-Example-MR-Dosage-1010](./MedicationRequest-Example-MR-Dosage-1010.html) einzusehen.
@@ -50,6 +50,6 @@ In der aktuellen Ausbaustufe und im Kontext dgMP ist die Verwendung von `Dosage.
 
 ### Strukturierte Angabe der Einheit
 
-Für die Berechnung der Reichweite einer Medikation ist es erforderlich, dass Dosierungseinheiten (z.B. „1 Tablette“) strukturiert über ein Codesystem angegeben werden.  
+Für die Berechnung der Reichweite einer Medikation ist es erforderlich, dass Dosierungseinheiten (z.B. „1 Stück“) strukturiert über ein Codesystem angegeben werden.  
 Dafür steht ein eingeschränktes ValueSet (`DosageDoseQuantityDE` bzw. `DosageDoseQuantityDGMP`) zur Verfügung, das alle zulässigen Dosiereinheiten enthält.  
 Die strukturierte Angabe der Einheit bildet die Grundlage für mögliche Reichweitenberechnungen und fördert die Interoperabilität.

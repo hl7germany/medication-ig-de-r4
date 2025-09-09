@@ -1,4 +1,29 @@
 #!/usr/bin/env python3
+"""
+FHIR Medication Dosage Text Generator
+
+This script converts FHIR medication dosage instructions into human-readable German text.
+It serves as a reference implementation for the dosage text generation algorithm defined 
+in the German FHIR medication dosage implementation guide.
+
+The script supports various dosage schemas:
+- FreeText: User-provided text instructions
+- 4-Schema: Morning-noon-evening-night pattern (e.g., "1-0-2-0 Stück")  
+- TimeOfDay: Specific times (e.g., "08:00 Uhr, 20:00 Uhr — je 1 Stück")
+- DayOfWeek: Specific weekdays (e.g., "montags, mittwochs — je 2 Stück")
+- Interval: Regular intervals (e.g., "alle 8 Stunden: je 1 Stück")
+- Combined schemas: DayOfWeek + Time/4-Schema, Interval + Time/4-Schema
+
+Algorithm Priority (TimingOnlyOneType constraint):
+1. FreeText (has text, no timing)
+2. 4-Schema (daily frequency with 'when' codes, no timeOfDay/dayOfWeek)
+3. DayOfWeek (has dayOfWeek, daily period, no when/timeOfDay)
+4. DayOfWeek + Time/4-Schema (has dayOfWeek + timeOfDay OR when)
+5. TimeOfDay (daily period with timeOfDay, no dayOfWeek/when)
+6. Interval + Time/4-Schema (non-daily period with timeOfDay OR when)
+7. Interval (pure interval without when/timeOfDay/dayOfWeek)
+"""
+
 import json
 import sys
 import os
@@ -7,655 +32,942 @@ __version__ = "1.0.0"
 
 class MedicationDosageTextGenerator:
     """
-    Generates consolidated dosage text from FHIR MedicationRequest, MedicationDispense, or MedicationStatement resources.
-    Supports different dosage schemas as defined in TimingOnlyOneType constraint.
+    Converts FHIR medication dosage instructions to German text.
+    
+    This class implements the reference algorithm for generating human-readable 
+    dosage instructions from FHIR resources according to the German FHIR 
+    medication dosage implementation guide.
     """
     
+    # Schema type constants for clarity
+    SCHEMA_FREE_TEXT = "FreeText"
+    SCHEMA_4_PATTERN = "4-Schema"
+    SCHEMA_TIME_OF_DAY = "TimeOfDay"
+    SCHEMA_DAY_OF_WEEK = "DayOfWeek"
+    SCHEMA_INTERVAL = "Interval"
+    SCHEMA_DAY_TIME_COMBO = "DayOfWeek and Time/4-Schema"
+    SCHEMA_INTERVAL_TIME_COMBO = "Interval and Time/4-Schema"
+    
+    # FHIR timing codes for 4-schema (morning, noon, evening, night)
+    WHEN_CODES_ORDER = ['MORN', 'NOON', 'EVE', 'NIGHT']
+    WHEN_CODE_TRANSLATIONS = {
+        'MORN': 'morgens',
+        'NOON': 'mittags', 
+        'EVE': 'abends',
+        'NIGHT': 'zur Nacht'
+    }
+    
+    # Day of week mapping
+    DAY_ORDER = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
+    DAY_TRANSLATIONS = {
+        'mon': 'montags',
+        'tue': 'dienstags', 
+        'wed': 'mittwochs',
+        'thu': 'donnerstags',
+        'fri': 'freitags',
+        'sat': 'samstags',
+        'sun': 'sonntags'
+    }
+    
+    # Time unit translations (singular/plural)
+    TIME_UNITS_SINGULAR = {
+        's': 'Sekunde',
+        'min': 'Minute', 
+        'h': 'Stunde',
+        'd': 'Tag',
+        'wk': 'Woche',
+        'mo': 'Monat',
+        'a': 'Jahr'
+    }
+    TIME_UNITS_PLURAL = {
+        's': 'Sekunden',
+        'min': 'Minuten',
+        'h': 'Stunden', 
+        'd': 'Tage',
+        'wk': 'Wochen',
+        'mo': 'Monate',
+        'a': 'Jahre'
+    }
+    
     def __init__(self):
-        # Order for 4-Schema: morning, noon, evening, night
-        self.when_order = ['MORN', 'NOON', 'EVE', 'NIGHT']
-        self.when_translations = {
-            'MORN': 'morgens',
-            'NOON': 'mittags', 
-            'EVE': 'abends',
-            'NIGHT': 'zur Nacht'
-        }
+        """Initialize the dosage text generator with German language settings."""
+        pass
     
     def generate_dosage_text(self, resource):
         """
-        Main method to generate consolidated dosage text from a FHIR resource.
+        Generate human-readable German dosage text from a FHIR resource.
+        
+        This is the main entry point that orchestrates the text generation process:
+        1. Extract dosage instructions from the resource
+        2. Determine which dosage schema applies 
+        3. Generate appropriate text for that schema
+        
+        Args:
+            resource (dict): FHIR MedicationRequest, MedicationDispense, or MedicationStatement
+            
+        Returns:
+            str: German dosage text (e.g., "1-0-2-0 Stück" or "täglich 08:00 Uhr — je 1 Stück")
+            
+        Examples:
+            4-Schema: "1-0-2-0 Stück"
+            TimeOfDay: "täglich: 08:00 Uhr — je 1 Stück; 20:00 Uhr — je 2 Stück"
+            DayOfWeek: "montags — je 1 Stück, mittwochs — je 2 Stück"
+            Interval: "alle 8 Stunden: je 1 Stück"
         """
-        # Extract dosage instructions based on resource type
-        dosages = self._extract_dosages(resource)
-        if not dosages:
+        # Step 1: Extract dosage instructions based on resource type
+        dosage_instructions = self._extract_dosage_instructions(resource)
+        if not dosage_instructions:
             return ""
         
-        # Determine the dosage schema type
-        schema_type = self._determine_schema_type(dosages)
+        # Step 2: Determine which dosage schema applies (implements TimingOnlyOneType logic)
+        schema_type = self._determine_dosage_schema(dosage_instructions)
         
-        # Generate text based on schema type
-        if schema_type == "FreeText":
-            return self._generate_freetext_schema_text(dosages)
-        elif schema_type == "4-Schema":
-            return self._generate_4_schema_text(dosages)
-        elif schema_type == "TimeOfDay":
-            return self._generate_time_of_day_text(dosages)
-        elif schema_type == "DayOfWeek":
-            return self._generate_day_of_week_text(dosages)
-        elif schema_type == "Interval":
-            return self._generate_interval_text(dosages)
-        elif schema_type == "DayOfWeek and Time/4-Schema":
-            return self._generate_dayofweek_and_time_schema_text(dosages)
-        elif schema_type == "Interval and Time/4-Schema":
-            return self._generate_interval_and_time_schema_text(dosages)
+        # Step 3: Generate text using the appropriate schema-specific method
+        text_generators = {
+            self.SCHEMA_FREE_TEXT: self._generate_freetext_schema_text,
+            self.SCHEMA_4_PATTERN: self._generate_4_schema_text,
+            self.SCHEMA_TIME_OF_DAY: self._generate_time_of_day_text,
+            self.SCHEMA_DAY_OF_WEEK: self._generate_day_of_week_text,
+            self.SCHEMA_INTERVAL: self._generate_interval_text,
+            self.SCHEMA_DAY_TIME_COMBO: self._generate_dayofweek_and_time_schema_text,
+            self.SCHEMA_INTERVAL_TIME_COMBO: self._generate_interval_and_time_schema_text,
+        }
+        
+        generator_method = text_generators.get(schema_type)
+        if generator_method:
+            return generator_method(dosage_instructions)
         else:
             return f"Unbekanntes Dosierungsschema: {schema_type}"
     
-    def _extract_dosages(self, resource):
-        """Extract dosage instructions from different resource types."""
+    # ============================================================================
+    # RESOURCE PROCESSING - Extract dosage data from FHIR resources
+    # ============================================================================
+    
+    def _extract_dosage_instructions(self, resource):
+        """
+        Extract dosage instructions from different FHIR resource types.
+        
+        Different FHIR resources store dosage instructions in different fields:
+        - MedicationRequest/MedicationDispense: dosageInstruction[]
+        - MedicationStatement: dosage[]
+        
+        Args:
+            resource (dict): FHIR resource
+            
+        Returns:
+            list: List of dosage instruction objects
+            
+        Raises:
+            ValueError: If resource type is not supported
+        """
         resource_type = resource.get('resourceType', '')
         
-        if resource_type == 'MedicationRequest':
-            return resource.get('dosageInstruction', [])
-        elif resource_type == 'MedicationDispense':
+        if resource_type in ['MedicationRequest', 'MedicationDispense']:
             return resource.get('dosageInstruction', [])
         elif resource_type == 'MedicationStatement':
             return resource.get('dosage', [])
         else:
             raise ValueError(f"Unsupported resource type: {resource_type}")
     
-    def _determine_schema_type(self, dosages):
+    # ============================================================================
+    # SCHEMA DETECTION - Determine which dosage pattern applies
+    # ============================================================================
+    
+    def _determine_dosage_schema(self, dosage_instructions):
         """
-        Determine the schema type based on TimingOnlyOneType constraint logic.
+        Determine the dosage schema type based on TimingOnlyOneType constraint logic.
+        
+        This method implements the priority order defined in the constraint:
+        1. FreeText: Has text but no timing structure
+        2. 4-Schema: Daily frequency with 'when' codes only
+        3. DayOfWeek: Has dayOfWeek with daily period, no timing details
+        4. DayOfWeek + Time/4-Schema: DayOfWeek plus timeOfDay OR when
+        5. TimeOfDay: Daily period with specific times only
+        6. Interval + Time/4-Schema: Non-daily period with timeOfDay OR when  
+        7. Interval: Pure interval pattern without timing details
+        
+        Args:
+            dosage_instructions (list): List of dosage instruction objects
+            
+        Returns:
+            str: Schema type constant (e.g., SCHEMA_4_PATTERN, SCHEMA_TIME_OF_DAY)
         """
-        if not dosages:
+        if not dosage_instructions:
             return "Unknown"
         
-        first_dosage = dosages[0]
+        # Analyze the first dosage instruction (constraint ensures consistency)
+        first_dosage = dosage_instructions[0]
         
-        # Check for free text schema first (has text but no timing)
+        # Schema 1: FreeText - has text but no structured timing
         if first_dosage.get('text') and not first_dosage.get('timing'):
-            return "FreeText"
+            return self.SCHEMA_FREE_TEXT
         
+        # Extract timing information for further analysis
         timing = first_dosage.get('timing', {})
-        repeat = timing.get('repeat', {})
+        repeat_element = timing.get('repeat', {})
         
-        has_frequency = 'frequency' in repeat
-        has_period = 'period' in repeat
-        has_period_unit = 'periodUnit' in repeat
-        has_day_of_week = 'dayOfWeek' in repeat and repeat['dayOfWeek']
-        has_when = 'when' in repeat and repeat['when']
-        has_time_of_day = 'timeOfDay' in repeat and repeat['timeOfDay']
+        # Check what timing elements are present
+        has_frequency = 'frequency' in repeat_element
+        has_period = 'period' in repeat_element
+        has_period_unit = 'periodUnit' in repeat_element
+        has_day_of_week = 'dayOfWeek' in repeat_element and repeat_element['dayOfWeek']
+        has_when_codes = 'when' in repeat_element and repeat_element['when']
+        has_time_of_day = 'timeOfDay' in repeat_element and repeat_element['timeOfDay']
         
-        # Check 4-Schema first (when with daily period) - most specific check
-        if (has_frequency and has_period and repeat.get('period') == 1 and 
-            repeat.get('periodUnit') == 'd' and has_when and not has_time_of_day and not has_day_of_week):
-            return "4-Schema"
+        # Helper: Check if this is a daily pattern (period=1, periodUnit='d')
+        is_daily_pattern = (repeat_element.get('period') == 1 and 
+                           repeat_element.get('periodUnit') == 'd')
+        is_non_daily_pattern = (has_period and has_period_unit and not is_daily_pattern)
         
-        # Check DayOfWeek schema
-        if (has_day_of_week and has_frequency and has_period and 
-            repeat.get('period') == 1 and has_period_unit and 
-            not has_when and not has_time_of_day):
-            return "DayOfWeek"
+        # Schema 2: 4-Schema - daily frequency with 'when' codes only
+        if (has_frequency and is_daily_pattern and has_when_codes and 
+            not has_time_of_day and not has_day_of_week):
+            return self.SCHEMA_4_PATTERN
         
-        # Check DayOfWeek and Time/4-Schema
-        if (has_day_of_week and has_frequency and has_period and 
-            repeat.get('period') == 1 and has_period_unit and
-            ((has_time_of_day and not has_when) or (has_when and not has_time_of_day))):
-            return "DayOfWeek and Time/4-Schema"
+        # Schema 3: DayOfWeek - specific weekdays, daily period, no timing details
+        if (has_day_of_week and has_frequency and has_period and has_period_unit and 
+            not has_when_codes and not has_time_of_day):
+            return self.SCHEMA_DAY_OF_WEEK
         
-        # Check TimeOfDay schema (daily only - period = 1)
-        if (has_frequency and has_period and repeat.get('period') == 1 and 
-            repeat.get('periodUnit') == 'd' and 
-            not has_day_of_week and has_time_of_day and not has_when):
-            return "TimeOfDay"
+        # Schema 4: DayOfWeek + Time/4-Schema - weekdays plus timing
+        if (has_day_of_week and has_frequency and has_period and has_period_unit and
+            (has_time_of_day or has_when_codes)):
+            return self.SCHEMA_DAY_TIME_COMBO
         
-        # Check Interval and Time/4-Schema (period > 1 OR not daily)
+        # Schema 5: TimeOfDay - daily period with specific times only
+        if (has_frequency and is_daily_pattern and 
+            not has_day_of_week and has_time_of_day and not has_when_codes):
+            return self.SCHEMA_TIME_OF_DAY
+        
+        # Schema 6: Interval + Time/4-Schema - non-daily period with timing
+        if (has_frequency and has_period and has_period_unit and not has_day_of_week and 
+            (has_time_of_day or has_when_codes) and not is_daily_pattern):
+            return self.SCHEMA_INTERVAL_TIME_COMBO
+        
+        # Schema 7: Interval - pure interval without timing details
         if (has_frequency and has_period and has_period_unit and 
-            not has_day_of_week and 
-            ((has_time_of_day and not has_when) or (has_when and not has_time_of_day)) and
-            not (repeat.get('period') == 1 and repeat.get('periodUnit') == 'd')):
-            return "Interval and Time/4-Schema"
-        
-        # Check Interval schema (pure interval without when/timeOfDay)
-        if (has_frequency and has_period and has_period_unit and 
-            not has_when and not has_time_of_day and not has_day_of_week):
-            return "Interval"
+            not has_when_codes and not has_time_of_day and not has_day_of_week):
+            return self.SCHEMA_INTERVAL
         
         return "Unknown"
     
-    def _generate_4_schema_text(self, dosages):
+    # ============================================================================
+    # TEXT GENERATION - Schema-specific text generators
+    # ============================================================================
+    
+    def _generate_4_schema_text(self, dosage_instructions):
         """
-        Generate text for 4-Schema: morning-noon-evening-night format.
-        Example: "1-0-2-0 Stück"
+        Generate text for 4-Schema: morning-noon-evening-night pattern.
+        
+        The 4-Schema represents doses at four daily time points using a compact
+        notation: "morning-noon-evening-night" (e.g., "1-0-2-0 Stück").
+        
+        Args:
+            dosage_instructions (list): List containing dosage instructions with 'when' codes
+            
+        Returns:
+            str: Formatted text like "1-0-2-0 Stück" or "für 7 Tage: 2-1-2-1 mg"
+            
+        Example FHIR input:
+            - Dosage with when=['MORN'], doseQuantity={value: 1, unit: 'Stück'}
+            - Dosage with when=['EVE'], doseQuantity={value: 2, unit: 'Stück'}
+            
+        Example output: "1-0-2-0 Stück"
         """
-        # Initialize doses for each time period
-        doses = {'MORN': 0, 'NOON': 0, 'EVE': 0, 'NIGHT': 0}
-        unit = ""
+        # Initialize dose amounts for each time period (default to 0)
+        dose_amounts = {code: 0 for code in self.WHEN_CODES_ORDER}
+        unit_text = ""
         bounds_text = ""
         
-        for dosage in dosages:
+        # Process each dosage instruction to extract dose amounts
+        for dosage in dosage_instructions:
             timing = dosage.get('timing', {})
-            repeat = timing.get('repeat', {})
-            when_list = repeat.get('when', [])
+            repeat_element = timing.get('repeat', {})
+            when_codes = repeat_element.get('when', [])
             
-            # Get bounds (should be same across all dosages)
+            # Extract duration bounds (should be consistent across all dosages)
             if not bounds_text:
-                bounds_text = self._get_bounds_text(dosage)
+                bounds_text = self._extract_bounds_text(dosage)
             
-            # Get dose information
-            dose_and_rate = dosage.get('doseAndRate', [])
-            if dose_and_rate and dose_and_rate[0].get('doseQuantity'):
-                dose_qty = dose_and_rate[0]['doseQuantity']
-                dose_value = dose_qty.get('value', 0)
-                if not unit:
-                    unit = dose_qty.get('unit', '')
+            # Extract dose quantity information
+            dose_info = self._extract_dose_quantity(dosage)
+            if dose_info:
+                dose_value, dose_unit = dose_info
+                if not unit_text:
+                    unit_text = dose_unit
                 
-                # Assign dose to appropriate time period
-                for when in when_list:
-                    if when in doses:
-                        doses[when] = dose_value
+                # Assign dose value to each specified time period
+                for when_code in when_codes:
+                    if when_code in dose_amounts:
+                        dose_amounts[when_code] = dose_value
         
-        # Format as "morning-noon-evening-night"
+        # Format as "morning-noon-evening-night" pattern
         dose_values = []
-        for when in self.when_order:
-            dose_value = doses[when]
-            # Format the dose value properly - keep decimals if they exist
-            if dose_value == int(dose_value):
-                dose_values.append(str(int(dose_value)))
-            else:
-                dose_values.append(str(dose_value))
-        dose_text = "-".join(dose_values)
+        for when_code in self.WHEN_CODES_ORDER:
+            dose_value = dose_amounts[when_code]
+            # Format dose value (preserve decimals only if needed)
+            formatted_dose = self._format_dose_value(dose_value)
+            dose_values.append(formatted_dose)
         
-        if unit:
-            dose_text = f"{dose_text} {unit}"
+        dose_pattern = "-".join(dose_values)
         
-        # Add bounds if present
+        # Add unit if available
+        if unit_text:
+            dose_pattern = f"{dose_pattern} {unit_text}"
+        
+        # Add bounds if present (e.g., "für 7 Tage: 1-0-2-0 Stück")
         if bounds_text:
-            return f"{bounds_text}: {dose_text}"
+            return f"{bounds_text}: {dose_pattern}"
         else:
-            return dose_text
+            return dose_pattern
     
-    def _generate_freetext_schema_text(self, dosages):
+    def _generate_freetext_schema_text(self, dosage_instructions):
         """
-        Generate text for FreeText schema: just return the dosage.text directly.
+        Generate text for FreeText schema: return user-provided text directly.
+        
+        For free text dosages, we simply extract and concatenate the text fields
+        from all dosage instructions, preserving the original human-readable content.
+        
+        Args:
+            dosage_instructions (list): List of dosage instructions with text fields
+            
+        Returns:
+            str: Concatenated text from all dosage instructions
+            
+        Example:
+            Input: [{"text": "Nach Bedarf"}, {"text": "bei Schmerzen"}]
+            Output: "Nach Bedarf bei Schmerzen"
         """
-        if not dosages:
+        if not dosage_instructions:
             return ""
         
-        # For free text, we just concatenate all text values
-        texts = []
-        for dosage in dosages:
-            text = dosage.get('text', '').strip()
-            if text:
-                texts.append(text)
+        # Extract and combine all text values
+        text_parts = []
+        for dosage in dosage_instructions:
+            text_content = dosage.get('text', '').strip()
+            if text_content:
+                text_parts.append(text_content)
         
-        return " ".join(texts)
+        return " ".join(text_parts)
     
-    def _generate_time_of_day_text(self, dosages):
-        """Generate text for TimeOfDay schema."""
-        if not dosages:
+    def _generate_time_of_day_text(self, dosage_instructions):
+        """
+        Generate text for TimeOfDay schema: specific times with doses.
+        
+        Creates text showing specific clock times with corresponding doses,
+        formatted as German time expressions with "Uhr".
+        
+        Args:
+            dosage_instructions (list): List with timeOfDay specifications
+            
+        Returns:
+            str: Formatted text like "täglich: 08:00 Uhr — je 1 Stück; 20:00 Uhr — je 2 Stück"
+            
+        Example FHIR input:
+            - timing.repeat.timeOfDay = ["08:00", "20:00"]
+            - doseQuantity = {value: 1, unit: "Stück"}
+            
+        Example output: "täglich: 08:00 Uhr — je 1 Stück; 20:00 Uhr — je 2 Stück"
+        """
+        if not dosage_instructions:
             return ""
         
-        # For TimeOfDay schema, consolidate all times and doses
-        parts = []
+        time_dose_parts = []
         bounds_text = ""
         
-        for dosage in dosages:
+        # Process each dosage instruction
+        for dosage in dosage_instructions:
             timing = dosage.get('timing', {})
-            repeat = timing.get('repeat', {})
-            times = repeat.get('timeOfDay', [])
+            repeat_element = timing.get('repeat', {})
+            time_of_day_list = repeat_element.get('timeOfDay', [])
             
-            # Get bounds (should be same across all dosages)
+            # Extract duration bounds (should be consistent across all dosages)
             if not bounds_text:
-                bounds_text = self._get_bounds_text(dosage)
+                bounds_text = self._extract_bounds_text(dosage)
             
-            if not times:
+            if not time_of_day_list:
                 continue
                 
-            # Format times (sort them and format as HH:MM Uhr)
+            # Format times as German time expressions (sort chronologically)
             formatted_times = []
-            for time in sorted(times):
-                formatted_time = self._format_time(time)
+            for time_value in sorted(time_of_day_list):
+                formatted_time = self._format_time_german(time_value)
                 formatted_times.append(formatted_time)
             
-            # Get dose
-            dose_text = self._get_dose_text(dosage)
+            # Extract dose information
+            dose_text = self._extract_dose_text_with_prefix(dosage)
             
-            # Combine times and dose for this dosage
+            # Combine times and dose for this instruction
             if formatted_times and dose_text:
-                times_str = ", ".join(formatted_times)
-                parts.append(f"{times_str} — {dose_text}")
+                times_combined = ", ".join(formatted_times)
+                time_dose_parts.append(f"{times_combined} — {dose_text}")
         
-        if not parts:
+        if not time_dose_parts:
             return ""
         
-        # Combine multiple parts with "; "
-        combined_parts = "; ".join(parts)
+        # Combine multiple time-dose pairs with semicolons
+        combined_instructions = "; ".join(time_dose_parts)
         
-        # Build final text with bounds
+        # Build final text with bounds and daily indicator
         if bounds_text:
-            return f"{bounds_text} täglich: {combined_parts}"
+            return f"{bounds_text} täglich: {combined_instructions}"
         else:
-            return f"täglich: {combined_parts}"
+            return f"täglich: {combined_instructions}"
     
-    def _format_time(self, time):
-        """Format time string to HH:MM Uhr format."""
+    # ============================================================================
+    # UTILITY METHODS - Reusable functions for data extraction and formatting
+    # ============================================================================
+    
+    def _extract_dose_quantity(self, dosage):
+        """
+        Extract dose quantity and unit from a dosage instruction.
+        
+        Args:
+            dosage (dict): Single dosage instruction
+            
+        Returns:
+            tuple: (dose_value, unit) or None if no dose found
+            
+        Example:
+            Input: {"doseAndRate": [{"doseQuantity": {"value": 2, "unit": "Stück"}}]}
+            Output: (2, "Stück")
+        """
+        dose_and_rate = dosage.get('doseAndRate', [])
+        if not dose_and_rate:
+            return None
+            
+        first_dose = dose_and_rate[0]
+        dose_quantity = first_dose.get('doseQuantity')
+        if not dose_quantity:
+            return None
+            
+        dose_value = dose_quantity.get('value', 0)
+        unit = dose_quantity.get('unit', '')
+        return (dose_value, unit)
+    
+    def _extract_dose_text_with_prefix(self, dosage):
+        """
+        Extract dose as German text with 'je' prefix.
+        
+        Args:
+            dosage (dict): Single dosage instruction
+            
+        Returns:
+            str: Formatted dose like "je 1 Stück" or "" if no dose
+        """
+        dose_info = self._extract_dose_quantity(dosage)
+        if not dose_info:
+            return ""
+            
+        dose_value, unit = dose_info
+        formatted_dose = self._format_dose_value(dose_value)
+        
+        if unit:
+            return f"je {formatted_dose} {unit}"
+        else:
+            return f"je {formatted_dose}"
+    
+    def _extract_bounds_text(self, dosage):
+        """
+        Extract duration bounds as German text.
+        
+        Args:
+            dosage (dict): Single dosage instruction
+            
+        Returns:
+            str: Formatted bounds like "für 7 Tage" or "" if no bounds
+        """
+        timing = dosage.get('timing', {})
+        repeat_element = timing.get('repeat', {})
+        bounds_duration = repeat_element.get('boundsDuration')
+        
+        if not bounds_duration:
+            return ""
+            
+        duration_value = bounds_duration.get('value', 0)
+        duration_unit = bounds_duration.get('unit') or bounds_duration.get('code', '')
+        
+        if duration_value and duration_unit:
+            # Format duration with proper German unit
+            formatted_unit = self._format_time_unit_german(duration_value, duration_unit)
+            return f"für {duration_value} {formatted_unit}"
+        
+        return ""
+    
+    def _format_dose_value(self, dose_value):
+        """
+        Format a dose value, removing unnecessary decimal places.
+        
+        Args:
+            dose_value (float): Numeric dose value
+            
+        Returns:
+            str: Formatted dose (e.g., "1" instead of "1.0", "1.5" kept as is)
+        """
+        if dose_value == int(dose_value):
+            return str(int(dose_value))
+        else:
+            return str(dose_value)
+    
+    def _format_time_german(self, time_string):
+        """
+        Format time string to German format with 'Uhr'.
+        
+        Args:
+            time_string (str): Time in format "HH:MM" or "HH:MM:SS"
+            
+        Returns:
+            str: German time format like "08:00 Uhr"
+            
+        Example:
+            Input: "08:30"
+            Output: "08:30 Uhr"
+        """
         try:
-            parts = time.split(':')
-            hour = int(parts[0])
-            minute = parts[1] if len(parts) > 1 else '00'
+            # Extract hour and minute from time string
+            time_parts = time_string.split(':')
+            hour = int(time_parts[0])
+            minute = time_parts[1] if len(time_parts) > 1 else '00'
             return f"{hour:02d}:{minute} Uhr"
-        except:
-            return time
+        except (ValueError, IndexError):
+            # Fallback: return original string if parsing fails
+            return time_string
     
-    def _generate_day_of_week_text(self, dosages):
-        """Generate text for DayOfWeek schema."""
-        if not dosages:
+    def _format_time_unit_german(self, value, unit):
+        """
+        Format time unit with proper German singular/plural form.
+        
+        Args:
+            value (int/float): Numeric value 
+            unit (str): FHIR time unit code (s, min, h, d, wk, mo, a)
+            
+        Returns:
+            str: German unit name (e.g., "Tag" vs "Tage")
+        """
+        # Choose singular or plural based on value
+        unit_dict = self.TIME_UNITS_SINGULAR if value == 1 else self.TIME_UNITS_PLURAL
+        return unit_dict.get(unit, unit)  # Fallback to original unit if not found
+    
+    def _generate_day_of_week_text(self, dosage_instructions):
+        """
+        Generate text for DayOfWeek schema: specific weekdays with doses.
+        
+        Creates text showing which days of the week to take medication,
+        with doses specified for each day.
+        
+        Args:
+            dosage_instructions (list): List with dayOfWeek specifications
+            
+        Returns:
+            str: Formatted text like "montags — je 1 Stück, mittwochs — je 2 Stück"
+            
+        Example FHIR input:
+            - timing.repeat.dayOfWeek = ["mon", "wed"]
+            - doseQuantity = {value: 1, unit: "Stück"}
+            
+        Example output: "montags — je 1 Stück, mittwochs — je 2 Stück"
+        """
+        if not dosage_instructions:
             return ""
         
-        # Group dosages by day and dose
-        day_doses = {}  # day -> dose_value
+        # Group dosages by day and collect dose information
+        day_to_dose = {}  # day_code -> dose_value
         bounds_text = ""
-        unit = ""
+        unit_text = ""
         
-        for dosage in dosages:
+        for dosage in dosage_instructions:
             timing = dosage.get('timing', {})
-            repeat = timing.get('repeat', {})
+            repeat_element = timing.get('repeat', {})
+            day_codes = repeat_element.get('dayOfWeek', [])
             
-            days = repeat.get('dayOfWeek', [])
-            
-            # Get bounds (should be same across all dosages)
+            # Extract duration bounds (should be consistent across dosages)
             if not bounds_text:
-                bounds_text = self._get_bounds_text(dosage)
+                bounds_text = self._extract_bounds_text(dosage)
             
-            # Get dose information
-            dose_and_rate = dosage.get('doseAndRate', [])
-            if dose_and_rate and dose_and_rate[0].get('doseQuantity'):
-                dose_qty = dose_and_rate[0]['doseQuantity']
-                dose_value = dose_qty.get('value', 0)
-                if not unit:
-                    unit = dose_qty.get('unit', '')
+            # Extract dose information
+            dose_info = self._extract_dose_quantity(dosage)
+            if dose_info:
+                dose_value, dose_unit = dose_info
+                if not unit_text:
+                    unit_text = dose_unit
                 
-                # For each day, set the dose
-                for day in days:
-                    day_doses[day] = dose_value
+                # Associate this dose with each specified day
+                for day_code in day_codes:
+                    day_to_dose[day_code] = dose_value
         
-        if not day_doses:
+        if not day_to_dose:
             return ""
         
-        # Format each day as "dayname — je X unit"
-        day_order = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
-        day_names = {
-            'mon': 'montags',
-            'tue': 'dienstags', 
-            'wed': 'mittwochs',
-            'thu': 'donnerstags',
-            'fri': 'freitags',
-            'sat': 'samstags',
-            'sun': 'sonntags'
-        }
+        # Sort days by weekday order and format each day
+        sorted_days = sorted(day_to_dose.keys(), 
+                           key=lambda day: self.DAY_ORDER.index(day) if day in self.DAY_ORDER else 99)
         
-        # Sort days by canonical order
-        sorted_days = sorted(day_doses.keys(), key=lambda d: day_order.index(d) if d in day_order else 99)
-        
-        day_texts = []
-        for day in sorted_days:
-            dose_value = day_doses[day]
-            day_name = day_names.get(day, day)
+        day_text_parts = []
+        for day_code in sorted_days:
+            dose_value = day_to_dose[day_code]
             
-            # Format the dose value properly - keep decimals if they exist
-            if dose_value == int(dose_value):
-                formatted_dose = str(int(dose_value))
-            else:
-                formatted_dose = str(dose_value)
+            # Get German day name
+            day_name = self.DAY_TRANSLATIONS.get(day_code, day_code)
             
-            # Format as "dayname — je X unit"
+            # Format dose value and create day entry
+            formatted_dose = self._format_dose_value(dose_value)
             dose_text = f"je {formatted_dose}"
-            if unit:
-                dose_text += f" {unit}"
+            if unit_text:
+                dose_text += f" {unit_text}"
             
-            day_texts.append(f"{day_name} — {dose_text}")
+            day_text_parts.append(f"{day_name} — {dose_text}")
         
-        # Combine all days
-        days_text = ", ".join(day_texts)
+        # Combine all days with commas
+        combined_days = ", ".join(day_text_parts)
         
         # Add bounds if present
         if bounds_text:
-            return f"{bounds_text}: {days_text}"
+            return f"{bounds_text}: {combined_days}"
         else:
-            return days_text
+            return combined_days
     
-    def _generate_interval_text(self, dosages):
-        """Generate text for Interval schema."""
-        if not dosages:
+    def _generate_interval_text(self, dosage_instructions):
+        """
+        Generate text for Interval schema: regular time intervals.
+        
+        Creates text showing regular dosing intervals like "every 8 hours".
+        For interval schema, there should only be one dosage instruction.
+        
+        Args:
+            dosage_instructions (list): List containing single interval dosage
+            
+        Returns:
+            str: Formatted text like "alle 8 Stunden: je 1 Stück" or "wöchentlich: je 2 mg"
+            
+        Example FHIR input:
+            - timing.repeat.frequency = 3, period = 1, periodUnit = "d"
+            - doseQuantity = {value: 1, unit: "Stück"}
+            
+        Example output: "3 x täglich: je 1 Stück"
+        """
+        if not dosage_instructions:
             return ""
         
-        # For interval schema, there should only be one dosage (constraint ensures this)
-        dosage = dosages[0]
+        # For interval schema, use the first (and typically only) dosage
+        dosage = dosage_instructions[0]
         
-        # Get the frequency pattern
-        frequency_text = self._get_frequency_text(dosage)
+        # Generate frequency description (e.g., "täglich", "alle 8 Stunden")
+        frequency_text = self._generate_frequency_description(dosage)
         
-        # Get the dose
-        dose_text = self._get_dose_text(dosage)
+        # Extract dose information
+        dose_text = self._extract_dose_text_with_prefix(dosage)
         
-        # Get bounds if present
-        bounds_text = self._get_bounds_text(dosage)
+        # Extract bounds if present
+        bounds_text = self._extract_bounds_text(dosage)
         
-        # Combine: [bounds] frequency: dose
-        parts = []
+        # Combine parts: [bounds] frequency: dose
+        text_parts = []
         if bounds_text:
-            parts.append(bounds_text)
+            text_parts.append(bounds_text)
         if frequency_text:
-            parts.append(frequency_text)
+            text_parts.append(frequency_text)
         
-        left_part = " ".join(parts)
+        left_side = " ".join(text_parts)
         
-        if left_part and dose_text:
-            return f"{left_part}: {dose_text}"
-        elif left_part:
-            return left_part
+        # Format final text
+        if left_side and dose_text:
+            return f"{left_side}: {dose_text}"
+        elif left_side:
+            return left_side
         elif dose_text:
             return dose_text
         else:
             return ""
     
-    def _get_frequency_text(self, dosage):
-        """Get frequency text for a dosage (replicates logic from dosage-to-text.py)."""
+    def _generate_frequency_description(self, dosage):
+        """
+        Generate German frequency description from dosage timing.
+        
+        Converts FHIR frequency/period/periodUnit into German text like:
+        - "täglich" (daily)
+        - "3 x täglich" (3 times daily)  
+        - "alle 8 Stunden" (every 8 hours)
+        - "wöchentlich" (weekly)
+        
+        Args:
+            dosage (dict): Single dosage instruction with timing
+            
+        Returns:
+            str: German frequency description
+        """
         timing = dosage.get('timing', {})
-        repeat = timing.get('repeat', {})
-        if not repeat:
-            return ""
+        repeat_element = timing.get('repeat', {})
         
-        frequency = repeat.get('frequency')
-        period = repeat.get('period')
-        period_unit = repeat.get('periodUnit')
+        frequency = repeat_element.get('frequency')
+        period = repeat_element.get('period')
+        period_unit = repeat_element.get('periodUnit')
         
+        # Handle missing timing information
         if frequency is None and period is None and period_unit is None:
             return ""
         
-        # Daily patterns
+        # Daily patterns (periodUnit='d', period=1)
         if period_unit == 'd' and period == 1:
-            return "täglich" if frequency == 1 else f"{frequency} x täglich"
+            if frequency == 1:
+                return "täglich"
+            else:
+                return f"{frequency} x täglich"
         
-        # Weekly patterns  
+        # Weekly patterns (periodUnit='wk', period=1)
         if period_unit == 'wk' and period == 1:
-            return "wöchentlich" if frequency == 1 else f"{frequency} x wöchentlich"
+            if frequency == 1:
+                return "wöchentlich"
+            else:
+                return f"{frequency} x wöchentlich"
         
-        # Interval patterns
+        # Interval patterns (frequency=1 with various periods)
         if frequency == 1:
-            period_text = self._format_period_unit(period, period_unit)
-            return f"alle {period_text}"
+            period_description = self._format_period_description(period, period_unit)
+            return f"alle {period_description}"
         
-        freq_text = f"{frequency} x"
-        period_text = self._format_period_unit(period, period_unit)
-        return f"{freq_text} alle {period_text}"
+        # Complex patterns (frequency > 1 with intervals)
+        frequency_text = f"{frequency} x"
+        period_description = self._format_period_description(period, period_unit)
+        return f"{frequency_text} alle {period_description}"
     
-    def _get_dose_text(self, dosage):
-        """Get dose text for a dosage."""
-        dose_and_rate = dosage.get('doseAndRate', [])
-        if not dose_and_rate:
-            return ""
-        first_dose = dose_and_rate[0]
-        if first_dose.get('doseQuantity'):
-            return self._format_quantity(first_dose['doseQuantity'], with_je=True)
-        return ""
+    def _format_period_description(self, period, period_unit):
+        """
+        Format a period with unit into German description.
+        
+        Args:
+            period (int): Numeric period value
+            period_unit (str): FHIR period unit code
+            
+        Returns:
+            str: German period description like "3 Tage" or "2 Wochen"
+        """
+        unit_name = self._format_time_unit_german(period, period_unit)
+        return f"{period} {unit_name}"
     
-    def _get_bounds_text(self, dosage):
-        """Get bounds text for a dosage."""
-        timing = dosage.get('timing', {})
-        repeat = timing.get('repeat', {})
-        if repeat.get('boundsDuration'):
-            dur = self._format_quantity(repeat['boundsDuration'], with_je=False)
-            return f"für {dur}" if dur else ""
-        return ""
-    
-    def _format_quantity(self, quantity, with_je=True):
-        """Format a quantity with optional 'je' prefix."""
-        value = quantity.get('value', 0)
-        unit = quantity.get('unit') or quantity.get('code') or ""
-        prefix = "je " if with_je else ""
-        return f"{prefix}{value}{' ' + unit if unit else ''}"
-    
-    def _format_period_unit(self, period, unit):
-        """Format period with unit (e.g., '3 Tage', '2 Wochen')."""
-        unit_text = self._format_time_unit(period, unit)
-        return f"{period} {unit_text}"
-    
-    def _format_time_unit(self, value, unit):
-        """Format time unit with proper German singular/plural."""
-        units = {
-            's': 'Sekunde',
-            'min': 'Minute', 
-            'h': 'Stunde',
-            'd': 'Tag',
-            'wk': 'Woche',
-            'mo': 'Monat',
-            'a': 'Jahr'
-        }
-        multi_units = {
-            's': 'Sekunden',
-            'min': 'Minuten',
-            'h': 'Stunden', 
-            'd': 'Tage',
-            'wk': 'Wochen',
-            'mo': 'Monate',
-            'a': 'Jahre'
-        }
-        unit_name = units.get(unit, unit)
-        units_name = multi_units.get(unit, unit)
-        return unit_name if value == 1 else units_name
-    
-    def _generate_dayofweek_and_time_schema_text(self, dosages):
-        """Generate text for DayOfWeek and Time/4-Schema."""
-        if not dosages:
+    def _generate_dayofweek_and_time_schema_text(self, dosage_instructions):
+        """
+        Generate text for DayOfWeek + Time/4-Schema combination.
+        
+        This combines specific weekdays with either timeOfDay or when codes.
+        The method determines which sub-type applies and delegates to the 
+        appropriate specialized generator.
+        
+        Args:
+            dosage_instructions (list): List with both dayOfWeek and timing info
+            
+        Returns:
+            str: Formatted combination text
+            
+        Sub-types:
+        - DayOfWeek + TimeOfDay: "montags 08:00 Uhr — je 1 Stück, mittwochs 20:00 Uhr — je 2 Stück"
+        - DayOfWeek + When: "montags 1-0-1-0, mittwochs 2-1-2-0 Stück"
+        """
+        if not dosage_instructions:
             return ""
         
-        # Check if this uses timeOfDay or when codes
-        first_dosage = dosages[0]
+        # Check whether this uses timeOfDay or when codes
+        first_dosage = dosage_instructions[0]
         timing = first_dosage.get('timing', {})
-        repeat = timing.get('repeat', {})
-        has_time_of_day = 'timeOfDay' in repeat and repeat['timeOfDay']
-        has_when = 'when' in repeat and repeat['when']
+        repeat_element = timing.get('repeat', {})
         
-        if has_time_of_day and not has_when:
-            return self._generate_dayofweek_and_timeofday_text(dosages)
-        elif has_when and not has_time_of_day:
-            return self._generate_dayofweek_and_when_text(dosages)
+        has_time_of_day = 'timeOfDay' in repeat_element and repeat_element['timeOfDay']
+        has_when_codes = 'when' in repeat_element and repeat_element['when']
+        
+        # Delegate to appropriate sub-type generator
+        if has_time_of_day and not has_when_codes:
+            return self._generate_dayofweek_timeofday_combination(dosage_instructions)
+        elif has_when_codes:  # Handle when codes (with or without timeOfDay)
+            return self._generate_dayofweek_when_combination(dosage_instructions)
         else:
-            # Fallback to when-based logic
-            return self._generate_dayofweek_and_when_text(dosages)
+            # Fallback to when-based logic if neither present
+            return self._generate_dayofweek_when_combination(dosage_instructions)
     
-    def _generate_dayofweek_and_timeofday_text(self, dosages):
-        """Generate text for DayOfWeek + TimeOfDay combination."""
-        if not dosages:
+    def _generate_dayofweek_timeofday_combination(self, dosage_instructions):
+        """
+        Generate text for DayOfWeek + TimeOfDay combination.
+        
+        Example output: "montags 08:00 Uhr — je 1 Stück, mittwochs 20:00 Uhr — je 2 Stück"
+        """
+        if not dosage_instructions:
             return ""
         
         # Group dosages by day of week
-        day_groups = {}  # day -> list of dosages
+        day_to_dosages = {}  # day_code -> list of dosages
         bounds_text = ""
         
-        for dosage in dosages:
+        for dosage in dosage_instructions:
             timing = dosage.get('timing', {})
-            repeat = timing.get('repeat', {})
+            repeat_element = timing.get('repeat', {})
+            day_codes = repeat_element.get('dayOfWeek', [])
             
-            days = repeat.get('dayOfWeek', [])
-            
-            # Get bounds (should be same across all dosages)
+            # Extract bounds (should be consistent across dosages)
             if not bounds_text:
-                bounds_text = self._get_bounds_text(dosage)
+                bounds_text = self._extract_bounds_text(dosage)
             
-            # Group by day
-            for day in days:
-                if day not in day_groups:
-                    day_groups[day] = []
-                day_groups[day].append(dosage)
+            # Group dosages by day
+            for day_code in day_codes:
+                if day_code not in day_to_dosages:
+                    day_to_dosages[day_code] = []
+                day_to_dosages[day_code].append(dosage)
         
-        # Format each day
-        day_order = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
-        day_names = {
-            'mon': 'montags',
-            'tue': 'dienstags', 
-            'wed': 'mittwochs',
-            'thu': 'donnerstags',
-            'fri': 'freitags',
-            'sat': 'samstags',
-            'sun': 'sonntags'
-        }
+        # Format each day with its time-dose combinations
+        sorted_days = sorted(day_to_dosages.keys(), 
+                           key=lambda day: self.DAY_ORDER.index(day) if day in self.DAY_ORDER else 99)
         
-        sorted_days = sorted(day_groups.keys(), key=lambda d: day_order.index(d) if d in day_order else 99)
-        
-        day_texts = []
-        for day in sorted_days:
-            day_dosages = day_groups[day]
-            day_name = day_names.get(day, day)
+        day_text_parts = []
+        for day_code in sorted_days:
+            day_dosages = day_to_dosages[day_code]
+            day_name = self.DAY_TRANSLATIONS.get(day_code, day_code)
             
-            # Generate time-based text for this day (similar to TimeOfDay schema)
-            time_parts = []
+            # Generate time-dose combinations for this day
+            time_dose_parts = []
             for dosage in day_dosages:
                 timing = dosage.get('timing', {})
-                repeat = timing.get('repeat', {})
-                times = repeat.get('timeOfDay', [])
+                repeat_element = timing.get('repeat', {})
+                time_list = repeat_element.get('timeOfDay', [])
                 
-                if not times:
+                if not time_list:
                     continue
                     
-                # Format times (sort them and format as HH:MM Uhr)
+                # Format times (sort chronologically)
                 formatted_times = []
-                for time in sorted(times):
-                    formatted_time = self._format_time(time)
+                for time_value in sorted(time_list):
+                    formatted_time = self._format_time_german(time_value)
                     formatted_times.append(formatted_time)
                 
-                # Get dose
-                dose_text = self._get_dose_text(dosage)
+                # Extract dose information
+                dose_text = self._extract_dose_text_with_prefix(dosage)
                 
                 # Combine times and dose for this dosage
                 if formatted_times and dose_text:
-                    times_str = ", ".join(formatted_times)
-                    time_parts.append(f"{times_str} — {dose_text}")
+                    times_combined = ", ".join(formatted_times)
+                    time_dose_parts.append(f"{times_combined} — {dose_text}")
             
-            if time_parts:
-                combined_times = "; ".join(time_parts)
-                day_texts.append(f"{day_name} {combined_times}")
+            # Combine all time-dose parts for this day
+            if time_dose_parts:
+                combined_times = "; ".join(time_dose_parts)
+                day_text_parts.append(f"{day_name} {combined_times}")
         
         # Combine all days
-        days_text = ", ".join(day_texts)
+        combined_days = ", ".join(day_text_parts)
         
         # Add bounds if present
         if bounds_text:
-            return f"{bounds_text}: {days_text}"
+            return f"{bounds_text}: {combined_days}"
         else:
-            return days_text
+            return combined_days
     
-    def _generate_dayofweek_and_when_text(self, dosages):
-        """Generate text for DayOfWeek + When combination (4-Schema pattern)."""
-        if not dosages:
+    def _generate_dayofweek_when_combination(self, dosage_instructions):
+        """
+        Generate text for DayOfWeek + When combination (4-Schema pattern per day).
+        
+        Example output: "montags 1-0-1-0, mittwochs 2-1-2-0 Stück"
+        """
+        if not dosage_instructions:
             return ""
         
-        # Group dosages by day of week and build 4-schema pattern for each day
-        day_patterns = {}  # day -> {MORN: dose, NOON: dose, EVE: dose, NIGHT: dose}
+        # Group dosages by day and build 4-schema pattern for each day
+        day_to_patterns = {}  # day_code -> {MORN: dose, NOON: dose, EVE: dose, NIGHT: dose}
         bounds_text = ""
-        unit = ""
+        unit_text = ""
         
-        for dosage in dosages:
+        for dosage in dosage_instructions:
             timing = dosage.get('timing', {})
-            repeat = timing.get('repeat', {})
+            repeat_element = timing.get('repeat', {})
             
-            days = repeat.get('dayOfWeek', [])
-            when_list = repeat.get('when', [])
+            day_codes = repeat_element.get('dayOfWeek', [])
+            when_codes = repeat_element.get('when', [])
             
-            # Get bounds (should be same across all dosages)
+            # Extract bounds (should be consistent across dosages)
             if not bounds_text:
-                bounds_text = self._get_bounds_text(dosage)
+                bounds_text = self._extract_bounds_text(dosage)
             
-            # Get dose information
-            dose_and_rate = dosage.get('doseAndRate', [])
-            if dose_and_rate and dose_and_rate[0].get('doseQuantity'):
-                dose_qty = dose_and_rate[0]['doseQuantity']
-                dose_value = dose_qty.get('value', 0)
-                if not unit:
-                    unit = dose_qty.get('unit', '')
+            # Extract dose information
+            dose_info = self._extract_dose_quantity(dosage)
+            if dose_info:
+                dose_value, dose_unit = dose_info
+                if not unit_text:
+                    unit_text = dose_unit
                 
-                # For each day and each when, set the dose
-                for day in days:
-                    if day not in day_patterns:
-                        day_patterns[day] = {'MORN': 0, 'NOON': 0, 'EVE': 0, 'NIGHT': 0}
+                # For each day and each when code, set the dose
+                for day_code in day_codes:
+                    if day_code not in day_to_patterns:
+                        day_to_patterns[day_code] = {code: 0 for code in self.WHEN_CODES_ORDER}
                     
-                    for when in when_list:
-                        if when in day_patterns[day]:
-                            day_patterns[day][when] = dose_value
+                    for when_code in when_codes:
+                        if when_code in day_to_patterns[day_code]:
+                            day_to_patterns[day_code][when_code] = dose_value
         
-        if not day_patterns:
+        if not day_to_patterns:
             return ""
         
-        # Format each day as "dayname 1-2-1-0"
-        day_order = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
-        when_order = ['MORN', 'NOON', 'EVE', 'NIGHT']
-        day_names = {
-            'mon': 'montags',
-            'tue': 'dienstags', 
-            'wed': 'mittwochs',
-            'thu': 'donnerstags',
-            'fri': 'freitags',
-            'sat': 'samstags',
-            'sun': 'sonntags'
-        }
+        # Format each day with its 4-schema pattern
+        sorted_days = sorted(day_to_patterns.keys(), 
+                           key=lambda day: self.DAY_ORDER.index(day) if day in self.DAY_ORDER else 99)
         
-        # Sort days by canonical order
-        sorted_days = sorted(day_patterns.keys(), key=lambda d: day_order.index(d) if d in day_order else 99)
-        
-        day_texts = []
-        for day in sorted_days:
-            pattern = day_patterns[day]
-            day_name = day_names.get(day, day)
+        day_text_parts = []
+        for day_code in sorted_days:
+            dose_pattern = day_to_patterns[day_code]
+            day_name = self.DAY_TRANSLATIONS.get(day_code, day_code)
             
-            # Format doses as "1-2-1-0"
+            # Format doses as "1-2-1-0" pattern
             dose_values = []
-            for when in when_order:
-                dose_value = pattern[when]
-                # Format the dose value properly - keep decimals if they exist
-                if dose_value == int(dose_value):
-                    dose_values.append(str(int(dose_value)))
-                else:
-                    dose_values.append(str(dose_value))
+            for when_code in self.WHEN_CODES_ORDER:
+                dose_value = dose_pattern[when_code]
+                formatted_dose = self._format_dose_value(dose_value)
+                dose_values.append(formatted_dose)
             
-            dose_pattern = "-".join(dose_values)
-            day_texts.append(f"{day_name} {dose_pattern}")
+            dose_pattern_text = "-".join(dose_values)
+            day_text_parts.append(f"{day_name} {dose_pattern_text}")
         
         # Combine all days
-        days_text = ", ".join(day_texts)
+        combined_days = ", ".join(day_text_parts)
         
         # Add unit if available
-        if unit:
-            days_text += f" {unit}"
+        if unit_text:
+            combined_days += f" {unit_text}"
         
         # Add bounds if present
         if bounds_text:
-            return f"{bounds_text}: {days_text}"
+            return f"{bounds_text}: {combined_days}"
         else:
-            return days_text
+            return combined_days
     
-    def _generate_interval_and_time_schema_text(self, dosages):
+    def _generate_interval_and_time_schema_text(self, dosage_instructions):
         """
-        Generate text for Interval and Time/4-Schema.
-        Example: "alle 2 Tage: 08:00 Uhr — je 1 Stück; 18:00 Uhr — je 2 Stück"
+        Generate text for Interval + Time/4-Schema combination.
+        
+        This combines regular intervals (non-daily) with either timeOfDay or when codes.
+        
+        Args:
+            dosage_instructions (list): List with interval and timing information
+            
+        Returns:
+            str: Formatted text like "alle 2 Tage: 08:00 Uhr — je 1 Stück; 18:00 Uhr — je 2 Stück"
+            
+        Example FHIR input:
+            - timing.repeat.frequency = 1, period = 2, periodUnit = "d"
+            - timing.repeat.timeOfDay = ["08:00", "18:00"]
+            - doseQuantity = {value: 1, unit: "Stück"}
+            
+        Example output: "alle 2 Tage: 08:00 Uhr — je 1 Stück; 18:00 Uhr — je 2 Stück"
         """
-        if not dosages:
+        if not dosage_instructions:
             return ""
         
-        # Get interval information from first dosage
-        first_dosage = dosages[0]
+        # Extract interval information from first dosage
+        first_dosage = dosage_instructions[0]
         timing = first_dosage.get('timing', {})
-        repeat = timing.get('repeat', {})
+        repeat_element = timing.get('repeat', {})
         
-        # Get bounds text
-        bounds_text = self._get_bounds_text(first_dosage)
+        # Extract bounds if present
+        bounds_text = self._extract_bounds_text(first_dosage)
         
-        period = repeat.get('period', 1)
-        period_unit = repeat.get('periodUnit', 'd')
+        # Generate interval text using original logic (ignores frequency!)
+        period = repeat_element.get('period', 1)
+        period_unit = repeat_element.get('periodUnit', 'd')
         
-        # Generate interval text
+        # Original hardcoded interval text generation (replicates original behavior exactly)
         if period_unit == 'd':
             if period == 1:
                 interval_text = "täglich"
@@ -669,84 +981,99 @@ class MedicationDosageTextGenerator:
         else:
             interval_text = f"alle {period} {period_unit}"
         
-        # Collect and group dosages by time or when
-        time_groups = {}
+        # Group dosages by time or when code
+        time_to_dosages = {}  # time_key -> list of dosages
         
-        for dosage in dosages:
+        for dosage in dosage_instructions:
             timing = dosage.get('timing', {})
-            repeat = timing.get('repeat', {})
+            repeat_element = timing.get('repeat', {})
             
-            # Get time information - process ALL timeOfDay/when entries
-            if 'timeOfDay' in repeat and repeat['timeOfDay']:
-                # Process all timeOfDay entries
-                for time_of_day in repeat['timeOfDay']:
-                    if time_of_day not in time_groups:
-                        time_groups[time_of_day] = []
-                    time_groups[time_of_day].append(dosage)
-            elif 'when' in repeat and repeat['when']:
-                when_codes = repeat['when']
-                # Process all when codes directly (don't convert to times)
-                for when_code in when_codes:
-                    if when_code in self.when_translations:
-                        if when_code not in time_groups:
-                            time_groups[when_code] = []
-                        time_groups[when_code].append(dosage)
-        
-        # Generate time-based text parts
-        time_parts = []
-        
-        # Sort time_groups keys properly: when codes in logical order, then times chronologically
-        def sort_key(key):
-            if key in self.when_order:
-                # When codes: use their position in when_order for sorting
-                return (0, self.when_order.index(key))
-            else:
-                # Time codes: sort chronologically
-                return (1, key)
-        
-        for time_key in sorted(time_groups.keys(), key=sort_key):
-            dosages_at_time = time_groups[time_key]
+            # Process timeOfDay entries
+            if 'timeOfDay' in repeat_element and repeat_element['timeOfDay']:
+                for time_of_day in repeat_element['timeOfDay']:
+                    if time_of_day not in time_to_dosages:
+                        time_to_dosages[time_of_day] = []
+                    time_to_dosages[time_of_day].append(dosage)
             
-            # Format time or when code
-            if time_key in self.when_translations:
-                # This is a when code, use German translation
-                time_display = self.when_translations[time_key]
+            # Process when code entries  
+            elif 'when' in repeat_element and repeat_element['when']:
+                for when_code in repeat_element['when']:
+                    if when_code in self.WHEN_CODE_TRANSLATIONS:
+                        if when_code not in time_to_dosages:
+                            time_to_dosages[when_code] = []
+                        time_to_dosages[when_code].append(dosage)
+        
+        # Generate time-dose text parts
+        time_dose_parts = []
+        
+        # Sort times: when codes first (in logical order), then timeOfDay chronologically
+        def time_sort_key(time_key):
+            if time_key in self.WHEN_CODES_ORDER:
+                # When codes: use position in defined order
+                return (0, self.WHEN_CODES_ORDER.index(time_key))
             else:
-                # This is a timeOfDay, format as HH:MM Uhr
-                time_display = time_key[:5] + " Uhr"
+                # TimeOfDay: sort chronologically by time string
+                return (1, time_key)
+        
+        sorted_times = sorted(time_to_dosages.keys(), key=time_sort_key)
+        
+        for time_key in sorted_times:
+            dosages_at_time = time_to_dosages[time_key]
+            
+            # Format time display
+            if time_key in self.WHEN_CODE_TRANSLATIONS:
+                # This is a when code - use German translation
+                time_display = self.WHEN_CODE_TRANSLATIONS[time_key]
+            else:
+                # This is a timeOfDay - format as German time
+                time_display = self._format_time_german(time_key)
             
             # Calculate total dose at this time
-            total_dose = 0
-            unit = ""
+            total_dose_value = 0
+            unit_text = ""
+            
             for dosage in dosages_at_time:
-                dose_and_rate = dosage.get('doseAndRate', [])
-                if dose_and_rate and dose_and_rate[0].get('doseQuantity'):
-                    dose_qty = dose_and_rate[0]['doseQuantity']
-                    dose_value = dose_qty.get('value', 0)
-                    total_dose += dose_value
-                    if not unit:
-                        unit = dose_qty.get('unit', '')
+                dose_info = self._extract_dose_quantity(dosage)
+                if dose_info:
+                    dose_value, dose_unit = dose_info
+                    total_dose_value += dose_value
+                    if not unit_text:
+                        unit_text = dose_unit
             
-            # Format dose value (preserve decimals)
-            if total_dose == int(total_dose):
-                dose_text = str(int(total_dose))
-            else:
-                dose_text = str(total_dose)
+            # Format dose text
+            formatted_dose = self._format_dose_value(total_dose_value)
+            dose_text = f"je {formatted_dose}"
+            if unit_text:
+                dose_text += f" {unit_text}"
             
-            time_parts.append(f"{time_display} — je {dose_text} {unit}")
+            time_dose_parts.append(f"{time_display} — {dose_text}")
         
-        # Combine interval and time parts
-        times_text = "; ".join(time_parts)
+        # Combine all time-dose parts
+        combined_times = "; ".join(time_dose_parts)
         
-        # Add bounds if present
+        # Build final text with bounds and interval
         if bounds_text:
-            return f"{bounds_text} {interval_text}: {times_text}"
+            return f"{bounds_text} {interval_text}: {combined_times}"
         else:
-            return f"{interval_text}: {times_text}"
+            return f"{interval_text}: {combined_times}"
+
+# ============================================================================
+# MAIN FUNCTION - Command line interface
+# ============================================================================
 
 def main():
+    """
+    Command line interface for the dosage text generator.
+    
+    Usage: python medication-dosage-to-text.py <medication-resource.json>
+    
+    Reads a FHIR medication resource from JSON file and outputs German dosage text.
+    """
     if len(sys.argv) < 2:
         print('Verwendung: python medication-dosage-to-text.py <medication-resource.json>', file=sys.stderr)
+        print('', file=sys.stderr) 
+        print('Dieses Skript konvertiert FHIR-Medikationsdosierungen in deutschen Text.', file=sys.stderr)
+        print('Unterstützte Ressourcentypen: MedicationRequest, MedicationDispense, MedicationStatement', file=sys.stderr)
         sys.exit(1)
     
     file_path = sys.argv[1]
@@ -764,10 +1091,13 @@ def main():
         
     except json.JSONDecodeError as e:
         print(f"Fehler: Ungültiges JSON in Datei '{file_path}'.", file=sys.stderr)
-        print(f"Details: {e}", file=sys.stderr)
+        print(f"JSON-Details: {e}", file=sys.stderr)
+        sys.exit(1)
+    except ValueError as e:
+        print(f"Fehler: {e}", file=sys.stderr)
         sys.exit(1)
     except Exception as e:
-        print(f"Fehler beim Verarbeiten der Datei: {e}", file=sys.stderr)
+        print(f"Unerwarteter Fehler beim Verarbeiten der Datei: {e}", file=sys.stderr)
         sys.exit(1)
 
 if __name__ == "__main__":

@@ -97,7 +97,7 @@ Im folgenden wird für jedes Element ein Beispiel angegeben, wie die Überführu
 
 | Element                       | Darstellung (Deutsch)         | Beispiel(e)           |
 |-------------------------------|-------------------------------|-----------------------|
-| **doseAndRate.doseQuantity**  | `{value} {unit}`              | `50 Milligramm`<br>`2 Tabletten` |
+| **doseAndRate.doseQuantity**  | `{value} {unit}`              | `50 Milligramm`<br>`2 Stück` |
 
 #### Timing
 

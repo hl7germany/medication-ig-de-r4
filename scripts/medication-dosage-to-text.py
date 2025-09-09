@@ -676,10 +676,13 @@ class MedicationDosageTextGenerator:
             timing = dosage.get('timing', {})
             repeat = timing.get('repeat', {})
             
-            # Get time information
-            time_key = None
+            # Get time information - process ALL timeOfDay/when entries
             if 'timeOfDay' in repeat and repeat['timeOfDay']:
-                time_key = repeat['timeOfDay'][0]  # Use first time
+                # Process all timeOfDay entries
+                for time_of_day in repeat['timeOfDay']:
+                    if time_of_day not in time_groups:
+                        time_groups[time_of_day] = []
+                    time_groups[time_of_day].append(dosage)
             elif 'when' in repeat and repeat['when']:
                 when_codes = repeat['when']
                 # Convert when codes to times for grouping
@@ -689,13 +692,13 @@ class MedicationDosageTextGenerator:
                     'EVE': '18:00:00',
                     'NIGHT': '22:00:00'
                 }
-                if when_codes[0] in when_to_time:
-                    time_key = when_to_time[when_codes[0]]
-            
-            if time_key:
-                if time_key not in time_groups:
-                    time_groups[time_key] = []
-                time_groups[time_key].append(dosage)
+                # Process all when codes
+                for when_code in when_codes:
+                    if when_code in when_to_time:
+                        time_key = when_to_time[when_code]
+                        if time_key not in time_groups:
+                            time_groups[time_key] = []
+                        time_groups[time_key].append(dosage)
         
         # Generate time-based text parts
         time_parts = []

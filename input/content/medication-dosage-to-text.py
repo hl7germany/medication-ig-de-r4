@@ -685,31 +685,34 @@ class MedicationDosageTextGenerator:
                     time_groups[time_of_day].append(dosage)
             elif 'when' in repeat and repeat['when']:
                 when_codes = repeat['when']
-                # Convert when codes to times for grouping
-                when_to_time = {
-                    'MORN': '06:00:00',
-                    'NOON': '12:00:00', 
-                    'EVE': '18:00:00',
-                    'NIGHT': '22:00:00'
-                }
-                # Process all when codes
+                # Process all when codes directly (don't convert to times)
                 for when_code in when_codes:
-                    if when_code in when_to_time:
-                        time_key = when_to_time[when_code]
-                        if time_key not in time_groups:
-                            time_groups[time_key] = []
-                        time_groups[time_key].append(dosage)
+                    if when_code in self.when_translations:
+                        if when_code not in time_groups:
+                            time_groups[when_code] = []
+                        time_groups[when_code].append(dosage)
         
         # Generate time-based text parts
         time_parts = []
-        for time_key in sorted(time_groups.keys()):
+        
+        # Sort time_groups keys properly: when codes in logical order, then times chronologically
+        def sort_key(key):
+            if key in self.when_order:
+                # When codes: use their position in when_order for sorting
+                return (0, self.when_order.index(key))
+            else:
+                # Time codes: sort chronologically
+                return (1, key)
+        
+        for time_key in sorted(time_groups.keys(), key=sort_key):
             dosages_at_time = time_groups[time_key]
             
-            # Format time
-            if time_key in ['06:00:00', '12:00:00', '18:00:00', '22:00:00']:
-                # Display as HH:MM format
-                time_display = time_key[:5] + " Uhr"
+            # Format time or when code
+            if time_key in self.when_translations:
+                # This is a when code, use German translation
+                time_display = self.when_translations[time_key]
             else:
+                # This is a timeOfDay, format as HH:MM Uhr
                 time_display = time_key[:5] + " Uhr"
             
             # Calculate total dose at this time

@@ -59,7 +59,7 @@ Expression: "(%resource.ofType(MedicationRequest).dosageInstruction |
  ofType(MedicationStatement).dosage).all(
   (timing.exists() and doseAndRate.exists() and text.empty()) 
   implies 
-  extension.where(url = 'http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructions').exists()
+  %resource.extension.where(url = 'http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta').exists()
 )
 "
 Severity: #error

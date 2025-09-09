@@ -9,6 +9,7 @@
 | [MedicationDispense-MD-Dosage-Freetext](./MedicationDispense-MD-Dosage-Freetext.html) | Morgens und abends je 1 Kapsel nach dem Essen |  |  |  |  |  |  |  |  |
 | [MedicationDispense-MD-Dosage-Interval-Time](./MedicationDispense-MD-Dosage-Interval-Time.html) | alle 2 Tage: 09:00 Uhr — je 1 Stück; 21:00 Uhr — je 2 Stück | 1 Stück | 1 | 2 | d |  | 09:00:00 |  |  |
 |  |  | 2 Stück | 1 | 2 | d |  | 21:00:00 |  |  |
+| [MedicationDispense-TestMRIns](./MedicationDispense-TestMRIns.html) | Unbekanntes Dosierungsschema: Unknown |  |  |  |  |  |  |  |  |
 | [MedicationRequest-Example-MR-Dosage-1000](./MedicationRequest-Example-MR-Dosage-1000.html) | 1-0-0-0 Stück | 1 Stück | 1 | 1 | d |  |  | MORN |  |
 | [MedicationRequest-Example-MR-Dosage-1010-10-Days](./MedicationRequest-Example-MR-Dosage-1010-10-Days.html) | für 10 Woche(n): 1-0-1-0 Stück | 1 Stück | 2 | 1 | d |  |  | MORN, EVE | {'system': 'http://unitsofmeasure.org', 'value': 10, 'code': 'wk', 'unit': 'Woche(n)'} |
 | [MedicationRequest-Example-MR-Dosage-1010-Unsorted](./MedicationRequest-Example-MR-Dosage-1010-Unsorted.html) | 1-0-1-0 Stück | 1 Stück | 2 | 1 | d |  |  | EVE, MORN |  |
@@ -65,7 +66,7 @@
 | [MedicationRequest-MR-Dosage-interval-monthly](./MedicationRequest-MR-Dosage-interval-monthly.html) | alle 2 Monate: je 1 Stück | 1 Stück | 1 | 2 | mo |  |  |  |  |
 | [MedicationRequest-MR-Dosage-interval-when-3d](./MedicationRequest-MR-Dosage-interval-when-3d.html) | alle 3 Tage: 06:00 Uhr — je 1 Stück; 18:00 Uhr — je 2 Stück | 1 Stück | 1 | 3 | d |  |  | MORN |  |
 |  |  | 2 Stück | 1 | 3 | d |  |  | EVE |  |
-| [MedicationRequest-MR-Dosage-single-day-time](./MedicationRequest-MR-Dosage-single-day-time.html) | montags 0-0-0-0 Stück | 1 Stück | 1 | 1 | wk | mon | 08:00:00 |  |  |
+| [MedicationRequest-MR-Dosage-single-day-time](./MedicationRequest-MR-Dosage-single-day-time.html) | montags 08:00 Uhr — je 1 Stück | 1 Stück | 1 | 1 | wk | mon | 08:00:00 |  |  |
 | [MedicationRequest-MR-Dosage-tod-mixed-doses](./MedicationRequest-MR-Dosage-tod-mixed-doses.html) | täglich: 08:00 Uhr — je 1 Stück; 18:00 Uhr — je 3 Stück | 1 Stück | 1 | 1 | d |  | 08:00:00 |  |  |
 |  |  | 3 Stück | 1 | 1 | d |  | 18:00:00 |  |  |
 | [MedicationRequest-MR-Dosage-weekday-mixed-doses](./MedicationRequest-MR-Dosage-weekday-mixed-doses.html) | montags — je 1 Stück, dienstags — je 3 Stück | 1 Stück | 1 | 1 | wk | mon |  |  |  |

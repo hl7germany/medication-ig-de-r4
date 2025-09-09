@@ -6,4 +6,5 @@ Description: "Dieses Profil dient ausschließlich der Validierung des Implementa
 * ^abstract = true
 * dosage only DosageDgMP
   * ^short = "Angabe der Dosierinformationen strukturiert oder als Freitext"
+  * extension contains $medicationStatement-renderedDosageInstruction-r5 named renderedDosageInstruction 0..1 MS //TODO: 1..1??
   

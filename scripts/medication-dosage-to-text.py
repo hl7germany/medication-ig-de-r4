@@ -452,6 +452,107 @@ class MedicationDosageTextGenerator:
         if not dosages:
             return ""
         
+        # Check if this uses timeOfDay or when codes
+        first_dosage = dosages[0]
+        timing = first_dosage.get('timing', {})
+        repeat = timing.get('repeat', {})
+        has_time_of_day = 'timeOfDay' in repeat and repeat['timeOfDay']
+        has_when = 'when' in repeat and repeat['when']
+        
+        if has_time_of_day and not has_when:
+            return self._generate_dayofweek_and_timeofday_text(dosages)
+        elif has_when and not has_time_of_day:
+            return self._generate_dayofweek_and_when_text(dosages)
+        else:
+            # Fallback to when-based logic
+            return self._generate_dayofweek_and_when_text(dosages)
+    
+    def _generate_dayofweek_and_timeofday_text(self, dosages):
+        """Generate text for DayOfWeek + TimeOfDay combination."""
+        if not dosages:
+            return ""
+        
+        # Group dosages by day of week
+        day_groups = {}  # day -> list of dosages
+        bounds_text = ""
+        
+        for dosage in dosages:
+            timing = dosage.get('timing', {})
+            repeat = timing.get('repeat', {})
+            
+            days = repeat.get('dayOfWeek', [])
+            
+            # Get bounds (should be same across all dosages)
+            if not bounds_text:
+                bounds_text = self._get_bounds_text(dosage)
+            
+            # Group by day
+            for day in days:
+                if day not in day_groups:
+                    day_groups[day] = []
+                day_groups[day].append(dosage)
+        
+        # Format each day
+        day_order = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun']
+        day_names = {
+            'mon': 'montags',
+            'tue': 'dienstags', 
+            'wed': 'mittwochs',
+            'thu': 'donnerstags',
+            'fri': 'freitags',
+            'sat': 'samstags',
+            'sun': 'sonntags'
+        }
+        
+        sorted_days = sorted(day_groups.keys(), key=lambda d: day_order.index(d) if d in day_order else 99)
+        
+        day_texts = []
+        for day in sorted_days:
+            day_dosages = day_groups[day]
+            day_name = day_names.get(day, day)
+            
+            # Generate time-based text for this day (similar to TimeOfDay schema)
+            time_parts = []
+            for dosage in day_dosages:
+                timing = dosage.get('timing', {})
+                repeat = timing.get('repeat', {})
+                times = repeat.get('timeOfDay', [])
+                
+                if not times:
+                    continue
+                    
+                # Format times (sort them and format as HH:MM Uhr)
+                formatted_times = []
+                for time in sorted(times):
+                    formatted_time = self._format_time(time)
+                    formatted_times.append(formatted_time)
+                
+                # Get dose
+                dose_text = self._get_dose_text(dosage)
+                
+                # Combine times and dose for this dosage
+                if formatted_times and dose_text:
+                    times_str = ", ".join(formatted_times)
+                    time_parts.append(f"{times_str} — {dose_text}")
+            
+            if time_parts:
+                combined_times = "; ".join(time_parts)
+                day_texts.append(f"{day_name} {combined_times}")
+        
+        # Combine all days
+        days_text = ", ".join(day_texts)
+        
+        # Add bounds if present
+        if bounds_text:
+            return f"{bounds_text}: {days_text}"
+        else:
+            return days_text
+    
+    def _generate_dayofweek_and_when_text(self, dosages):
+        """Generate text for DayOfWeek + When combination (4-Schema pattern)."""
+        if not dosages:
+            return ""
+        
         # Group dosages by day of week and build 4-schema pattern for each day
         day_patterns = {}  # day -> {MORN: dose, NOON: dose, EVE: dose, NIGHT: dose}
         bounds_text = ""

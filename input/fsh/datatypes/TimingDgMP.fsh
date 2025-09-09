@@ -19,8 +19,8 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * obeys TimingOnlyOneBounds
   * obeys TimingFrequencyCount
   * obeys TimingPeriodUnit
-  * obeys TimingPreferSingleForTimeOfDay
-  * obeys TimingPreferSingleForWhen
+  * obeys TimingSingleDosageForTimeOfDay
+  * obeys TimingSingleDosageForWhen
   * obeys TimingBoundsUnitMatchesCode
   * bounds[x] MS
   * bounds[x] only Duration
@@ -80,9 +80,9 @@ and
 ((dayOfWeek.empty() and (when.exists() or timeOfDay.exists())) implies periodUnit = 'd')"
 Severity: #error
 
-/* Prefer a single dosageInstruction when only timeOfDay is used (no dayOfWeek/when) and period/periodUnit and dose are equal */
-Invariant: TimingPreferSingleForTimeOfDay
-Description: "Wenn kein dayOfWeek verwendet wird und nur timeOfDay (ohne when) genutzt wird, dürfen mehrere Dosierungen nur existieren, wenn sich period/periodUnit oder die Dosis unterscheiden."
+/* Enforce a single dosageInstruction when only timeOfDay is used (no dayOfWeek/when) and period/periodUnit and dose are equal */
+Invariant: TimingSingleDosageForTimeOfDay
+Description: "Wenn nur timeOfDay verwendet wird und täglich dosiert wird, ist die Angabe in einem einzigen Dosage-Element zu modellieren. Mehrere Dosage-Elemente sind nur zulässig, wenn sich die Dosis (Wert) unterscheidet."
 Expression: "(
   %resource.ofType(MedicationRequest).dosageInstruction
   | %resource.ofType(MedicationDispense).dosageInstruction
@@ -91,73 +91,39 @@ Expression: "(
   (
     timing.repeat.dayOfWeek.empty() and
     timing.repeat.timeOfDay.exists() and
-    timing.repeat.when.empty()
+    timing.repeat.when.empty() and
+    (timing.repeat.period.exists() and timing.repeat.period = 1) and
+    (timing.repeat.periodUnit.exists() and timing.repeat.periodUnit = 'd')
   )
   implies
   (
     (
-      (%resource.ofType(MedicationRequest).exists() or %resource.ofType(MedicationDispense).exists())
-      implies
       (
-        (
-          %resource.dosageInstruction.where(
-            timing.repeat.dayOfWeek.empty() and timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()
-          ).count() = 1
-        ) or (
-          %resource.dosageInstruction.where(
-            timing.repeat.dayOfWeek.empty() and timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()
-          ).timing.repeat.period.distinct().count() > 1
-        ) or (
-          %resource.dosageInstruction.where(
-            timing.repeat.dayOfWeek.empty() and timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()
-          ).timing.repeat.periodUnit.distinct().count() > 1
-        ) or (
-          %resource.dosageInstruction.where(
-            timing.repeat.dayOfWeek.empty() and timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()
-          ).doseAndRate.dose.ofType(Quantity).value.distinct().count() > 1
-        ) or (
-          %resource.dosageInstruction.where(
-            timing.repeat.dayOfWeek.empty() and timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()
-          ).doseAndRate.dose.ofType(Quantity).code.distinct().count() > 1
-        )
-      )
+        %resource.ofType(MedicationRequest).dosageInstruction
+        | %resource.ofType(MedicationDispense).dosageInstruction
+        | %resource.ofType(MedicationStatement).dosage
+      ).where(
+        timing.repeat.dayOfWeek.empty() and timing.repeat.timeOfDay.exists() and timing.repeat.when.empty() and (timing.repeat.period.exists() and timing.repeat.period = 1) and (timing.repeat.periodUnit.exists() and timing.repeat.periodUnit = 'd')
+      ).count() = 1
     )
-    and
+    or
     (
-      %resource.ofType(MedicationStatement).exists()
-      implies
       (
-        (
-          %resource.dosage.where(
-            timing.repeat.dayOfWeek.empty() and timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()
-          ).count() = 1
-        ) or (
-          %resource.dosage.where(
-            timing.repeat.dayOfWeek.empty() and timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()
-          ).timing.repeat.period.distinct().count() > 1
-        ) or (
-          %resource.dosage.where(
-            timing.repeat.dayOfWeek.empty() and timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()
-          ).timing.repeat.periodUnit.distinct().count() > 1
-        ) or (
-          %resource.dosage.where(
-            timing.repeat.dayOfWeek.empty() and timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()
-          ).doseAndRate.dose.ofType(Quantity).value.distinct().count() > 1
-        ) or (
-          %resource.dosage.where(
-            timing.repeat.dayOfWeek.empty() and timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()
-          ).doseAndRate.dose.ofType(Quantity).code.distinct().count() > 1
-        )
-      )
+        %resource.ofType(MedicationRequest).dosageInstruction
+        | %resource.ofType(MedicationDispense).dosageInstruction
+        | %resource.ofType(MedicationStatement).dosage
+      ).where(
+        timing.repeat.dayOfWeek.empty() and timing.repeat.timeOfDay.exists() and timing.repeat.when.empty() and (timing.repeat.period.exists() and timing.repeat.period = 1) and (timing.repeat.periodUnit.exists() and timing.repeat.periodUnit = 'd')
+      ).doseAndRate.dose.ofType(Quantity).value.distinct().count() > 1
     )
   )
 )
 "
 Severity: #error
 
-/* Prefer a single dosageInstruction when only when is used (no dayOfWeek/timeOfDay) and period/periodUnit and dose are equal */
-Invariant: TimingPreferSingleForWhen
-Description: "Wenn kein dayOfWeek verwendet wird und nur when (ohne timeOfDay) genutzt wird, dürfen mehrere Dosierungen nur existieren, wenn sich period/periodUnit oder die Dosis unterscheiden."
+/* Enforce a single dosageInstruction when only when is used (no dayOfWeek/timeOfDay) and period/periodUnit and dose are equal */
+Invariant: TimingSingleDosageForWhen
+Description: "Wenn nur when verwendet wird und täglich dosiert wird, ist die Angabe in einem einzigen Dosage-Element zu modellieren. Mehrere Dosage-Elemente sind nur zulässig, wenn sich die Dosis (Wert) unterscheidet."
 Expression: "(
   %resource.ofType(MedicationRequest).dosageInstruction
   | %resource.ofType(MedicationDispense).dosageInstruction
@@ -166,64 +132,30 @@ Expression: "(
   (
     timing.repeat.dayOfWeek.empty() and
     timing.repeat.when.exists() and
-    timing.repeat.timeOfDay.empty()
+    timing.repeat.timeOfDay.empty() and
+    (timing.repeat.period.exists() and timing.repeat.period = 1) and
+    (timing.repeat.periodUnit.exists() and timing.repeat.periodUnit = 'd')
   )
   implies
   (
     (
-      (%resource.ofType(MedicationRequest).exists() or %resource.ofType(MedicationDispense).exists())
-      implies
       (
-        (
-          %resource.dosageInstruction.where(
-            timing.repeat.dayOfWeek.empty() and timing.repeat.when.exists() and timing.repeat.timeOfDay.empty()
-          ).count() = 1
-        ) or (
-          %resource.dosageInstruction.where(
-            timing.repeat.dayOfWeek.empty() and timing.repeat.when.exists() and timing.repeat.timeOfDay.empty()
-          ).timing.repeat.period.distinct().count() > 1
-        ) or (
-          %resource.dosageInstruction.where(
-            timing.repeat.dayOfWeek.empty() and timing.repeat.when.exists() and timing.repeat.timeOfDay.empty()
-          ).timing.repeat.periodUnit.distinct().count() > 1
-        ) or (
-          %resource.dosageInstruction.where(
-            timing.repeat.dayOfWeek.empty() and timing.repeat.when.exists() and timing.repeat.timeOfDay.empty()
-          ).doseAndRate.dose.ofType(Quantity).value.distinct().count() > 1
-        ) or (
-          %resource.dosageInstruction.where(
-            timing.repeat.dayOfWeek.empty() and timing.repeat.when.exists() and timing.repeat.timeOfDay.empty()
-          ).doseAndRate.dose.ofType(Quantity).code.distinct().count() > 1
-        )
-      )
+        %resource.ofType(MedicationRequest).dosageInstruction
+        | %resource.ofType(MedicationDispense).dosageInstruction
+        | %resource.ofType(MedicationStatement).dosage
+      ).where(
+        timing.repeat.dayOfWeek.empty() and timing.repeat.when.exists() and timing.repeat.timeOfDay.empty() and (timing.repeat.period.exists() and timing.repeat.period = 1) and (timing.repeat.periodUnit.exists() and timing.repeat.periodUnit = 'd')
+      ).count() = 1
     )
-    and
+    or
     (
-      %resource.ofType(MedicationStatement).exists()
-      implies
       (
-        (
-          %resource.dosage.where(
-            timing.repeat.dayOfWeek.empty() and timing.repeat.when.exists() and timing.repeat.timeOfDay.empty()
-          ).count() = 1
-        ) or (
-          %resource.dosage.where(
-            timing.repeat.dayOfWeek.empty() and timing.repeat.when.exists() and timing.repeat.timeOfDay.empty()
-          ).timing.repeat.period.distinct().count() > 1
-        ) or (
-          %resource.dosage.where(
-            timing.repeat.dayOfWeek.empty() and timing.repeat.when.exists() and timing.repeat.timeOfDay.empty()
-          ).timing.repeat.periodUnit.distinct().count() > 1
-        ) or (
-          %resource.dosage.where(
-            timing.repeat.dayOfWeek.empty() and timing.repeat.when.exists() and timing.repeat.timeOfDay.empty()
-          ).doseAndRate.dose.ofType(Quantity).value.distinct().count() > 1
-        ) or (
-          %resource.dosage.where(
-            timing.repeat.dayOfWeek.empty() and timing.repeat.when.exists() and timing.repeat.timeOfDay.empty()
-          ).doseAndRate.dose.ofType(Quantity).code.distinct().count() > 1
-        )
-      )
+        %resource.ofType(MedicationRequest).dosageInstruction
+        | %resource.ofType(MedicationDispense).dosageInstruction
+        | %resource.ofType(MedicationStatement).dosage
+      ).where(
+        timing.repeat.dayOfWeek.empty() and timing.repeat.when.exists() and timing.repeat.timeOfDay.empty() and (timing.repeat.period.exists() and timing.repeat.period = 1) and (timing.repeat.periodUnit.exists() and timing.repeat.periodUnit = 'd')
+      ).doseAndRate.dose.ofType(Quantity).value.distinct().count() > 1
     )
   )
 )

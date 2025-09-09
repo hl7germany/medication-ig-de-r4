@@ -30,6 +30,11 @@ def main():
     matrix_constraint_script = os.path.join(base_dir, "dosage-generate-constraint-matrix.py")
     subprocess.run(['python3', matrix_constraint_script, input_folder, output_folder, dosage_to_text_script], check=True)
 
+    # 5. Generate the dosage summary table with consolidated dosage texts
+    print("Generating dosage summary table...")
+    summary_table_script = os.path.join(base_dir, "generate-dosage-summary-table.py")
+    subprocess.run(['python3', summary_table_script], check=True)
+
     print("All steps completed.")
 
 if __name__ == "__main__":

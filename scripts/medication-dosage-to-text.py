@@ -132,11 +132,16 @@ class MedicationDosageTextGenerator:
         # Initialize doses for each time period
         doses = {'MORN': 0, 'NOON': 0, 'EVE': 0, 'NIGHT': 0}
         unit = ""
+        bounds_text = ""
         
         for dosage in dosages:
             timing = dosage.get('timing', {})
             repeat = timing.get('repeat', {})
             when_list = repeat.get('when', [])
+            
+            # Get bounds (should be same across all dosages)
+            if not bounds_text:
+                bounds_text = self._get_bounds_text(dosage)
             
             # Get dose information
             dose_and_rate = dosage.get('doseAndRate', [])
@@ -163,7 +168,11 @@ class MedicationDosageTextGenerator:
         dose_text = "-".join(dose_values)
         
         if unit:
-            return f"{dose_text} {unit}"
+            dose_text = f"{dose_text} {unit}"
+        
+        # Add bounds if present
+        if bounds_text:
+            return f"{bounds_text}: {dose_text}"
         else:
             return dose_text
     
@@ -190,11 +199,16 @@ class MedicationDosageTextGenerator:
         
         # For TimeOfDay schema, consolidate all times and doses
         parts = []
+        bounds_text = ""
         
         for dosage in dosages:
             timing = dosage.get('timing', {})
             repeat = timing.get('repeat', {})
             times = repeat.get('timeOfDay', [])
+            
+            # Get bounds (should be same across all dosages)
+            if not bounds_text:
+                bounds_text = self._get_bounds_text(dosage)
             
             if not times:
                 continue
@@ -216,10 +230,14 @@ class MedicationDosageTextGenerator:
         if not parts:
             return ""
         
-        # For daily TimeOfDay, prefix with "täglich: "
         # Combine multiple parts with "; "
         combined_parts = "; ".join(parts)
-        return f"täglich: {combined_parts}"
+        
+        # Build final text with bounds
+        if bounds_text:
+            return f"{bounds_text} täglich: {combined_parts}"
+        else:
+            return f"täglich: {combined_parts}"
     
     def _format_time(self, time):
         """Format time string to HH:MM Uhr format."""
@@ -530,6 +548,9 @@ class MedicationDosageTextGenerator:
         timing = first_dosage.get('timing', {})
         repeat = timing.get('repeat', {})
         
+        # Get bounds text
+        bounds_text = self._get_bounds_text(first_dosage)
+        
         period = repeat.get('period', 1)
         period_unit = repeat.get('periodUnit', 'd')
         
@@ -609,7 +630,12 @@ class MedicationDosageTextGenerator:
         
         # Combine interval and time parts
         times_text = "; ".join(time_parts)
-        return f"{interval_text}: {times_text}"
+        
+        # Add bounds if present
+        if bounds_text:
+            return f"{bounds_text} {interval_text}: {times_text}"
+        else:
+            return f"{interval_text}: {times_text}"
 
 def main():
     if len(sys.argv) < 2:

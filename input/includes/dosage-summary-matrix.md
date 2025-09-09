@@ -2,7 +2,7 @@
 | :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | [MedicationDispense-MD-Dosage-1020](./MedicationDispense-MD-Dosage-1020.html) | 1-0-2-0 Stück | 1 Stück | 1 | 1 | d |  |  | MORN |  |
 |  |  | 2 Stück | 1 | 1 | d |  |  | EVE |  |
-| [MedicationDispense-MD-Dosage-Bounds-Decimals](./MedicationDispense-MD-Dosage-Bounds-Decimals.html) | 0.5-0-1.5-0 Stück | 0.5 Stück | 1 | 1 | d |  |  | MORN | {'value': 2, 'code': 'wk', 'system': 'http://unitsofmeasure.org', 'unit': 'weeks'} |
+| [MedicationDispense-MD-Dosage-Bounds-Decimals](./MedicationDispense-MD-Dosage-Bounds-Decimals.html) | für 2 weeks: 0.5-0-1.5-0 Stück | 0.5 Stück | 1 | 1 | d |  |  | MORN | {'value': 2, 'code': 'wk', 'system': 'http://unitsofmeasure.org', 'unit': 'weeks'} |
 |  |  | 1.5 Stück | 1 | 1 | d |  |  | EVE | {'value': 2, 'code': 'wk', 'system': 'http://unitsofmeasure.org', 'unit': 'weeks'} |
 | [MedicationDispense-MD-Dosage-DayOfWeek-Time](./MedicationDispense-MD-Dosage-DayOfWeek-Time.html) | montags 1-0-0-0, mittwochs 0-0-2-0 Stück | 1 Stück | 1 | 1 | wk | mon |  | MORN |  |
 |  |  | 2 Stück | 1 | 1 | wk | wed |  | EVE |  |
@@ -10,7 +10,7 @@
 | [MedicationDispense-MD-Dosage-Interval-Time](./MedicationDispense-MD-Dosage-Interval-Time.html) | alle 2 Tage: 09:00 Uhr — je 1 Stück; 21:00 Uhr — je 2 Stück | 1 Stück | 1 | 2 | d |  | 09:00:00 |  |  |
 |  |  | 2 Stück | 1 | 2 | d |  | 21:00:00 |  |  |
 | [MedicationRequest-Example-MR-Dosage-1000](./MedicationRequest-Example-MR-Dosage-1000.html) | 1-0-0-0 Stück | 1 Stück | 1 | 1 | d |  |  | MORN |  |
-| [MedicationRequest-Example-MR-Dosage-1010-10-Days](./MedicationRequest-Example-MR-Dosage-1010-10-Days.html) | 1-0-1-0 Stück | 1 Stück | 2 | 1 | d |  |  | MORN, EVE | {'system': 'http://unitsofmeasure.org', 'value': 10, 'code': 'wk', 'unit': 'Woche(n)'} |
+| [MedicationRequest-Example-MR-Dosage-1010-10-Days](./MedicationRequest-Example-MR-Dosage-1010-10-Days.html) | für 10 Woche(n): 1-0-1-0 Stück | 1 Stück | 2 | 1 | d |  |  | MORN, EVE | {'system': 'http://unitsofmeasure.org', 'value': 10, 'code': 'wk', 'unit': 'Woche(n)'} |
 | [MedicationRequest-Example-MR-Dosage-1010-Unsorted](./MedicationRequest-Example-MR-Dosage-1010-Unsorted.html) | 1-0-1-0 Stück | 1 Stück | 2 | 1 | d |  |  | EVE, MORN |  |
 | [MedicationRequest-Example-MR-Dosage-1010](./MedicationRequest-Example-MR-Dosage-1010.html) | 1-0-1-0 Stück | 1 Stück | 2 | 1 | d |  |  | MORN, EVE |  |
 | [MedicationRequest-Example-MR-Dosage-10120](./MedicationRequest-Example-MR-Dosage-10120.html) | 1-0-0.5-0 Stück | 1 Stück | 1 | 1 | d |  |  | MORN |  |
@@ -45,7 +45,7 @@
 | [MedicationRequest-Example-MR-Dosage-interval-8d](./MedicationRequest-Example-MR-Dosage-interval-8d.html) | alle 8 Tage: je 1 Stück | 1 Stück | 1 | 8 | d |  |  |  |  |
 | [MedicationRequest-Example-MR-Dosage-tod-1t-8am](./MedicationRequest-Example-MR-Dosage-tod-1t-8am.html) | täglich: 08:00 Uhr — je 1 Stück | 1 Stück | 1 | 1 | d |  | 08:00:00 |  |  |
 | [MedicationRequest-Example-MR-Dosage-tod-2-12am](./MedicationRequest-Example-MR-Dosage-tod-2-12am.html) | täglich: 12:00 Uhr — je 2 Stück | 2 Stück | 1 | 1 | d |  | 12:00:00 |  |  |
-| [MedicationRequest-Example-MR-Dosage-tod-multi-bound](./MedicationRequest-Example-MR-Dosage-tod-multi-bound.html) | täglich: 08:00 Uhr — je 2 Stück; 11:00 Uhr, 14:00 Uhr, 17:00 Uhr, 20:00 Uhr, 23:00 Uhr — je 1 Stück | 2 Stück | 1 | 1 | d |  | 08:00:00 |  | {'system': 'http://unitsofmeasure.org', 'value': 10, 'code': 'd', 'unit': 'Tag(e)'} |
+| [MedicationRequest-Example-MR-Dosage-tod-multi-bound](./MedicationRequest-Example-MR-Dosage-tod-multi-bound.html) | für 10 Tag(e) täglich: 08:00 Uhr — je 2 Stück; 11:00 Uhr, 14:00 Uhr, 17:00 Uhr, 20:00 Uhr, 23:00 Uhr — je 1 Stück | 2 Stück | 1 | 1 | d |  | 08:00:00 |  | {'system': 'http://unitsofmeasure.org', 'value': 10, 'code': 'd', 'unit': 'Tag(e)'} |
 |  |  | 1 Stück | 5 | 1 | d |  | 11:00:00, 14:00:00, 17:00:00, 20:00:00, 23:00:00 |  | {'system': 'http://unitsofmeasure.org', 'value': 10, 'code': 'd', 'unit': 'Tag(e)'} |
 | [MedicationRequest-Example-MR-Dosage-tod-multi](./MedicationRequest-Example-MR-Dosage-tod-multi.html) | täglich: 08:00 Uhr — je 2 Stück; 11:00 Uhr, 14:00 Uhr, 17:00 Uhr, 20:00 Uhr, 23:00 Uhr — je 1 Stück | 2 Stück | 1 | 1 | d |  | 08:00:00 |  |  |
 |  |  | 1 Stück | 5 | 1 | d |  | 11:00:00, 14:00:00, 17:00:00, 20:00:00, 23:00:00 |  |  |

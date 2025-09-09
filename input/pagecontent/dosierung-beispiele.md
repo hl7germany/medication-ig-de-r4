@@ -1,6 +1,6 @@
 ### Aktuell unterstützte Dosierkonfigurationen
 
-{% include dosage-timing-matrix.md %}
+{% include dosage-summary-matrix.md %}
 
 ### Zukünftig unterstützte Dosierkonfigurationen
 

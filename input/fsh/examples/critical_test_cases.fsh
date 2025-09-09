@@ -153,6 +153,35 @@ Description: "Example showing minimal dayOfWeek + timeOfDay combination"
 * dosageInstruction.timing.repeat.timeOfDay = "08:00:00"
 * dosageInstruction.doseAndRate[0].doseQuantity = 1 '1' "Stück"
 
+Instance: MR-Dosage-multiple-day-time
+InstanceOf: MedicationRequestDgMP
+Title: "MedicationRequest Dosage Example - Multiple Days with TimeOfDay"
+Description: "Example showing multiple dayOfWeek + timeOfDay combination"
+* subject.display = "Patient"
+* medicationCodeableConcept.text = "Test Medication"
+* status = #active
+* intent = #order
+* dosageInstruction[+]
+  * timing.repeat
+    * dayOfWeek[+] = #tue
+    * dayOfWeek[+] = #thu
+    * timeOfDay[+] = "08:00:00"
+    * frequency = 2
+    * period = 1
+    * periodUnit = #wk
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
+
+* dosageInstruction[+]
+  * timing.repeat
+    * dayOfWeek[+] = #mon
+    * dayOfWeek[+] = #fri
+    * timeOfDay[+] = "08:00:00"
+    * timeOfDay[+] = "20:00:00"
+    * frequency = 4
+    * period = 1
+    * periodUnit = #wk
+  * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
+
 // 10. Interval with monthly period unit
 Instance: MR-Dosage-interval-monthly
 InstanceOf: MedicationRequestDgMP

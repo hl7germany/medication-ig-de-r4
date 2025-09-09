@@ -61,8 +61,13 @@ Expression: "(
   ).exists(timing.exists() and doseAndRate.exists() and text.empty())
 )
 implies
+(
 %resource.extension.where(
   url = 'http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta'
+).exists() and
+%resource.extension.where(
+  url = 'http://hl7.org/fhir/5.0/StructureDefinition/extension-MedicationRequest.renderedDosageInstruction'
 ).exists()
+)
 "
 Severity: #error

@@ -5,6 +5,7 @@ Title: "Dosage dgMP"
 Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenommen wird/wurde oder eingenommen werden soll."
 * obeys DosageStructuredOrFreeText
 * obeys DosageStructuredRequiresGeneratedText
+* obeys DosageWarnungViererschemaInText
 * extension[generatedDosageInstructions]
   * extension[algorithm] 1..
     * valueCoding  // The algorithm used to generate the text
@@ -73,3 +74,8 @@ Expression: "(%resource.ofType(MedicationRequest).dosageInstruction |
 )
 "
 Severity: #error
+
+Invariant: DosageWarnungViererschemaInText
+Description: "Hinweis: In Dosage.text wurde ein Viererschema (z. B. 1-1-1-1) erkannt. Bitte prüfen, ob dies strukturiert abgebildet werden kann."
+Expression: "text.exists() implies text.matches('.*\\\\d+\\\\s*[-–]\\\\s*\\\\d+\\\\s*[-–]\\\\s*\\\\d+\\\\s*[-–]\\\\d+.*').not()"
+Severity: #warning

@@ -131,3 +131,39 @@ Damit wird verhindert, dass für ein Intervall mehrere widersprüchliche Zeitpun
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-TimingOnlyOneTimeForInterval-examples.md%}
+
+### TimingBoundsUnitMatchesCode
+
+**Beschreibung:**  
+Die Einheit (`boundsDuration.unit`) muss zum UCUM‑Code (`boundsDuration.code`) passen; z. B. `wk` nur mit „Woche(n)“, `d` nur mit „Tag(e)“, `mo` nur mit „Monat(e)“, `a` nur mit „Jahr(e)“.
+
+**Warum?**  
+Verhindert widersprüchliche Angaben wie `code='wk'` mit `unit='Tag(e)'`.
+
+Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
+
+{% include dosage-constraint-TimingBoundsUnitMatchesCode-examples.md%}
+
+### TimingSingleDosageForTimeOfDay
+
+**Beschreibung:**  
+Wenn nur `timeOfDay` verwendet wird und täglich dosiert wird, sind mehrere Tageszeiten in einem einzigen `Dosage`‑Element zu modellieren. Mehrere `Dosage`‑Elemente sind nur zulässig, wenn sich die Dosis (Wert) unterscheidet.
+
+**Warum?**  
+Verhindert unnötige Aufsplitterung gleichartiger Dosierungen und sorgt für eine klare, eindeutige Modellierung der Tageszeiten.
+
+Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
+
+{% include dosage-constraint-TimingSingleDosageForTimeOfDay-examples.md%}
+
+### TimingSingleDosageForWhen
+
+**Beschreibung:**  
+Wenn nur `when` verwendet wird und täglich dosiert wird, sind mehrere Zeitabschnitte des Tages in einem einzigen `Dosage`‑Element zu modellieren. Mehrere `Dosage`‑Elemente sind nur zulässig, wenn sich die Dosis (Wert) unterscheidet.
+
+**Warum?**  
+Verhindert unnötige Aufsplitterung gleichartiger Dosierungen und sorgt für eine klare, eindeutige Modellierung der Tagesabschnitte.
+
+Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
+
+{% include dosage-constraint-TimingSingleDosageForWhen-examples.md%}

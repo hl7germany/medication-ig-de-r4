@@ -11,16 +11,12 @@ Description: "Example showing 4-Schema pattern in MedicationStatement"
 * subject.display = "Patient"
 * medicationCodeableConcept.text = "Test Medication"
 * status = #active
-* dosage[0].timing.repeat.frequency = 1
+* dosage[0].timing.repeat.frequency = 2
 * dosage[0].timing.repeat.period = 1
 * dosage[0].timing.repeat.periodUnit = #d
-* dosage[0].timing.repeat.when = #MORN
+* dosage[0].timing.repeat.when[+] = #MORN
+* dosage[0].timing.repeat.when[+] = #EVE
 * dosage[0].doseAndRate[0].doseQuantity = 1 '1' "Stück"
-* dosage[1].timing.repeat.frequency = 1
-* dosage[1].timing.repeat.period = 1
-* dosage[1].timing.repeat.periodUnit = #d
-* dosage[1].timing.repeat.when = #EVE
-* dosage[1].doseAndRate[0].doseQuantity = 1 '1' "Stück"
 
 // 2. MedicationStatement with FreeText
 Instance: MS-Dosage-Freetext

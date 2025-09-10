@@ -48,8 +48,7 @@
 | [MedicationRequest-MR-Dosage-single-day-time](./MedicationRequest-MR-Dosage-single-day-time.html) | wöchentlich: Montag — um 08:00 Uhr — je 1 Stück | 1 Stück |  |  | 1 | 1 | wk | mon | 08:00:00 |  |  |
 | [MedicationRequest-Example-MR-Bug-MultipleTimeOfDay-Daily](./MedicationRequest-Example-MR-Bug-MultipleTimeOfDay-Daily.html) | 3 x täglich: um 08:00 Uhr, 14:00 Uhr, 22:00 Uhr — je 1 Stück | 1 Stück |  |  | 3 | 1 | d |  | 08:00:00, 14:00:00, 22:00:00 |  |  |
 | [MedicationRequest-Example-MR-Dosage-interval-8d](./MedicationRequest-Example-MR-Dosage-interval-8d.html) | alle 8 Tage: je 1 Stück | 1 Stück |  |  | 1 | 8 | d |  |  |  |  |
-| [MedicationStatement-MS-Dosage-1010](./MedicationStatement-MS-Dosage-1010.html) | täglich: morgens — je 1 Stück | 1 Stück |  |  | 1 | 1 | d |  |  | MORN |  |
-|  | täglich: abends — je 1 Stück | 1 Stück |  |  | 1 | 1 | d |  |  | EVE |  |
+| [MedicationStatement-MS-Dosage-1010](./MedicationStatement-MS-Dosage-1010.html) | 2 x täglich: morgens und abends — je 1 Stück | 1 Stück |  |  | 2 | 1 | d |  |  | MORN, EVE |  |
 | [MedicationRequest-Example-MR-Dosage-comb-dayofweek-1](./MedicationRequest-Example-MR-Dosage-comb-dayofweek-1.html) | 4 x wöchentlich: Montag und Freitag — morgens und abends — je 1 Stück | 1 Stück |  |  | 4 | 1 | wk | mon, fri |  | MORN, EVE |  |
 | [MedicationRequest-Example-MR-Dosage-comb-interval-4](./MedicationRequest-Example-MR-Dosage-comb-interval-4.html) | 2 x alle 2 Tage: um 08:00 Uhr, 20:00 Uhr — je 1 Stück | 1 Stück |  |  | 2 | 2 | d |  | 08:00:00, 20:00:00 |  |  |
 |  | 3 x alle 2 Tage: um 10:00 Uhr, 14:00 Uhr, 22:00 Uhr — je 2 Stück | 2 Stück |  |  | 3 | 2 | d |  | 10:00:00, 14:00:00, 22:00:00 |  |  |

@@ -81,8 +81,7 @@
 | [MedicationRequest-MR-Dosage-weekday-mixed-doses](./MedicationRequest-MR-Dosage-weekday-mixed-doses.html) | montags — je 1 Stück, dienstags — je 3 Stück | 1 Stück | 1 | 1 | wk | mon |  |  |  |
 |  |  | 3 Stück | 1 | 1 | wk | tue |  |  |  |
 | [MedicationRequest-Valid-Dosage-C-TimingBoundsUnitMatchesCode-01-of-02](./MedicationRequest-Valid-Dosage-C-TimingBoundsUnitMatchesCode-01-of-02.html) | für 3 Woche(n) alle 2 Tage: je 1 Stück | 1 Stück | 1 | 2 | d |  |  |  | {'system': 'http://unitsofmeasure.org', 'value': 3, 'code': 'wk', 'unit': 'Woche(n)'} |
-| [MedicationStatement-MS-Dosage-1010](./MedicationStatement-MS-Dosage-1010.html) | 1-0-1-0 Stück | 1 Stück | 1 | 1 | d |  |  | MORN |  |
-|  |  | 1 Stück | 1 | 1 | d |  |  | EVE |  |
+| [MedicationStatement-MS-Dosage-1010](./MedicationStatement-MS-Dosage-1010.html) | 1-0-1-0 Stück | 1 Stück | 2 | 1 | d |  |  | MORN, EVE |  |
 | [MedicationStatement-MS-Dosage-DayOfWeek](./MedicationStatement-MS-Dosage-DayOfWeek.html) | montags — je 2 Stück, freitags — je 1 Stück | 2 Stück | 1 | 1 | wk | mon |  |  |  |
 |  |  | 1 Stück | 1 | 1 | wk | fri |  |  |  |
 | [MedicationStatement-MS-Dosage-Freetext](./MedicationStatement-MS-Dosage-Freetext.html) | Bei Bedarf bis zu 3 mal täglich 1 Tablette |  |  |  |  |  |  |  |  |

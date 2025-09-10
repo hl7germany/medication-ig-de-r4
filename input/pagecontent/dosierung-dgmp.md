@@ -20,7 +20,7 @@ In der aktuellen Ausbaustufe und im Kontext dgMP ist die Verwendung von `Dosage.
 
 #### Strukturierte Angabe der Einheit
 
-Für die Berechnung der Reichweite einer Medikation ist es erforderlich, dass Dosierungseinheiten (z.B. „1 Tablette“) strukturiert über ein Codesystem angegeben werden.  
+Für die Berechnung der Reichweite einer Medikation ist es erforderlich, dass Dosierungseinheiten (z.B. „1 Stück) strukturiert über ein Codesystem angegeben werden.  
 Dafür wird das ValueSet `KBV_VS_SFHIR_BMP_DOSIEREINHEIT` genutzt.
 
 #### Beispiele
@@ -84,10 +84,10 @@ Sobald diesbezüglich eine Entscheidung getroffen wurde, wird die Planung zur zw
 
 | Ergänzung / Alternative                                  | Beispiel                                               |
 |----------------------------------------------------------|--------------------------------------------------------|
-| Ungefähre Gesamtdauer                                    | Täglich 1 Tablette für 1–2 Wochen                      |
-| Start- und Enddatum                                      | Täglich 1 Tablette vom 01.12.2025 bis zum 15.12.2025   |
-| Gesamtzahl an Anwendungen bis zum Therapieabschluss      | Täglich 1 Tablette, insgesamt 20 Stück                 |
-| Ungefähre Dosierung                                      | Täglich 1–2 Tabletten                                  |
+| Ungefähre Gesamtdauer                                    | Täglich 1 Stück für 1–2 Wochen                      |
+| Start- und Enddatum                                      | Täglich 1 Stück vom 01.12.2025 bis zum 15.12.2025   |
+| Gesamtzahl an Anwendungen bis zum Therapieabschluss      | Täglich 1 Stück, insgesamt 20 Stück                 |
+| Ungefähre Dosierung                                      | Täglich 1–2 Stück                                  |
 
 **Wertelisten & Ereignisbezug**
 
@@ -104,8 +104,8 @@ Sobald diesbezüglich eine Entscheidung getroffen wurde, wird die Planung zur zw
 
 | Übergeordnete Beziehung zwischen bestehenden Schemata           | Beispiel                                                                                                 |
 |-----------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|
-| Änderung von Dosis oder Anwendungshäufigkeit im Zeitverlauf     | Täglich 1 Tablette morgens für 1 Woche. Anschließend täglich 2 Tabletten morgens für 1 Woche. (Einschleichen) |
-| Kombination verschiedener Anwendungsintervalle                  | Abwechselnd: Jeden zweiten Tag 1 Tablette morgens und jeden zweiten Tag 2 Tabletten morgens              |
+| Änderung von Dosis oder Anwendungshäufigkeit im Zeitverlauf     | Täglich 1 Stück morgens für 1 Woche. Anschließend täglich 2 Stück morgens für 1 Woche. (Einschleichen) |
+| Kombination verschiedener Anwendungsintervalle                  | Abwechselnd: Jeden zweiten Tag 1 Stück morgens und jeden zweiten Tag 2 Stück morgens              |
 
 ##### Beispiele für komplexe Beziehungen zwischen Arzneimitteln
 

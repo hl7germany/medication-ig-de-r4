@@ -51,7 +51,7 @@ Soll das Arzneimittel in derselben Dosierung zu mehreren Tageszeiten angewandt w
 
 Beispiel:
 - Dosage.timing.repeat.when = #MORN, #EVE
-- Dosage.doseAndRate.doseQuantity = 1 Tablette
-bedeutet, dass eine Tablette morgens und abends einzunehmen ist.
+- Dosage.doseAndRate.doseQuantity = 1 Stück
+bedeutet, dass eine Stück morgens und abends einzunehmen ist.
 
 Lesende Systeme werten entsprechend auch `Dosage.timing.repeat` aus. Wenn nur .when angegeben ist, ist dem Nutzer das 4-er Schema anzuzeigen.

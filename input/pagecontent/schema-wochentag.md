@@ -17,10 +17,10 @@ Folgende Beispiele sind in diesem IG dargestellt:
 
 | Beispiel    | Beipspiel Datei |
 | -------- | ------- |
-| Dienstags und Donnerstags je 2 Tabletten | [Example-MR-Dosage-weekday-2t](./MedicationRequest-Example-MR-Dosage-weekday-2t.html)    |
+| Dienstags und Donnerstags je 2 Stück | [Example-MR-Dosage-weekday-2t](./MedicationRequest-Example-MR-Dosage-weekday-2t.html)    |
 | Unsortierte Wochentage | [Example-MR-Dosage-weekday-unsorted](./MedicationRequest-Example-MR-Dosage-weekday-unsorted.html)    |
-| Dienstags, Donnerstags und Samstags je 2 Tabletten | [Example-MR-Dosage-weekday-3t](./MedicationRequest-Example-MR-Dosage-weekday-3t.html)    |
-| Montags 2 Tabletten, Donnerstags 1 Tablette | [Example-MR-Dosage-weekday-2t-1t](./MedicationRequest-Example-MR-Dosage-weekday-2t-1t.html)     |
+| Dienstags, Donnerstags und Samstags je 2 Stück | [Example-MR-Dosage-weekday-3t](./MedicationRequest-Example-MR-Dosage-weekday-3t.html)    |
+| Montags 2 Stück, Donnerstags 1 Stück | [Example-MR-Dosage-weekday-2t-1t](./MedicationRequest-Example-MR-Dosage-weekday-2t-1t.html)     |
 | Montags 2 Tabl. für 10 Wochen  | [Example-MR-Dosage-weekday-2t-bound](./MedicationRequest-Example-MR-Dosage-weekday-2t-bound.html)    |
 
 ### Angabe und Erkennung der Dosierart
@@ -51,7 +51,7 @@ Soll das Arzneimittel in derselben Dosierung an mehreren Tagen angewandt werden,
 
 Beispiel:
 - Dosage.timing.repeat.dayOfWeek = "mon", "fri"
-- Dosage.doseAndRate.doseQuantity = 1 Tablette
-bedeutet, dass eine Tablette jeweils am Montag und Freitag einzunehmen ist.
+- Dosage.doseAndRate.doseQuantity = 1 Stück
+bedeutet, dass eine Stück jeweils am Montag und Freitag einzunehmen ist.
 
 Lesende Systeme werten entsprechend auch `Dosage.timing.repeat` aus. Wenn nur .dayOfWeek angegeben ist, ist dem Nutzer anzuzeigen, dass die Dosierung nach Wochentagen definiert ist.

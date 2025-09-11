@@ -5,6 +5,7 @@ Title: "Dosage dgMP"
 Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenommen wird/wurde oder eingenommen werden soll."
 * obeys DosageStructuredOrFreeText
 * obeys DosageStructuredRequiresGeneratedText
+* obeys FreeTextSingleDosageOnly
 * timing only TimingDgMP
 * doseAndRate 0..1 // Nur eine Dosierung für eine Medikation erlauben
   * ^comment = "Begründung Einschränkung Kardinalität: Nur eine Dosierung pro Medikation ist in der ersten Ausbaustufe des dgMP vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
@@ -77,4 +78,21 @@ implies
 )
 )
 "
+Severity: #error
+
+Invariant: FreeTextSingleDosageOnly
+Description: "Wenn eine Dosierung als reiner Freitext angegeben ist, darf nur genau ein Dosage-Element existieren."
+Expression: "(
+  (%resource.ofType(MedicationRequest).dosageInstruction |
+   %resource.ofType(MedicationDispense).dosageInstruction |
+   %resource.ofType(MedicationStatement).dosage
+  ).exists(text.exists() and timing.empty() and doseAndRate.empty())
+)
+implies
+(
+  (%resource.ofType(MedicationRequest).dosageInstruction |
+   %resource.ofType(MedicationDispense).dosageInstruction |
+   %resource.ofType(MedicationStatement).dosage
+  ).count() = 1
+)"
 Severity: #error

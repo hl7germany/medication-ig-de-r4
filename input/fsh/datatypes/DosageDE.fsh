@@ -9,6 +9,7 @@ Description: "Gibt an, wie das Medikament eingenommen oder verabreicht wurde bzw
 * obeys DosageStructuredRequiresBoth
 * obeys DosageDoseUnitSameCode
 * obeys DosageWarnungViererschemaInText
+* obeys FreeTextSingleDosageOnlyWarning
 * text 0..1 MS
   * ^short = "Freitext-Dosierungsanweisungen, z. B. 'Maximal 3x täglich 1 Stück bei Bedarf'"
   * ^definition = "Freitext-Dosierungsanweisungen, z. B. 'Maximal 3x täglich 1 Stück bei Bedarf'. Als Quelle dient hier ausschließlich der Arzt oder Apotheker"
@@ -36,6 +37,23 @@ Expression: "(%resource.ofType(MedicationRequest).dosageInstruction |
   (text.empty() and (timing.exists() or doseAndRate.exists()))
 )
 "
+Severity: #warning
+
+Invariant: FreeTextSingleDosageOnlyWarning
+Description: "Wenn eine Dosierung als reiner Freitext angegeben ist, soll nur genau ein Dosage-Element existieren."
+Expression: "(
+  (%resource.ofType(MedicationRequest).dosageInstruction |
+   %resource.ofType(MedicationDispense).dosageInstruction |
+   %resource.ofType(MedicationStatement).dosage
+  ).exists(text.exists() and timing.empty() and doseAndRate.empty())
+)
+implies
+(
+  (%resource.ofType(MedicationRequest).dosageInstruction |
+   %resource.ofType(MedicationDispense).dosageInstruction |
+   %resource.ofType(MedicationStatement).dosage
+  ).count() = 1
+)"
 Severity: #warning
 
 Invariant: DosageStructuredRequiresBoth

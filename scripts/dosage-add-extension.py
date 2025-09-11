@@ -115,6 +115,12 @@ def process_file(input_path, output_path, script_path):
             json.dump(resource, f, indent=2, ensure_ascii=False)
         return
 
+    # Skip invalid or unsupported files - copy unchanged
+    if is_invalid_or_unsupported(input_path):
+        with open(output_path, 'w', encoding='utf-8') as f:
+            json.dump(resource, f, indent=2, ensure_ascii=False)
+        return
+
     # Proceed only if the resource actually has any dosage entries
     if not has_dosages(resource):
         with open(output_path, 'w', encoding='utf-8') as f:
@@ -123,37 +129,32 @@ def process_file(input_path, output_path, script_path):
 
     changed = False
 
-    # If file is an invalid or unsupported example: remove placeholders and skip adding
-    if is_invalid_or_unsupported(input_path):
-        if remove_all_placeholders(resource):
+    # Remove only type-specific rendered extension + meta (same for all files)
+    if "extension" in resource:
+        old_count = len(resource["extension"])
+        resource["extension"] = filter_rendered_dosage_extensions(resource["extension"], resource_type)
+        if len(resource["extension"]) != old_count:
             changed = True
-    else:
-        # Normal case: remove only type-specific rendered extension + meta
-        if "extension" in resource:
-            old_count = len(resource["extension"])
-            resource["extension"] = filter_rendered_dosage_extensions(resource["extension"], resource_type)
-            if len(resource["extension"]) != old_count:
-                changed = True
-            if not resource["extension"]:
-                del resource["extension"]
-                changed = True
+        if not resource["extension"]:
+            del resource["extension"]
+            changed = True
 
-        # Generate consolidated dosage text for the entire resource
-        dosage_text = run_consolidated_dosage_to_text(script_path, input_path)
+    # Generate consolidated dosage text for the entire resource
+    dosage_text = run_consolidated_dosage_to_text(script_path, input_path)
 
-        # Only add extensions if there's a valid result
-        if dosage_text and not dosage_text.startswith("Fehler"):
-            # Build the renderedDosageInstruction extension
-            dosage_extension = build_rendered_dosage_extension(dosage_text, resource_type)
-            # Build the meta extension
-            meta_extension = build_meta_extension()
+    # Only add extensions if there's a valid result
+    if dosage_text and not dosage_text.startswith("Fehler"):
+        # Build the renderedDosageInstruction extension
+        dosage_extension = build_rendered_dosage_extension(dosage_text, resource_type)
+        # Build the meta extension
+        meta_extension = build_meta_extension()
 
-            if dosage_extension and meta_extension:
-                if "extension" not in resource:
-                    resource["extension"] = []
-                resource["extension"].append(dosage_extension)
-                resource["extension"].append(meta_extension)
-                changed = True
+        if dosage_extension and meta_extension:
+            if "extension" not in resource:
+                resource["extension"] = []
+            resource["extension"].append(dosage_extension)
+            resource["extension"].append(meta_extension)
+            changed = True
 
     # Write to output folder
     with open(output_path, 'w', encoding='utf-8') as f:

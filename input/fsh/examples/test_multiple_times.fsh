@@ -6,6 +6,7 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Bug Test: Multiple timeOfDay with Interval"
 Description: "Test case showing the bug where only first timeOfDay is processed in Interval+Time schema. Should show both 08:00 and 20:00 times."
+* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -24,6 +25,7 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Bug Test: Multiple when codes with Interval"
 Description: "Test case showing the bug where only first when code is processed in Interval+Time schema. Should show both morning and evening."
+* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -42,6 +44,7 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Bug Test: Multiple timeOfDay with DayOfWeek"
 Description: "Test case for multiple timeOfDay entries in DayOfWeek+Time schema. Should show both 09:00 and 21:00 times."
+* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -63,6 +66,7 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Bug Test: Multiple when codes with DayOfWeek"
 Description: "Test case for multiple when codes in DayOfWeek+When schema. Should show both morning and evening patterns."
+* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -83,6 +87,7 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Bug Test: Multiple timeOfDay Daily"
 Description: "Test case for TimeOfDay schema with multiple times. Should show all times: 08:00, 14:00, and 22:00."
+* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -103,6 +108,7 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Bug Test: Empty timeOfDay/when/dayOfWeek lists"
 Description: "Test case with empty arrays that might cause incorrect schema detection due to non-strict boolean logic."
+* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * status = #active
 * intent = #order

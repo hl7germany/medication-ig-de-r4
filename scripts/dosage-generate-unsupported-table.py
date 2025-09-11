@@ -1,8 +1,6 @@
 import os
 import sys
 import json
-import subprocess
-import tempfile
 
 def extract_dosages(resource):
     """Extract dosage objects from supported FHIR resource types."""
@@ -18,20 +16,7 @@ def extract_dosages(resource):
         return resource.get("dosageInstruction", [])
     return []
 
-def run_dosage_to_text(script_path, dosage):
-    """Run the dosage-to-text.py script on a single dosage."""
-    with tempfile.NamedTemporaryFile("w", delete=False, suffix=".json", encoding="utf-8") as tf:
-        json.dump(dosage, tf, ensure_ascii=False, indent=2)
-        temp_path = tf.name
-    try:
-        output = subprocess.check_output(['python3', script_path, temp_path], text=True).strip()
-        return output.replace('\n', '<br>')
-    except Exception as e:
-        return f"Fehler beim Verarbeiten der Dosierung: {e}"
-    finally:
-        os.unlink(temp_path)
-
-def process_files(input_folder, script_path):
+def process_files(input_folder):
     unsupported_rows = []
     all_files = [
         f for f in os.listdir(input_folder)
@@ -51,30 +36,27 @@ def process_files(input_folder, script_path):
             with open(file_path, encoding="utf-8") as jf:
                 resource = json.load(jf)
             dosages = extract_dosages(resource)
+            # Just check if dosages exist, but don't generate text
             if not dosages:
-                result = "Keine Dosierungsanweisung gefunden."
-            else:
-                results = [run_dosage_to_text(script_path, dosage) for dosage in dosages]
-                result = "<br><br>".join(results)
+                continue  # Skip files without dosages
         except Exception as e:
-            result = f"Fehler beim Verarbeiten der Datei: {e}"
-        row = f"|{md_link} | {result} |"
+            continue  # Skip files that can't be processed
+        row = f"|{md_link} |"
         unsupported_rows.append(row)
-    header = "| Beispiel | Ergebnis |\n| :---: | :---:|"
+    header = "| Beispiel |\n| :---: |"
     unsupported_table = header + "\n" + "\n".join(unsupported_rows)
     return unsupported_table
 
 def main():
-    if len(sys.argv) != 4:
-        print("Usage: python script.py <input_folder> <output_folder> <dosage_to_text_script>")
+    if len(sys.argv) != 3:
+        print("Usage: python script.py <input_folder> <output_folder>")
         sys.exit(1)
 
     input_folder = sys.argv[1]
     output_folder = sys.argv[2]
-    dosage_to_text_script = sys.argv[3]
     os.makedirs(output_folder, exist_ok=True)
 
-    unsupported_table = process_files(input_folder, dosage_to_text_script)
+    unsupported_table = process_files(input_folder)
     
     # Write markdown tables
     output_path = os.path.join(output_folder, "unsupported-schema-beispiele.md")

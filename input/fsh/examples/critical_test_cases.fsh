@@ -6,6 +6,7 @@ Instance: MR-Dosage-interval-when-3d
 InstanceOf: MedicationRequestDgMP
 Title: "MedicationRequest Dosage Example - Interval with When Codes"
 Description: "Example showing interval dosing with when codes instead of timeOfDay"
+* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * medicationCodeableConcept.text = "Test Medication"
 * status = #active
@@ -26,6 +27,7 @@ Instance: MR-Dosage-4schema-night-only
 InstanceOf: MedicationRequestDgMP
 Title: "MedicationRequest Dosage Example - 4-Schema Night Only"
 Description: "Example showing 4-Schema pattern with only night dose (0-0-0-1)"
+* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * medicationCodeableConcept.text = "Test Medication"
 * status = #active
@@ -41,6 +43,7 @@ Instance: MR-Dosage-4schema-evening-only
 InstanceOf: MedicationRequestDgMP
 Title: "MedicationRequest Dosage Example - 4-Schema Evening Only"
 Description: "Example showing 4-Schema pattern with only evening dose (0-0-1-0)"
+* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * medicationCodeableConcept.text = "Test Medication"
 * status = #active
@@ -56,6 +59,7 @@ Instance: MR-Dosage-4schema-noon-only
 InstanceOf: MedicationRequestDgMP
 Title: "MedicationRequest Dosage Example - 4-Schema Noon Only"
 Description: "Example showing 4-Schema pattern with only noon dose (0-1-0-0)"
+* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * medicationCodeableConcept.text = "Test Medication"
 * status = #active
@@ -71,6 +75,7 @@ Instance: MR-Dosage-freetext-german-chars
 InstanceOf: MedicationRequestDgMP
 Title: "MedicationRequest Dosage Example - FreeText German Characters"
 Description: "Example showing FreeText with German special characters and complex text"
+* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * medicationCodeableConcept.text = "Test Medication"
 * status = #active
@@ -82,6 +87,7 @@ Instance: MR-Dosage-weekday-mixed-doses
 InstanceOf: MedicationRequestDgMP
 Title: "MedicationRequest Dosage Example - DayOfWeek Mixed Doses"
 Description: "Example showing different doses on different days of the week"
+* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * medicationCodeableConcept.text = "Test Medication"
 * status = #active
@@ -102,6 +108,7 @@ Instance: MR-Dosage-tod-mixed-doses
 InstanceOf: MedicationRequestDgMP
 Title: "MedicationRequest Dosage Example - TimeOfDay Mixed Doses"
 Description: "Example showing different doses at different times of day"
+* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * medicationCodeableConcept.text = "Test Medication"
 * status = #active
@@ -122,6 +129,7 @@ Instance: MR-Dosage-4schema-ml-units
 InstanceOf: MedicationRequestDgMP
 Title: "MedicationRequest Dosage Example - 4-Schema with ml Units"
 Description: "Example showing 4-Schema pattern with ml units instead of Stück"
+* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * medicationCodeableConcept.text = "Test Medication"
 * status = #active
@@ -142,6 +150,7 @@ Instance: MR-Dosage-single-day-time
 InstanceOf: MedicationRequestDgMP
 Title: "MedicationRequest Dosage Example - Single Day with TimeOfDay"
 Description: "Example showing minimal dayOfWeek + timeOfDay combination"
+* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * medicationCodeableConcept.text = "Test Medication"
 * status = #active
@@ -157,6 +166,7 @@ Instance: MR-Dosage-multiple-day-time
 InstanceOf: MedicationRequestDgMP
 Title: "MedicationRequest Dosage Example - Multiple Days with TimeOfDay"
 Description: "Example showing multiple dayOfWeek + timeOfDay combination"
+* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * medicationCodeableConcept.text = "Test Medication"
 * status = #active
@@ -187,6 +197,7 @@ Instance: MR-Dosage-interval-monthly
 InstanceOf: MedicationRequestDgMP
 Title: "MedicationRequest Dosage Example - Monthly Interval"
 Description: "Example showing interval dosing with monthly period"
+* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * medicationCodeableConcept.text = "Test Medication"
 * status = #active

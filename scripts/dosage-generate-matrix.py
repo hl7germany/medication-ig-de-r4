@@ -2,7 +2,6 @@ import os
 import sys
 import json
 import subprocess
-import tempfile
 
 MATRIX_COLUMNS = [
     "duration", "durationUnit", "frequency", "period", "periodUnit",
@@ -47,7 +46,27 @@ def extract_dose_quantity(dosage):
         return f"{value} {unit}".strip()
     return ""
 
+def run_medication_dosage_to_text(script_path, resource_file_path):
+    """Run the medication-dosage-to-text.py script on a complete medication resource."""
+    try:
+        output = subprocess.check_output(['python3', script_path, resource_file_path], text=True).strip()
+        return output.replace('\n', '<br>')
+    except Exception as e:
+        return f"Fehler beim Verarbeiten der Dosierung: {e}"
+
 def extract_dosages(resource):
+    """Extract dosage objects from supported FHIR resource types."""
+    if not isinstance(resource, dict):
+        return []
+    resource_type = resource.get("resourceType")
+    if resource_type == "MedicationRequest":
+        return resource.get("dosageInstruction", [])
+    elif resource_type == "MedicationStatement":
+        # FHIR allows both 'dosage' (R4) and 'dosageInstruction' (R3)
+        return resource.get("dosage", []) or resource.get("dosageInstruction", [])
+    elif resource_type == "MedicationDispense":
+        return resource.get("dosageInstruction", [])
+    return []
     """Extract dosage objects from supported FHIR resource types."""
     if not isinstance(resource, dict):
         return []
@@ -87,34 +106,45 @@ def generate_matrix(input_folder, script_path, output_path):
                 continue  # skip if no dosages
             display_name = os.path.splitext(filename)[0]
             file_link = f"[{display_name}](./{filename.replace('.json', '.html')})"
-            for idx, dosage in enumerate(dosages, start=1):
-                if "timing" not in dosage:
-                    continue  # skip if no timing
-                timing = dosage["timing"]
-                # Write dosage to temp file and call script
-                try:
-                    with tempfile.NamedTemporaryFile("w", delete=False, suffix=".json", encoding="utf-8") as tf:
-                        json.dump(dosage, tf, ensure_ascii=False, indent=2)
-                        temp_path = tf.name
-                    try:
-                        result = subprocess.check_output(
-                            ['python3', script_path, temp_path],
-                            text=True
-                        ).strip()
-                        result = result.replace('\n', '<br>')
-                    except Exception as e:
-                        result = f"Fehler beim Verarbeiten der Datei: {e}"
-                    finally:
-                        os.unlink(temp_path)
-                except Exception as e:
-                    result = f"Fehler beim Schreiben/Verarbeiten der Dosierung: {e}"
+            
+            # Generate consolidated dosage text for the entire resource
+            dosage_text = run_medication_dosage_to_text(script_path, file_path)
+            
+            # Create a row with consolidated information for all dosages
+            # Extract all dose quantities and timing fields from all dosages
+            all_dose_quantities = []
+            all_timing_fields = {}
+            
+            for dosage in dosages:
+                # Collect dose quantity
                 dose_quantity = extract_dose_quantity(dosage)
-                fields = extract_timing_matrix_fields(timing)
-                # Only show the file link for the first dosage, blank for others
-                this_file_link = file_link if idx == 1 else ""
-                row = [this_file_link, result, dose_quantity]
-                row += [str(fields.get(key, "")) for key in COLUMN_KEYS]
-                matrix_rows.append(row)
+                if dose_quantity:
+                    all_dose_quantities.append(dose_quantity)
+                
+                # Collect timing information if present
+                if "timing" in dosage:
+                    timing_fields = extract_timing_matrix_fields(dosage["timing"])
+                    for key, value in timing_fields.items():
+                        if value:  # Only include non-empty values
+                            if key not in all_timing_fields:
+                                all_timing_fields[key] = []
+                            if value not in all_timing_fields[key]:
+                                all_timing_fields[key].append(value)
+            
+            # Combine multiple values with <br> for display
+            combined_dose_quantity = "<br>".join(all_dose_quantities) if all_dose_quantities else ""
+            
+            # Build the row with consolidated timing information
+            row = [file_link, dosage_text, combined_dose_quantity]
+            for key in COLUMN_KEYS:
+                if key in all_timing_fields and all_timing_fields[key]:
+                    # Join multiple values with <br>
+                    combined_value = "<br>".join(str(v) for v in all_timing_fields[key])
+                    row.append(combined_value)
+                else:
+                    row.append("")
+            
+            matrix_rows.append(row)
         except Exception as e:
             print(f"Error processing {filename}: {e}", file=sys.stderr)
     header = "| File | generated dosage instruction text | doseQuantity | " + " | ".join(MATRIX_COLUMNS) + " |"
@@ -128,16 +158,16 @@ def generate_matrix(input_folder, script_path, output_path):
 
 def main():
     if len(sys.argv) != 4:
-        print("Usage: python script.py <input_folder> <output_folder> <dosage_to_text_script>")
+        print("Usage: python script.py <input_folder> <output_folder> <medication_dosage_to_text_script>")
         sys.exit(1)
 
     input_folder = sys.argv[1]
     output_folder = sys.argv[2]
-    dosage_to_text_script = sys.argv[3]
+    medication_dosage_to_text_script = sys.argv[3]
     os.makedirs(output_folder, exist_ok=True)
 
     matrix_md_path = os.path.join(output_folder, "dosage-timing-matrix.md")
-    generate_matrix(input_folder, dosage_to_text_script, matrix_md_path)
+    generate_matrix(input_folder, medication_dosage_to_text_script, matrix_md_path)
 
 if __name__ == "__main__":
     main()

@@ -4,6 +4,7 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid: when + timeOfDay"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for allowed Permutations"
+* insert InsertMandatoryExStubs
 * subject.display = "DEV Dosage"
 * status = #active
 * intent = #order
@@ -29,6 +30,7 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid: when + dayOfWeek"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for allowed Permutations"
+* insert InsertMandatoryExStubs
 * subject.display = "DEV Dosage"
 * status = #active
 * intent = #order
@@ -54,6 +56,7 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid: when + interval"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for allowed Permutations"
+* insert InsertMandatoryExStubs
 * subject.display = "DEV Dosage"
 * status = #active
 * intent = #order
@@ -78,6 +81,7 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid: timeOfDay + dayOfWeek"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for allowed Permutations"
+* insert InsertMandatoryExStubs
 * subject.display = "DEV Dosage"
 * status = #active
 * intent = #order
@@ -104,6 +108,7 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid: timeOfDay + interval"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for allowed Permutations"
+* insert InsertMandatoryExStubs
 * subject.display = "DEV Dosage"
 * status = #active
 * intent = #order
@@ -128,6 +133,7 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid: dayOfWeek + interval"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for allowed Permutations"
+* insert InsertMandatoryExStubs
 * subject.display = "DEV Dosage"
 * status = #active
 * intent = #order

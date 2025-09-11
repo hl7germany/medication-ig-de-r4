@@ -3,6 +3,7 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid: split when into two dosages (same period/dose)"
 Description: "Zwei Dosages mit identischem Intervall und Dosis, jeweils ein Zeitraum (MORN/EVE) - sollte zu einer Dosage zusammengeführt werden."
+* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * status = #active
 * intent = #order

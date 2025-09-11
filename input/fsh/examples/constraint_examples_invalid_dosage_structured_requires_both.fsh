@@ -6,6 +6,7 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid: timing without dose"
 Description: "CAVE: Validation example - timing exists but doseAndRate missing."
+* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -22,6 +23,7 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid: dose without timing"
 Description: "CAVE: Validation example - doseAndRate exists but timing missing."
+* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * status = #active
 * intent = #order

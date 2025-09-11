@@ -2,7 +2,7 @@
 Abfolge der Erstellung von Ressourcen und Dokumenten
 
 1. Sushi baut alle Artefakte von FSH zu FHIR Ressourcen
-2. Dosage generate erzeugt für jede Dosierung eine Dosage Beschreibung nach dosage-to-text.py
+2. Dosage generate erzeugt für die Dosierung einen Text nach medication-dosage-to-text.py
 '
 
 # Generate Sushi
@@ -12,9 +12,7 @@ sushi .
 python3 scripts/dosage-main.py
 
 # Copy current scripts into the IG
-rm input/content/dosage-to-text.py
 rm input/content/medication-dosage-to-text.py
-cp scripts/dosage-to-text.py input/content
 cp scripts/medication-dosage-to-text.py input/content
 
 # Generate IG Publisher Content

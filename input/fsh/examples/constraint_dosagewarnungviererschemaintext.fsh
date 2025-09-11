@@ -3,6 +3,7 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Warnung: Viererschema in Dosage.text"
 Description: "Beispiel, das ein Viererschema (1-1-1-1) in Dosage.text enthält, um die Warn-Invariante auszulösen."
+* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * status = #active
 * intent = #order

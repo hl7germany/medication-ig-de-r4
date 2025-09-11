@@ -53,7 +53,7 @@ pages:
   dosierung-text-hinzufuegen.md:
     title: Bereitstellung des Dosierungstextes
   dosierung-constraints.md:
-    title: Übersicht der Timing-Invarianten
+    title: Übersicht der Timing & Dosierungs-Invarianten
   schema-freitext.md:
     title: Freitext-Dosierung
   schema-tageszeit.md:
@@ -107,7 +107,7 @@ menu:
     dgMP Rahmenvorgaben: dosierung-dgmp.html
     Dosis Textgenerierung: dosierung-textgenerierung.html
     Bereitstellung des Dosierungstextes: dosierung-text-hinzufuegen.html
-    Übersicht der Timing-Invarianten: dosierung-constraints.html
+    Übersicht der Timing & Dosierungs-Invarianten: dosierung-constraints.html
   Dosierschemata:
     Freitext-Dosierung: schema-freitext.html
     Schema mit Tageszeiten-Bezug: schema-tageszeit.html

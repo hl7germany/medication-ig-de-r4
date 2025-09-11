@@ -1,8 +1,8 @@
-Instance: Invalid-Dosage-C-TimingSingleDosageForWhen-01-of-02
+Instance: Invalid-Dosage-C-TimingSingleDosageForWhen-01-of-01
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid: split when into two dosages (same period/dose)"
-Description: "Zwei Dosagen mit identischem Intervall und Dosis, jeweils ein Zeitraum (MORN/EVE) – sollte zu einer Dosage zusammengeführt werden."
+Description: "Zwei Dosages mit identischem Intervall und Dosis, jeweils ein Zeitraum (MORN/EVE) - sollte zu einer Dosage zusammengeführt werden."
 * subject.display = "Patient"
 * status = #active
 * intent = #order

@@ -34,7 +34,7 @@ Um sicherzustellen, dass Dosierungen syntaktisch korrekt und den Vorgaben der je
 
 #### Freitext oder strukturierte Dosierung
 
-Der Constraint `DosageStructuredOrFreeText` im Profil [DosageDgMP](./StructureDefinition-DosageDgMP.html) stellt sicher, dass entweder das Element `.text` oder eine strukturierte Angabe der Dosierung befüllt wird – nicht jedoch beides gleichzeitig. So wird ausgeschlossen, dass widersprüchliche Angaben gemacht werden.
+Der Constraint `DosageStructuredOrFreeText` im Profil [DosageDgMP](./StructureDefinition-DosageDgMP.html) stellt sicher, dass entweder das Element `.text` oder eine strukturierte Angabe der Dosierung befüllt wird - nicht jedoch beides gleichzeitig. So wird ausgeschlossen, dass widersprüchliche Angaben gemacht werden.
 
 #### Nur ein Dosierungsschema pro Instanz
 
@@ -84,10 +84,10 @@ Sobald diesbezüglich eine Entscheidung getroffen wurde, wird die Planung zur zw
 
 | Ergänzung / Alternative                                  | Beispiel                                               |
 |----------------------------------------------------------|--------------------------------------------------------|
-| Ungefähre Gesamtdauer                                    | Täglich 1 Stück für 1–2 Wochen                      |
+| Ungefähre Gesamtdauer                                    | Täglich 1 Stück für 1-2 Wochen                      |
 | Start- und Enddatum                                      | Täglich 1 Stück vom 01.12.2025 bis zum 15.12.2025   |
 | Gesamtzahl an Anwendungen bis zum Therapieabschluss      | Täglich 1 Stück, insgesamt 20 Stück                 |
-| Ungefähre Dosierung                                      | Täglich 1–2 Stück                                  |
+| Ungefähre Dosierung                                      | Täglich 1-2 Stück                                  |
 
 **Wertelisten & Ereignisbezug**
 

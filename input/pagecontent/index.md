@@ -1,6 +1,6 @@
 ### Kurzbeschreibung
 
-Dieser Implementation Guide (IG) beschreibt die standardisierte und interoperable Abbildung medikationsbezogener Informationen und Prozesse im deutschen Gesundheitswesen auf Basis von HL7® FHIR®. Ziel ist es, sektorenübergreifende Anwendungsfälle – wie beispielsweise die strukturierte Dosierungsinformation im E-Rezept, den elektronischen Medikationsplan oder den Austausch mittels [ISiK](https://fachportal.gematik.de/informationen-fuer/isik/bestaetigungsverfahren-isik) – zu ermöglichen und zu harmonisieren.
+Dieser Implementation Guide (IG) beschreibt die standardisierte und interoperable Abbildung medikationsbezogener Informationen und Prozesse im deutschen Gesundheitswesen auf Basis von HL7® FHIR®. Ziel ist es, sektorenübergreifende Anwendungsfälle - wie beispielsweise die strukturierte Dosierungsinformation im E-Rezept, den elektronischen Medikationsplan oder den Austausch mittels [ISiK](https://fachportal.gematik.de/informationen-fuer/isik/bestaetigungsverfahren-isik) - zu ermöglichen und zu harmonisieren.
 
 Der IG enthält die Beschreibung der jeweiligen Anwendungsfälle sowie begleitende Dokumentation.
 
@@ -14,9 +14,9 @@ Dieser Implementation Guide wird kontinuierlich weiterentwickelt und verbessert.
 
 Elemente mit der Eigenschaft [mustSupport](https://www.hl7.org/fhir/profiling.html#mustsupport) müssen immer implementiert werden. Hierbei handelt es sich um Elemente, die unabhängig von der Kardinalität (Ausnahme: 0…0) unterstützt werden müssen, sofern die entsprechenden Informationen vorliegen.
 
-Die Software, welche die Dateien erstellt, muss die mit „mustSupport“ gekennzeichneten Elemente (mustSupport value="true") unterstützen – befüllen und übermitteln können.
+Die Software, welche die Dateien erstellt, muss die mit „mustSupport“ gekennzeichneten Elemente (mustSupport value="true") unterstützen - befüllen und übermitteln können.
 
-Die Software, welche die Dateien verarbeitet, muss die mit „mustSupport“ gekennzeichneten Elemente (mustSupport value="true") unterstützen – auslesen und verarbeiten können.
+Die Software, welche die Dateien verarbeitet, muss die mit „mustSupport“ gekennzeichneten Elemente (mustSupport value="true") unterstützen - auslesen und verarbeiten können.
 
 ### Zielgruppen
 

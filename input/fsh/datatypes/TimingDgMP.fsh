@@ -53,9 +53,9 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * durationUnit 0..0
     * ^comment = "Begründung Einschränkung Kardinalität: Angaben zur Einheit der Dauer einer Einzelgabe sind in der ersten Ausbaustufe desdgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
   * frequencyMax 0..0
-    * ^comment = "Begründung Einschränkung Kardinalität: Eine maximale Frequenz ist in der ersten Ausbaustufe des dgMP nicht vorgesehen – es wird immer eine Frequenz explizit gesetzt, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
+    * ^comment = "Begründung Einschränkung Kardinalität: Eine maximale Frequenz ist in der ersten Ausbaustufe des dgMP nicht vorgesehen - es wird immer eine Frequenz explizit gesetzt, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
   * periodMax 0..0
-    * ^comment = "Begründung Einschränkung Kardinalität: Eine maximale Periodendauer ist in der ersten Ausbaustufe des dgMP nicht vorgesehen – es wird immer eine Dauer explizit gesetzt, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
+    * ^comment = "Begründung Einschränkung Kardinalität: Eine maximale Periodendauer ist in der ersten Ausbaustufe des dgMP nicht vorgesehen - es wird immer eine Dauer explizit gesetzt, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
   * offset 0..0
     * ^short = "Zeitversatz"
     * ^comment = "Begründung Einschränkung Kardinalität: Ein Zeitversatz ist in der ersten Ausbaustufe desdgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."

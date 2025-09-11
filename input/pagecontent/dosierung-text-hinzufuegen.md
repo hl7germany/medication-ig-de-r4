@@ -22,7 +22,7 @@ Sofern keine Freitextdosierung angegeben wird, erfolgt die Generierung und Berei
    - Validierende Systeme generieren den Dosierungstext mittels des festgelegten Algorithmus erneut und vergleichen ihn mit dem von den Erfassenden Systemen übermittelten Text, um Regelkonformität und Konsistenz sicherzustellen.
 
 3. **Anzeige und Weitergabe:**
-   - Darstellende Systeme können entweder die strukturierten Daten oder – falls sie diese nicht interpretieren können – den generierten Text anzeigen.
+   - Darstellende Systeme können entweder die strukturierten Daten oder - falls sie diese nicht interpretieren können - den generierten Text anzeigen.
    - Der validierte Text wird für alle Systeme bereitgestellt, die keine strukturierte Anzeige unterstützen.
 
 ### Annahmen und Rahmenbedingungen

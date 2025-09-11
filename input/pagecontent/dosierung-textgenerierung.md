@@ -1,6 +1,6 @@
 Diese Seite beschreibt die Erzeugung eines menschenlesbaren Dosierungstextes aus einer gesamten Arzneimittel‑Ressource (z. B. `MedicationRequest`, `MedicationDispense`, `MedicationStatement`).
 
-Referenz-Implementierung: [Python Skript](./medication-dosage-to-text.py) (`__version__`). Die dortige Logik übernimmt automatisch Prüfung der unterstützten Felder und Erkennung des passenden Darstellungsmusters ("Schema"). Diese Seite konzentriert sich auf die konkrete Bildung der Textbausteine – also das „Wie wird welches strukturelle Element in Text überführt?“ – damit eine Nachimplementierung ohne Einsicht in den Code möglich ist.
+Referenz-Implementierung: [Python Skript](./medication-dosage-to-text.py) (`__version__`). Die dortige Logik übernimmt automatisch Prüfung der unterstützten Felder und Erkennung des passenden Darstellungsmusters ("Schema"). Diese Seite konzentriert sich auf die konkrete Bildung der Textbausteine - also das „Wie wird welches strukturelle Element in Text überführt?“ - damit eine Nachimplementierung ohne Einsicht in den Code möglich ist.
 
 ## Überblick
 
@@ -13,7 +13,7 @@ Je nach Schema (tägliches Schema, Intervall, Wochentage, konkrete Uhrzeiten, Ta
 ## Textbausteine im Detail
 
 ### 1. Dauer (boundsDuration)
-Vorangestellt als: `für {Wert} {Einheit}`. Danach folgt – falls weitere Angaben kommen – ein Doppelpunkt: `für 7 Tage: ...`  
+Vorangestellt als: `für {Wert} {Einheit}`. Danach folgt - falls weitere Angaben kommen - ein Doppelpunkt: `für 7 Tage: ...`  
 Pluralisierung abhängig vom Wert (1 → Singular, sonst Plural). Einheiten (z. B. Tag/Tage, Woche/Wochen, Stunde/Stunden) entsprechen den hinterlegten Codes/Units.
 
 ### 2. Intervall / Grundrhythmus (frequency / period / periodUnit)
@@ -29,9 +29,9 @@ Aus der Kombination entsteht eine der Formen:
 Dieses Intervall steht typischerweise am Anfang (nach einer optionalen Dauer) und wird durch `:` vom rechten Teil getrennt, wenn rechts weitere Segmentangaben folgen.
 
 ### 3. Wochentage (dayOfWeek)
-Wochentage werden – falls vorhanden – in kanonischer Reihenfolge Montag → Sonntag verarbeitet. Darstellung in adverbialer Form: `montags`, `dienstags`, `mittwochs`, ...  
+Wochentage werden - falls vorhanden - in kanonischer Reihenfolge Montag → Sonntag verarbeitet. Darstellung in adverbialer Form: `montags`, `dienstags`, `mittwochs`, ...  
 Varianten:
-* Einheitliche Dosis für mehrere Tage: wahlweise Aufzählung oder (vereinfacht) mehrere Zeilen – in Beispielen wird oft eine Zeile pro Tag verwendet.
+* Einheitliche Dosis für mehrere Tage: wahlweise Aufzählung oder (vereinfacht) mehrere Zeilen - in Beispielen wird oft eine Zeile pro Tag verwendet.
 * Unterschiedliche Dosen pro Tag → je eine eigene Zeile / eigenes Segment.
 
 ### 4. Konkrete Zeiten (timeOfDay)

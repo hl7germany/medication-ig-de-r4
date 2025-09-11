@@ -179,7 +179,7 @@ Die folgenden Invarianten beziehen sich auf das Dosage-Element insgesamt (nicht 
 ### DosageStructuredOrFreeText / DosageStructuredOrFreeTextWarning
 
 **Beschreibung:**  
-Eine Dosierungsangabe darf entweder vollständig strukturiert (mit `timing` und/oder `doseAndRate`) oder ausschließlich als Freitext (`text`) vorliegen – eine Mischung ist nicht zulässig.
+Eine Dosierungsangabe darf entweder vollständig strukturiert (mit `timing` und/oder `doseAndRate`) oder ausschließlich als Freitext (`text`) vorliegen - eine Mischung ist nicht zulässig.
 
 **Hinweis zur Ausprägung:**  
 Im generischen Profil `DosageDE` ist dies als Warnung (`warning`) modelliert (`DosageStructuredOrFreeTextWarning`), im dgMP‑Spezialprofil (`DosageDgMP`) als Fehler (`error`, Invariante `DosageStructuredOrFreeText`). Implementierungen sollten die strukturierte Variante bevorzugen und Freitext nur verwenden, wenn eine strukturierte Abbildung nicht möglich ist.

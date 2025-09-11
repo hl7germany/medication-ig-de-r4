@@ -34,7 +34,7 @@ Die beteiligten Akteure und Systeme stimmen die Einführung neuer Ausbaustufen f
 #### Empfehlung für Implementierende
 
 - **Verwenden Sie grundsätzlich das DE-Profil (`DosageDE`)** für die Abbildung und Übertragung von Dosierungsinformationen in Ihren Systemen. Dieses Profil bietet die notwendige Flexibilität für die Interoperabilität im deutschen Gesundheitswesen.
-- **Das DgMP-Profil (`DosageDgMP`)** ist für die Implementierung und Verwendung von Dosierungen im Rahmen des dgMP-Prozesses vorgesehen. Es sollte immer dann genutzt werden, wenn eine technische Validierung der Dosierung erforderlich ist – insbesondere im Kontext zentraler Dienste innerhalb der Telematikinfrastruktur (TI), wie beispielsweise beim E-Rezept-Fachdienst.
+- **Das DgMP-Profil (`DosageDgMP`)** ist für die Implementierung und Verwendung von Dosierungen im Rahmen des dgMP-Prozesses vorgesehen. Es sollte immer dann genutzt werden, wenn eine technische Validierung der Dosierung erforderlich ist - insbesondere im Kontext zentraler Dienste innerhalb der Telematikinfrastruktur (TI), wie beispielsweise beim E-Rezept-Fachdienst.
 - **Außerhalb der TI** (z.B. bei der Kommunikation zwischen unterschiedlichen Primärsystemen) sollen die offenen DE-Profile genutzt werden, um maximale Kompatibilität und Austauschbarkeit zu gewährleisten.
 
 ##### Unterstützte Dosierungen

@@ -4,7 +4,7 @@ Profile: DosageDE
 Parent: Dosage
 Id: DosageDE
 Title: "Dosage DE"
-Description: "Gibt an, wie das Medikament eingenommen oder verabreicht wurde bzw. eingenommen oder verabreicht werden soll – entweder selbst vom Patienten eingenommen oder bei Fremdverabreichung von Dritten (z. B. Leistungserbringer, Angehörige) verabreicht."
+Description: "Gibt an, wie das Medikament eingenommen oder verabreicht wurde bzw. eingenommen oder verabreicht werden soll - entweder selbst vom Patienten eingenommen oder bei Fremdverabreichung von Dritten (z. B. Leistungserbringer, Angehörige) verabreicht."
 * obeys DosageStructuredOrFreeTextWarning
 * obeys DosageStructuredRequiresBoth
 * obeys DosageDoseUnitSameCode

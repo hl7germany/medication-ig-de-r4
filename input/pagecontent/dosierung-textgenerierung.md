@@ -1,6 +1,8 @@
 Diese Seite beschreibt die Erzeugung eines menschenlesbaren Dosierungstextes aus einer gesamten Arzneimittel‑Ressource (z. B. `MedicationRequest`, `MedicationDispense`, `MedicationStatement`).
 
-Referenz-Implementierung: [Python Skript](./medication-dosage-to-text.py) (`__version__`). Die dortige Logik übernimmt automatisch Prüfung der unterstützten Felder und Erkennung des passenden Darstellungsmusters ("Schema"). Diese Seite konzentriert sich auf die konkrete Bildung der Textbausteine - also das „Wie wird welches strukturelle Element in Text überführt?“ - damit eine Nachimplementierung ohne Einsicht in den Code möglich ist.
+Referenz-Implementierung: [Python Skript](https://github.com/hl7germany/dgMP-DosageTextgenerierung-Skript/blob/main/medication-dosage-to-text.py). Die dortige Logik übernimmt automatisch Prüfung der unterstützten Felder und Erkennung des passenden Darstellungsmusters ("Schema"). Diese Seite konzentriert sich auf die konkrete Bildung der Textbausteine - also das „Wie wird welches strukturelle Element in Text überführt?“ - damit eine Nachimplementierung ohne Einsicht in den Code möglich ist.
+
+Das Skript ist außerhalb dieses Implementation Guides gelagert und kann in der Versionierung auch abweichen. In den Beispielen ist ersichtlich welche Version der Referenzimplementierung zum Zeitpunkt der Erstellung genutzt wurde.
 
 ## Überblick
 
@@ -80,7 +82,7 @@ Für eine Übersicht der in diesem IG bereitgestellten Beispiele siehe [Beispiel
 Ergibt sich aus Feldverwendungen außerhalb des unterstützten Umfangs oder aus nicht eindeutig klassifizierbaren Mustern, liefert das Skript einen Fehlertext (Auflistung der betroffenen Felder). Die formale Definition der zulässigen Felder und die Schema-Erkennung sind an anderer Stelle im IG spezifiziert.
 
 ### 10. Versionierung & Erweiterungen
-Die Version des Skripts (`__version__`) spiegelt den Stand dieser Beschreibung wider. Erweiterungen (zusätzliche Felder oder neue Muster) werden inkrementell ergänzt und in künftigen Versionen dokumentiert.
+Im Skript ist die Version des Algorithmus angegeben (`__version__`). Die Extension [GeneratedDosageInstructionsMeta](./StructureDefinition-GeneratedDosageInstructionsMeta.html) führt hierbei die verwendete Version des Skripts an, was in validierenden Instanzen genutzt werden kann, um die Korrektheit des Textes, sowie die Validität der Version festzustellen.
 
 ### 11. Quellen / weiterführende Hinweise
 * UK Core Implementation Guide for Medicines (Dose to Text Translation)

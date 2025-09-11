@@ -11,15 +11,21 @@ EXTENSION_URLS = {
     "MedicationStatement": "http://hl7.org/fhir/5.0/StructureDefinition/extension-MedicationStatement.renderedDosageInstruction"
 }
 
+# All renderedDosageInstruction URLs (useful for cleaning placeholders)
+ALL_RENDERED_DOSAGE_URLS = set(EXTENSION_URLS.values())
+
 # Meta extension URL (same for all resource types)
 META_EXTENSION_URL = "http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta"
 
 def filter_rendered_dosage_extensions(extensions, resource_type):
-    """Remove existing renderedDosageInstruction and GeneratedDosageInstructionsMeta extensions."""
+    """Remove existing renderedDosageInstruction (only for this resource type) and GeneratedDosageInstructionsMeta extensions."""
     extension_url = EXTENSION_URLS.get(resource_type)
     if not extension_url:
         return extensions
-    return [ext for ext in extensions if ext.get("url") not in [extension_url, META_EXTENSION_URL]]
+    return [
+        ext for ext in extensions
+        if ext.get("url") not in [extension_url, META_EXTENSION_URL]
+    ]
 
 def build_rendered_dosage_extension(dosage_text, resource_type):
     """Build a renderedDosageInstruction extension with the consolidated dosage text."""
@@ -33,18 +39,10 @@ def build_rendered_dosage_extension(dosage_text, resource_type):
     }
 
 def build_meta_extension():
-    """Build the GeneratedDosageInstructionsMeta extension with algorithm metadata."""
+    """Build the GeneratedDosageInstructionsMeta extension with metadata (without 'algorithm' slice)."""
     return {
         "url": META_EXTENSION_URL,
         "extension": [
-            {
-                "url": "algorithm",
-                "valueCoding": {
-                    "system": "http://ig.fhir.de/igs/medication/CodeSystem/DosageTextAlgorithm",
-                    "code": "DgMPDosageTextGenerator",
-                    "version": "1.0.0"
-                }
-            },
             {
                 "url": "algorithmVersion",
                 "valueString": "1.0.0"
@@ -56,22 +54,36 @@ def build_meta_extension():
         ]
     }
 
-def has_dosages_without_text(resource):
-    """Check if the resource has dosages without text fields."""
+def has_dosages(resource):
+    """Check if the resource has any dosage entries at all (structured or free text)."""
     rtype = resource.get("resourceType")
-    
-    if rtype == "MedicationRequest" or rtype == "MedicationDispense":
-        dosages = resource.get("dosageInstruction", [])
+    if rtype in ("MedicationRequest", "MedicationDispense"):
+        return bool(resource.get("dosageInstruction"))
     elif rtype == "MedicationStatement":
-        dosages = resource.get("dosage", [])
-    else:
-        return False
-    
-    # Check if there are any dosages without text
-    for dosage in dosages:
-        if "text" not in dosage:
-            return True
+        return bool(resource.get("dosage"))
     return False
+
+def is_invalid_or_unsupported(filename: str) -> bool:
+    """Detect invalid or unsupported instances by filename convention."""
+    name = os.path.basename(filename)
+    lower = name.lower()
+    return ("-invalid-" in lower) or ("-unsupported-" in lower)
+
+def remove_all_placeholders(resource: dict) -> bool:
+    """Remove any renderedDosageInstruction (all variants) and GeneratedDosageInstructionsMeta."""
+    if "extension" not in resource:
+        return False
+    old_count = len(resource["extension"])
+    cleaned = []
+    for ext in resource["extension"]:
+        url = ext.get("url")
+        if url in ALL_RENDERED_DOSAGE_URLS or url == META_EXTENSION_URL:
+            continue
+        cleaned.append(ext)
+    resource["extension"] = cleaned
+    if not resource["extension"]:
+        del resource["extension"]
+    return len(cleaned) != old_count
 
 def run_consolidated_dosage_to_text(script_path, resource_file_path):
     """Run the consolidated medication-dosage-to-text.py script on the entire resource."""
@@ -103,41 +115,45 @@ def process_file(input_path, output_path, script_path):
             json.dump(resource, f, indent=2, ensure_ascii=False)
         return
 
-    # Skip if resource has no dosages without text
-    if not has_dosages_without_text(resource):
-        # Just copy the file unchanged
+    # Proceed only if the resource actually has any dosage entries
+    if not has_dosages(resource):
         with open(output_path, 'w', encoding='utf-8') as f:
             json.dump(resource, f, indent=2, ensure_ascii=False)
         return
 
     changed = False
-    
-    # Remove existing renderedDosageInstruction and meta extensions if present
-    if "extension" in resource:
-        old_count = len(resource["extension"])
-        resource["extension"] = filter_rendered_dosage_extensions(resource["extension"], resource_type)
-        if len(resource["extension"]) != old_count:
-            changed = True
-        if not resource["extension"]:
-            del resource["extension"]
-            changed = True
 
-    # Generate consolidated dosage text for the entire resource
-    dosage_text = run_consolidated_dosage_to_text(script_path, input_path)
-    
-    # Only add extensions if there's a valid result
-    if dosage_text and not dosage_text.startswith("Fehler"):
-        # Build the renderedDosageInstruction extension
-        dosage_extension = build_rendered_dosage_extension(dosage_text, resource_type)
-        # Build the meta extension
-        meta_extension = build_meta_extension()
-        
-        if dosage_extension and meta_extension:
-            if "extension" not in resource:
-                resource["extension"] = []
-            resource["extension"].append(dosage_extension)
-            resource["extension"].append(meta_extension)
+    # If file is an invalid or unsupported example: remove placeholders and skip adding
+    if is_invalid_or_unsupported(input_path):
+        if remove_all_placeholders(resource):
             changed = True
+    else:
+        # Normal case: remove only type-specific rendered extension + meta
+        if "extension" in resource:
+            old_count = len(resource["extension"])
+            resource["extension"] = filter_rendered_dosage_extensions(resource["extension"], resource_type)
+            if len(resource["extension"]) != old_count:
+                changed = True
+            if not resource["extension"]:
+                del resource["extension"]
+                changed = True
+
+        # Generate consolidated dosage text for the entire resource
+        dosage_text = run_consolidated_dosage_to_text(script_path, input_path)
+
+        # Only add extensions if there's a valid result
+        if dosage_text and not dosage_text.startswith("Fehler"):
+            # Build the renderedDosageInstruction extension
+            dosage_extension = build_rendered_dosage_extension(dosage_text, resource_type)
+            # Build the meta extension
+            meta_extension = build_meta_extension()
+
+            if dosage_extension and meta_extension:
+                if "extension" not in resource:
+                    resource["extension"] = []
+                resource["extension"].append(dosage_extension)
+                resource["extension"].append(meta_extension)
+                changed = True
 
     # Write to output folder
     with open(output_path, 'w', encoding='utf-8') as f:
@@ -162,8 +178,7 @@ def main():
         if (
             f.endswith('.json') and
             os.path.isfile(os.path.join(input_folder, f)) and
-            f.startswith(RESOURCE_PREFIXES) and
-            "C-DosageStructuredRequiresGeneratedText" not in f
+            f.startswith(RESOURCE_PREFIXES)
         )
     ]
 

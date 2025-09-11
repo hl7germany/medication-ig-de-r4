@@ -187,6 +187,14 @@ Im generischen Profil `DosageDE` ist dies als Warnung (`warning`) modelliert (`D
 **Warum?**  
 Verhindert widersprüchliche oder doppelte Informationsquellen (Freitext vs. Struktur) und erleichtert automatische Verarbeitung (z. B. Generierung patientenverständlicher Texte).
 
+Beispiele (Fehlerfall – Mischform aus Text und Struktur):
+
+{% include dosage-constraint-DosageStructuredOrFreeText-examples.md%}
+
+Gültige Varianten (Warnungskontext – nur Text oder nur Struktur):
+
+{% include dosage-constraint-DosageStructuredOrFreeTextWarning-examples.md%}
+
 ### DosageStructuredRequiresBoth
 
 **Beschreibung:**  
@@ -194,6 +202,10 @@ Wenn eine strukturierte Dosierung angegeben wird, müssen sowohl zeitliche Angab
 
 **Warum?**  
 Stellt sicher, dass eine strukturierte Dosierung hinreichend vollständig ist, um automatisiert interpretiert werden zu können (Zeit + Menge).
+
+Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
+
+{% include dosage-constraint-DosageStructuredRequiresBoth-examples.md%}
 
 ### DosageStructuredRequiresGeneratedText
 
@@ -203,6 +215,10 @@ Liegt eine strukturierte Dosierung vor (strukturierte Elemente befüllt, Freitex
 **Warum?**  
 Dokumentiert, dass ein (maschinen-)generierter, patientenlesbarer Dosierungstext verfügbar ist und stellt die Nachvollziehbarkeit der Generierung sicher.
 
+Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
+
+{% include dosage-constraint-DosageStructuredRequiresGeneratedText-examples.md%}
+
 ### DosageDoseUnitSameCode
 
 **Beschreibung:**  
@@ -211,5 +227,6 @@ Alle Dosierungsinstanzen innerhalb derselben Ressource müssen dieselbe Dosierei
 **Warum?**  
 Verhindert inkonsistente oder schwer vergleichbare Einträge (z. B. Mischung von Einheiten wie Stück vs. mg) und reduziert Interpretationsfehler bei Summierung oder Darstellung.
 
-**Beispiele / Hinweise:**  
-Aktuell existieren keine separaten Beispiel-Include-Dateien für diese Dosage-Invarianten. Falls erforderlich, können analoge Beispielsektionen wie bei den Timing-Constraints unter `input/includes/` ergänzt und hier mittels `{% include ... %}` referenziert werden.
+Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
+
+{% include dosage-constraint-DosageDoseUnitSameCode-examples.md%}

@@ -8,6 +8,7 @@ Description: "Gibt an, wie das Medikament eingenommen oder verabreicht wurde bzw
 * obeys DosageStructuredOrFreeTextWarning
 * obeys DosageStructuredRequiresBoth
 * obeys DosageDoseUnitSameCode
+* obeys DosageWarnungViererschemaInText
 * text 0..1 MS
   * ^short = "Freitext-Dosierungsanweisungen, z. B. 'Maximal 3x täglich 1 Stück bei Bedarf'"
   * ^definition = "Freitext-Dosierungsanweisungen, z. B. 'Maximal 3x täglich 1 Stück bei Bedarf'. Als Quelle dient hier ausschließlich der Arzt oder Apotheker"
@@ -55,3 +56,8 @@ doseAndRate.exists() implies
   %resource.dosageInstruction.doseAndRate.dose.ofType(Quantity).code.distinct().count() = 1
 )"
 Severity: #error
+
+Invariant: DosageWarnungViererschemaInText
+Description: "Hinweis: In Dosage.text wurde ein Viererschema (z. B. 1-1-1-1) erkannt. Bitte prüfen, ob dies strukturiert abgebildet werden kann."
+Expression: "text.exists() implies text.matches('.*\\\\d+\\\\s*[-–]\\\\s*\\\\d+\\\\s*[-–]\\\\s*\\\\d+\\\\s*[-–]\\\\d+.*').not()"
+Severity: #warning

@@ -3,6 +3,7 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-UnitStueck-1020"
 Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung 1-0-2-0 und kodierter Einheit 'Stück' dar"
+* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -28,6 +29,7 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-UnitTr-1000"
 Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung 20-0-0-0 und kodierter Einheit 'Tropfen' dar"
+* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -45,6 +47,7 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-UnitTasse-1000"
 Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung 1-0-0-0 und kodierter Einheit 'Stück' dar"
+* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * status = #active
 * intent = #order

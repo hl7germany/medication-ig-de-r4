@@ -1,14 +1,14 @@
 {
   "package-id" : "de.fhir.medication",
-  "version" : "1.0.0-ballot",
-  "path" : "http://ig.fhir.de/igs/medication/1.0.0-ballot",
+  "version" : "1.0.0",
+  "path" : "http://ig.fhir.de/igs/medication/1.0.0",
   "mode" : "milestone",
-  "status" : "ballot",
+  "status" : "release",
   "sequence" : "STU1",
-  "desc" : "First ballot release of the Medication IG DE",
-  "first" : true,
+  "desc" : "First release of the Medication IG DE",
+  "first" : false,
   "title" : "Medication IG DE",
   "ci-build" : "https://build.fhir.org/ig/hl7germany/medication-ig-de-r4",
   "category" : "Medications",
-  "introduction" : "This IG is the first ballot release of the Medication IG DE. It provides a set of profiles and extensions for medication management, currently focused on Dosage and Timing, in Germany, based on FHIR R4."
+  "introduction" : "This IG is the first release of the Medication IG DE. It provides a set of profiles and extensions for medication management, currently focused on Dosage and Timing, in Germany, based on FHIR R4."
 }

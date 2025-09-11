@@ -12,7 +12,7 @@ Softwaresysteme müssen Dosierungsangaben stets strukturiert erfassen, sofern ei
 
 Das Feld `Dosage.text` ist **ausschließlich** für vom Menschen erstelleten Freitext vorgesehen. Es darf nicht gleichzeitig mit einer strukturierten Angabe verwendet werden, um widersprüchliche Informationen zu vermeiden.
 
-Im Kontext des dgMP sorgt die [Infrastruktur zur Bereitstellung des Dosierungstextes](./dosierung-text-hinzufuegen.html) dafür, dass zu jeder strukturierten Dosierung auch eine einheitliche, maschinell generierte textuelle Repräsentation bereitgestellt wird. Dieser Text wird in der Extension `Dosage.extension[GeneratedDosageInstructionsEx]` hinterlegt.
+Im Kontext des dgMP sorgt die [Infrastruktur zur Bereitstellung des Dosierungstextes](./dosierung-text-hinzufuegen.html) dafür, dass zu jeder strukturierten Dosierung auch eine einheitliche, maschinell generierte textuelle Repräsentation bereitgestellt wird. Dieser Text wird in der Extension `Dosage.extension[GeneratedDosageInstructionsMeta]` hinterlegt.
 
 #### Nutzung von Sequenzen
 
@@ -34,7 +34,7 @@ Um sicherzustellen, dass Dosierungen syntaktisch korrekt und den Vorgaben der je
 
 #### Freitext oder strukturierte Dosierung
 
-Der Constraint `DosageStructuredOrFreeText` im Profil [DosageDgMP](./StructureDefinition-DosageDgMP.html) stellt sicher, dass entweder das Element `.text` oder eine strukturierte Angabe der Dosierung befüllt wird – nicht jedoch beides gleichzeitig. So wird ausgeschlossen, dass widersprüchliche Angaben gemacht werden.
+Der Constraint `DosageStructuredOrFreeText` im Profil [DosageDgMP](./StructureDefinition-DosageDgMP.html) stellt sicher, dass entweder das Element `.text` oder eine strukturierte Angabe der Dosierung befüllt wird - nicht jedoch beides gleichzeitig. So wird ausgeschlossen, dass widersprüchliche Angaben gemacht werden.
 
 #### Nur ein Dosierungsschema pro Instanz
 
@@ -84,10 +84,10 @@ Sobald diesbezüglich eine Entscheidung getroffen wurde, wird die Planung zur zw
 
 | Ergänzung / Alternative                                  | Beispiel                                               |
 |----------------------------------------------------------|--------------------------------------------------------|
-| Ungefähre Gesamtdauer                                    | Täglich 1 Stück für 1–2 Wochen                      |
+| Ungefähre Gesamtdauer                                    | Täglich 1 Stück für 1-2 Wochen                      |
 | Start- und Enddatum                                      | Täglich 1 Stück vom 01.12.2025 bis zum 15.12.2025   |
 | Gesamtzahl an Anwendungen bis zum Therapieabschluss      | Täglich 1 Stück, insgesamt 20 Stück                 |
-| Ungefähre Dosierung                                      | Täglich 1–2 Stück                                  |
+| Ungefähre Dosierung                                      | Täglich 1-2 Stück                                  |
 
 **Wertelisten & Ereignisbezug**
 

@@ -5,3 +5,6 @@ Alias: $ucum = http://unitsofmeasure.org
 Alias: $edqm = http://standardterms.edqm.eu
 Alias: $kbv-dosiereinheit =  https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT
 Alias: $kbv-dosiereinheit-vs =  https://fhir.kbv.de/ValueSet/KBV_VS_SFHIR_BMP_DOSIEREINHEIT
+Alias: $medicationRequest-renderedDosageInstruction-r5 = http://hl7.org/fhir/5.0/StructureDefinition/extension-MedicationRequest.renderedDosageInstruction
+Alias: $medicationDispense-renderedDosageInstruction-r5 = http://hl7.org/fhir/5.0/StructureDefinition/extension-MedicationDispense.renderedDosageInstruction
+Alias: $medicationStatement-renderedDosageInstruction-r5 = http://hl7.org/fhir/5.0/StructureDefinition/extension-MedicationStatement.renderedDosageInstruction

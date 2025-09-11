@@ -11,9 +11,11 @@ sushi .
 # Build Dosage Files
 python3 scripts/dosage-main.py
 
-# Copy current script into the IG
+# Copy current scripts into the IG
 rm input/content/dosage-to-text.py
+rm input/content/medication-dosage-to-text.py
 cp scripts/dosage-to-text.py input/content
+cp scripts/medication-dosage-to-text.py input/content
 
 # Generate IG Publisher Content
 ./_genonce.sh -no-sushi

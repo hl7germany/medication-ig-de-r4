@@ -1,8 +1,11 @@
-Instance: Invalid-Dosage-C-TimingSingleDosageForTimeOfDay-01-of-01
+// Invalid examples for DosageDoseUnitSameCode (error)
+// Two dosageInstructions with different dose units
+
+Instance: Invalid-Dosage-C-DosageDoseUnitSameCode-01-of-01
 InstanceOf: MedicationRequestDgMP
 Usage: #example
-Title: "Invalid: split timeOfDay into two dosages (same period/dose)"
-Description: "Zwei Dosages mit identischem Intervall und Dosis, jeweils eine Uhrzeit - sollte zu einer Dosage zusammengeführt werden."
+Title: "Invalid: mixed dose units"
+Description: "CAVE: Validation example - two dosageInstructions use different dose unit codes."
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -12,12 +15,12 @@ Description: "Zwei Dosages mit identischem Intervall und Dosis, jeweils eine Uhr
     * frequency = 1
     * period = 1
     * periodUnit = #d
-    * timeOfDay[+] = "08:00:00"
+    * when[+] = #MORN
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 * dosageInstruction[+]
   * timing.repeat
     * frequency = 1
     * period = 1
     * periodUnit = #d
-    * timeOfDay[+] = "20:00:00"
-  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
+    * when[+] = #EVE
+  * doseAndRate.doseQuantity = 500 $kbv-dosiereinheit#mg "mg"

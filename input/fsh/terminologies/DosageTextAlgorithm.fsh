@@ -1,3 +1,4 @@
+//TODO: location script noch anpassen
 CodeSystem: DosageTextAlgorithmCS
 Id: DosageTextAlgorithm
 Title: "Dosage Text Algorithm CodeSystem"

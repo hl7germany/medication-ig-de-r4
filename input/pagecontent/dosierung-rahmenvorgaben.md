@@ -10,7 +10,7 @@ Es wird empfohlen, Dosierungsangaben strukturiert zu erfassen, sofern eine struk
 
 Das Feld `Dosage.text` wird für vom Menschen erstellten Freitext vorgesehen. Es soll nicht gleichzeitig mit einer strukturierten Angabe verwendet werden, um widersprüchliche Informationen zu vermeiden.
 
-Die Extension [GeneratedDosageInstructions](./StructureDefinition-GeneratedDosageInstructions.html) dient der Speicherung von Dosieranweisungen, die automatisch aus strukturierten Dosierangaben generiert wurden.
+Die Extension [GeneratedDosageInstructionsMeta](./StructureDefinition-GeneratedDosageInstructionsMeta.html) dient der Speicherung von Dosieranweisungen, die automatisch aus strukturierten Dosierangaben generiert wurden.
 
 ## Verwendung des Dosage Elements
 

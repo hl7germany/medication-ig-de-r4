@@ -1,8 +1,6 @@
 import os
 import sys
 import json
-import subprocess
-import tempfile
 from typing import List, Dict, Any
 
 MATRIX_COLUMNS = [
@@ -98,7 +96,7 @@ def extract_constraints_from_element(sd: Dict[str, Any], element_id: str, source
             break
     return results
 
-def generate_matrix_for_constraint(input_folder: str, script_path: str, output_path: str, constraint_key: str, severity: str) -> bool:
+def generate_matrix_for_constraint(input_folder, output_path, constraint_key, severity):
     """Generate matrix for a specific constraint key. Returns True if examples found.
 
     Examples: filenames containing -C-<key> (error) or -W-<key> (warning).
@@ -124,41 +122,51 @@ def generate_matrix_for_constraint(input_folder: str, script_path: str, output_p
                 continue  # skip if no dosages
             display_name = os.path.splitext(filename)[0]
             file_link = f"[{display_name}](./{filename.replace('.json', '.html')})"
-            for idx, dosage in enumerate(dosages, start=1):
-                if "timing" not in dosage:
-                    timing = {}
-                else:
-                    timing = dosage["timing"]
-                # Write dosage to temp file and call script
-                try:
-                    with tempfile.NamedTemporaryFile("w", delete=False, suffix=".json", encoding="utf-8") as tf:
-                        json.dump(dosage, tf, ensure_ascii=False, indent=2)
-                        temp_path = tf.name
-                    try:
-                        result = subprocess.check_output(
-                            ['python3', script_path, temp_path],
-                            text=True
-                        ).strip()
-                        result = result.replace('\n', '<br>')
-                    except Exception as e:
-                        result = f"Fehler beim Verarbeiten der Datei: {e}"
-                    finally:
-                        os.unlink(temp_path)
-                except Exception as e:
-                    result = f"Fehler beim Schreiben/Verarbeiten der Dosierung: {e}"
+            
+            # Create a row with consolidated information for all dosages
+            # Extract all dose quantities and timing fields from all dosages
+            all_dose_quantities = []
+            all_timing_fields = {}
+            
+            for dosage in dosages:
+                # Collect dose quantity
                 dose_quantity = extract_dose_quantity(dosage)
-                fields = extract_timing_matrix_fields(timing) if timing else {k: '' for k in COLUMN_KEYS}
-                # Only show the file link for the first dosage, blank for others
-                this_file_link = file_link if idx == 1 else ""
-                row = [this_file_link, result, dose_quantity]
-                row += [str(fields.get(key, "")) for key in COLUMN_KEYS]
-                matrix_rows.append(row)
+                if dose_quantity:
+                    all_dose_quantities.append(dose_quantity)
+                
+                # Collect timing information
+                if "timing" in dosage:
+                    timing_fields = extract_timing_matrix_fields(dosage["timing"])
+                else:
+                    timing_fields = {k: '' for k in COLUMN_KEYS}
+                
+                for key, value in timing_fields.items():
+                    if value:  # Only include non-empty values
+                        if key not in all_timing_fields:
+                            all_timing_fields[key] = []
+                        if value not in all_timing_fields[key]:
+                            all_timing_fields[key].append(value)
+            
+            # Combine multiple values with <br> for display
+            combined_dose_quantity = "<br>".join(all_dose_quantities) if all_dose_quantities else ""
+            
+            # Build the row with consolidated timing information (without dosage text)
+            row = [file_link, combined_dose_quantity]
+            for key in COLUMN_KEYS:
+                if key in all_timing_fields and all_timing_fields[key]:
+                    # Join multiple values with <br>
+                    combined_value = "<br>".join(str(v) for v in all_timing_fields[key])
+                    row.append(combined_value)
+                else:
+                    row.append("")
+            
+            matrix_rows.append(row)
         except Exception as e:
             print(f"Error processing {filename}: {e}", file=sys.stderr)
     if not matrix_rows:
         return False
-    header = "| File | generated dosage instruction text | doseQuantity | " + " | ".join(MATRIX_COLUMNS) + " |"
-    sep = "| :---: | :--- | :---: | " + " | ".join([":---:"] * len(MATRIX_COLUMNS)) + " |"
+    header = "| File | doseQuantity | " + " | ".join(MATRIX_COLUMNS) + " |"
+    sep = "| :---: | :---: | " + " | ".join([":---:"] * len(MATRIX_COLUMNS)) + " |"
     md_table = header + "\n" + sep + "\n"
     for row in matrix_rows:
         md_table += "| " + " | ".join(row) + " |\n"
@@ -168,13 +176,12 @@ def generate_matrix_for_constraint(input_folder: str, script_path: str, output_p
     return True
 
 def main():
-    if len(sys.argv) != 4:
-        print("Usage: python script.py <input_folder> <output_folder> <dosage_to_text_script>")
+    if len(sys.argv) != 3:
+        print("Usage: python script.py <input_folder> <output_folder>")
         sys.exit(1)
 
     input_folder = sys.argv[1]
     output_folder = sys.argv[2]
-    dosage_to_text_script = sys.argv[3]
     os.makedirs(output_folder, exist_ok=True)
 
     # Step 0: Remove previously generated constraint tables to avoid stale leftovers
@@ -228,7 +235,7 @@ def main():
     generated_counts = {"error": 0, "warning": 0}
     for key, meta in sorted(merged.items()):
         out_md = os.path.join(output_folder, f"dosage-constraint-{key}-examples.md")
-        found = generate_matrix_for_constraint(input_folder, dosage_to_text_script, out_md, key, meta["severity"])
+        found = generate_matrix_for_constraint(input_folder, out_md, key, meta["severity"])
         if not found:
             if meta["severity"] == "error":
                 failures_error.append(key)

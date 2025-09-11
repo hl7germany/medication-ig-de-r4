@@ -82,6 +82,7 @@
 |  |  | 3 Stück | 1 | 1 | wk | tue |  |  |  |
 | [MedicationRequest-Warning-Dosage-Viererschema-Text-01](./MedicationRequest-Warning-Dosage-Viererschema-Text-01.html) | 1-1-1-1 |  |  |  |  |  |  |  |  |
 | [MedicationRequest-Warning-Dosage-W-DosageStructuredOrFreeTextWarning-01-of-01](./MedicationRequest-Warning-Dosage-W-DosageStructuredOrFreeTextWarning-01-of-01.html) | 1-0-1-0 |  |  |  |  |  |  |  |  |
+| [MedicationRequest-Warning-Dosage-W-DosageWarnungViererschemaInText-01-of-01](./MedicationRequest-Warning-Dosage-W-DosageWarnungViererschemaInText-01-of-01.html) | 1-0-1-0 |  |  |  |  |  |  |  |  |
 | [MedicationStatement-MS-Dosage-1010](./MedicationStatement-MS-Dosage-1010.html) | 1-0-1-0 Stück | 1 Stück | 2 | 1 | d |  |  | MORN, EVE |  |
 | [MedicationStatement-MS-Dosage-DayOfWeek](./MedicationStatement-MS-Dosage-DayOfWeek.html) | montags — je 2 Stück, freitags — je 1 Stück | 2 Stück | 1 | 1 | wk | mon |  |  |  |
 |  |  | 1 Stück | 1 | 1 | wk | fri |  |  |  |

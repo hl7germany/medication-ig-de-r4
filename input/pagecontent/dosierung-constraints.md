@@ -230,3 +230,15 @@ Verhindert inkonsistente oder schwer vergleichbare Einträge (z. B. Mischung von
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-DosageDoseUnitSameCode-examples.md%}
+
+### DosageWarnungViererschemaInText
+
+**Beschreibung:**  
+Warnung, wenn ein klassisches 4-Schema (z. B. Darstellung wie "1-0-1-0") im Freitext angegeben wird, obwohl eine strukturierte Abbildung möglich wäre.
+
+**Warum?**  
+Ermutigt zur strukturierten Modellierung der Einnahmezeiten anstelle rein schematischer Textdarstellungen, verbessert maschinelle Auswertbarkeit und Textgenerierung.
+
+Gültige Beispiele (Warnungskontext – Freitext enthält 4-Schema):
+
+{% include dosage-constraint-DosageWarnungViererschemaInText-examples.md%}

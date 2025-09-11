@@ -177,8 +177,20 @@ def main():
     dosage_to_text_script = sys.argv[3]
     os.makedirs(output_folder, exist_ok=True)
 
+    # Step 0: Remove previously generated constraint tables to avoid stale leftovers
+    try:
+        for fname in os.listdir(output_folder):
+            if fname.startswith("dosage-constraint-") and fname.endswith(".md"):
+                try:
+                    os.remove(os.path.join(output_folder, fname))
+                except Exception as e:
+                    print(f"WARNING: Could not remove old file {fname}: {e}", file=sys.stderr)
+    except FileNotFoundError:
+        # Should not happen because we created the folder, but ignore if it does
+        pass
+
     # Step 1: Find relevant StructureDefinitions
-    sd_map = find_structure_definitions(input_folder, ["TimingDgMP", "DosageDE", "DosageDgMP"])
+    sd_map = find_structure_definitions(input_folder, ["TimingDgMP", "TimingDE", "DosageDE", "DosageDgMP"])
     if "TimingDgMP" not in sd_map:
         print("ERROR: StructureDefinition with name 'TimingDgMP' not found in input folder.")
         sys.exit(1)
@@ -186,6 +198,8 @@ def main():
     # Step 2: Collect constraints
     constraints = []
     constraints += extract_constraints_from_element(sd_map["TimingDgMP"], "Timing.repeat", "Timing.repeat")
+    if "TimingDE" in sd_map:
+        constraints += extract_constraints_from_element(sd_map["TimingDE"], "Timing.repeat", "Timing.repeat")
     if "DosageDE" in sd_map:
         constraints += extract_constraints_from_element(sd_map["DosageDE"], "Dosage", "Dosage")
     if "DosageDgMP" in sd_map:

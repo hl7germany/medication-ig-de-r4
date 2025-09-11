@@ -2,9 +2,9 @@ Im Folgenden werden alle definierten Invarianten für das Timing-Profil aufgelis
 
 Neben den Timing-bezogenen Regeln existieren weitere Invarianten auf Ebene des Dosage-Elements (Profil `DosageDE` bzw. `DosageDgMP`). Diese steuern, wie strukturierte und Freitext‑Dosierungen zulässig kombiniert werden und stellen Konsistenz bei Dosiereinheiten sicher. Alle aktuell definierten Constraints sind nachfolgend aufgeführt.
 
-## Timing-bezogene Constraints
+### Timing-bezogene Constraints
 
-### TimingFrequencyCount
+#### TimingFrequencyCount
 
 **Beschreibung:**  
 Die Häufigkeit (`frequency`) muss mit der Anzahl der angegebenen Zeitpunkte (`timeOfDay` oder `when`) übereinstimmen, abhängig davon, welche Felder gesetzt sind.
@@ -16,7 +16,7 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-TimingFrequencyCount-examples.md%}
 
-### TimingPeriodUnit
+#### TimingPeriodUnit
 
 **Beschreibung:**  
 Wenn Wochentage (`dayOfWeek`) angegeben sind, muss die Zeiteinheit (`periodUnit`) "Woche" (`wk`) sein, andernfalls "Tag" (`d`).
@@ -28,7 +28,7 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-TimingPeriodUnit-examples.md%}
 
-### TimingOnlyOneType
+#### TimingOnlyOneType
 
 **Beschreibung:**  
 Es darf pro Dosierung nur eine Art der Zeitangabe verwendet werden (z.B. ausschließlich `4-Schema`, `TimeOfDay`, `DayOfWeek`, `Interval`, Kombinationen wie `DayOfWeek+TimeOfDay` oder `Interval+TimeOfDay`).
@@ -40,7 +40,7 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-TimingOnlyOneType-examples.md%}
 
-### TimingOnlyOneWhen
+#### TimingOnlyOneWhen
 
 **Beschreibung:**  
 Es darf nicht derselbe Zeitraum des Tages (`when`) in mehreren Dosierungsinstanzen vorkommen.
@@ -52,7 +52,7 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-TimingOnlyOneWhen-examples.md%}
 
-### TimingOnlyWhenOrTimeOfDay
+#### TimingOnlyWhenOrTimeOfDay
 
 **Beschreibung:**  
 Es darf nicht die Tageszeit `timeOfDay` und der Zeitraum des Tages `when` in mehreren Dosierungsinstanzen gleichzeitig vorkommen.
@@ -64,7 +64,7 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-TimingOnlyWhenOrTimeOfDay-examples.md%}
 
-### TimingOnlyOneTimeOfDay
+#### TimingOnlyOneTimeOfDay
 
 **Beschreibung:**  
 Es darf nicht dieselbe Tageszeit (`timeOfDay`) in mehreren Dosierungsinstanzen vorkommen.
@@ -76,7 +76,7 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-TimingOnlyOneTimeOfDay-examples.md%}
 
-### TimingOnlyOneDayOfWeek
+#### TimingOnlyOneDayOfWeek
 
 **Beschreibung:**  
 Es darf nicht derselbe Wochentag (`dayOfWeek`) in mehreren Dosierungsinstanzen vorkommen.
@@ -88,7 +88,7 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-TimingOnlyOneDayOfWeek-examples.md%}
 
-### TimingOnlyOneBounds
+#### TimingOnlyOneBounds
 
 **Beschreibung:**  
 Für die Dauer (`bounds` vom Typ `Duration`) dürfen pro Ressource nur ein Wert und ein Code vorkommen.
@@ -100,7 +100,7 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-TimingOnlyOneBounds-examples.md%}
 
-### TimingIntervalOnlyOneFrequency
+#### TimingIntervalOnlyOneFrequency
 
 **Beschreibung:**  
 Bei Intervallangaben darf es nur eine Dosierungsinstanz geben.
@@ -112,7 +112,7 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-TimingIntervalOnlyOneFrequency-examples.md%}
 
-### TimingOnlyOnePeriodForDayOfWeek
+#### TimingOnlyOnePeriodForDayOfWeek
 
 **Beschreibung:**  
 Wenn für einen Wochentag mehrere Einträge existieren, müssen sich deren Zeitangaben (`when`/`timeOfDay`) unterscheiden.
@@ -124,7 +124,7 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-TimingOnlyOnePeriodForDayOfWeek-examples.md%}
 
-### TimingOnlyOneTimeForInterval
+#### TimingOnlyOneTimeForInterval
 
 **Beschreibung:**  
 Bei Intervallangaben mit Zeitpunkten (`when` oder `timeOfDay`) dürfen die Zeitangaben nicht mehrfach vorkommen und die Periodenangaben müssen eindeutig sein.
@@ -136,7 +136,7 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-TimingOnlyOneTimeForInterval-examples.md%}
 
-### TimingBoundsUnitMatchesCode
+#### TimingBoundsUnitMatchesCode
 
 **Beschreibung:**  
 Die Einheit (`boundsDuration.unit`) muss zum UCUM‑Code (`boundsDuration.code`) passen; z. B. `wk` nur mit „Woche(n)“, `d` nur mit „Tag(e)“, `mo` nur mit „Monat(e)“, `a` nur mit „Jahr(e)“.
@@ -148,7 +148,7 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-TimingBoundsUnitMatchesCode-examples.md%}
 
-### TimingSingleDosageForTimeOfDay
+#### TimingSingleDosageForTimeOfDay
 
 **Beschreibung:**  
 Wenn nur `timeOfDay` verwendet wird und täglich dosiert wird, sind mehrere Tageszeiten in einem einzigen `Dosage`‑Element zu modellieren. Mehrere `Dosage`‑Elemente sind nur zulässig, wenn sich die Dosis (Wert) unterscheidet.
@@ -160,7 +160,7 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-TimingSingleDosageForTimeOfDay-examples.md%}
 
-### TimingSingleDosageForWhen
+#### TimingSingleDosageForWhen
 
 **Beschreibung:**  
 Wenn nur `when` verwendet wird und täglich dosiert wird, sind mehrere Zeitabschnitte des Tages in einem einzigen `Dosage`‑Element zu modellieren. Mehrere `Dosage`‑Elemente sind nur zulässig, wenn sich die Dosis (Wert) unterscheidet.
@@ -172,11 +172,11 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-TimingSingleDosageForWhen-examples.md%}
 
-## Dosage-bezogene Constraints
+### Dosage-bezogene Constraints
 
 Die folgenden Invarianten beziehen sich auf das Dosage-Element insgesamt (nicht nur auf `timing.repeat`). Sie wirken über alle Dosierungsinstanzen einer Ressource (z. B. alle `dosageInstruction` eines `MedicationRequest`).
 
-### DosageStructuredOrFreeText / DosageStructuredOrFreeTextWarning
+#### DosageStructuredOrFreeText / DosageStructuredOrFreeTextWarning
 
 **Beschreibung:**  
 Eine Dosierungsangabe darf entweder vollständig strukturiert (mit `timing` und/oder `doseAndRate`) oder ausschließlich als Freitext (`text`) vorliegen - eine Mischung ist nicht zulässig.
@@ -195,7 +195,7 @@ Gültige Varianten (Warnungskontext – nur Text oder nur Struktur):
 
 {% include dosage-constraint-DosageStructuredOrFreeTextWarning-examples.md%}
 
-### DosageStructuredRequiresBoth
+#### DosageStructuredRequiresBoth
 
 **Beschreibung:**  
 Wenn eine strukturierte Dosierung angegeben wird, müssen sowohl zeitliche Angaben (`timing`) als auch die Dosis (`doseAndRate`) vorhanden sein.
@@ -207,7 +207,7 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-DosageStructuredRequiresBoth-examples.md%}
 
-### DosageStructuredRequiresGeneratedText
+#### DosageStructuredRequiresGeneratedText
 
 **Beschreibung:**  
 Liegt eine strukturierte Dosierung vor (strukturierte Elemente befüllt, Freitext leer), muss die Extension `GeneratedDosageInstructionsMeta` existieren sowie genau eine der FHIR R5 RenderedDosageInstruction-Extensions passend zur Ressource (MedicationRequest/Dispense/Statement).
@@ -219,7 +219,19 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-DosageStructuredRequiresGeneratedText-examples.md%}
 
-### DosageDoseUnitSameCode
+#### FreeTextSingleDosageOnly
+
+**Beschreibung:**  
+Wenn eine Dosierung als reiner Freitext angegeben ist (nur `text`, kein `timing`/`doseAndRate`), darf in der Ressource insgesamt nur genau ein `Dosage`‑Eintrag vorkommen.
+
+**Warum?**  
+Verhindert widersprüchliche oder doppelte Freitextangaben, die nicht automatisch zusammengeführt werden können. Fördert eindeutige, konsolidierte Freitext‑Anweisungen, wenn keine strukturierte Modellierung erfolgt.
+
+Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
+
+{% include dosage-constraint-FreeTextSingleDosageOnly-examples.md%}
+
+#### DosageDoseUnitSameCode
 
 **Beschreibung:**  
 Alle Dosierungsinstanzen innerhalb derselben Ressource müssen dieselbe Dosiereinheit (Code) verwenden.
@@ -231,7 +243,7 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-DosageDoseUnitSameCode-examples.md%}
 
-### DosageWarnungViererschemaInText
+#### DosageWarnungViererschemaInText
 
 **Beschreibung:**  
 Warnung, wenn ein klassisches 4-Schema (z. B. Darstellung wie "1-0-1-0") im Freitext angegeben wird, obwohl eine strukturierte Abbildung möglich wäre.

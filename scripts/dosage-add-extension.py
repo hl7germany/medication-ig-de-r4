@@ -4,50 +4,82 @@ import json
 import subprocess
 import shutil
 
-REMOVE_EXTENSION_URL = "http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructions"
+# Extension URLs for different resource types
+EXTENSION_URLS = {
+    "MedicationRequest": "http://hl7.org/fhir/5.0/StructureDefinition/extension-MedicationRequest.renderedDosageInstruction",
+    "MedicationDispense": "http://hl7.org/fhir/5.0/StructureDefinition/extension-MedicationDispense.renderedDosageInstruction",
+    "MedicationStatement": "http://hl7.org/fhir/5.0/StructureDefinition/extension-MedicationStatement.renderedDosageInstruction"
+}
 
-def filter_extensions(extensions):
-    return [ext for ext in extensions if ext.get("url") != REMOVE_EXTENSION_URL]
+# Meta extension URL (same for all resource types)
+META_EXTENSION_URL = "http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta"
 
-def build_extension(dosage_text):
+def filter_rendered_dosage_extensions(extensions, resource_type):
+    """Remove existing renderedDosageInstruction and GeneratedDosageInstructionsMeta extensions."""
+    extension_url = EXTENSION_URLS.get(resource_type)
+    if not extension_url:
+        return extensions
+    return [ext for ext in extensions if ext.get("url") not in [extension_url, META_EXTENSION_URL]]
+
+def build_rendered_dosage_extension(dosage_text, resource_type):
+    """Build a renderedDosageInstruction extension with the consolidated dosage text."""
+    extension_url = EXTENSION_URLS.get(resource_type)
+    if not extension_url:
+        return None
+    
     return {
-        "url": REMOVE_EXTENSION_URL,
+        "url": extension_url,
+        "valueMarkdown": dosage_text
+    }
+
+def build_meta_extension():
+    """Build the GeneratedDosageInstructionsMeta extension with algorithm metadata."""
+    return {
+        "url": META_EXTENSION_URL,
         "extension": [
-            {
-                "url": "text",
-                "valueString": dosage_text
-            },
-                        {
-                "url": "language",
-                "valueCode": "de-DE"
-            },
             {
                 "url": "algorithm",
                 "valueCoding": {
-                    "code": "DgMPDosageTextGenerator",
                     "system": "http://ig.fhir.de/igs/medication/CodeSystem/DosageTextAlgorithm",
+                    "code": "DgMPDosageTextGenerator",
                     "version": "1.0.0"
                 }
             },
-                                   {
+            {
                 "url": "algorithmVersion",
                 "valueString": "1.0.0"
+            },
+            {
+                "url": "language",
+                "valueCode": "de"
             }
         ]
     }
 
-def get_dosage_arrays(resource):
+def has_dosages_without_text(resource):
+    """Check if the resource has dosages without text fields."""
     rtype = resource.get("resourceType")
+    
     if rtype == "MedicationRequest" or rtype == "MedicationDispense":
-        return [resource.get("dosageInstruction", [])]
+        dosages = resource.get("dosageInstruction", [])
     elif rtype == "MedicationStatement":
-        return [resource.get("dosage", [])]
-    return []
+        dosages = resource.get("dosage", [])
+    else:
+        return False
+    
+    # Check if there are any dosages without text
+    for dosage in dosages:
+        if "text" not in dosage:
+            return True
+    return False
 
-def run_dosage_to_text(script_path, dosage):
-    import tempfile
-    with tempfile.NamedTemporaryFile("w", delete=False, suffix=".json", encoding="utf-8") as tf:
-        json.dump(dosage, tf, ensure_ascii=False, indent=2)
+def run_consolidated_dosage_to_text(script_path, resource_file_path):
+    """Run the consolidated medication-dosage-to-text.py script on the entire resource."""
+    try:
+        output = subprocess.check_output(['python3', script_path, resource_file_path], text=True).strip()
+        return output.replace('\n', '\n')
+    except Exception as e:
+        return f"Fehler beim Verarbeiten der Dosierung: {e}"
         temp_path = tf.name
     try:
         output = subprocess.check_output(['python3', script_path, temp_path], text=True).strip()
@@ -58,50 +90,71 @@ def run_dosage_to_text(script_path, dosage):
         os.unlink(temp_path)
 
 def process_file(input_path, output_path, script_path):
+    """Process a single medication resource file to add consolidated dosage text."""
     with open(input_path, 'r', encoding='utf-8') as f:
         resource = json.load(f)
 
+    resource_type = resource.get("resourceType")
+    
+    # Skip if resource type is not supported
+    if resource_type not in EXTENSION_URLS:
+        # Just copy the file unchanged
+        with open(output_path, 'w', encoding='utf-8') as f:
+            json.dump(resource, f, indent=2, ensure_ascii=False)
+        return
+
+    # Skip if resource has no dosages without text
+    if not has_dosages_without_text(resource):
+        # Just copy the file unchanged
+        with open(output_path, 'w', encoding='utf-8') as f:
+            json.dump(resource, f, indent=2, ensure_ascii=False)
+        return
+
     changed = False
-    for dosage_array in get_dosage_arrays(resource):
-        for dosage in dosage_array:
-            # Skip dosages with a "text" field
-            if "text" in dosage:
-                continue
-            # Remove existing extension
-            if "extension" in dosage:
-                old = len(dosage["extension"])
-                dosage["extension"] = filter_extensions(dosage["extension"])
-                if len(dosage["extension"]) != old:
-                    changed = True
-                if not dosage["extension"]:
-                    del dosage["extension"]
-                    changed = True
+    
+    # Remove existing renderedDosageInstruction and meta extensions if present
+    if "extension" in resource:
+        old_count = len(resource["extension"])
+        resource["extension"] = filter_rendered_dosage_extensions(resource["extension"], resource_type)
+        if len(resource["extension"]) != old_count:
+            changed = True
+        if not resource["extension"]:
+            del resource["extension"]
+            changed = True
 
-            # Generate text for this dosage
-            dosage_text = run_dosage_to_text(script_path, dosage)
-            # Only add if there's a result
-            if dosage_text:
-                if "extension" not in dosage:
-                    dosage["extension"] = []
-                dosage["extension"].append(build_extension(dosage_text))
-                changed = True
+    # Generate consolidated dosage text for the entire resource
+    dosage_text = run_consolidated_dosage_to_text(script_path, input_path)
+    
+    # Only add extensions if there's a valid result
+    if dosage_text and not dosage_text.startswith("Fehler"):
+        # Build the renderedDosageInstruction extension
+        dosage_extension = build_rendered_dosage_extension(dosage_text, resource_type)
+        # Build the meta extension
+        meta_extension = build_meta_extension()
+        
+        if dosage_extension and meta_extension:
+            if "extension" not in resource:
+                resource["extension"] = []
+            resource["extension"].append(dosage_extension)
+            resource["extension"].append(meta_extension)
+            changed = True
 
-    # Write to output folder (overwrite or new file)
+    # Write to output folder
     with open(output_path, 'w', encoding='utf-8') as f:
         json.dump(resource, f, indent=2, ensure_ascii=False)
 
 def main():
     if len(sys.argv) != 4:
-        print("Usage: python3 add-dosage-extensions.py input_folder output_folder dosage-to-text.py")
+        print("Usage: python3 dosage-add-extension.py input_folder output_folder medication-dosage-to-text.py")
         sys.exit(1)
 
     input_folder = sys.argv[1]
     output_folder = sys.argv[2]
-    dosage_to_text_script_path = sys.argv[3]
+    consolidated_script_path = sys.argv[3]
 
     os.makedirs(output_folder, exist_ok=True)
     
-    # Filter only Valid files
+    # Filter only valid medication resource files
     RESOURCE_PREFIXES = ("MedicationRequest", "MedicationDispense", "MedicationStatement")
 
     files = [
@@ -114,17 +167,18 @@ def main():
         )
     ]
 
-
+    processed_count = 0
     for filename in files:
         input_path = os.path.join(input_folder, filename)
         output_path = os.path.join(output_folder, filename)
         try:
-            process_file(input_path, output_path, dosage_to_text_script_path)
+            process_file(input_path, output_path, consolidated_script_path)
+            processed_count += 1
         except Exception as e:
             print(f"Error processing {filename}: {e}")
             shutil.copy2(input_path, output_path)
 
-    print(f"Processed add dosage extension.")
+    print(f"Processed {processed_count} files and added renderedDosageInstruction and GeneratedDosageInstructionsMeta extensions.")
     
 if __name__ == "__main__":
     main()

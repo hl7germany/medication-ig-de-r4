@@ -5,7 +5,7 @@ Diese Seite beschreibt fachliche Aspekte und Entscheidungen zur Handhabung von s
 ### Kardinalitäten und Weiterentwicklung der dgMP-Profile
 
 Das Projekt wird iterativ weiterentwickelt. In den dgMP-Profilen werden Felder, die in der aktuellen Ausbaustufe nicht berücksichtigt werden, durch die Kardinalität 0..0 ausgeschlossen.  
-Dies bedeutet jedoch nicht, dass diese Felder in zukünftigen Ausbaustufen nicht relevant werden. Implementierungen sollen daher so gestaltet sein, dass sie zusätzliche, bislang nicht genutzte Angaben beim Lesen ignorieren und keine Fehler verursachen. Es gilt: Verarbeitet werden soll, was verarbeitet werden kann – alles Weitere wird ignoriert.
+Dies bedeutet jedoch nicht, dass diese Felder in zukünftigen Ausbaustufen nicht relevant werden. Implementierungen sollen daher so gestaltet sein, dass sie zusätzliche, bislang nicht genutzte Angaben beim Lesen ignorieren und keine Fehler verursachen. Es gilt: Verarbeitet werden soll, was verarbeitet werden kann - alles Weitere wird ignoriert.
 
 ### Nutzung des Feldes `.text`
 
@@ -17,7 +17,7 @@ Softwaresysteme müssen Dosierungsangaben stets strukturiert erfassen, sofern ei
 
 Das Feld `Dosage.text` ist **ausschließlich** für vom Menschen erzeugten Freitext vorgesehen. Es darf nicht gleichzeitig mit einer strukturierten Angabe verwendet werden, um widersprüchliche Informationen zu vermeiden.
 
-Im Kontext des dgMP sorgt die [Infrastruktur zur Bereitstellung des Dosierungstextes](./dosierung-text-hinzufuegen.html) dafür, dass zu jeder strukturierten Dosierung auch eine einheitliche, maschinell generierte textuelle Repräsentation bereitgestellt wird. Dieser Text wird in der Extension `Dosage.extension[GeneratedDosageInstructionsEx]` hinterlegt.
+Im Kontext des dgMP sorgt die [Infrastruktur zur Bereitstellung des Dosierungstextes](./dosierung-text-hinzufuegen.html) dafür, dass zu jeder strukturierten Dosierung auch eine einheitliche, maschinell generierte textuelle Repräsentation bereitgestellt wird. Dieser Text wird in der Extension `Dosage.extension[GeneratedDosageInstructionsMeta]` hinterlegt.
 
 ### Verwendung mehrerer Dosages
 

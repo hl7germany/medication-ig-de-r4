@@ -8,7 +8,7 @@ Eine zentrale fachliche und technische Herausforderung im digital gestützten Me
 
 ### Zielsetzung
 
-Um Missverständnisse und Abweichungen bei der Darstellung von Dosierungsanweisungen zu vermeiden, wird der Text zur strukturierten Dosierung **nach einem einheitlichen, standardisierten Algorithmus erzeugt**. Dabei sind die Primärsysteme verpflichtet, den Dosierungstext einer strukturierten Dosierung lokal zu generieren und in das entsprechende Feld ([Dosage.extension[GeneratedDosageInstructions]](./StructureDefinition-GeneratedDosageInstructions.html)) einzutragen. Die zentralen Dienste validieren dann, ob der generierte Text korrekt ist.
+Um Missverständnisse und Abweichungen bei der Darstellung von Dosierungsanweisungen zu vermeiden, wird der Text zur strukturierten Dosierung **nach einem einheitlichen, standardisierten Algorithmus erzeugt**. Dabei sind die Primärsysteme verpflichtet, den Dosierungstext einer strukturierten Dosierung lokal zu generieren und in das entsprechende Feld ([Dosage.extension[GeneratedDosageInstructionsMeta]](./StructureDefinition-GeneratedDosageInstructionsMeta.html)) einzutragen. Die zentralen Dienste validieren dann, ob der generierte Text korrekt ist.
 
 ### Technische Umsetzung und Ablauf
 
@@ -22,7 +22,7 @@ Sofern keine Freitextdosierung angegeben wird, erfolgt die Generierung und Berei
    - Validierende Systeme generieren den Dosierungstext mittels des festgelegten Algorithmus erneut und vergleichen ihn mit dem von den Erfassenden Systemen übermittelten Text, um Regelkonformität und Konsistenz sicherzustellen.
 
 3. **Anzeige und Weitergabe:**
-   - Darstellende Systeme können entweder die strukturierten Daten oder – falls sie diese nicht interpretieren können – den generierten Text anzeigen.
+   - Darstellende Systeme können entweder die strukturierten Daten oder - falls sie diese nicht interpretieren können - den generierten Text anzeigen.
    - Der validierte Text wird für alle Systeme bereitgestellt, die keine strukturierte Anzeige unterstützen.
 
 ### Annahmen und Rahmenbedingungen

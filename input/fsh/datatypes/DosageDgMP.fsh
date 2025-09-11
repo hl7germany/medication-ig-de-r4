@@ -5,16 +5,6 @@ Title: "Dosage dgMP"
 Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenommen wird/wurde oder eingenommen werden soll."
 * obeys DosageStructuredOrFreeText
 * obeys DosageStructuredRequiresGeneratedText
-* extension[generatedDosageInstructions]
-  * extension[algorithm] 1..
-    * valueCoding  // The algorithm used to generate the text
-      * ^patternCoding.system = Canonical(DosageTextAlgorithmCS)
-      * ^patternCoding.code = #DgMPDosageTextGenerator
-  * extension[algorithmVersion] 1.. 
-    * valueString // The version of the algorithm used to generate the text
-  * extension[language] 1.. 
-    * valueCode from AlgorithmLanguageCodesDgMPVS
-
   
 * timing only TimingDgMP
 * doseAndRate 0..1 // Nur eine Dosierung für eine Medikation erlauben
@@ -63,13 +53,29 @@ Expression: "(%resource.ofType(MedicationRequest).dosageInstruction |
 Severity: #error
 
 Invariant: DosageStructuredRequiresGeneratedText
-Description: "Liegt eine strukturierte Dosierungsangabe vor (timing und doseAndRate belegt, text leer), muss die Extension GeneratedDosageInstructions vorhanden sein."
-Expression: "(%resource.ofType(MedicationRequest).dosageInstruction | 
- ofType(MedicationDispense).dosageInstruction | 
- ofType(MedicationStatement).dosage).all(
-  (timing.exists() and doseAndRate.exists() and text.empty()) 
-  implies 
-  extension.where(url = 'http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructions').exists()
+Description: "Liegt eine strukturierte Dosierungsangabe vor (timing und doseAndRate belegt, text leer), muss die Extension GeneratedDosageInstructionsMeta vorhanden sein."
+Expression: "(
+  (%resource.ofType(MedicationRequest).dosageInstruction |
+   %resource.ofType(MedicationDispense).dosageInstruction |
+   %resource.ofType(MedicationStatement).dosage
+  ).exists(timing.exists() and doseAndRate.exists() and text.empty())
+)
+implies
+(
+%resource.extension.where(
+  url = 'http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta'
+).exists() and
+(
+  %resource.extension.where(
+    url = 'http://hl7.org/fhir/5.0/StructureDefinition/extension-MedicationRequest.renderedDosageInstruction'
+  ).exists() or
+  %resource.extension.where(
+    url = 'http://hl7.org/fhir/5.0/StructureDefinition/extension-MedicationDispense.renderedDosageInstruction'
+  ).exists() or
+  %resource.extension.where(
+    url = 'http://hl7.org/fhir/5.0/StructureDefinition/extension-MedicationStatement.renderedDosageInstruction'
+  ).exists() 
+)
 )
 "
 Severity: #error

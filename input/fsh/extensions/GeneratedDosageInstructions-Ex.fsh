@@ -1,15 +1,12 @@
-Extension: GeneratedDosageInstructionsEx
-Id: GeneratedDosageInstructions
-Title: "Generated Dosage Instructions"
-Description: "Diese Extension enthält die automatisch generierte textuelle Dosierungsanweisung, die auf Basis der bereitgestellten strukturierten Dosierungsinformationen erstellt wurde."
-Context: Dosage
+Extension: GeneratedDosageInstructionsMetaEx
+Id: GeneratedDosageInstructionsMeta
+Title: "Generated Dosage Instructions Meta"
+Description: "Diese Extension enthält die Metainformationen zur generierten textuellen Dosierungsanweisung, die auf Basis der bereitgestellten strukturierten Dosierungsinformationen erstellt wurde."
+Context: MedicationRequest, MedicationDispense, MedicationStatement
 * extension contains 
-  text 1..1 MS and
   language 0..1 MS and
   algorithm 0..1 MS and
   algorithmVersion 0..1 MS 
-* extension[text]
-  * valueString 1.. MS
 * extension[language]
   * valueCode 1.. MS
   * valueCode from $all-languages-vs

@@ -1,111 +1,88 @@
-*Hinweis:*  
-Ein Großteil der Logik basiert auf den Empfehlungen aus Dose to Text Translation ([UK Core Implementation Guide for Medicines](https://simplifier.net/guide/ukcoreimplementationguideformedicines/DosetoTextTranslation?version=current)).
+Diese Seite beschreibt die Erzeugung eines menschenlesbaren Dosierungstextes aus einer gesamten Arzneimittel‑Ressource (z. B. `MedicationRequest`, `MedicationDispense`, `MedicationStatement`).
 
-Für eine menschenlesbare Darstellung der Dosierung ist das Feld .text derart zu befüllen, dass die strukturierten Dosierinformationen textuell dargestellt werden.  
-Diese Seite beschreibt den Algorithmus, wie die strukturierten Dosierinformationen in einen String überführt werden können.
+Referenz-Implementierung: [Python Skript](./medication-dosage-to-text.py) (`__version__`). Die dortige Logik übernimmt automatisch Prüfung der unterstützten Felder und Erkennung des passenden Darstellungsmusters ("Schema"). Diese Seite konzentriert sich auf die konkrete Bildung der Textbausteine – also das „Wie wird welches strukturelle Element in Text überführt?“ – damit eine Nachimplementierung ohne Einsicht in den Code möglich ist.
 
-### Grundlegende Festlegungen
+## Überblick
 
-Der generierte Text, der sich aus einer Dosierung ableitet, muss im digital gestützten Medikationsprozess (dgMP) immer exakt der strukturierten Darstellung entsprechen. Diese Seite beschreibt die Spezifikation dieses Algorithmus, der in einer [Python Referenzimplementierung](./dosage-to-text.py) umgesetzt wurde.
-Für Informationen wie im dgMP sichergestellt wird, dass der Text an einer Dosierung korrekt ist siehe [Infrastruktur zur Bereitstellung des Textes der Dosierung](./dosierung-text-hinzufuegen.html).
+Der Algorithmus bildet jeweils eine Dosage in folgendem grundsätzlichen Aufbau ab (sofern vorhanden):
 
-#### Verwendung der Python Referenzimplementierung
-Das Skript kann genau eine FHIR-Dosage Instanz auswerten und den Text beschreiben. Hierzu wird die gewünschte FHIR-Dosage Instanz bspw. als JSON-Datei übergeben. Die Anwendung erfolgt über die Kommandozeile:
+`[Dauer] [Intervall / Grundrhythmus]: [optionale Einschränkung auf Wochentage] [Zeit- oder Tagesabschnittsangaben] [Dosisangabe]`
 
-```bash
-python path-to/dosage-to-text.py <dosage.json>
-```
+Je nach Schema (tägliches Schema, Intervall, Wochentage, konkrete Uhrzeiten, Tagesabschnitt-Codes) werden einzelne Teile weggelassen oder unterschiedlich kombiniert. Stehen mehrere Zeiten / Abschnitte oder mehrere Wochentage zur Verfügung, entstehen getrennte Teilsegmente.
 
-Das Skript liest die Datei `<dosage.json>`, prüft die Felder gemäß den oben beschriebenen Regeln und gibt den generierten Dosierungstext auf der Konsole aus. Bei nicht unterstützten Feldern wird eine entsprechende Fehlermeldung ausgegeben.
+## Textbausteine im Detail
 
-Die Ausgabe ist entweder der generierte Dosierungstext oder eine Fehlermeldung mit Angabe der nicht unterstützten Felder.
+### 1. Dauer (boundsDuration)
+Vorangestellt als: `für {Wert} {Einheit}`. Danach folgt – falls weitere Angaben kommen – ein Doppelpunkt: `für 7 Tage: ...`  
+Pluralisierung abhängig vom Wert (1 → Singular, sonst Plural). Einheiten (z. B. Tag/Tage, Woche/Wochen, Stunde/Stunden) entsprechen den hinterlegten Codes/Units.
 
-### Algorithmus zur Textgenerierung
+### 2. Intervall / Grundrhythmus (frequency / period / periodUnit)
+Aus der Kombination entsteht eine der Formen:
+* Daily Pattern (`periodUnit='d'`, `period=1`):
+  * `frequency=1` → `täglich`
+  * `frequency>1` → `{frequency} x täglich`
+* Wöchentlich (`periodUnit='wk'`, `period=1`): analog `wöchentlich` / `{frequency} x wöchentlich`
+* Sonst:
+  * `frequency=1` → `alle {period} {Einheit(pluralisiert falls nötig)}` (z. B. `alle 8 Stunden`)
+  * `frequency>1` → `{frequency} x alle {period} {Einheit}` (z. B. `3 x alle 8 Stunden`)
 
-Das Skript unterstützt aktuell nur eine Teilmenge der möglichen Felder für Dosierungsangaben.  
-Nicht unterstützte Felder führen dazu, dass die Konfiguration als „nicht unterstützt“ zurückgewiesen wird. Die nicht unterstützten Felder werden explizit benannt.
+Dieses Intervall steht typischerweise am Anfang (nach einer optionalen Dauer) und wird durch `:` vom rechten Teil getrennt, wenn rechts weitere Segmentangaben folgen.
 
-Die unterstützten Felder in Dosage sind:
-  - doseAndRate.doseQuantity
-  - timing.repeat.boundsDuration
-  - timing.repeat.frequency
-  - timing.repeat.period
-  - timing.repeat.periodUnit
-  - timing.repeat.dayOfWeek
-  - timing.repeat.timeOfDay
-  - timing.repeat.when
+### 3. Wochentage (dayOfWeek)
+Wochentage werden – falls vorhanden – in kanonischer Reihenfolge Montag → Sonntag verarbeitet. Darstellung in adverbialer Form: `montags`, `dienstags`, `mittwochs`, ...  
+Varianten:
+* Einheitliche Dosis für mehrere Tage: wahlweise Aufzählung oder (vereinfacht) mehrere Zeilen – in Beispielen wird oft eine Zeile pro Tag verwendet.
+* Unterschiedliche Dosen pro Tag → je eine eigene Zeile / eigenes Segment.
 
-Für alle anderen Felder (z. B. doseAndRate.doseRange, doseAndRate.rateQuantity, timing.event, timing.repeat.count, asNeededBoolean, route, site usw.) gibt das Skript zurück:
-Die Dosiskonfiguration mit den Feldern <Liste> wird derzeit nicht unterstützt. Die Fachdienste in der TI werden diese Instanzen entsprechend auch zurückweisen.
+### 4. Konkrete Zeiten (timeOfDay)
+Uhrzeiten werden als `HH:MM Uhr` ausgegeben (Sortierung aufsteigend).  
+Mehrere Zeiten derselben Dosage → durch Semikolon + Leerzeichen getrennte Paare:  
+`08:00 Uhr — je 1 Stück; 20:00 Uhr — je 2 Stück`
 
-Die Umwandlung der strukturierten Felder erfolgt nur, wenn ausschließlich unterstützte Felder verwendet werden.
+### 5. Tagesabschnitt (when Codes)
+Unterstützte Codes und deutsche Abbildung:
+* `MORN` → morgens
+* `NOON` → mittags
+* `EVE` → abends
+* `NIGHT` → zur Nacht
 
-#### Versionierung des Algorithmus
+Es gibt zwei Nutzungsarten:
+1. Kompakte 4‑Schema Notation (nur when, tägliches Muster): Aus den vier Positionen (Reihenfolge fest: MORN-NOON-EVE-NIGHT) wird ein Muster gebildet: `<MORN>-<NOON>-<EVE>-<NIGHT> <Einheit>`; nicht belegte Positionen → `0`. Beispiel: Dosen morgens 1, abends 2 → `1-0-2-0 Stück`.
+2. Als einzelne Abschnitte analog zu Uhrzeiten (z. B. bei Intervall + when): `morgens — je 1 Stück; abends — je 2 Stück`.
 
-Die Aktuelle Version des Algortimus mit unterstützten Felder ist in der [Python Referenzimplementierung](./dosage-to-text.py) unter `__version__` angegeben und reflektiert die Version des IG's.
+### 6. Dosis (doseAndRate.doseQuantity)
+Format: `je {value} {unit}` (falls `unit` vorhanden).  
+Die erste vorhandene `doseQuantity` wird genutzt. Dezimalwerte werden unverändert wiedergegeben.
 
-### Komponenten und Trennzeichen
+### 7. Zusammensetzung typischer Muster
 
-Die Reihenfolge der Komponenten entspricht der folgenden Logik:
+Die folgenden Muster zeigen, wie die oben beschriebenen Bausteine kombiniert werden. Der Algorithmus entscheidet automatisch anhand der vorhandenen Felder (Details zur Erkennung werden an anderer Stelle beschrieben):
 
-  1. Gesamtdauer der Anwendung (timing.repeat.boundsDuration)
-  2. Interval (frequency, period, periodUnit)
-  3. Wochentag (dayOfWeek)
-  4. Uhrzeit ODER Tageszeit (timeOfDay ODER when)
-  5. Angaben zur Einzeldosis (doseAndRate)
+| Muster | Beschreibung | Aufbau | Beispiel |
+|--------|--------------|--------|----------|
+| 4‑Schema | Tagesabschnittscodes ohne Zeiten/Wochentage, tägliches Muster | `[Dauer ]<MORN>-<NOON>-<EVE>-<NIGHT> <Einheit>` | `1-0-2-0 Stück` / `für 5 Tage: 1-1-1-1 Kapseln` |
+| TimeOfDay | Konkrete Uhrzeiten an einem Tag | `[Dauer ][täglich|{Intervall}]: Zeit — je Dosis[; Zeit2 — je Dosis2 …]` | `täglich: 08:00 Uhr — je 1 Stück; 20:00 Uhr — je 2 Stück` |
+| DayOfWeek | Bestimmte Wochentage, einheitliche oder unterschiedliche Dosen | Je Tag eine Zeile: `{Wochentag} — je {Dosis}` | `montags — je 2 mg` (mehrere Zeilen) |
+| DayOfWeek + Time | Wochentage plus Uhrzeiten oder when | `{Wochentag}: Zeit/Abschnitt — je Dosis[; …]` je Tag | `montags: 08:00 Uhr — je 1 Stück; 20:00 Uhr — je 1 Stück` |
+| Intervall | Reines Intervall ohne Zeiten | `[Dauer ]{Intervall}: je {Dosis}` | `alle 8 Stunden: je 1 Stück` |
+| Intervall + Zeiten/Abschnitte | Intervall plus konkrete Zeiten oder when | `{Intervall}: Zeit/Abschnitt — je Dosis[; …]` | `alle 2 Stunden: 08:00 Uhr — je 1 Stück; 10:00 Uhr — je 1 Stück` |
+| FreeText | Nur freier Dosierungstext (kein Timing) | Zusammengeführter Text | `Nach Bedarf bei Schmerzen` |
 
-Das Format des Strings entspricht folgender Struktur:
-```
-<Gesamtdauer der Anwendung> <Interval>: <Wochentag> — <Uhrzeit ODER Tageszeit> - <Angaben zur Einzeldosis>
-```
+Für eine Übersicht der in diesem IG bereitgestellten Beispiele siehe [Beispiele von erzeugen Dosiertexten](./dosierung-beispiele.html).
 
-### Validierung und Fehlerbehandlung
+### 8. Trennzeichen und Layout
+* Doppelpunkt (`:`) trennt linken Rahmen (Dauer / Intervall / täglich) vom rechten Teil mit konkreten Zeit-/Dosisangaben.
+* Geviertstrich / Gedankenstrich (` — `) verbindet Zeit- oder Abschnittsangabe mit der Dosis.
+* Semikolon + Leerzeichen (`; `) trennt mehrere Zeit-/Abschnitt-Dosis-Paare innerhalb derselben Dosage.
+* Mehrere Dosierungen der Resource werden durch Zeilenumbrüche getrennt.
 
-Wenn in der Dosierungskonfiguration Felder verwendet werden, die aktuell nicht unterstützt sind, wird eine entsprechende Fehlermeldung generiert, z. B.:
-Die Dosiskonfiguration mit den Feldern timing.event, doseAndRate[0].doseRange wird derzeit nicht unterstützt.
+### 9. Fehler & Validierung
+Ergibt sich aus Feldverwendungen außerhalb des unterstützten Umfangs oder aus nicht eindeutig klassifizierbaren Mustern, liefert das Skript einen Fehlertext (Auflistung der betroffenen Felder). Die formale Definition der zulässigen Felder und die Schema-Erkennung sind an anderer Stelle im IG spezifiziert.
 
-Die Prüfung erfolgt sowohl für Felder auf oberster Ebene der Dosierung, als auch für Unterfelder (z. B. innerhalb von doseAndRate oder timing).
+### 10. Versionierung & Erweiterungen
+Die Version des Skripts (`__version__`) spiegelt den Stand dieser Beschreibung wider. Erweiterungen (zusätzliche Felder oder neue Muster) werden inkrementell ergänzt und in künftigen Versionen dokumentiert.
 
-### Erweiterbarkeit
-
-Die Skriptstruktur ist so angelegt, dass künftig weitere Felder durch einfaches Entfernen von Kommentaren und Anpassen der Validierungslogik unterstützt werden können.
-Die Liste der unterstützten Felder sollte mit jeder Version gepflegt und dokumentiert werden.
-
-### Beispiel für unterstützte Felder
-
-Für eine Auflistung von Unterstüzten und nicht-unterstützten Dosierkonfigurationen siehe [Beispiele für Dosierungen](./dosierung-beispiele.html).
-
-### Weiterführende Hinweise
-
-Die vollständige Liste der unterstützten und nicht unterstützten Felder ist im Quelltext dokumentiert und sollte bei Erweiterungen aktualisiert werden.
-
-Die Logik zur eigentlichen Textgenerierung (z. B. Pluralbildung, Formatierung der Zeitangaben) orientiert sich an folgenden Empfehlungen:
-- [Medications Management – Medications List, User Interface Design Guidance, NHS CUI Programme Team, June 2015](https://webarchive.nationalarchives.gov.uk/ukgwa/20160921150545/http://systems.digital.nhs.uk/data/cui/uig)
-- [National Guidelines for On-Screen Display of Medicines Information, Australian Commission on Safety and Quality in Health Care, December 2017](https://www.safetyandquality.gov.au/sites/default/files/migrated/National-guidelines-for-on-screen-display-of-medicines-information.pdf)
-
-und wird kontinuierlich weiterentwickelt.
-
-*Hinweis:*  
-Diese Seite beschreibt den aktuellen Stand der unterstützten Felder und die daraus resultierende Textgenerierung.  
-Für die vollständige Abdeckung aller FHIR-Dosierungsfelder ist eine schrittweise Erweiterung des Skripts vorgesehen.
-
-### Übersetzungslogik
-
-Im folgenden wird für jedes Element ein Beispiel angegeben, wie die Überführung von strukturierter Angabe zu textueller Repräsentation aussieht.
-
-#### Dosage
-
-| Element                       | Darstellung (Deutsch)         | Beispiel(e)           |
-|-------------------------------|-------------------------------|-----------------------|
-| **doseAndRate.doseQuantity**  | `{value} {unit}`              | `50 Milligramm`<br>`2 Stück` |
-
-#### Timing
-
-| Element                | Darstellung (Deutsch)                    | Beispiel(e)                    |
-|------------------------|------------------------------------------|--------------------------------|
-| **repeat.boundsDuration** | `für {value} {unit}`                 | `für 7 Tage`                   |
-| **repeat.frequency/period/periodUnit**      | `periodUnit='d', period=1, frequency=1` `täglich`<br>`periodUnit='d', period=1, frequency>1` `{frequency} x täglich`<br>`periodUnit='wk', period=1, frequency=1` `wöchentlich`<br>`periodUnit='wk', period=1, frequency>1` `{frequency} x wöchentlich`<br>Sonst, frequency=1 `alle {period} {Einheit}`<br>Sonst, frequency>1 `{frequency} x alle {period} {Einheit}` | `täglich`<br>`2 x wöchentlich`<br>`alle 8 Stunden`<br>`3 x alle 8 Stunden` |
-| **repeat.periodUnit**     | Zeit-Einheiten (mit Singular/Plural):<br>`s` = Sekunde/Sekunden<br>`min` = Minute/Minuten<br>`h` = Stunde/Stunden<br>`d` = Tag/Tage<br>`wk` = Woche/Wochen<br>`mo` = Monat/Monate<br>`a` = Jahr/Jahre | |                                |
-| **repeat.dayOfWeek**      | `{dayOfWeek}`<br>Bei mehreren Tagen:<br>`Montag, Mittwoch und Freitag`<br>(vollständige deutsche Wochentagsnamen verwenden) | `Dienstag`<br>`Montag, Mittwoch und Freitag` |
-| **repeat.timeOfDay**      | `um HH:MM Uhr[, HH:MM Uhr …]` (kommagetrennt, immer mit „Uhr“) | `um 10:00 Uhr`<br>`um 08:00 Uhr, 15:00 Uhr`                    |
-| **repeat.when**           | `MORN` = morgens, `NOON` = mittags, `EVE` = abends, `NIGHT` = zur Nacht<br>Mehrere Werte: bei 2 mit „und“, bei >2 mit Kommata und „und“ | `morgens`<br>`morgens und abends`<br>`morgens, mittags und abends`        |
+### 11. Quellen / weiterführende Hinweise
+* UK Core Implementation Guide for Medicines (Dose to Text Translation)
+* NHS CUI User Interface Design Guidance (2015)
+* Australian Commission: National Guidelines for On-Screen Display of Medicines Information (2017)

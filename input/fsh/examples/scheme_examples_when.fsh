@@ -4,6 +4,7 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-10120"
 Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von 1-0-0.5-0 dar"
+* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -29,6 +30,7 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-1020"
 Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung 1-0-2-0 dar"
+* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -54,6 +56,7 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-1020-Unordered"
 Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung 1-0-2-0 unsortiert dar"
+* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -78,6 +81,7 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-1020"
 Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung 1-2-2-0 dar"
+* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -104,6 +108,7 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-1000"
 Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung 1-0-0-0 dar"
+* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -121,6 +126,7 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-1111"
 Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung 1-1-1-1 dar"
+* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -141,6 +147,7 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-1010"
 Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung 1-0-1-0 dar"
+* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -159,6 +166,7 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-1010"
 Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung 1-0-1-0 für 10 Wochen dar"
+* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -178,6 +186,7 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-1010-Unsorted"
 Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung 1-0-1-0 unsortiert dar"
+* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * status = #active
 * intent = #order

@@ -3,6 +3,7 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-Freetext"
 Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Freitext-Dosierung dar"
+* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * status = #active
 * intent = #order

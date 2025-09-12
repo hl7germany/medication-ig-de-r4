@@ -3,7 +3,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-weekday-2t"
 Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von Dienstags und Donnerstags je 2 Stück dar"
-* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -22,7 +21,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-weekday-3t"
 Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von Dienstags, Donnerstags und Samstag je 2 Stück dar"
-* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -42,7 +40,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-2t-1t"
 Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von Montags 2 Stück, Donnerstags 1 Stück dar"
-* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -54,7 +51,6 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
     * period = 1
     * periodUnit = #wk
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
-
 * dosageInstruction[+]
   * timing.repeat
     * dayOfWeek[+] = #thu
@@ -68,7 +64,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-weekday-2t-bound"
 Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von Montags 2 Tabl. für 10 Wochen dar"
-* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -87,7 +82,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-weekday-unsorted"
 Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von unsortierten Wochentagen je 2 Stück dar"
-* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * status = #active
 * intent = #order

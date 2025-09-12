@@ -3,7 +3,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 Count"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
-* insert InsertMandatoryExStubs
 * subject.display = "Unsupported Dosage Count"
 * status = #active
 * intent = #order
@@ -28,7 +27,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 asNeededBoolean"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
-* insert InsertMandatoryExStubs
 * subject.display = "Unsupported Dosage asNeededBoolean"
 * status = #active
 * intent = #order
@@ -47,7 +45,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 asNeededCodeableConcept"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
-* insert InsertMandatoryExStubs
 * subject.display = "Unsupported Dosage asNeededCodeableConcept"
 * status = #active
 * intent = #order
@@ -66,7 +63,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 Method"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
-* insert InsertMandatoryExStubs
 * subject.display = "Unsupported Dosage Method"
 * status = #active
 * intent = #order
@@ -85,7 +81,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 Route"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
-* insert InsertMandatoryExStubs
 * subject.display = "Unsupported Dosage Route"
 * status = #active
 * intent = #order
@@ -104,7 +99,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 Site"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
-* insert InsertMandatoryExStubs
 * subject.display = "Unsupported Dosage Site"
 * status = #active
 * intent = #order
@@ -123,7 +117,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 DoseRange"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
-* insert InsertMandatoryExStubs
 * subject.display = "Unsupported Dosage DoseRange"
 * status = #active
 * intent = #order
@@ -145,7 +138,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 RateQuantity"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
-* insert InsertMandatoryExStubs
 * subject.display = "Unsupported Dosage RateQuantity"
 * status = #active
 * intent = #order
@@ -165,7 +157,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 RateRange"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
-* insert InsertMandatoryExStubs
 * subject.display = "Unsupported Dosage RateRange"
 * status = #active
 * intent = #order
@@ -187,7 +178,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 RateRatio"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
-* insert InsertMandatoryExStubs
 * subject.display = "Unsupported Dosage RateRatio"
 * status = #active
 * intent = #order
@@ -209,7 +199,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 AdditionalInstruction"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
-* insert InsertMandatoryExStubs
 * subject.display = "Unsupported Dosage AdditionalInstruction"
 * status = #active
 * intent = #order
@@ -228,7 +217,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 MaxDosePerPeriod"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
-* insert InsertMandatoryExStubs
 * subject.display = "Unsupported Dosage MaxDosePerPeriod"
 * status = #active
 * intent = #order
@@ -250,7 +238,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 MaxDosePerAdministration"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
-* insert InsertMandatoryExStubs
 * subject.display = "Unsupported Dosage MaxDosePerAdministration"
 * status = #active
 * intent = #order
@@ -270,7 +257,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 MaxDosePerLifetime"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
-* insert InsertMandatoryExStubs
 * subject.display = "Unsupported Dosage MaxDosePerLifetime"
 * status = #active
 * intent = #order
@@ -290,7 +276,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 Count"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
-* insert InsertMandatoryExStubs
 * subject.display = "Unsupported Dosage Count"
 * status = #active
 * intent = #order
@@ -314,7 +299,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 CountMax"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
-* insert InsertMandatoryExStubs
 * subject.display = "Unsupported Dosage CountMax"
 * status = #active
 * intent = #order
@@ -337,7 +321,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 BoundsPeriod"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
-* insert InsertMandatoryExStubs
 * subject.display = "Unsupported Dosage BoundsPeriod"
 * status = #active
 * intent = #order
@@ -362,7 +345,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 BoundsRange"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
-* insert InsertMandatoryExStubs
 * subject.display = "Unsupported Dosage BoundsRange"
 * status = #active
 * intent = #order
@@ -389,7 +371,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 Offset"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
-* insert InsertMandatoryExStubs
 * subject.display = "Unsupported Dosage Offset"
 * status = #active
 * intent = #order
@@ -412,7 +393,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Unsupported Dosage 1 Event"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
-* insert InsertMandatoryExStubs
 * subject.display = "Unsupported Dosage Event"
 * status = #active
 * intent = #order

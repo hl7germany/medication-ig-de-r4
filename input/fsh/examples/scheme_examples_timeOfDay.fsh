@@ -3,7 +3,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-tod-1t-8am"
 Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von 1 Stück um 08:00"
-* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -21,7 +20,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-tod-2-12am"
 Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von 2 Stück um 12:00 Uhr"
-* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -39,7 +37,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-tod-multi"
 Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von 8 Uhr: 2 Stück - 11 Uhr: 1 Stück - 14 Uhr: 1 Stück - 17 Uhr: 1 Stück - 20 Uhr: 1 Stück - 23 Uhr: 1 Stück dar"
-* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -51,7 +48,6 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
     * period = 1
     * periodUnit = #d
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
-
 * dosageInstruction[+]
   * timing.repeat
     * timeOfDay[+] = "11:00:00"
@@ -69,7 +65,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-tod-multi-bound"
 Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung 8 Uhr: 2 Stück - 11 Uhr: 1 Stück - 14 Uhr: 1 Stück - 17 Uhr: 1 Stück - 20 Uhr: 1 Stück - 23 Uhr: 1 Stück, für 10 Tage"
-* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -82,7 +77,6 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
     * periodUnit = #d
     * boundsDuration = 10 $ucum#d "Tag(e)"
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
-
 * dosageInstruction[+]
   * timing.repeat
     * timeOfDay[+] = "11:00:00"
@@ -101,7 +95,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-tod-unsorted"
 Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von 1 Stück und unsortierten Zeiten dar"
-* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * status = #active
 * intent = #order

@@ -3,7 +3,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid Dosage"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for invalid Permutations"
-* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -21,7 +20,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid Dosage"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for invalid Permutations"
-* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -39,7 +37,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid Dosage"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for invalid Permutations"
-* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -57,7 +54,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid Dosage"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for invalid Permutations"
-* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -78,7 +74,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid Dosage"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for invalid Permutations"
-* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -93,7 +88,6 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * periodUnit = #wk
     * boundsDuration = 3 $ucum#wk "Woche(n)"
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
-
 * dosageInstruction[+]
   * timing.repeat
     * dayOfWeek[+] = #mon

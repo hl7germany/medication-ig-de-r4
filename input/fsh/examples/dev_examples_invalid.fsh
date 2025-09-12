@@ -3,7 +3,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid Dosage"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for invalid Permutations"
-* insert InsertMandatoryExStubs
 * subject.display = "DEV Dosage"
 * status = #active
 * intent = #order
@@ -22,7 +21,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid Dosage"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for invalid Permutations"
-* insert InsertMandatoryExStubs
 * subject.display = "DEV Dosage"
 * status = #active
 * intent = #order
@@ -41,7 +39,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid Dosage"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for invalid Permutations"
-* insert InsertMandatoryExStubs
 * subject.display = "DEV Dosage"
 * status = #active
 * intent = #order
@@ -60,7 +57,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid Dosage"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for invalid Permutations"
-* insert InsertMandatoryExStubs
 * subject.display = "DEV Dosage"
 * status = #active
 * intent = #order
@@ -79,7 +75,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid Dosage"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for invalid Permutations"
-* insert InsertMandatoryExStubs
 * subject.display = "DEV Dosage"
 * status = #active
 * intent = #order
@@ -102,7 +97,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid Dosage"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for invalid Permutations"
-* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -114,7 +108,6 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * period = 1
     * periodUnit = #d
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
-
 * dosageInstruction[+]
   * timing.repeat
     * when[+] = #EVE
@@ -128,7 +121,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid Dosage"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for invalid Permutations"
-* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -145,7 +137,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid Dosage"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for invalid Permutations"
-* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -157,7 +148,6 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * period = 1
     * periodUnit = #d
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
-
 * dosageInstruction[+]
   * timing.repeat
     * when[+] = #NOON
@@ -172,7 +162,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid Dosage"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for invalid Permutations"
-* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -184,7 +173,6 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * period = 1
     * periodUnit = #d
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
-
 * dosageInstruction[+]
   * timing.repeat
     * when[+] = #NOON
@@ -199,7 +187,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid Dosage"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for invalid Permutations"
-* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -211,7 +198,6 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * period = 1
     * periodUnit = #d
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
-
 * dosageInstruction[+]
   * timing.repeat
     * when[+] = #MORN
@@ -226,7 +212,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid Dosage"
 Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for invalid Permutations"
-* insert InsertMandatoryExStubs
 * subject.display = "DEV Dosage"
 * status = #active
 * intent = #order

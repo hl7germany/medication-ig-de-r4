@@ -6,7 +6,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Warnung: Viererschema im Freitext"
 Description: "Freitext enthält ein Viererschema (1-0-1-0); soll strukturiert modelliert werden."
-* insert InsertMandatoryExStubs
 * status = #active
 * intent = #order
 * subject.display = "Patient"

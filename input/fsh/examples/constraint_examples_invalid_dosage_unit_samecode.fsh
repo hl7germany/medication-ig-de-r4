@@ -6,7 +6,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid: mixed dose units"
 Description: "CAVE: Validation example - two dosageInstructions use different dose unit codes."
-* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * status = #active
 * intent = #order

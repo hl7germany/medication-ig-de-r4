@@ -8,6 +8,7 @@ Context: MedicationRequest, MedicationDispense, MedicationStatement
   algorithmVersion 1..1 MS 
 * extension[language]
   * ^short = "Sprache der generierten Dosierungsanweisung"
+  * ^comment = "Zur Auswahl der deutschen Sprache sollte der Code 'de-DE' verwendet werden"
   * valueCode 1.. MS
   * valueCode from $all-languages-vs
 * extension[algorithmVersion]

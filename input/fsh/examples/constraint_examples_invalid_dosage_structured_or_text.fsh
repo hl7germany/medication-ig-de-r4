@@ -6,7 +6,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid: text + timing"
 Description: "CAVE: Validation example - contains both text and timing (should be either structured OR text)."
-* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -25,7 +24,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid: text + doseAndRate"
 Description: "CAVE: Validation example - contains both text and doseAndRate (should be either structured OR text)."
-* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * status = #active
 * intent = #order

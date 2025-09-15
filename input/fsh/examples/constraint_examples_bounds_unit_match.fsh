@@ -5,7 +5,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid boundsDuration unit/code mismatch"
 Description: "boundsDuration.code 'wk' with unit 'Tag(e)'"
-* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * status = #active
 * intent = #order

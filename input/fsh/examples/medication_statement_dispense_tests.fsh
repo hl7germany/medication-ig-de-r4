@@ -8,7 +8,6 @@ Instance: MS-Dosage-1010
 InstanceOf: MedicationStatementDgMP
 Title: "MedicationStatement Dosage Example - 4-Schema"
 Description: "Example showing 4-Schema pattern in MedicationStatement"
-* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * medicationCodeableConcept.text = "Test Medication"
 * status = #active
@@ -24,7 +23,6 @@ Instance: MS-Dosage-Freetext
 InstanceOf: MedicationStatementDgMP
 Title: "MedicationStatement Dosage Example - FreeText"
 Description: "Example showing FreeText pattern in MedicationStatement"
-* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * medicationCodeableConcept.text = "Test Medication"
 * status = #active
@@ -35,7 +33,6 @@ Instance: MS-Dosage-TimeOfDay
 InstanceOf: MedicationStatementDgMP
 Title: "MedicationStatement Dosage Example - TimeOfDay"
 Description: "Example showing TimeOfDay pattern in MedicationStatement"
-* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * medicationCodeableConcept.text = "Test Medication"
 * status = #active
@@ -55,7 +52,6 @@ Instance: MS-Dosage-DayOfWeek
 InstanceOf: MedicationStatementDgMP
 Title: "MedicationStatement Dosage Example - DayOfWeek"
 Description: "Example showing DayOfWeek pattern in MedicationStatement"
-* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * medicationCodeableConcept.text = "Test Medication"
 * status = #active
@@ -75,7 +71,6 @@ Instance: MS-Dosage-Interval
 InstanceOf: MedicationStatementDgMP
 Title: "MedicationStatement Dosage Example - Interval"
 Description: "Example showing Interval pattern in MedicationStatement"
-* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * medicationCodeableConcept.text = "Test Medication"
 * status = #active
@@ -91,7 +86,6 @@ Instance: MD-Dosage-1020
 InstanceOf: MedicationDispenseDgMP
 Title: "MedicationDispense Dosage Example - 4-Schema"
 Description: "Example showing 4-Schema pattern in MedicationDispense"
-* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * medicationCodeableConcept.text = "Test Medication"
 * status = #completed
@@ -111,7 +105,6 @@ Instance: MD-Dosage-Freetext
 InstanceOf: MedicationDispenseDgMP
 Title: "MedicationDispense Dosage Example - FreeText"
 Description: "Example showing FreeText pattern in MedicationDispense"
-* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * medicationCodeableConcept.text = "Test Medication"
 * status = #completed
@@ -122,7 +115,6 @@ Instance: MD-Dosage-Interval-Time
 InstanceOf: MedicationDispenseDgMP
 Title: "MedicationDispense Dosage Example - Interval and Time"
 Description: "Example showing Interval and Time pattern in MedicationDispense"
-* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * medicationCodeableConcept.text = "Test Medication"
 * status = #completed
@@ -142,7 +134,6 @@ Instance: MD-Dosage-DayOfWeek-Time
 InstanceOf: MedicationDispenseDgMP
 Title: "MedicationDispense Dosage Example - DayOfWeek and Time"
 Description: "Example showing DayOfWeek and Time pattern in MedicationDispense"
-* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * medicationCodeableConcept.text = "Test Medication"
 * status = #completed
@@ -164,7 +155,6 @@ Instance: MD-Dosage-Bounds-Decimals
 InstanceOf: MedicationDispenseDgMP
 Title: "MedicationDispense Dosage Example - Bounds and Decimals"
 Description: "Example showing bounds and decimal doses in MedicationDispense"
-* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * medicationCodeableConcept.text = "Test Medication"
 * status = #completed

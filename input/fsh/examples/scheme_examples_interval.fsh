@@ -3,7 +3,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-interval-8d"
 Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von 1 Stück alle 8 Tage dar"
-* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -19,7 +18,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-interval-2wk"
 Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von 1 Stück alle 2 Wochen dar"
-* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -35,7 +33,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-interval-4times-d"
 Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von 4 x 1 Stück pro Tag dar"
-* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -51,7 +48,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-interval-3d"
 Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von Alle 3 Tage 1 Stück dar"
-* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -67,7 +63,6 @@ InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-interval-2d"
 Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von Alle 2 Tage 2 Stück für 6 Wochen dar"
-* insert InsertMandatoryExStubs
 * subject.display = "Patient"
 * status = #active
 * intent = #order

@@ -1,0 +1,42 @@
+{
+  "resourceType": "MedicationRequest",
+  "status": "active",
+  "intent": "order",
+  "medicationCodeableConcept": {
+    "text": "Ibuprofen 400mg"
+  },
+  "subject": {
+    "display": "Patient"
+  },
+  "dosageInstruction": [
+    {
+      "sequence": 1,
+      "patientInstruction": "Mit Wasser einnehmen",
+      "timing": {
+        "repeat": {
+          "count": 5,
+          "frequency": 1,
+          "period": 1,
+          "periodUnit": "d",
+          "timeOfDay": ["08:00"]
+        }
+      },
+      "doseAndRate": [
+        {
+          "type": {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/dose-rate-type",
+                "code": "ordered"
+              }
+            ]
+          },
+          "doseQuantity": {
+            "value": 1,
+            "unit": "Stück"
+          }
+        }
+      ]
+    }
+  ]
+}

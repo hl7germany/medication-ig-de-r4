@@ -1,0 +1,31 @@
+{
+  "resourceType": "MedicationRequest",
+  "status": "active",
+  "intent": "order",
+  "medicationCodeableConcept": {
+    "text": "Ibuprofen 400mg"
+  },
+  "subject": {
+    "display": "Patient"
+  },
+  "dosageInstruction": [
+    {
+      "timing": {
+        "repeat": {
+          "frequency": 1,
+          "period": 1,
+          "periodUnit": "d",
+          "timeOfDay": ["08:00", "20:00"]
+        }
+      },
+      "doseAndRate": [
+        {
+          "doseQuantity": {
+            "value": 1,
+            "unit": "Stück"
+          }
+        }
+      ]
+    }
+  ]
+}

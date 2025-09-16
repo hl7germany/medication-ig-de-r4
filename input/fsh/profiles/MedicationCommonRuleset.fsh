@@ -10,4 +10,4 @@ RuleSet: MedicationCommonRuleset
     * extension contains GeneratedDosageInstructionsMetaEx named generatedDosageInstructionsMeta 0..1 MS
     * extension[generatedDosageInstructionsMeta]
       * ^short = "Metadaten zu den generierten Dosierungsanweisungen"
-      * ^definition = "Diese Extension enthält zusätzliche Metadaten zu den automatisch generierten Dosierungsanweisungen, wie z.B. Informationen zur Generierung oder zum Ursprung der Daten."
+      * ^definition = "Diese Extension enthält zusätzliche Metadaten zu den automatisch generierten Dosierungsanweisungen."

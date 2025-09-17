@@ -486,7 +486,7 @@ class MedicationDosageTextGenerator:
             return ""
             
         duration_value = bounds_duration.get('value', 0)
-        duration_unit = bounds_duration.get('unit') or bounds_duration.get('code', '')
+        duration_unit = bounds_duration.get('code', '')
         
         if duration_value and duration_unit:
             # Format duration with proper German unit

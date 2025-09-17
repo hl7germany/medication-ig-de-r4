@@ -8,8 +8,8 @@ canonical: http://ig.fhir.de/igs/medication
 name: MedicationDE
 title: Medication IG DE
 # description: Example Implementation Guide for getting started with SUSHI
-status: draft # draft | active | retired | unknown
-version: 1.0.0-ballot
+status: active # draft | active | retired | unknown
+version: 1.0.0
 fhirVersion: 4.0.1 # https://www.hl7.org/fhir/valueset-FHIR-version.html
 copyrightYear: 2025+
 releaseLabel: STU1

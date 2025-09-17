@@ -4,6 +4,8 @@ Referenz-Implementierung: [Python Skript](https://github.com/hl7germany/dgMP-Dos
 
 Das Skript ist außerhalb dieses Implementation Guides gelagert und kann in der Versionierung auch abweichen. In den Beispielen ist ersichtlich welche Version der Referenzimplementierung zum Zeitpunkt der Erstellung genutzt wurde.
 
+Voraussetzung für die Textgenerierung ist profilkonformer Input; im Profil gestrichene Elemente sind nicht Teil der Verarbeitung.
+
 ## Überblick
 
 Der Algorithmus bildet jeweils eine Dosage in folgendem grundsätzlichen Aufbau ab (sofern vorhanden):

@@ -207,17 +207,13 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-DosageStructuredRequiresBoth-examples.md%}
 
-#### DosageStructuredRequiresGeneratedText
+#### DosageRequiresGeneratedText
 
 **Beschreibung:**  
-Liegt eine strukturierte Dosierung vor (strukturierte Elemente befüllt, Freitext leer), muss die Extension `GeneratedDosageInstructionsMeta` existieren sowie genau eine der FHIR R5 RenderedDosageInstruction-Extensions passend zur Ressource (MedicationRequest/Dispense/Statement).
+Unabhängig von der Art der Dosierungsangabe (strukturiert oder Freitext) müssen die Extension `GeneratedDosageInstructionsMeta` sowie genau eine der FHIR R5 RenderedDosageInstruction-Extensions passend zur Ressource (MedicationRequest/Dispense/Statement) vorhanden sein.
 
 **Warum?**  
-Dokumentiert, dass ein (maschinen-)generierter, patientenlesbarer Dosierungstext verfügbar ist und stellt die Nachvollziehbarkeit der Generierung sicher.
-
-Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
-
-{% include dosage-constraint-DosageStructuredRequiresGeneratedText-examples.md%}
+Stellt sicher, dass immer ein patientenlesbarer Dosierungstext verfügbar ist - entweder der vom Anwender eingegebene Freitext oder ein maschinell generierter Text aus strukturierten Daten. Die Extensions dokumentieren die Herkunft und Nachvollziehbarkeit der Textgenerierung.
 
 #### FreeTextSingleDosageOnly
 

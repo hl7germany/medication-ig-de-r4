@@ -6,6 +6,7 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
 * obeys DosageStructuredOrFreeText
 * obeys DosageRequiresGeneratedText
 * obeys FreeTextSingleDosageOnly
+* obeys FreeTextMatchesRenderedText
 * timing only TimingDgMP
 * doseAndRate 0..1 // Nur eine Dosierung für eine Medikation erlauben
   * ^comment = "Begründung Einschränkung Kardinalität: Nur eine Dosierung pro Medikation ist in der ersten Ausbaustufe des dgMP vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
@@ -86,5 +87,36 @@ implies
    %resource.ofType(MedicationDispense).dosageInstruction |
    %resource.ofType(MedicationStatement).dosage
   ).count() = 1
+)"
+Severity: #error
+
+Invariant: FreeTextMatchesRenderedText
+Description: "Wenn eine Dosierung als reiner Freitext angegeben ist (text vorhanden, timing und doseAndRate leer), muss der Wert in dosageInstruction.text mit dem Wert in der Extension renderedDosageInstruction übereinstimmen."
+Expression: "(
+  (%resource.ofType(MedicationRequest).dosageInstruction |
+   %resource.ofType(MedicationDispense).dosageInstruction |
+   %resource.ofType(MedicationStatement).dosage
+  ).where(text.exists() and timing.empty() and doseAndRate.empty()).exists()
+)
+implies
+(
+  (
+    %resource.ofType(MedicationRequest).exists() and
+    %resource.extension.where(
+      url = 'http://hl7.org/fhir/5.0/StructureDefinition/extension-MedicationRequest.renderedDosageInstruction'
+    ).value = %resource.dosageInstruction.text
+  ) or
+  (
+    %resource.ofType(MedicationDispense).exists() and
+    %resource.extension.where(
+      url = 'http://hl7.org/fhir/5.0/StructureDefinition/extension-MedicationDispense.renderedDosageInstruction'
+    ).value = %resource.dosageInstruction.text
+  ) or
+  (
+    %resource.ofType(MedicationStatement).exists() and
+    %resource.extension.where(
+      url = 'http://hl7.org/fhir/5.0/StructureDefinition/extension-MedicationStatement.renderedDosageInstruction'
+    ).value = %resource.dosage.text
+  )
 )"
 Severity: #error

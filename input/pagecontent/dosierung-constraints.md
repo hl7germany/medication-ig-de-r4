@@ -215,6 +215,22 @@ Unabhängig von der Art der Dosierungsangabe (strukturiert oder Freitext) müsse
 **Warum?**  
 Stellt sicher, dass immer ein patientenlesbarer Dosierungstext verfügbar ist - entweder der vom Anwender eingegebene Freitext oder ein maschinell generierter Text aus strukturierten Daten. Die Extensions dokumentieren die Herkunft und Nachvollziehbarkeit der Textgenerierung.
 
+Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
+
+{% include dosage-constraint-DosageRequiresGeneratedText-examples.md%}
+
+#### FreeTextMatchesRenderedText
+
+**Beschreibung:**  
+Wenn eine Dosierung als reiner Freitext angegeben ist (nur `text`, kein `timing`/`doseAndRate`), muss der Wert in `dosageInstruction.text` exakt mit dem Wert in der Extension `renderedDosageInstruction` übereinstimmen.
+
+**Warum?**  
+Verhindert Inkonsistenzen zwischen der Freitextangabe und der gerenderten Dosierungsanweisung. Dies stellt sicher, dass der vom Anwender eingegebene Freitext konsistent in der Extension für die Darstellung übernommen wird.
+
+Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
+
+{% include dosage-constraint-FreeTextMatchesRenderedText-examples.md%}
+
 #### FreeTextSingleDosageOnly
 
 **Beschreibung:**  

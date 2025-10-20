@@ -1,7 +1,7 @@
 | File | doseQuantity | duration | durationUnit | frequency | period | periodUnit | Day<br>of<br>Week | Time<br>Of<br>Day | when | bounds[x] |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| [MedicationRequest-Invalid-Dosage-C-TimingFrequencyCount-03-of-05](./MedicationRequest-Invalid-Dosage-C-TimingFrequencyCount-03-of-05.html) | 2 Stück |  |  | 3 | 1 | wk | tue, thu |  |  |  |
 | [MedicationRequest-Invalid-Dosage-C-TimingFrequencyCount-01-of-05](./MedicationRequest-Invalid-Dosage-C-TimingFrequencyCount-01-of-05.html) | 1 Stück |  |  | 2 | 1 | d |  |  | MORN |  |
-| [MedicationRequest-Invalid-Dosage-C-TimingFrequencyCount-04-of-05](./MedicationRequest-Invalid-Dosage-C-TimingFrequencyCount-04-of-05.html) | 1 Stück<br>2 Stück |  |  | 3<br>2 | 2 | d |  | 08:00:00, 20:00:00<br>10:00:00, 14:00:00, 22:00:00 |  |  |
 | [MedicationRequest-Invalid-Dosage-C-TimingFrequencyCount-02-of-05](./MedicationRequest-Invalid-Dosage-C-TimingFrequencyCount-02-of-05.html) | 1 Stück |  |  | 2 | 1 | d |  | 08:00:00 |  |  |
+| [MedicationRequest-Invalid-Dosage-C-TimingFrequencyCount-03-of-05](./MedicationRequest-Invalid-Dosage-C-TimingFrequencyCount-03-of-05.html) | 2 Stück |  |  | 3 | 1 | wk | tue, thu |  |  |  |
+| [MedicationRequest-Invalid-Dosage-C-TimingFrequencyCount-04-of-05](./MedicationRequest-Invalid-Dosage-C-TimingFrequencyCount-04-of-05.html) | 1 Stück<br>2 Stück |  |  | 3<br>2 | 2 | d |  | 08:00:00, 20:00:00<br>10:00:00, 14:00:00, 22:00:00 |  |  |
 | [MedicationRequest-Invalid-Dosage-C-TimingFrequencyCount-05-of-05](./MedicationRequest-Invalid-Dosage-C-TimingFrequencyCount-05-of-05.html) | 1 Stück |  |  | 3 | 1 | wk | mon, fri |  | MORN | {'system': 'http://unitsofmeasure.org', 'value': 3, 'code': 'wk', 'unit': 'Woche(n)'} |

@@ -1,6 +1,7 @@
 import os
 import sys
 import json
+import re
 from typing import List, Dict, Any
 
 MATRIX_COLUMNS = [
@@ -96,6 +97,16 @@ def extract_constraints_from_element(sd: Dict[str, Any], element_id: str, source
             break
     return results
 
+def natural_sort_key(filename: str) -> tuple:
+    """Generate a sort key that handles numbers naturally (e.g., 01-of-02 before 02-of-02).
+    
+    Splits filename into text and number components for proper natural sorting.
+    """
+    def convert(text):
+        return int(text) if text.isdigit() else text.lower()
+    
+    return tuple(convert(c) for c in re.split(r'(\d+)', filename))
+
 def generate_matrix_for_constraint(input_folder, output_path, constraint_key, severity):
     """Generate matrix for a specific constraint key. Returns True if examples found.
 
@@ -111,6 +122,10 @@ def generate_matrix_for_constraint(input_folder, output_path, constraint_key, se
             continue
         if any(m in f for m in markers):
             all_files.append(f)
+    
+    # Sort files naturally (01-of-02 before 02-of-02)
+    all_files.sort(key=natural_sort_key)
+    
     matrix_rows = []
     for filename in all_files:
         file_path = os.path.join(input_folder, filename)

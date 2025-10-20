@@ -18,7 +18,7 @@ Description: "Invalid: Freitext-Dosierung vorhanden, aber der Wert in dosageInst
   * url = "http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta"
   * extension[+]
     * url = "algorithmVersion"
-    * valueString = "1.0.0"
+    * valueString = "1.0.1"
   * extension[+]
     * url = "language"
     * valueCode = #de-DE

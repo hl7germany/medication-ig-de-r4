@@ -45,7 +45,7 @@ def build_meta_extension():
         "extension": [
             {
                 "url": "algorithmVersion",
-                "valueString": "1.0.0"
+                "valueString": "1.0.1"
             },
             {
                 "url": "language",
@@ -68,6 +68,12 @@ def is_invalid_or_unsupported(filename: str) -> bool:
     name = os.path.basename(filename)
     lower = name.lower()
     return ("-invalid-" in lower) or ("-unsupported-" in lower)
+
+def should_skip_extension_generation(filename: str) -> bool:
+    """Detect instances where extensions should NOT be generated at all (e.g., constraint test examples)."""
+    name = os.path.basename(filename)
+    # Skip generation for constraint test examples that intentionally lack extensions
+    return "Invalid-Dosage-C-DosageRequiresGeneratedText" in name
 
 def remove_all_placeholders(resource: dict) -> bool:
     """Remove any renderedDosageInstruction (all variants) and GeneratedDosageInstructionsMeta."""
@@ -111,6 +117,18 @@ def process_file(input_path, output_path, script_path):
     # Skip if resource type is not supported
     if resource_type not in EXTENSION_URLS:
         # Just copy the file unchanged
+        with open(output_path, 'w', encoding='utf-8') as f:
+            json.dump(resource, f, indent=2, ensure_ascii=False)
+        return
+
+    # Skip extension generation for constraint test examples
+    if should_skip_extension_generation(input_path):
+        # Remove any existing extensions (renderedDosageInstruction and GeneratedDosageInstructionsMeta)
+        if "extension" in resource:
+            resource["extension"] = filter_rendered_dosage_extensions(resource["extension"], resource_type)
+            if not resource["extension"]:
+                del resource["extension"]
+        # Write the file without extensions
         with open(output_path, 'w', encoding='utf-8') as f:
             json.dump(resource, f, indent=2, ensure_ascii=False)
         return

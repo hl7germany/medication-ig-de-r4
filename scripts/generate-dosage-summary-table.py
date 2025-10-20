@@ -5,7 +5,7 @@ import sys
 import subprocess
 from pathlib import Path
 
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 
 def find_medication_resources(resources_dir):
     """Find all MedicationRequest, MedicationDispense, and MedicationStatement JSON files."""

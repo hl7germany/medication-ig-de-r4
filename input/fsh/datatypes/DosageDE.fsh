@@ -71,7 +71,11 @@ Invariant: DosageDoseUnitSameCode
 Description: "Die Dosiereinheit muss über alle Dosierungen gleich sein."
 Expression: "(%resource.ofType(MedicationRequest).dosageInstruction | ofType(MedicationDispense).dosageInstruction | ofType(MedicationStatement).dosage).all(
 doseAndRate.exists() implies
-  %resource.dosageInstruction.doseAndRate.dose.ofType(Quantity).code.distinct().count() = 1
+  (
+    %resource.dosageInstruction.doseAndRate.dose.ofType(Quantity).code | 
+    %resource.dosageInstruction.doseAndRate.dose.ofType(Range).low.code | 
+    %resource.dosageInstruction.doseAndRate.dose.ofType(Range).high.code
+  ).distinct().count() = 1
 )"
 Severity: #error
 

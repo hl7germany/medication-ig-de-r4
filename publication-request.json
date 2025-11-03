@@ -1,10 +1,10 @@
 {
   "package-id" : "de.fhir.medication",
-  "version" : "1.0.1",
-  "path" : "http://ig.fhir.de/igs/medication/1.0.1",
+  "version" : "1.0.2",
+  "path" : "http://ig.fhir.de/igs/medication/1.0.2",
   "mode" : "milestone",
   "status" : "release",
   "sequence" : "STU1",
-  "desc" : "Updated first release after dgMP stakeholder review and feedback.",
+  "desc" : "Reverted change to DosageRequiresGeneratedText constraint to maintain backwards compatibility.",
   "first" : false
 }

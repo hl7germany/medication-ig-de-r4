@@ -45,6 +45,18 @@ Dieser IG verwendet zur Kodierung der doseQuantity [KBV_VS_SFHIR_BMP_DOSIEREINHE
 
 {% include dependency-table.xhtml %}
 
+#### Nutzung von Cross-Version-Extensions
+
+Das DgMP Script schreibt den aggreggierten DosageText für MedicationRequest, MedicationRequest und MedicationStatement nach `.renderedDosageInstruction` - einem R5 Element welches nach R4 ge-backportet wurde. 
+Dies ist ein durch die [FHIR Spezifikation definierter Mechanismus](https://hl7.org/fhir/versions.html#extensions) welcher im [Java FHIR Validator](https://confluence.hl7.org/spaces/FHIR/pages/35718580/Using+the+FHIR+Validator) bereits unterstützt wird. Andere Validatoren müssen ggfs. das passende cross-version-Paket laden. 
+
+Das offiziellen cross-version-Paket war zum Releasezeitpunkt dieses IGs noch nicht in der FHIR-Registry final verfügbar, die ID des packages ist `hl7.fhir.uv.xver-r5.r4`. Bis zum offiziellen Release des cross-version-Pakets kann der [Inhalt des Snapshot-2 releases](https://hl7.org/fhir/uv/xver-r5.r4/0.0.1-snapshot-2/) verwendet werden.
+
+Im Paket sind die benötigten cross-version Extensions enthalten:
+[MedicationDispense.renderedDosageInstruction](https://hl7.org/fhir/uv/xver-r5.r4/0.0.1-snapshot-2/StructureDefinition-ext-R5-MedicationDispense.renderedDosageInstruction.html)
+[MedicationRequest.renderedDosageInstruction](https://hl7.org/fhir/uv/xver-r5.r4/0.0.1-snapshot-2/StructureDefinition-ext-R5-MedicationRequest.renderedDosageInstruction.html)
+[MedicationStatement.renderedDosageInstruction](https://hl7.org/fhir/uv/xver-r5.r4/0.0.1-snapshot-2/StructureDefinition-ext-R5-MedicationStatement.renderedDosageInstruction.html)
+
 ### Kontakt und Feedback
 
 Für Fragen und Feedback wenden Sie sich bitte an [info@hl7.de](mailto:info@hl7.de) oder nutzen Sie das [GitHub-Repository](https://github.com/hl7germany/medication-ig-de-r4/issues).

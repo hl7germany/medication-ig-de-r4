@@ -1,10 +1,10 @@
 {
   "package-id" : "de.fhir.medication",
-  "version" : "1.0.2",
-  "path" : "http://ig.fhir.de/igs/medication/1.0.2",
+  "version" : "1.0.3",
+  "path" : "http://ig.fhir.de/igs/medication/1.0.3",
   "mode" : "milestone",
   "status" : "release",
   "sequence" : "STU1",
-  "desc" : "Reverted change to DosageRequiresGeneratedText constraint to maintain backwards compatibility.",
+  "desc" : "Added guidance on backport extension usage and for defect tim-9 invariant.",
   "first" : false
 }

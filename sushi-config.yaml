@@ -74,6 +74,8 @@ pages:
     title: FHIR Summary
   downloads.md:
     title: Downloads
+  release-notes.md:
+    title: Release Notes
 
 #
 #
@@ -118,7 +120,9 @@ menu:
     Schema für Kombinationen von Wochentagen: schema-wochentag-kombination.html
     Beispiel Dosierungen: dosierung-beispiele.html
   FHIR-Artefakte: artifacts.html
-  Downloads: downloads.html
+  Anhänge:
+    Downloads: downloads.html
+    Release Notes: release-notes.html
 
 parameters:
   path-pages:

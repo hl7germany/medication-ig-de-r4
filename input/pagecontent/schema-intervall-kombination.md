@@ -2,7 +2,7 @@ Es wird ermöglicht, einen Tageszeiten-Bezug oder einen Uhrzeiten-Bezug mit eine
 
 Es wird ermöglicht, die geplante Dauer der Anwendung zu begrenzen.
 
-### Beipiel
+### Beispiel
 
 {% fragment MedicationRequest/Example-MR-Dosage-comb-interval-1 JSON %}
 

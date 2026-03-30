@@ -38,7 +38,7 @@ for entry in root.findall("fhir:entry", FHIR_NS):
         if sev is not None and sev.attrib.get("value", "").lower() == "error":
             total_errors += 1
             # Determine expected/unexpected
-            if filename and ("invalid" in filename.lower() or "unsupported" in filename.lower()):
+            if filename and ("invalid" in filename.lower() or "inv-" in filename.lower() or "unsupported" in filename.lower()):
                 expected_errors += 1
             else:
                 unexpected_errors += 1

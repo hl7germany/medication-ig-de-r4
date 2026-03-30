@@ -1,4 +1,4 @@
-### 1.0.4
+### Release: 1.0.4
 
 **What's Changed**
 
@@ -20,7 +20,7 @@
 
 ---
 
-### 1.0.3
+### Release: 1.0.3
 
 **What's Changed**
 
@@ -29,7 +29,7 @@
 
 ---
 
-### 1.0.2
+### Release: 1.0.2
 
 **What's Changed**
 
@@ -37,7 +37,7 @@
 
 ---
 
-### 1.0.1
+### Release: 1.0.1
 
 **What's Changed**
 
@@ -46,7 +46,7 @@
 
 ---
 
-### 1.0.0
+### Release: 1.0.0
 
 **What's Changed**
 
@@ -84,6 +84,6 @@
 
 ---
 
-### 1.0.0-ballot
+### Release: 1.0.0-ballot
 
 Release for the first ballot: 1.0.0-ballot

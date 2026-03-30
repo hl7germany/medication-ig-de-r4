@@ -82,8 +82,7 @@ Expression: "(
       ).doseAndRate.dose.ofType(Quantity).value.distinct().count() > 1
     )
   )
-)
-"
+)"
 Severity: #error
 
 Invariant: TimingSingleDosageForWhen
@@ -122,8 +121,7 @@ Expression: "(
       ).doseAndRate.dose.ofType(Quantity).value.distinct().count() > 1
     )
   )
-)
-"
+)"
 Severity: #error
 
 Invariant: TimingBoundsUnitMatchesCode

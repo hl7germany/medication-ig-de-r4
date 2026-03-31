@@ -45,7 +45,7 @@ def build_meta_extension():
         "extension": [
             {
                 "url": "algorithmVersion",
-                "valueString": "1.0.1"
+                "valueString": "1.0.2"
             },
             {
                 "url": "language",

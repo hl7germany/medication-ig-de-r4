@@ -1,8 +1,0 @@
-| File | doseQuantity | duration | durationUnit | frequency | period | periodUnit | Day<br>of<br>Week | Time<br>Of<br>Day | when | bounds[x] |
-| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| [MedicationDispense-INV-redundant-03-of-04-C-TimingNoRedundantDosageForDay-MD](./MedicationDispense-INV-redundant-03-of-04-C-TimingNoRedundantDosageForDay-MD.html) | 1 Stück<br>1 Stück |  |  | 1 | 1 | wk | tue |  | MORN<br>EVE |  |
-| [MedicationDispense-INV-redundant-05-of-06-C-TimingNoRedundantDosageForDay-MD](./MedicationDispense-INV-redundant-05-of-06-C-TimingNoRedundantDosageForDay-MD.html) | 1 Stück<br>1 Stück |  |  | 1 | 1 | wk | wed | 08:00:00<br>18:00:00 |  |  |
-| [MedicationRequest-INV-redundant-01-of-04-C-TimingNoRedundantDosageForDay](./MedicationRequest-INV-redundant-01-of-04-C-TimingNoRedundantDosageForDay.html) | 1 Stück<br>1 Stück |  |  | 1 | 1 | wk | tue |  | MORN<br>EVE |  |
-| [MedicationRequest-INV-redundant-02-of-04-C-TimingNoRedundantDosageForDay](./MedicationRequest-INV-redundant-02-of-04-C-TimingNoRedundantDosageForDay.html) | 1 Stück<br>1 Stück |  |  | 1 | 1 | wk | wed | 08:00:00<br>18:00:00 |  |  |
-| [MedicationStatement-INV-redundant-04-of-04-C-TimingNoRedundantDosageForDay-MS](./MedicationStatement-INV-redundant-04-of-04-C-TimingNoRedundantDosageForDay-MS.html) | 1 Stück<br>1 Stück |  |  | 1 | 1 | wk | tue |  | MORN<br>EVE |  |
-| [MedicationStatement-INV-redundant-06-of-06-C-TimingNoRedundantDosageForDay-MS](./MedicationStatement-INV-redundant-06-of-06-C-TimingNoRedundantDosageForDay-MS.html) | 1 Stück<br>1 Stück |  |  | 1 | 1 | wk | fri | 09:00:00<br>21:00:00 |  |  |

@@ -124,18 +124,6 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-TimingOnlyOnePeriodForDayOfWeek-examples.md%}
 
-#### TimingNoRedundantDosageForDay
-
-**Beschreibung:**  
-Wenn für denselben Wochentag mehrere `dosageInstruction`-Einträge existieren, sollten diese nur dann getrennt modelliert werden, wenn sich die Dosis (`doseQuantity.value`) unterscheidet. Andernfalls sind die Zeitangaben (`timeOfDay`/`when`) in einer einzigen `dosageInstruction` zusammenzufassen.
-
-**Warum?**  
-Vermeidet redundante Aufspaltungen gleicher Dosisangaben über mehrere `dosageInstruction`-Elemente und erleichtert die automatische Verarbeitung (z. B. Darstellung als eine Einnahme mit mehreren Tageszeiten).
-
-Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
-
-{% include dosage-constraint-TimingNoRedundantDosageForDay-examples.md%}
-
 #### TimingOnlyOneTimeForInterval
 
 **Beschreibung:**  

@@ -5,9 +5,7 @@
 - **Gefixte Invarianten:**
   - **DosageDE**: `DosageStructuredOrFreeTextWarning`, `DosageStructuredRequiresBoth`, `DosageDoseUnitSameCode`
   - **DosageDgMP**: `DosageStructuredOrFreeText`
-  - **TimingDgMP**: `TimingOnlyOneType`, `TimingOnlyOneBounds`, `TimingOnlyOneTimeForInterval`, `TimingOnlyOnePeriodForDayOfWeek`
-- **Neue Invarianten:**
-  - **TimingDgMP**: `TimingNoRedundantDosageForDay`
+  - **TimingDgMP**: `TimingOnlyOneType`, `TimingOnlyOneTimeForInterval`, `TimingOnlyOnePeriodForDayOfWeek`
 
 **Details je Invariante (logische Änderungen)**
 
@@ -31,10 +29,6 @@
   - Vom Fix betroffene Ressourcentypen: `MedicationDispense`, `MedicationStatement`
   - Fix: Fehlende `%resource.`-Präfixe in den Unterbedingungen ergänzt; dadurch greifen die Typprüfungen (`DayOfWeek`, `Interval`, Kombinationsschemata) konsistent pro Ressource.
 
-- **`TimingOnlyOneBounds` (`TimingDgMP`)**
-  - Vom Fix betroffene Ressourcentypen: `MedicationRequest`, `MedicationDispense`, `MedicationStatement`
-  - Fix: Konsistenzprüfung erweitert: Wenn `boundsDuration` genutzt wird, muss die Anzahl der Bounds-Einträge zur Anzahl der Dosage-Elemente passen; dadurch werden unvollständige Bounds-Belegungen erkannt.
-
 - **`TimingOnlyOneTimeForInterval` (`TimingDgMP`)**
   - Vom Fix betroffene Ressourcentypen: `MedicationStatement`
   - Fix: In der `MedicationStatement`-Prüfung wurde eine logisch redundante und inhaltlich falsche Typbedingung entfernt; dadurch wird die Konsistenz von `period`/`periodUnit` auch für `MedicationStatement` tatsächlich geprüft (zusätzlich zur Einzigartigkeitsprüfung von `timeOfDay`/`when`).
@@ -42,10 +36,6 @@
 - **`TimingOnlyOnePeriodForDayOfWeek` (`TimingDgMP`)**
   - Vom Fix betroffene Ressourcentypen: `MedicationRequest`, `MedicationDispense`, `MedicationStatement`
   - Fix: Falsche Collection-vs-Integer-Vergleiche korrigiert (`distinct().count()` statt `distinct()`), damit doppelte `(dayOfWeek + when/timeOfDay)`-Kombinationen korrekt validiert werden.
-
-- **`TimingNoRedundantDosageForDay` (`TimingDgMP`, neu)**
-  - Betroffene Ressourcentypen: `MedicationRequest`, `MedicationDispense`, `MedicationStatement`
-  - Neu: Ergänzt eine Redundanzprüfung für `DayOfWeek + when/timeOfDay`: Bei mehrfach gleichem Wochentag müssen die Dosiswerte unterschiedlich sein; gleiche Dosis soll in ein gemeinsames Dosage-Element zusammengeführt werden.
 
 ---
 

@@ -76,6 +76,11 @@ Description: "CAVE: Validation example - contains both text and doseAndRate (sho
 * medicationCodeableConcept.text = "Ibuprofen 400mg"
 * dosageInstruction[+]
   * text = "2 Stück morgens"
+  * timing.repeat
+    * when[+] = #MORN
+    * frequency = 1
+    * period = 1
+    * periodUnit = #d
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
 Instance: INV-C-DosageStructuredOrFreeText-Statement-02-of-02

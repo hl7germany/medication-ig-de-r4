@@ -15,7 +15,6 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * obeys TimingOnlyOneTimeOfDay
   * obeys TimingOnlyOneDayOfWeek
   * obeys TimingOnlyOnePeriodForDayOfWeek
-  * obeys TimingNoRedundantDosageForDay
   * obeys TimingOnlyOneTimeForInterval
   * obeys TimingOnlyOneBounds
   * obeys TimingFrequencyCount
@@ -280,8 +279,6 @@ Expression: "(
       implies
       %resource.dosageInstruction.timing.repeat.bounds.ofType(Duration).exists().not() or
       (
-        (%resource.dosageInstruction.timing.repeat.bounds.ofType(Duration).count() = %resource.dosageInstruction.count())
-        and
         (%resource.dosageInstruction.timing.repeat.bounds.ofType(Duration).value.distinct().count() = 1)
         and
         (%resource.dosageInstruction.timing.repeat.bounds.ofType(Duration).code.distinct().count() = 1)
@@ -293,8 +290,6 @@ Expression: "(
       implies
       %resource.dosage.timing.repeat.bounds.ofType(Duration).exists().not() or
       (
-        (%resource.dosage.timing.repeat.bounds.ofType(Duration).count() = %resource.dosage.count())
-        and
         (%resource.dosage.timing.repeat.bounds.ofType(Duration).value.distinct().count() = 1)
         and
         (%resource.dosage.timing.repeat.bounds.ofType(Duration).code.distinct().count() = 1)
@@ -524,85 +519,5 @@ Expression: "/* Detect Interval and Time/4-Schema */
       )
     )
   )
-)"
-Severity: #error
-
-Invariant: TimingNoRedundantDosageForDay
-Description: "When using DayOfWeek with timeOfDay/when schema, multiple dosagesInstructions with the same dayOfWeek and doseQuantity should be combined into one dosageInstruction with multiple timeOfDay/when values"
-Expression: "(
-    (%resource.ofType(MedicationRequest).exists() or %resource.ofType(MedicationDispense).exists())
-    implies
-    (
-      /* For each day of week, if it appears multiple times, the doseQuantity must differ */
-      /* Monday */
-      ((%resource.dosageInstruction.timing.repeat.dayOfWeek.where($this = 'mon').count() > 1) implies 
-        (%resource.dosageInstruction.where(timing.repeat.dayOfWeek contains 'mon').doseAndRate.dose.ofType(Quantity).value.distinct().count() = 
-         %resource.dosageInstruction.where(timing.repeat.dayOfWeek contains 'mon').doseAndRate.dose.ofType(Quantity).value.count())) and
-      /* Tuesday */
-      ((%resource.dosageInstruction.timing.repeat.dayOfWeek.where($this = 'tue').count() > 1) implies 
-        (%resource.dosageInstruction.where(timing.repeat.dayOfWeek contains 'tue').doseAndRate.dose.ofType(Quantity).value.distinct().count() = 
-         %resource.dosageInstruction.where(timing.repeat.dayOfWeek contains 'tue').doseAndRate.dose.ofType(Quantity).value.count())) and
-      /* Wednesday */
-      ((%resource.dosageInstruction.timing.repeat.dayOfWeek.where($this = 'wed').count() > 1) implies 
-        (%resource.dosageInstruction.where(timing.repeat.dayOfWeek contains 'wed').doseAndRate.dose.ofType(Quantity).value.distinct().count() = 
-         %resource.dosageInstruction.where(timing.repeat.dayOfWeek contains 'wed').doseAndRate.dose.ofType(Quantity).value.count())) and
-      /* Thursday */
-      ((%resource.dosageInstruction.timing.repeat.dayOfWeek.where($this = 'thu').count() > 1) implies 
-        (%resource.dosageInstruction.where(timing.repeat.dayOfWeek contains 'thu').doseAndRate.dose.ofType(Quantity).value.distinct().count() = 
-         %resource.dosageInstruction.where(timing.repeat.dayOfWeek contains 'thu').doseAndRate.dose.ofType(Quantity).value.count())) and
-      /* Friday */
-      ((%resource.dosageInstruction.timing.repeat.dayOfWeek.where($this = 'fri').count() > 1) implies 
-        (%resource.dosageInstruction.where(timing.repeat.dayOfWeek contains 'fri').doseAndRate.dose.ofType(Quantity).value.distinct().count() = 
-         %resource.dosageInstruction.where(timing.repeat.dayOfWeek contains 'fri').doseAndRate.dose.ofType(Quantity).value.count())) and
-      /* Saturday */
-      ((%resource.dosageInstruction.timing.repeat.dayOfWeek.where($this = 'sat').count() > 1) implies 
-        (%resource.dosageInstruction.where(timing.repeat.dayOfWeek contains 'sat').doseAndRate.dose.ofType(Quantity).value.distinct().count() = 
-         %resource.dosageInstruction.where(timing.repeat.dayOfWeek contains 'sat').doseAndRate.dose.ofType(Quantity).value.count())) and
-      /* Sunday */
-      ((%resource.dosageInstruction.timing.repeat.dayOfWeek.where($this = 'sun').count() > 1) implies 
-        (%resource.dosageInstruction.where(timing.repeat.dayOfWeek contains 'sun').doseAndRate.dose.ofType(Quantity).value.distinct().count() = 
-         %resource.dosageInstruction.where(timing.repeat.dayOfWeek contains 'sun').doseAndRate.dose.ofType(Quantity).value.count()))
-    )
-  )
-  and
-  (
-  %resource.ofType(MedicationStatement).exists()
-  implies
-    (
-      /* Monday */
-      ((%resource.ofType(MedicationStatement).dosage.timing.repeat.dayOfWeek.where($this = 'mon').count() > 1) implies 
-        (%resource.ofType(MedicationStatement).dosage.where(timing.repeat.dayOfWeek contains 'mon').doseAndRate.dose.ofType(Quantity).value.distinct().count() = 
-        %resource.ofType(MedicationStatement).dosage.where(timing.repeat.dayOfWeek contains 'mon').doseAndRate.dose.ofType(Quantity).value.count())) and
-
-      /* Tuesday */
-      ((%resource.ofType(MedicationStatement).dosage.timing.repeat.dayOfWeek.where($this = 'tue').count() > 1) implies 
-        (%resource.ofType(MedicationStatement).dosage.where(timing.repeat.dayOfWeek contains 'tue').doseAndRate.dose.ofType(Quantity).value.distinct().count() = 
-        %resource.ofType(MedicationStatement).dosage.where(timing.repeat.dayOfWeek contains 'tue').doseAndRate.dose.ofType(Quantity).value.count())) and
-
-      /* Wednesday */
-      ((%resource.ofType(MedicationStatement).dosage.timing.repeat.dayOfWeek.where($this = 'wed').count() > 1) implies 
-        (%resource.ofType(MedicationStatement).dosage.where(timing.repeat.dayOfWeek contains 'wed').doseAndRate.dose.ofType(Quantity).value.distinct().count() = 
-        %resource.ofType(MedicationStatement).dosage.where(timing.repeat.dayOfWeek contains 'wed').doseAndRate.dose.ofType(Quantity).value.count())) and
-
-      /* Thursday */
-      ((%resource.ofType(MedicationStatement).dosage.timing.repeat.dayOfWeek.where($this = 'thu').count() > 1) implies 
-        (%resource.ofType(MedicationStatement).dosage.where(timing.repeat.dayOfWeek contains 'thu').doseAndRate.dose.ofType(Quantity).value.distinct().count() = 
-        %resource.ofType(MedicationStatement).dosage.where(timing.repeat.dayOfWeek contains 'thu').doseAndRate.dose.ofType(Quantity).value.count())) and
-
-      /* Friday */
-      ((%resource.ofType(MedicationStatement).dosage.timing.repeat.dayOfWeek.where($this = 'fri').count() > 1) implies 
-        (%resource.ofType(MedicationStatement).dosage.where(timing.repeat.dayOfWeek contains 'fri').doseAndRate.dose.ofType(Quantity).value.distinct().count() = 
-        %resource.ofType(MedicationStatement).dosage.where(timing.repeat.dayOfWeek contains 'fri').doseAndRate.dose.ofType(Quantity).value.count())) and
-
-      /* Saturday */
-      ((%resource.ofType(MedicationStatement).dosage.timing.repeat.dayOfWeek.where($this = 'sat').count() > 1) implies 
-        (%resource.ofType(MedicationStatement).dosage.where(timing.repeat.dayOfWeek contains 'sat').doseAndRate.dose.ofType(Quantity).value.distinct().count() = 
-        %resource.ofType(MedicationStatement).dosage.where(timing.repeat.dayOfWeek contains 'sat').doseAndRate.dose.ofType(Quantity).value.count())) and
-
-      /* Sunday */
-      ((%resource.ofType(MedicationStatement).dosage.timing.repeat.dayOfWeek.where($this = 'sun').count() > 1) implies 
-        (%resource.ofType(MedicationStatement).dosage.where(timing.repeat.dayOfWeek contains 'sun').doseAndRate.dose.ofType(Quantity).value.distinct().count() = 
-        %resource.ofType(MedicationStatement).dosage.where(timing.repeat.dayOfWeek contains 'sun').doseAndRate.dose.ofType(Quantity).value.count()))
-    )
 )"
 Severity: #error

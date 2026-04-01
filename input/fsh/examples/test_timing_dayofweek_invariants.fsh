@@ -1,7 +1,6 @@
-// Test cases for TimingOnlyOnePeriodForDayOfWeek and TimingNoRedundantDosageForDay invariants
+// Test cases for TimingOnlyOnePeriodForDayOfWeek invariant
 // These test instances verify:
 // 1. When the same weekday appears in multiple dosageInstructions, the associated timeOfDay/when values must be unique
-// 2. Multiple dosageInstructions with the same dayOfWeek and doseQuantity should be combined into one dosageInstruction
 
 // ============================================================================
 // VALID CASES - Same weekday with DIFFERENT doses
@@ -122,62 +121,6 @@ Description: "Valid: Monday (MORN) and Saturday (EVE) each appear only once — 
   * timing.repeat
     * dayOfWeek = #sat
     * when = #EVE
-    * frequency = 1
-    * period = 1
-    * periodUnit = #wk
-  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
-
-// ============================================================================
-// INVALID CASES - Same weekday with SAME dose (redundant, should be combined)
-// ============================================================================
-
-Instance: INV-redundant-01-of-04-C-TimingNoRedundantDosageForDay
-InstanceOf: MedicationRequestDgMP
-Usage: #example
-Title: "MedicationRequest - Same Day Same Dose (INVALID)"
-Description: "Invalid: Tuesday appears twice with same doseQuantity (1 Stück). Should be combined into one dosageInstruction with when=[MORN, EVE]"
-* subject.display = "Patient"
-* status = #active
-* intent = #order
-* medicationCodeableConcept.text = "Test Medication"
-* dosageInstruction[+]
-  * timing.repeat
-    * dayOfWeek = #tue
-    * when = #MORN
-    * frequency = 1
-    * period = 1
-    * periodUnit = #wk
-  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
-* dosageInstruction[+]
-  * timing.repeat
-    * dayOfWeek = #tue
-    * when = #EVE
-    * frequency = 1
-    * period = 1
-    * periodUnit = #wk
-  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
-
-Instance: INV-redundant-02-of-04-C-TimingNoRedundantDosageForDay
-InstanceOf: MedicationRequestDgMP
-Usage: #example
-Title: "MedicationRequest - Multiple Days Same Dose (INVALID)"
-Description: "Invalid: Wed appears twice with same dose (1 Stück), should be combined"
-* subject.display = "Patient"
-* status = #active
-* intent = #order
-* medicationCodeableConcept.text = "Test Medication"
-* dosageInstruction[+]
-  * timing.repeat
-    * dayOfWeek = #wed
-    * timeOfDay = "08:00:00"
-    * frequency = 1
-    * period = 1
-    * periodUnit = #wk
-  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
-* dosageInstruction[+]
-  * timing.repeat
-    * dayOfWeek = #wed
-    * timeOfDay = "18:00:00"
     * frequency = 1
     * period = 1
     * periodUnit = #wk
@@ -318,56 +261,6 @@ Description: "Valid: Monday (MORN) and Saturday (EVE) each appear only once — 
     * periodUnit = #wk
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-redundant-03-of-04-C-TimingNoRedundantDosageForDay-MD
-InstanceOf: MedicationDispenseDgMP
-Usage: #example
-Title: "MedicationDispense - Same Day Same Dose (INVALID)"
-Description: "Invalid: Tuesday appears twice with same dose. Should be combined."
-* subject.display = "Patient"
-* status = #completed
-* medicationCodeableConcept.text = "Test Medication"
-* dosageInstruction[+]
-  * timing.repeat
-    * dayOfWeek = #tue
-    * when = #MORN
-    * frequency = 1
-    * period = 1
-    * periodUnit = #wk
-  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
-* dosageInstruction[+]
-  * timing.repeat
-    * dayOfWeek = #tue
-    * when = #EVE
-    * frequency = 1
-    * period = 1
-    * periodUnit = #wk
-  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
-
-Instance: INV-redundant-05-of-06-C-TimingNoRedundantDosageForDay-MD
-InstanceOf: MedicationDispenseDgMP
-Usage: #example
-Title: "MedicationDispense - Same Day Same Dose with timeOfDay (INVALID)"
-Description: "Invalid: Wednesday appears twice with same dose and different timeOfDay. Should be combined into one dosageInstruction with multiple timeOfDay values."
-* subject.display = "Patient"
-* status = #completed
-* medicationCodeableConcept.text = "Test Medication"
-* dosageInstruction[+]
-  * timing.repeat
-    * dayOfWeek = #wed
-    * timeOfDay = "08:00:00"
-    * frequency = 1
-    * period = 1
-    * periodUnit = #wk
-  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
-* dosageInstruction[+]
-  * timing.repeat
-    * dayOfWeek = #wed
-    * timeOfDay = "18:00:00"
-    * frequency = 1
-    * period = 1
-    * periodUnit = #wk
-  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
-
 Instance: INV-period-03-of-06-C-TimingOnlyOnePeriodForDayOfWeek-MD
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
@@ -492,56 +385,6 @@ Description: "Valid: Monday (MORN) and Saturday (EVE) each appear only once — 
   * timing.repeat
     * dayOfWeek = #sat
     * when = #EVE
-    * frequency = 1
-    * period = 1
-    * periodUnit = #wk
-  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
-
-Instance: INV-redundant-04-of-04-C-TimingNoRedundantDosageForDay-MS
-InstanceOf: MedicationStatementDgMP
-Usage: #example
-Title: "MedicationStatement - Same Day Same Dose (INVALID)"
-Description: "Invalid: Tuesday appears twice with same dose. Should be combined."
-* subject.display = "Patient"
-* status = #active
-* medicationCodeableConcept.text = "Test Medication"
-* dosage[+]
-  * timing.repeat
-    * dayOfWeek = #tue
-    * when = #MORN
-    * frequency = 1
-    * period = 1
-    * periodUnit = #wk
-  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
-* dosage[+]
-  * timing.repeat
-    * dayOfWeek = #tue
-    * when = #EVE
-    * frequency = 1
-    * period = 1
-    * periodUnit = #wk
-  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
-
-Instance: INV-redundant-06-of-06-C-TimingNoRedundantDosageForDay-MS
-InstanceOf: MedicationStatementDgMP
-Usage: #example
-Title: "MedicationStatement - Same Day Same Dose with timeOfDay (INVALID)"
-Description: "Invalid: Friday appears twice with same dose and different timeOfDay. Should be combined into one dosage with multiple timeOfDay values."
-* subject.display = "Patient"
-* status = #active
-* medicationCodeableConcept.text = "Test Medication"
-* dosage[+]
-  * timing.repeat
-    * dayOfWeek = #fri
-    * timeOfDay = "09:00:00"
-    * frequency = 1
-    * period = 1
-    * periodUnit = #wk
-  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
-* dosage[+]
-  * timing.repeat
-    * dayOfWeek = #fri
-    * timeOfDay = "21:00:00"
     * frequency = 1
     * period = 1
     * periodUnit = #wk

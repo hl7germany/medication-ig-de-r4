@@ -70,8 +70,14 @@ def should_skip_extension_generation(filename: str) -> bool:
     skip_markers = (
         "Invalid-Dosage-C-DosageRequiresGeneratedText",
         "Invalid-Dosage-C-DosageStructuredRequiresGeneratedText",
+        "INV-C-DosageStructuredRequiresGeneratedText",
     )
     return any(marker in name for marker in skip_markers)
+
+def should_invalidate_rendered_text(filename: str) -> bool:
+    """Detect instances where renderedDosageInstruction should be intentionally invalid (not matching free text)."""
+    name = os.path.basename(filename)
+    return "INV-C-FreeTextMatchesRenderedText" in name
 
 def remove_all_placeholders(resource: dict) -> bool:
     """Remove any renderedDosageInstruction (all variants) and GeneratedDosageInstructionsMeta."""
@@ -153,6 +159,10 @@ def process_file(input_path, output_path, script_path):
 
     # Only add extensions if generation succeeded and returned a non-empty text.
     if success and dosage_text:
+        # For FreeTextMatchesRenderedText test cases, intentionally invalidate the rendered text
+        if should_invalidate_rendered_text(input_path):
+            dosage_text = dosage_text + "-FALSE"
+        
         # Build the renderedDosageInstruction extension
         dosage_extension = build_rendered_dosage_extension(dosage_text, resource_type)
         # Build the meta extension

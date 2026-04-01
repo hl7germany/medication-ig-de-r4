@@ -93,6 +93,8 @@ def generate_matrix(input_folder, script_path, output_path):
             and "Valid" not in f
             and "Invalid" not in f
             and "Unsupported" not in f
+            and "-INV-" not in f
+            and "-INV-C" not in f
         )
     ]
     matrix_rows = []

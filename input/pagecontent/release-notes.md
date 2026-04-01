@@ -8,15 +8,44 @@
   - **TimingDgMP**: `TimingOnlyOneType`, `TimingOnlyOneBounds`, `TimingOnlyOneTimeForInterval`, `TimingOnlyOnePeriodForDayOfWeek`
 - **Neue Invarianten:**
   - **TimingDgMP**: `TimingNoRedundantDosageForDay`
-- fix: Korrektur der FHIRPath-Ausdrücke in `DosageStructuredOrFreeTextWarning` und `DosageStructuredRequiresBoth` (`DosageDE`) — fehlende `%resource.`-Präfixe vor `ofType(MedicationDispense)` und `ofType(MedicationStatement)` ergänzt.
-- fix: Korrektur der FHIRPath-Ausdrücke in `DosageDoseUnitSameCode` (`DosageDE`) — fehlende `%resource.`-Präfixe im äußeren Ausdruck ergänzt; fehlerhafte innere Pfadangaben (`%resource.dosageInstruction.*`) durch ressourcentypspezifische Ausdrücke (`%resource.ofType(MedicationRequest).dosageInstruction | ...`) ersetzt
-- fix: Korrektur des FHIRPath-Ausdrucks in `DosageStructuredOrFreeText` (`DosageDgMP`) — analog zu `DosageStructuredOrFreeTextWarning`
-- fix: Korrektur der FHIRPath-Ausdrücke in `TimingOnlyOneType` (`TimingDgMP`) — fehlende `%resource.`-Präfixe in allen vier Unterbedingungen (`DayOfWeek`, `Interval`, `DayOfWeek and Time/4-Schema`, `Interval and Time/4-Schema`) ergänzt
-- fix: Ergänzung der Konsistenzprüfung in `TimingOnlyOneBounds` (`TimingDgMP`) — zusätzliche Bedingung, dass die Anzahl der `boundsDuration`-Einträge der Anzahl der Dosage-Instanzen entsprechen muss
-- fix: Korrektur und Aktualisierung von `TimingOnlyOneTimeForInterval` (`TimingDgMP`) — Description präzisiert; redundante `MedicationRequest`/`MedicationDispense`-Bedingung entfernt.
-- fix: Korrektur des FHIRPath-Ausdrucks in `TimingOnlyOnePeriodForDayOfWeek` (`TimingDgMP`) — es wurden fehlerhafte Vergleiche korrigiert, bei denen `.distinct()` (liefert Collection) direkt mit `.count()` (liefert Integer) verglichen wurde; korrekte Formulierung: `.distinct().count() = ...count()` statt `.distinct() = ...count()`
-- feature: Neue Invariante `TimingNoRedundantDosageForDay` (`TimingDgMP`) — verhindert redundante dosageInstruction-Einträge beim DayOfWeek-Schema: wenn derselbe Wochentag in mehreren Dosierungen vorkommt, muss die Dosis (`doseQuantity.value`) unterschiedlich sein; andernfalls sollten die Zeitangaben in einer einzigen dosageInstruction zusammengefasst werden (z.B. Dienstag mit 1 Stück morgens und abends → eine Dosierung mit `frequency=2`)
-- test: Erhöhung der Testabdeckung durch valide und invalide Beispiele für alle relevanten Medication*-Ressourcentypen (`MedicationRequest`, `MedicationDispense`, `MedicationStatement`)
+
+**Details je Invariante (logische Änderungen)**
+
+- **`DosageStructuredOrFreeTextWarning` (`DosageDE`)**
+  - Vom Fix betroffene Ressourcentypen: `MedicationDispense`, `MedicationStatement`
+  - Fix: Fehlende `%resource.`-Präfixe vor `ofType(...)` ergänzt, damit die Regel in allen drei Ressourcentypzweigen korrekt evaluiert wird.
+
+- **`DosageStructuredRequiresBoth` (`DosageDE`)**
+  - Vom Fix betroffene Ressourcentypen: `MedicationDispense`, `MedicationStatement`
+  - Fix: Fehlende `%resource.`-Präfixe vor `ofType(...)` ergänzt, damit die wechselseitige Pflicht von `timing` und `doseAndRate` korrekt geprüft wird.
+
+- **`DosageDoseUnitSameCode` (`DosageDE`)**
+  - Vom Fix betroffene Ressourcentypen: `MedicationDispense`, `MedicationStatement`
+  - Fix: Ressourcentypspezifische Pfade im Ausdruck korrigiert; dadurch wird die Einheitengleichheit über alle Dosierungen je Ressource korrekt für `Quantity` und `Range` geprüft.
+
+- **`DosageStructuredOrFreeText` (`DosageDgMP`)**
+  - Vom Fix betroffene Ressourcentypen: `MedicationDispense`, `MedicationStatement`
+  - Fix: Analog zu `DosageStructuredOrFreeTextWarning` wurden fehlende `%resource.`-Präfixe ergänzt, damit Mischformen aus Freitext und Struktur verlässlich erkannt werden.
+
+- **`TimingOnlyOneType` (`TimingDgMP`)**
+  - Vom Fix betroffene Ressourcentypen: `MedicationDispense`, `MedicationStatement`
+  - Fix: Fehlende `%resource.`-Präfixe in den Unterbedingungen ergänzt; dadurch greifen die Typprüfungen (`DayOfWeek`, `Interval`, Kombinationsschemata) konsistent pro Ressource.
+
+- **`TimingOnlyOneBounds` (`TimingDgMP`)**
+  - Vom Fix betroffene Ressourcentypen: `MedicationRequest`, `MedicationDispense`, `MedicationStatement`
+  - Fix: Konsistenzprüfung erweitert: Wenn `boundsDuration` genutzt wird, muss die Anzahl der Bounds-Einträge zur Anzahl der Dosage-Elemente passen; dadurch werden unvollständige Bounds-Belegungen erkannt.
+
+- **`TimingOnlyOneTimeForInterval` (`TimingDgMP`)**
+  - Vom Fix betroffene Ressourcentypen: `MedicationStatement`
+  - Fix: In der `MedicationStatement`-Prüfung wurde eine logisch redundante und inhaltlich falsche Typbedingung entfernt; dadurch wird die Konsistenz von `period`/`periodUnit` auch für `MedicationStatement` tatsächlich geprüft (zusätzlich zur Einzigartigkeitsprüfung von `timeOfDay`/`when`).
+
+- **`TimingOnlyOnePeriodForDayOfWeek` (`TimingDgMP`)**
+  - Vom Fix betroffene Ressourcentypen: `MedicationRequest`, `MedicationDispense`, `MedicationStatement`
+  - Fix: Falsche Collection-vs-Integer-Vergleiche korrigiert (`distinct().count()` statt `distinct()`), damit doppelte `(dayOfWeek + when/timeOfDay)`-Kombinationen korrekt validiert werden.
+
+- **`TimingNoRedundantDosageForDay` (`TimingDgMP`, neu)**
+  - Betroffene Ressourcentypen: `MedicationRequest`, `MedicationDispense`, `MedicationStatement`
+  - Neu: Ergänzt eine Redundanzprüfung für `DayOfWeek + when/timeOfDay`: Bei mehrfach gleichem Wochentag müssen die Dosiswerte unterschiedlich sein; gleiche Dosis soll in ein gemeinsames Dosage-Element zusammengeführt werden.
 
 ---
 

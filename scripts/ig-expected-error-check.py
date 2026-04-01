@@ -38,11 +38,9 @@ for entry in root.findall("fhir:entry", FHIR_NS):
                 filename = val.attrib["value"]
 
     # Check all issues for errors
-    has_error = False
     for issue in op_outcome.findall("fhir:issue", FHIR_NS):
         sev = issue.find("fhir:severity", FHIR_NS)
         if sev is not None and sev.attrib.get("value", "").lower() == "error":
-            has_error = True
             total_errors += 1
             # Determine expected/unexpected
             # Expected errors: -INV-, -INV-C, -Invalid-, -Unsupported-, or contain "inv-", "invalid", "unsupported"
@@ -73,7 +71,7 @@ if os.path.isdir(resources_dir):
 
 print("==Error Check==")
 print(f"{total_errors} Errors")
-print(f"{expected_errors + len(false_positive_files)} Expected Errors")
+print(f"{expected_errors} Expected Error Issues")
 print(f"{unexpected_errors} Unexpected Errors in")
 for fname in unexpected_files:
     print(f"- {fname}")

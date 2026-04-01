@@ -3,6 +3,7 @@ import sys
 import json
 import subprocess
 import shutil
+import ast
 
 # Extension URLs for different resource types
 EXTENSION_URLS = {
@@ -16,6 +17,8 @@ ALL_RENDERED_DOSAGE_URLS = set(EXTENSION_URLS.values())
 
 # Meta extension URL (same for all resource types)
 META_EXTENSION_URL = "http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta"
+
+DEFAULT_ALGORITHM_VERSION = "unknown"
 
 def filter_rendered_dosage_extensions(extensions, resource_type):
     """Remove existing renderedDosageInstruction (only for this resource type) and GeneratedDosageInstructionsMeta extensions."""
@@ -38,14 +41,38 @@ def build_rendered_dosage_extension(dosage_text, resource_type):
         "valueMarkdown": dosage_text
     }
 
-def build_meta_extension():
+def load_algorithm_version(script_path):
+    """Extract __version__ from the dosage text script."""
+    try:
+        with open(script_path, "r", encoding="utf-8") as f:
+            source = f.read()
+        module = ast.parse(source, filename=script_path)
+        for node in module.body:
+            if isinstance(node, ast.Assign):
+                for target in node.targets:
+                    if isinstance(target, ast.Name) and target.id == "__version__":
+                        value = node.value
+                        if isinstance(value, ast.Constant) and isinstance(value.value, str):
+                            return value.value
+        print(
+            f"Warning: __version__ not found in {os.path.basename(script_path)}. "
+            f"Using fallback version '{DEFAULT_ALGORITHM_VERSION}'."
+        )
+    except Exception as e:
+        print(
+            f"Warning: Could not read __version__ from {os.path.basename(script_path)}: {e}. "
+            f"Using fallback version '{DEFAULT_ALGORITHM_VERSION}'."
+        )
+    return DEFAULT_ALGORITHM_VERSION
+
+def build_meta_extension(algorithm_version):
     """Build the GeneratedDosageInstructionsMeta extension with metadata (without 'algorithm' slice)."""
     return {
         "url": META_EXTENSION_URL,
         "extension": [
             {
                 "url": "algorithmVersion",
-                "valueString": "1.0.2"
+                "valueString": algorithm_version
             },
             {
                 "url": "language",
@@ -104,7 +131,7 @@ def run_consolidated_dosage_to_text(script_path, resource_file_path):
     except Exception as e:
         return False, "", str(e), -1
 
-def process_file(input_path, output_path, script_path):
+def process_file(input_path, output_path, script_path, algorithm_version):
     """Process a single medication resource file to add consolidated dosage text."""
     with open(input_path, 'r', encoding='utf-8') as f:
         resource = json.load(f)
@@ -156,7 +183,7 @@ def process_file(input_path, output_path, script_path):
         # Build the renderedDosageInstruction extension
         dosage_extension = build_rendered_dosage_extension(dosage_text, resource_type)
         # Build the meta extension
-        meta_extension = build_meta_extension()
+        meta_extension = build_meta_extension(algorithm_version)
 
         if dosage_extension and meta_extension:
             if "extension" not in resource:
@@ -180,6 +207,7 @@ def main():
     input_folder = sys.argv[1]
     output_folder = sys.argv[2]
     consolidated_script_path = sys.argv[3]
+    algorithm_version = load_algorithm_version(consolidated_script_path)
 
     os.makedirs(output_folder, exist_ok=True)
     
@@ -200,7 +228,7 @@ def main():
         input_path = os.path.join(input_folder, filename)
         output_path = os.path.join(output_folder, filename)
         try:
-            process_file(input_path, output_path, consolidated_script_path)
+            process_file(input_path, output_path, consolidated_script_path, algorithm_version)
             processed_count += 1
         except Exception as e:
             print(f"Error processing {filename}: {e}")

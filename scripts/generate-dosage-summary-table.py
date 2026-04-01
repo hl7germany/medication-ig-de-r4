@@ -7,13 +7,30 @@ from pathlib import Path
 
 __version__ = "1.0.1"
 
+def is_negative_example_filename(file_name):
+    """Return True for negative test examples that should not appear in supported examples table."""
+    lower_name = file_name.lower()
+    return (
+        "-inv-" in file_name
+        or "-inv-c" in file_name
+        or "-invalid-" in file_name
+        or "-unsupported-" in file_name
+        or "invalid" in lower_name
+        or "inv-" in lower_name
+        or "unsupported" in lower_name
+    )
+
+def is_warning_example_filename(file_name):
+    """Return True for warning examples that should not appear in supported examples table."""
+    return "warning" in file_name.lower()
+
 def find_medication_resources(resources_dir):
     """Find all MedicationRequest, MedicationDispense, and MedicationStatement JSON files."""
     resources = []
     
     for file_path in Path(resources_dir).glob("*.json"):
-        # Skip files containing "Invalid" or "Unsupported" in the filename
-        if "Invalid" in file_path.name or "Unsupported" in file_path.name:
+        # Skip negative test examples (INV/Invalid/Unsupported) and warning-only examples.
+        if is_negative_example_filename(file_path.name) or is_warning_example_filename(file_path.name):
             continue
             
         try:

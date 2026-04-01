@@ -402,6 +402,25 @@ Description: "Example showing interval dosing with when codes instead of timeOfD
 * dosage[1].timing.repeat.when = #EVE
 * dosage[1].doseAndRate[0].doseQuantity = 2 '1' "Stück"
 
+Instance: MS-Dosage-interval-time-3d
+InstanceOf: MedicationStatementDgMP
+Usage: #example
+Title: "MedicationStatement Dosage Example - Interval with TimeOfDay"
+Description: "Example showing interval dosing with timeOfDay values across dosage entries"
+* subject.display = "Patient"
+* medicationCodeableConcept.text = "Test Medication"
+* status = #active
+* dosage[0].timing.repeat.frequency = 1
+* dosage[0].timing.repeat.period = 3
+* dosage[0].timing.repeat.periodUnit = #d
+* dosage[0].timing.repeat.timeOfDay = "08:00:00"
+* dosage[0].doseAndRate[0].doseQuantity = 1 '1' "Stück"
+* dosage[1].timing.repeat.frequency = 1
+* dosage[1].timing.repeat.period = 3
+* dosage[1].timing.repeat.periodUnit = #d
+* dosage[1].timing.repeat.timeOfDay = "20:00:00"
+* dosage[1].doseAndRate[0].doseQuantity = 2 '1' "Stück"
+
 Instance: MS-Dosage-4schema-night-only
 InstanceOf: MedicationStatementDgMP
 Usage: #example

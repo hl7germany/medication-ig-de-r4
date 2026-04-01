@@ -8,7 +8,7 @@
   - **TimingDgMP**: `TimingOnlyOneType`, `TimingOnlyOneBounds`, `TimingOnlyOneTimeForInterval`, `TimingOnlyOnePeriodForDayOfWeek`
 - **Neue Invarianten:**
   - **TimingDgMP**: `TimingNoRedundantDosageForDay`
-- fix: Korrektur der FHIRPath-Ausdrücke in `DosageStructuredOrFreeTextWarning` und `DosageStructuredRequiresBoth` (`DosageDE`) — fehlende `%resource.`-Präfixe vor `ofType(MedicationDispense)` und `ofType(MedicationStatement)` ergänzt; schließendes `)"` korrekt platziert
+- fix: Korrektur der FHIRPath-Ausdrücke in `DosageStructuredOrFreeTextWarning` und `DosageStructuredRequiresBoth` (`DosageDE`) — fehlende `%resource.`-Präfixe vor `ofType(MedicationDispense)` und `ofType(MedicationStatement)` ergänzt.
 - fix: Korrektur der FHIRPath-Ausdrücke in `DosageDoseUnitSameCode` (`DosageDE`) — fehlende `%resource.`-Präfixe im äußeren Ausdruck ergänzt; fehlerhafte innere Pfadangaben (`%resource.dosageInstruction.*`) durch ressourcentypspezifische Ausdrücke (`%resource.ofType(MedicationRequest).dosageInstruction | ...`) ersetzt
 - fix: Korrektur des FHIRPath-Ausdrucks in `DosageStructuredOrFreeText` (`DosageDgMP`) — analog zu `DosageStructuredOrFreeTextWarning`
 - fix: Korrektur der FHIRPath-Ausdrücke in `TimingOnlyOneType` (`TimingDgMP`) — fehlende `%resource.`-Präfixe in allen vier Unterbedingungen (`DayOfWeek`, `Interval`, `DayOfWeek and Time/4-Schema`, `Interval and Time/4-Schema`) ergänzt

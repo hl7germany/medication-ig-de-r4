@@ -4,7 +4,7 @@ In diesem Anwendungsfall wird davon ausgegangen, dass sich das Schema ohne Varia
 
 - die geplante Dauer der Anwendung zu begrenzen (bsp. in Tagen). 
 
-### Beipiel
+### Beispiel
 
 {% fragment MedicationRequest/Example-MR-Dosage-interval-8d JSON %}
 

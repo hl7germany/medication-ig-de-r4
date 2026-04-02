@@ -31,12 +31,11 @@ Description: "Gibt an, wie das Medikament eingenommen oder verabreicht wurde bzw
 Invariant: DosageStructuredOrFreeTextWarning
 Description: "Die Dosierungsangabe darf entweder nur als Freitext oder nur als vollständige strukturierte Information erfolgen — eine Mischung ist nicht erlaubt."
 Expression: "(%resource.ofType(MedicationRequest).dosageInstruction | 
- ofType(MedicationDispense).dosageInstruction | 
- ofType(MedicationStatement).dosage).all(
+ %resource.ofType(MedicationDispense).dosageInstruction | 
+ %resource.ofType(MedicationStatement).dosage).all(
   (text.exists() and timing.empty() and doseAndRate.empty()) or
   (text.empty() and (timing.exists() or doseAndRate.exists()))
-)
-"
+)"
 Severity: #warning
 
 Invariant: FreeTextSingleDosageOnlyWarning
@@ -59,22 +58,21 @@ Severity: #warning
 Invariant: DosageStructuredRequiresBoth
 Description: "Wenn eine strukturierte Dosierungsangabe erfolgt, müssen sowohl timing als auch doseAndRate angegeben werden."
 Expression: "(%resource.ofType(MedicationRequest).dosageInstruction | 
- ofType(MedicationDispense).dosageInstruction | 
- ofType(MedicationStatement).dosage).all(
+ %resource.ofType(MedicationDispense).dosageInstruction | 
+ %resource.ofType(MedicationStatement).dosage).all(
   (timing.exists() implies doseAndRate.exists()) and
   (doseAndRate.exists() implies timing.exists())
-)
-"
+)"
 Severity: #error
 
 Invariant: DosageDoseUnitSameCode
 Description: "Die Dosiereinheit muss über alle Dosierungen gleich sein."
-Expression: "(%resource.ofType(MedicationRequest).dosageInstruction | ofType(MedicationDispense).dosageInstruction | ofType(MedicationStatement).dosage).all(
+Expression: "(%resource.ofType(MedicationRequest).dosageInstruction | %resource.ofType(MedicationDispense).dosageInstruction | %resource.ofType(MedicationStatement).dosage).all(
 doseAndRate.exists() implies
   (
-    %resource.dosageInstruction.doseAndRate.dose.ofType(Quantity).code | 
-    %resource.dosageInstruction.doseAndRate.dose.ofType(Range).low.code | 
-    %resource.dosageInstruction.doseAndRate.dose.ofType(Range).high.code
+    (%resource.ofType(MedicationRequest).dosageInstruction | %resource.ofType(MedicationDispense).dosageInstruction | %resource.ofType(MedicationStatement).dosage).doseAndRate.dose.ofType(Quantity).code | 
+    (%resource.ofType(MedicationRequest).dosageInstruction | %resource.ofType(MedicationDispense).dosageInstruction | %resource.ofType(MedicationStatement).dosage).doseAndRate.dose.ofType(Range).low.code | 
+    (%resource.ofType(MedicationRequest).dosageInstruction | %resource.ofType(MedicationDispense).dosageInstruction | %resource.ofType(MedicationStatement).dosage).doseAndRate.dose.ofType(Range).high.code
   ).distinct().count() = 1
 )"
 Severity: #error

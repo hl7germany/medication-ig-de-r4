@@ -3,6 +3,7 @@ import sys
 import json
 import subprocess
 import shutil
+import ast
 
 # Extension URLs for different resource types
 EXTENSION_URLS = {
@@ -16,6 +17,8 @@ ALL_RENDERED_DOSAGE_URLS = set(EXTENSION_URLS.values())
 
 # Meta extension URL (same for all resource types)
 META_EXTENSION_URL = "http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta"
+
+DEFAULT_ALGORITHM_VERSION = "unknown"
 
 def filter_rendered_dosage_extensions(extensions, resource_type):
     """Remove existing renderedDosageInstruction (only for this resource type) and GeneratedDosageInstructionsMeta extensions."""
@@ -38,14 +41,38 @@ def build_rendered_dosage_extension(dosage_text, resource_type):
         "valueMarkdown": dosage_text
     }
 
-def build_meta_extension():
+def load_algorithm_version(script_path):
+    """Extract __version__ from the dosage text script."""
+    try:
+        with open(script_path, "r", encoding="utf-8") as f:
+            source = f.read()
+        module = ast.parse(source, filename=script_path)
+        for node in module.body:
+            if isinstance(node, ast.Assign):
+                for target in node.targets:
+                    if isinstance(target, ast.Name) and target.id == "__version__":
+                        value = node.value
+                        if isinstance(value, ast.Constant) and isinstance(value.value, str):
+                            return value.value
+        print(
+            f"Warning: __version__ not found in {os.path.basename(script_path)}. "
+            f"Using fallback version '{DEFAULT_ALGORITHM_VERSION}'."
+        )
+    except Exception as e:
+        print(
+            f"Warning: Could not read __version__ from {os.path.basename(script_path)}: {e}. "
+            f"Using fallback version '{DEFAULT_ALGORITHM_VERSION}'."
+        )
+    return DEFAULT_ALGORITHM_VERSION
+
+def build_meta_extension(algorithm_version):
     """Build the GeneratedDosageInstructionsMeta extension with metadata (without 'algorithm' slice)."""
     return {
         "url": META_EXTENSION_URL,
         "extension": [
             {
                 "url": "algorithmVersion",
-                "valueString": "1.0.1"
+                "valueString": algorithm_version
             },
             {
                 "url": "language",
@@ -63,17 +90,21 @@ def has_dosages(resource):
         return bool(resource.get("dosage"))
     return False
 
-def is_invalid_or_unsupported(filename: str) -> bool:
-    """Detect invalid or unsupported instances by filename convention."""
-    name = os.path.basename(filename)
-    lower = name.lower()
-    return ("-invalid-" in lower) or ("-unsupported-" in lower)
-
 def should_skip_extension_generation(filename: str) -> bool:
     """Detect instances where extensions should NOT be generated at all (e.g., constraint test examples)."""
     name = os.path.basename(filename)
     # Skip generation for constraint test examples that intentionally lack extensions
-    return "Invalid-Dosage-C-DosageRequiresGeneratedText" in name
+    skip_markers = (
+        "Invalid-Dosage-C-DosageRequiresGeneratedText",
+        "Invalid-Dosage-C-DosageStructuredRequiresGeneratedText",
+        "INV-C-DosageStructuredRequiresGeneratedText",
+    )
+    return any(marker in name for marker in skip_markers)
+
+def should_invalidate_rendered_text(filename: str) -> bool:
+    """Detect instances where renderedDosageInstruction should be intentionally invalid (not matching free text)."""
+    name = os.path.basename(filename)
+    return "INV-C-FreeTextMatchesRenderedText" in name
 
 def remove_all_placeholders(resource: dict) -> bool:
     """Remove any renderedDosageInstruction (all variants) and GeneratedDosageInstructionsMeta."""
@@ -92,22 +123,21 @@ def remove_all_placeholders(resource: dict) -> bool:
     return len(cleaned) != old_count
 
 def run_consolidated_dosage_to_text(script_path, resource_file_path):
-    """Run the consolidated medication-dosage-to-text.py script on the entire resource."""
+    """Run dosage text generation and return status + output based on exit code."""
     try:
-        output = subprocess.check_output(['python3', script_path, resource_file_path], text=True).strip()
-        return output.replace('\n', '\n')
+        result = subprocess.run(
+            ['python3', script_path, resource_file_path],
+            capture_output=True,
+            text=True
+        )
+        if result.returncode != 0:
+            error_output = (result.stderr or result.stdout or "").strip()
+            return False, "", error_output, result.returncode
+        return True, result.stdout.strip(), "", 0
     except Exception as e:
-        return f"Fehler beim Verarbeiten der Dosierung: {e}"
-        temp_path = tf.name
-    try:
-        output = subprocess.check_output(['python3', script_path, temp_path], text=True).strip()
-        return output.replace('\n', '\n')
-    except Exception as e:
-        return f"Fehler beim Verarbeiten der Dosierung: {e}"
-    finally:
-        os.unlink(temp_path)
+        return False, "", str(e), -1
 
-def process_file(input_path, output_path, script_path):
+def process_file(input_path, output_path, script_path, algorithm_version):
     """Process a single medication resource file to add consolidated dosage text."""
     with open(input_path, 'r', encoding='utf-8') as f:
         resource = json.load(f)
@@ -133,47 +163,6 @@ def process_file(input_path, output_path, script_path):
             json.dump(resource, f, indent=2, ensure_ascii=False)
         return
 
-    # Handle invalid or unsupported files with fixed text
-    if is_invalid_or_unsupported(input_path):
-        # Proceed only if the resource actually has any dosage entries
-        if not has_dosages(resource):
-            with open(output_path, 'w', encoding='utf-8') as f:
-                json.dump(resource, f, indent=2, ensure_ascii=False)
-            return
-
-        changed = False
-
-        # Remove only type-specific rendered extension + meta (same for all files)
-        if "extension" in resource:
-            old_count = len(resource["extension"])
-            resource["extension"] = filter_rendered_dosage_extensions(resource["extension"], resource_type)
-            if len(resource["extension"]) != old_count:
-                changed = True
-            if not resource["extension"]:
-                del resource["extension"]
-                changed = True
-
-        # Use fixed text for invalid/unsupported files
-        # TODO: Replace this placeholder text with the desired fixed text
-        dosage_text = "This is an invalid or unsupported file, no text was generated by the DosageGeneration Script"
-
-        # Build the renderedDosageInstruction extension
-        dosage_extension = build_rendered_dosage_extension(dosage_text, resource_type)
-        # Build the meta extension
-        meta_extension = build_meta_extension()
-
-        if dosage_extension and meta_extension:
-            if "extension" not in resource:
-                resource["extension"] = []
-            resource["extension"].append(dosage_extension)
-            resource["extension"].append(meta_extension)
-            changed = True
-
-        # Write to output folder and return early
-        with open(output_path, 'w', encoding='utf-8') as f:
-            json.dump(resource, f, indent=2, ensure_ascii=False)
-        return
-
     # Proceed only if the resource actually has any dosage entries
     if not has_dosages(resource):
         with open(output_path, 'w', encoding='utf-8') as f:
@@ -193,14 +182,18 @@ def process_file(input_path, output_path, script_path):
             changed = True
 
     # Generate consolidated dosage text for the entire resource
-    dosage_text = run_consolidated_dosage_to_text(script_path, input_path)
+    success, dosage_text, error_output, return_code = run_consolidated_dosage_to_text(script_path, input_path)
 
-    # Only add extensions if there's a valid result
-    if dosage_text and not dosage_text.startswith("Fehler"):
+    # Only add extensions if generation succeeded and returned a non-empty text.
+    if success and dosage_text:
+        # For FreeTextMatchesRenderedText test cases, intentionally invalidate the rendered text
+        if should_invalidate_rendered_text(input_path):
+            dosage_text = dosage_text + "-FALSE"
+        
         # Build the renderedDosageInstruction extension
         dosage_extension = build_rendered_dosage_extension(dosage_text, resource_type)
         # Build the meta extension
-        meta_extension = build_meta_extension()
+        meta_extension = build_meta_extension(algorithm_version)
 
         if dosage_extension and meta_extension:
             if "extension" not in resource:
@@ -208,6 +201,9 @@ def process_file(input_path, output_path, script_path):
             resource["extension"].append(dosage_extension)
             resource["extension"].append(meta_extension)
             changed = True
+    elif not success:
+        filename = os.path.basename(input_path)
+        print(f"Skipping extension for {filename}: dosage generation failed (exit {return_code}): {error_output}")
 
     # Write to output folder
     with open(output_path, 'w', encoding='utf-8') as f:
@@ -221,6 +217,7 @@ def main():
     input_folder = sys.argv[1]
     output_folder = sys.argv[2]
     consolidated_script_path = sys.argv[3]
+    algorithm_version = load_algorithm_version(consolidated_script_path)
 
     os.makedirs(output_folder, exist_ok=True)
     
@@ -241,7 +238,7 @@ def main():
         input_path = os.path.join(input_folder, filename)
         output_path = os.path.join(output_folder, filename)
         try:
-            process_file(input_path, output_path, consolidated_script_path)
+            process_file(input_path, output_path, consolidated_script_path, algorithm_version)
             processed_count += 1
         except Exception as e:
             print(f"Error processing {filename}: {e}")

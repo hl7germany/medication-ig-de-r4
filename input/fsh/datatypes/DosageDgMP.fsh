@@ -45,12 +45,11 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
 Invariant: DosageStructuredOrFreeText
 Description: "Die Dosierungsangabe darf entweder nur als Freitext oder nur als vollständige strukturierte Information erfolgen — eine Mischung ist nicht erlaubt."
 Expression: "(%resource.ofType(MedicationRequest).dosageInstruction | 
- ofType(MedicationDispense).dosageInstruction | 
- ofType(MedicationStatement).dosage).all(
+ %resource.ofType(MedicationDispense).dosageInstruction | 
+ %resource.ofType(MedicationStatement).dosage).all(
   (text.exists() and timing.empty() and doseAndRate.empty()) or
   (text.empty() and (timing.exists() or doseAndRate.exists()))
-)
-"
+)"
 Severity: #error
 
 Invariant: DosageStructuredRequiresGeneratedText
@@ -77,8 +76,7 @@ implies
     url = 'http://hl7.org/fhir/5.0/StructureDefinition/extension-MedicationStatement.renderedDosageInstruction'
   ).exists()
 )
-)
-"
+)"
 Severity: #error
 
 Invariant: FreeTextSingleDosageOnly

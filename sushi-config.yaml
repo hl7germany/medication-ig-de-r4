@@ -9,7 +9,7 @@ name: MedicationDE
 title: Medication IG DE
 # description: Example Implementation Guide for getting started with SUSHI
 status: active # draft | active | retired | unknown
-version: 1.0.3
+version: 1.0.4
 fhirVersion: 4.0.1 # https://www.hl7.org/fhir/valueset-FHIR-version.html
 copyrightYear: 2025+
 releaseLabel: STU1
@@ -74,6 +74,8 @@ pages:
     title: FHIR Summary
   downloads.md:
     title: Downloads
+  release-notes.md:
+    title: Release Notes
 
 #
 #
@@ -118,7 +120,9 @@ menu:
     Schema für Kombinationen von Wochentagen: schema-wochentag-kombination.html
     Beispiel Dosierungen: dosierung-beispiele.html
   FHIR-Artefakte: artifacts.html
-  Downloads: downloads.html
+  Anhänge:
+    Downloads: downloads.html
+    Release Notes: release-notes.html
 
 parameters:
   path-pages:

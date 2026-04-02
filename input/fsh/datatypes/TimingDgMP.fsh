@@ -84,8 +84,8 @@ Description: "Only one kind of Timing is allowed. Current allowed timings: 4-Sch
 Expression: "/* DayOfWeek */
 (
   %resource.ofType(MedicationRequest).dosageInstruction | 
-  ofType(MedicationDispense).dosageInstruction | 
-  ofType(MedicationStatement).dosage
+  %resource.ofType(MedicationDispense).dosageInstruction | 
+  %resource.ofType(MedicationStatement).dosage
 ).all(
   timing.repeat.dayOfWeek.exists() and
   timing.repeat.frequency.exists() and
@@ -98,8 +98,8 @@ Expression: "/* DayOfWeek */
 /* Interval */
 (
   %resource.ofType(MedicationRequest).dosageInstruction | 
-  ofType(MedicationDispense).dosageInstruction | 
-  ofType(MedicationStatement).dosage
+  %resource.ofType(MedicationDispense).dosageInstruction | 
+  %resource.ofType(MedicationStatement).dosage
 ).all(
   timing.repeat.frequency.exists() and
   timing.repeat.period.exists() and
@@ -112,8 +112,8 @@ Expression: "/* DayOfWeek */
 /* DayOfWeek and Time/4-Schema */
 (
   %resource.ofType(MedicationRequest).dosageInstruction | 
-  ofType(MedicationDispense).dosageInstruction | 
-  ofType(MedicationStatement).dosage
+  %resource.ofType(MedicationDispense).dosageInstruction | 
+  %resource.ofType(MedicationStatement).dosage
 ).all(
   timing.repeat.dayOfWeek.exists() and
   timing.repeat.frequency.exists() and
@@ -128,8 +128,8 @@ Expression: "/* DayOfWeek */
 /* Interval and Time/4-Schema */
 (
   %resource.ofType(MedicationRequest).dosageInstruction | 
-  ofType(MedicationDispense).dosageInstruction | 
-  ofType(MedicationStatement).dosage
+  %resource.ofType(MedicationDispense).dosageInstruction | 
+  %resource.ofType(MedicationStatement).dosage
 ).all(
   timing.repeat.frequency.exists() and
   timing.repeat.period.exists() and
@@ -139,8 +139,7 @@ Expression: "/* DayOfWeek */
     (timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()) or
     (timing.repeat.when.exists() and timing.repeat.timeOfDay.empty())
   )
-)
-"
+)"
 Severity: #error
 
 Invariant: TimingOnlyOneWhen
@@ -170,8 +169,7 @@ Expression: "( /* Detect 4-Schema */
       (%resource.dosage.timing.repeat.when.distinct().count() = %resource.dosage.timing.repeat.when.count())
     )
   )
-)
-"
+)"
 Severity: #error
 
 Invariant: TimingOnlyWhenOrTimeOfDay
@@ -201,8 +199,7 @@ Expression: "(
       (%resource.dosage.timing.repeat.when.exists() xor %resource.dosage.timing.repeat.timeOfDay.exists())
     )
   )
-)
-"
+)"
 Severity: #error
 
 Invariant: TimingOnlyOneTimeOfDay
@@ -337,8 +334,7 @@ Expression: "( /* Detect Interval */
       %resource.dosage.count() = 1
     )
   )
-)
-"
+)"
 Severity: #error
 
 
@@ -367,80 +363,45 @@ Expression: "( /* Detect DayOfWeek and Time/4-Schema */
       (
         /* For each day of week */
         /* if Mon occurs multiple times */
-        ((
-          %resource.dosageInstruction.timing.repeat.dayOfWeek
-          .where($this = 'mon')
-          .where(%resource.dosageInstruction.timing.repeat.dayOfWeek.where($this = 'mon').count() > 1)
-          .distinct()
-        ) implies 
+        ((%resource.dosageInstruction.timing.repeat.dayOfWeek.where($this = 'mon').count() > 1) implies 
         (
           (%resource.dosageInstruction.timing.repeat.where('mon' in dayOfWeek).when.distinct().count() = %resource.dosageInstruction.timing.repeat.where('mon' in dayOfWeek).when.count()) and
           (%resource.dosageInstruction.timing.repeat.where('mon' in dayOfWeek).timeOfDay.distinct().count() = %resource.dosageInstruction.timing.repeat.where('mon' in dayOfWeek).timeOfDay.count())
         )) and
         
         /* if tue occurs multiple times */
-        ((
-          %resource.dosageInstruction.timing.repeat.dayOfWeek
-          .where($this = 'tue')
-          .where(%resource.dosageInstruction.timing.repeat.dayOfWeek.where($this = 'tue').count() > 1)
-          .distinct()
-        ) implies 
+        ((%resource.dosageInstruction.timing.repeat.dayOfWeek.where($this = 'tue').count() > 1) implies 
         (
           (%resource.dosageInstruction.timing.repeat.where('tue' in dayOfWeek).when.distinct().count() = %resource.dosageInstruction.timing.repeat.where('tue' in dayOfWeek).when.count()) and
           (%resource.dosageInstruction.timing.repeat.where('tue' in dayOfWeek).timeOfDay.distinct().count() = %resource.dosageInstruction.timing.repeat.where('tue' in dayOfWeek).timeOfDay.count())
         )) and
         /* if wed occurs multiple times */
-        ((
-          %resource.dosageInstruction.timing.repeat.dayOfWeek
-          .where($this = 'wed')
-          .where(%resource.dosageInstruction.timing.repeat.dayOfWeek.where($this = 'wed').count() > 1)
-          .distinct()
-        ) implies 
+        ((%resource.dosageInstruction.timing.repeat.dayOfWeek.where($this = 'wed').count() > 1) implies 
         (
           (%resource.dosageInstruction.timing.repeat.where('wed' in dayOfWeek).when.distinct().count() = %resource.dosageInstruction.timing.repeat.where('wed' in dayOfWeek).when.count()) and
           (%resource.dosageInstruction.timing.repeat.where('wed' in dayOfWeek).timeOfDay.distinct().count() = %resource.dosageInstruction.timing.repeat.where('wed' in dayOfWeek).timeOfDay.count())
         )) and
         /* if thu occurs multiple times */
-        ((
-          %resource.dosageInstruction.timing.repeat.dayOfWeek
-          .where($this = 'thu')
-          .where(%resource.dosageInstruction.timing.repeat.dayOfWeek.where($this = 'thu').count() > 1)
-          .distinct()
-        ) implies 
+        ((%resource.dosageInstruction.timing.repeat.dayOfWeek.where($this = 'thu').count() > 1) implies 
         (
           (%resource.dosageInstruction.timing.repeat.where('thu' in dayOfWeek).when.distinct().count() = %resource.dosageInstruction.timing.repeat.where('thu' in dayOfWeek).when.count()) and
           (%resource.dosageInstruction.timing.repeat.where('thu' in dayOfWeek).timeOfDay.distinct().count() = %resource.dosageInstruction.timing.repeat.where('thu' in dayOfWeek).timeOfDay.count())
         )) and
         /* if fri occurs multiple times */
-        ((
-          %resource.dosageInstruction.timing.repeat.dayOfWeek
-          .where($this = 'fri')
-          .where(%resource.dosageInstruction.timing.repeat.dayOfWeek.where($this = 'fri').count() > 1)
-          .distinct()
-        ) implies 
+        ((%resource.dosageInstruction.timing.repeat.dayOfWeek.where($this = 'fri').count() > 1) implies 
         (
           (%resource.dosageInstruction.timing.repeat.where('fri' in dayOfWeek).when.distinct().count() = %resource.dosageInstruction.timing.repeat.where('fri' in dayOfWeek).when.count()) and
           (%resource.dosageInstruction.timing.repeat.where('fri' in dayOfWeek).timeOfDay.distinct().count() = %resource.dosageInstruction.timing.repeat.where('fri' in dayOfWeek).timeOfDay.count())
         )) and
         /* if sat occurs multiple times */
-        ((
-          %resource.dosageInstruction.timing.repeat.dayOfWeek
-          .where($this = 'sat')
-          .where(%resource.dosageInstruction.timing.repeat.dayOfWeek.where($this = 'sat').count() > 1)
-          .distinct()
-        ) implies 
+        ((%resource.dosageInstruction.timing.repeat.dayOfWeek.where($this = 'sat').count() > 1) implies 
         (
           (%resource.dosageInstruction.timing.repeat.where('sat' in dayOfWeek).when.distinct().count() = %resource.dosageInstruction.timing.repeat.where('sat' in dayOfWeek).when.count()) and
           (%resource.dosageInstruction.timing.repeat.where('sat' in dayOfWeek).timeOfDay.distinct().count() = %resource.dosageInstruction.timing.repeat.where('sat' in dayOfWeek).timeOfDay.count())
         )) and
         
         /* if sun occurs multiple times */
-        ((
-          %resource.dosageInstruction.timing.repeat.dayOfWeek
-          .where($this = 'sun')
-          .where(%resource.dosageInstruction.timing.repeat.dayOfWeek.where($this = 'sun').count() > 1)
-          .distinct()
-        ) implies 
+        ((%resource.dosageInstruction.timing.repeat.dayOfWeek.where($this = 'sun').count() > 1) implies 
         (
           (%resource.dosageInstruction.timing.repeat.where('sun' in dayOfWeek).when.distinct().count() = %resource.dosageInstruction.timing.repeat.where('sun' in dayOfWeek).when.count()) and
           (%resource.dosageInstruction.timing.repeat.where('sun' in dayOfWeek).timeOfDay.distinct().count() = %resource.dosageInstruction.timing.repeat.where('sun' in dayOfWeek).timeOfDay.count())
@@ -454,80 +415,45 @@ Expression: "( /* Detect DayOfWeek and Time/4-Schema */
       (
         /* For each day of week */
         /* if Mon occurs multiple times */
-        ((
-          %resource.dosage.timing.repeat.dayOfWeek
-          .where($this = 'mon')
-          .where(%resource.dosage.timing.repeat.dayOfWeek.where($this = 'mon').count() > 1)
-          .distinct()
-        ) implies 
+        ((%resource.dosage.timing.repeat.dayOfWeek.where($this = 'mon').count() > 1) implies 
         (
           (%resource.dosage.timing.repeat.where('mon' in dayOfWeek).when.distinct().count() = %resource.dosage.timing.repeat.where('mon' in dayOfWeek).when.count()) and
           (%resource.dosage.timing.repeat.where('mon' in dayOfWeek).timeOfDay.distinct().count() = %resource.dosage.timing.repeat.where('mon' in dayOfWeek).timeOfDay.count())
         )) and
         
         /* if tue occurs multiple times */
-        ((
-          %resource.dosage.timing.repeat.dayOfWeek
-          .where($this = 'tue')
-          .where(%resource.dosage.timing.repeat.dayOfWeek.where($this = 'tue').count() > 1)
-          .distinct()
-        ) implies 
+        ((%resource.dosage.timing.repeat.dayOfWeek.where($this = 'tue').count() > 1) implies 
         (
           (%resource.dosage.timing.repeat.where('tue' in dayOfWeek).when.distinct().count() = %resource.dosage.timing.repeat.where('tue' in dayOfWeek).when.count()) and
           (%resource.dosage.timing.repeat.where('tue' in dayOfWeek).timeOfDay.distinct().count() = %resource.dosage.timing.repeat.where('tue' in dayOfWeek).timeOfDay.count())
         )) and
         /* if wed occurs multiple times */
-        ((
-          %resource.dosage.timing.repeat.dayOfWeek
-          .where($this = 'wed')
-          .where(%resource.dosage.timing.repeat.dayOfWeek.where($this = 'wed').count() > 1)
-          .distinct()
-        ) implies 
+        ((%resource.dosage.timing.repeat.dayOfWeek.where($this = 'wed').count() > 1) implies 
         (
           (%resource.dosage.timing.repeat.where('wed' in dayOfWeek).when.distinct().count() = %resource.dosage.timing.repeat.where('wed' in dayOfWeek).when.count()) and
           (%resource.dosage.timing.repeat.where('wed' in dayOfWeek).timeOfDay.distinct().count() = %resource.dosage.timing.repeat.where('wed' in dayOfWeek).timeOfDay.count())
         )) and
         /* if thu occurs multiple times */
-        ((
-          %resource.dosage.timing.repeat.dayOfWeek
-          .where($this = 'thu')
-          .where(%resource.dosage.timing.repeat.dayOfWeek.where($this = 'thu').count() > 1)
-          .distinct()
-        ) implies 
+        ((%resource.dosage.timing.repeat.dayOfWeek.where($this = 'thu').count() > 1) implies 
         (
           (%resource.dosage.timing.repeat.where('thu' in dayOfWeek).when.distinct().count() = %resource.dosage.timing.repeat.where('thu' in dayOfWeek).when.count()) and
           (%resource.dosage.timing.repeat.where('thu' in dayOfWeek).timeOfDay.distinct().count() = %resource.dosage.timing.repeat.where('thu' in dayOfWeek).timeOfDay.count())
         )) and
         /* if fri occurs multiple times */
-        ((
-          %resource.dosage.timing.repeat.dayOfWeek
-          .where($this = 'fri')
-          .where(%resource.dosage.timing.repeat.dayOfWeek.where($this = 'fri').count() > 1)
-          .distinct()
-        ) implies 
+        ((%resource.dosage.timing.repeat.dayOfWeek.where($this = 'fri').count() > 1) implies 
         (
           (%resource.dosage.timing.repeat.where('fri' in dayOfWeek).when.distinct().count() = %resource.dosage.timing.repeat.where('fri' in dayOfWeek).when.count()) and
           (%resource.dosage.timing.repeat.where('fri' in dayOfWeek).timeOfDay.distinct().count() = %resource.dosage.timing.repeat.where('fri' in dayOfWeek).timeOfDay.count())
         )) and
         /* if sat occurs multiple times */
-        ((
-          %resource.dosage.timing.repeat.dayOfWeek
-          .where($this = 'sat')
-          .where(%resource.dosage.timing.repeat.dayOfWeek.where($this = 'sat').count() > 1)
-          .distinct()
-        ) implies 
+        ((%resource.dosage.timing.repeat.dayOfWeek.where($this = 'sat').count() > 1) implies 
         (
           (%resource.dosage.timing.repeat.where('sat' in dayOfWeek).when.distinct().count() = %resource.dosage.timing.repeat.where('sat' in dayOfWeek).when.count()) and
           (%resource.dosage.timing.repeat.where('sat' in dayOfWeek).timeOfDay.distinct().count() = %resource.dosage.timing.repeat.where('sat' in dayOfWeek).timeOfDay.count())
         )) and
         
         /* if sun occurs multiple times */
-        ((
-          %resource.dosage.timing.repeat.dayOfWeek
-          .where($this = 'sun')
-          .where(%resource.dosage.timing.repeat.dayOfWeek.where($this = 'sun').count() > 1)
-          .distinct()
-        ) implies 
+        ((%resource.dosage.timing.repeat.dayOfWeek.where($this = 'sun').count() > 1) implies 
         (
           (%resource.dosage.timing.repeat.where('sun' in dayOfWeek).when.distinct().count() = %resource.dosage.timing.repeat.where('sun' in dayOfWeek).when.count()) and
           (%resource.dosage.timing.repeat.where('sun' in dayOfWeek).timeOfDay.distinct().count() = %resource.dosage.timing.repeat.where('sun' in dayOfWeek).timeOfDay.count())
@@ -540,7 +466,7 @@ Expression: "( /* Detect DayOfWeek and Time/4-Schema */
 Severity: #error
 
 Invariant: TimingOnlyOneTimeForInterval
-Description: "Dosage Interval Timings must not state the same time of day across multiple dosage instances"
+Description: "Dosage Interval Timings must use the same period and periodUnit across all dosage instances, and each timeOfDay or when value must be unique across dosage instances"
 Expression: "/* Detect Interval and Time/4-Schema */
 (
   %resource.ofType(MedicationRequest).dosageInstruction
@@ -582,11 +508,6 @@ Expression: "/* Detect Interval and Time/4-Schema */
     implies
     (
       (
-        %resource.ofType(MedicationRequest).exists()
-        or %resource.ofType(MedicationDispense).exists()
-      )
-      implies
-      (
         %resource.dosage.timing.repeat.period.distinct().count() = 1
         and %resource.dosage.timing.repeat.periodUnit.distinct().count() = 1
       )
@@ -598,6 +519,5 @@ Expression: "/* Detect Interval and Time/4-Schema */
       )
     )
   )
-)
-"
+)"
 Severity: #error

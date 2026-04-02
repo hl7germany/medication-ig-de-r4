@@ -130,8 +130,12 @@ Title: "Unsupported: DoseRange"
 * text = "doseRange"
 * doseAndRate[0].doseRange.low.value = 1
 * doseAndRate[0].doseRange.low.unit = "mg"
+* doseAndRate[0].doseRange.low.system = $ucum
+* doseAndRate[0].doseRange.low.code = #mg
 * doseAndRate[0].doseRange.high.value = 2
 * doseAndRate[0].doseRange.high.unit = "mg"
+* doseAndRate[0].doseRange.high.system = $ucum
+* doseAndRate[0].doseRange.high.code = #mg
 
 Instance: MR-Unsupported-Dosage-08-of-20-RateQuantity
 InstanceOf: MedicationRequestDgMP
@@ -151,6 +155,8 @@ Title: "Unsupported: RateQuantity"
 * text = "rateQuantity"
 * doseAndRate[0].rateQuantity.value = 10
 * doseAndRate[0].rateQuantity.unit = "ml/h"
+* doseAndRate[0].rateQuantity.system = $ucum
+* doseAndRate[0].rateQuantity.code = #mL/h
 
 Instance: MR-Unsupported-Dosage-09-of-20-RateRange
 InstanceOf: MedicationRequestDgMP
@@ -170,8 +176,12 @@ Title: "Unsupported: RateRange"
 * text = "rateRange"
 * doseAndRate[0].rateRange.low.value = 5
 * doseAndRate[0].rateRange.low.unit = "ml/h"
+* doseAndRate[0].rateRange.low.system = $ucum
+* doseAndRate[0].rateRange.low.code = #mL/h
 * doseAndRate[0].rateRange.high.value = 15
 * doseAndRate[0].rateRange.high.unit = "ml/h"
+* doseAndRate[0].rateRange.high.system = $ucum
+* doseAndRate[0].rateRange.high.code = #mL/h
 
 Instance: MR-Unsupported-Dosage-10-of-20-RateRatio
 InstanceOf: MedicationRequestDgMP
@@ -191,8 +201,12 @@ Title: "Unsupported: RateRatio"
 * text = "rateRatio"
 * doseAndRate[0].rateRatio.numerator.value = 1
 * doseAndRate[0].rateRatio.numerator.unit = "mg"
+* doseAndRate[0].rateRatio.numerator.system = $ucum
+* doseAndRate[0].rateRatio.numerator.code = #mg
 * doseAndRate[0].rateRatio.denominator.value = 1
 * doseAndRate[0].rateRatio.denominator.unit = "h"
+* doseAndRate[0].rateRatio.denominator.system = $ucum
+* doseAndRate[0].rateRatio.denominator.code = #h
 
 Instance: MR-Unsupported-Dosage-11-of-20-AdditionalInstruction
 InstanceOf: MedicationRequestDgMP
@@ -230,8 +244,12 @@ Title: "Unsupported: MaxDosePerPeriod"
 * text = "maxDosePerPeriod"
 * maxDosePerPeriod.numerator.value = 10
 * maxDosePerPeriod.numerator.unit = "mg"
+* maxDosePerPeriod.numerator.system = $ucum
+* maxDosePerPeriod.numerator.code = #mg
 * maxDosePerPeriod.denominator.value = 24
 * maxDosePerPeriod.denominator.unit = "h"
+* maxDosePerPeriod.denominator.system = $ucum
+* maxDosePerPeriod.denominator.code = #h
 
 Instance: MR-Unsupported-Dosage-13-of-20-MaxDosePerAdministration
 InstanceOf: MedicationRequestDgMP
@@ -251,6 +269,8 @@ Title: "Unsupported: MaxDosePerAdministration"
 * text = "maxDosePerAdministration"
 * maxDosePerAdministration.value = 2
 * maxDosePerAdministration.unit = "mg"
+* maxDosePerAdministration.system = $ucum
+* maxDosePerAdministration.code = #mg
 
 Instance: MR-Unsupported-Dosage-14-of-20-MaxDosePerLifetime
 InstanceOf: MedicationRequestDgMP
@@ -270,6 +290,8 @@ Title: "Unsupported: MaxDosePerLifetime"
 * text = "maxDosePerLifetime"
 * maxDosePerLifetime.value = 100
 * maxDosePerLifetime.unit = "mg"
+* maxDosePerLifetime.system = $ucum
+* maxDosePerLifetime.code = #mg
 
 Instance: MR-Unsupported-Dosage-15-of-20-Count
 InstanceOf: MedicationRequestDgMP
@@ -363,8 +385,12 @@ Title: "Unsupported: BoundsRange"
     * periodUnit = #d
     * boundsRange.low.value = 1
     * boundsRange.low.unit = "d"
+    * boundsRange.low.system = $ucum
+    * boundsRange.low.code = #d
     * boundsRange.high.value = 10
     * boundsRange.high.unit = "d"
+    * boundsRange.high.system = $ucum
+    * boundsRange.high.code = #d
 
 Instance: MR-Unsupported-Dosage-19-of-20-Offset
 InstanceOf: MedicationRequestDgMP
@@ -412,3 +438,407 @@ Title: "Unsupported: Event"
     * period = 1
     * periodUnit = #d
     * boundsDuration = 3 $ucum#wk "Woche(n)"
+
+// --- MedicationDispense equivalents ---
+
+Instance: MD-Unsupported-Dosage-01-of-20-Count
+InstanceOf: MedicationDispenseDgMP
+Usage: #example
+Title: "Unsupported Dosage Count"
+Description: "CAVE: This MedicationDispense is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
+* subject.display = "Unsupported Dosage Count"
+* status = #completed
+* medicationCodeableConcept.text = "Unsupported Dosage Count Medication"
+* dosageInstruction[+] = Unsupported-Dosage-1-Count
+
+Instance: MD-Unsupported-Dosage-02-of-20-asNeededBoolean
+InstanceOf: MedicationDispenseDgMP
+Usage: #example
+Title: "Unsupported Dosage asNeededBoolean"
+Description: "CAVE: This MedicationDispense is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
+* subject.display = "Unsupported Dosage asNeededBoolean"
+* status = #completed
+* medicationCodeableConcept.text = "Unsupported Dosage asNeededBoolean Medication"
+* dosageInstruction[+] = Unsupported-Dosage-2-asNeededBoolean
+
+Instance: MD-Unsupported-Dosage-03-of-20-asNeededCodeableConcept
+InstanceOf: MedicationDispenseDgMP
+Usage: #example
+Title: "Unsupported Dosage asNeededCodeableConcept"
+Description: "CAVE: This MedicationDispense is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
+* subject.display = "Unsupported Dosage asNeededCodeableConcept"
+* status = #completed
+* medicationCodeableConcept.text = "Unsupported Dosage asNeededCodeableConcept Medication"
+* dosageInstruction[+] = Unsupported-Dosage-3-asNeededCodeableConcept
+
+Instance: MD-Unsupported-Dosage-04-of-20-Method
+InstanceOf: MedicationDispenseDgMP
+Usage: #example
+Title: "Unsupported Dosage Method"
+Description: "CAVE: This MedicationDispense is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
+* subject.display = "Unsupported Dosage Method"
+* status = #completed
+* medicationCodeableConcept.text = "Unsupported Dosage Method Medication"
+* dosageInstruction[+] = Unsupported-Dosage-4-Method
+
+Instance: MD-Unsupported-Dosage-05-of-20-Route
+InstanceOf: MedicationDispenseDgMP
+Usage: #example
+Title: "Unsupported Dosage Route"
+Description: "CAVE: This MedicationDispense is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
+* subject.display = "Unsupported Dosage Route"
+* status = #completed
+* medicationCodeableConcept.text = "Unsupported Dosage Route Medication"
+* dosageInstruction[+] = Unsupported-Dosage-5-Route
+
+Instance: MD-Unsupported-Dosage-06-of-20-Site
+InstanceOf: MedicationDispenseDgMP
+Usage: #example
+Title: "Unsupported Dosage Site"
+Description: "CAVE: This MedicationDispense is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
+* subject.display = "Unsupported Dosage Site"
+* status = #completed
+* medicationCodeableConcept.text = "Unsupported Dosage Site Medication"
+* dosageInstruction[+] = Unsupported-Dosage-6-Site
+
+Instance: MD-Unsupported-Dosage-07-of-20-DoseRange
+InstanceOf: MedicationDispenseDgMP
+Usage: #example
+Title: "Unsupported Dosage DoseRange"
+Description: "CAVE: This MedicationDispense is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
+* subject.display = "Unsupported Dosage DoseRange"
+* status = #completed
+* medicationCodeableConcept.text = "Unsupported Dosage DoseRange Medication"
+* dosageInstruction[+] = Unsupported-Dosage-7-DoseRange
+
+Instance: MD-Unsupported-Dosage-08-of-20-RateQuantity
+InstanceOf: MedicationDispenseDgMP
+Usage: #example
+Title: "Unsupported Dosage RateQuantity"
+Description: "CAVE: This MedicationDispense is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
+* subject.display = "Unsupported Dosage RateQuantity"
+* status = #completed
+* medicationCodeableConcept.text = "Unsupported Dosage RateQuantity Medication"
+* dosageInstruction[+] = Unsupported-Dosage-8-RateQuantity
+
+Instance: MD-Unsupported-Dosage-09-of-20-RateRange
+InstanceOf: MedicationDispenseDgMP
+Usage: #example
+Title: "Unsupported Dosage RateRange"
+Description: "CAVE: This MedicationDispense is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
+* subject.display = "Unsupported Dosage RateRange"
+* status = #completed
+* medicationCodeableConcept.text = "Unsupported Dosage RateRange Medication"
+* dosageInstruction[+] = Unsupported-Dosage-9-RateRange
+
+Instance: MD-Unsupported-Dosage-10-of-20-RateRatio
+InstanceOf: MedicationDispenseDgMP
+Usage: #example
+Title: "Unsupported Dosage RateRatio"
+Description: "CAVE: This MedicationDispense is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
+* subject.display = "Unsupported Dosage RateRatio"
+* status = #completed
+* medicationCodeableConcept.text = "Unsupported Dosage RateRatio Medication"
+* dosageInstruction[+] = Unsupported-Dosage-10-RateRatio
+
+Instance: MD-Unsupported-Dosage-11-of-20-AdditionalInstruction
+InstanceOf: MedicationDispenseDgMP
+Usage: #example
+Title: "Unsupported Dosage AdditionalInstruction"
+Description: "CAVE: This MedicationDispense is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
+* subject.display = "Unsupported Dosage AdditionalInstruction"
+* status = #completed
+* medicationCodeableConcept.text = "Unsupported Dosage AdditionalInstruction Medication"
+* dosageInstruction[+] = Unsupported-Dosage-11-AdditionalInstruction
+
+Instance: MD-Unsupported-Dosage-12-of-20-MaxDosePerPeriod
+InstanceOf: MedicationDispenseDgMP
+Usage: #example
+Title: "Unsupported Dosage MaxDosePerPeriod"
+Description: "CAVE: This MedicationDispense is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
+* subject.display = "Unsupported Dosage MaxDosePerPeriod"
+* status = #completed
+* medicationCodeableConcept.text = "Unsupported Dosage MaxDosePerPeriod Medication"
+* dosageInstruction[+] = Unsupported-Dosage-12-MaxDosePerPeriod
+
+Instance: MD-Unsupported-Dosage-13-of-20-MaxDosePerAdministration
+InstanceOf: MedicationDispenseDgMP
+Usage: #example
+Title: "Unsupported Dosage MaxDosePerAdministration"
+Description: "CAVE: This MedicationDispense is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
+* subject.display = "Unsupported Dosage MaxDosePerAdministration"
+* status = #completed
+* medicationCodeableConcept.text = "Unsupported Dosage MaxDosePerAdministration Medication"
+* dosageInstruction[+] = Unsupported-Dosage-13-MaxDosePerAdministration
+
+Instance: MD-Unsupported-Dosage-14-of-20-MaxDosePerLifetime
+InstanceOf: MedicationDispenseDgMP
+Usage: #example
+Title: "Unsupported Dosage MaxDosePerLifetime"
+Description: "CAVE: This MedicationDispense is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
+* subject.display = "Unsupported Dosage MaxDosePerLifetime"
+* status = #completed
+* medicationCodeableConcept.text = "Unsupported Dosage MaxDosePerLifetime Medication"
+* dosageInstruction[+] = Unsupported-Dosage-14-MaxDosePerLifetime
+
+Instance: MD-Unsupported-Dosage-15-of-20-Count
+InstanceOf: MedicationDispenseDgMP
+Usage: #example
+Title: "Unsupported Dosage Count"
+Description: "CAVE: This MedicationDispense is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
+* subject.display = "Unsupported Dosage Count"
+* status = #completed
+* medicationCodeableConcept.text = "Unsupported Dosage Count Medication"
+* dosageInstruction[+] = Unsupported-Dosage-15-Count
+
+Instance: MD-Unsupported-Dosage-16-of-20-CountMax
+InstanceOf: MedicationDispenseDgMP
+Usage: #example
+Title: "Unsupported Dosage CountMax"
+Description: "CAVE: This MedicationDispense is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
+* subject.display = "Unsupported Dosage CountMax"
+* status = #completed
+* medicationCodeableConcept.text = "Unsupported Dosage CountMax Medication"
+* dosageInstruction[+] = Unsupported-Dosage-16-CountMax
+
+Instance: MD-Unsupported-Dosage-17-of-20-BoundsPeriod
+InstanceOf: MedicationDispenseDgMP
+Usage: #example
+Title: "Unsupported Dosage BoundsPeriod"
+Description: "CAVE: This MedicationDispense is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
+* subject.display = "Unsupported Dosage BoundsPeriod"
+* status = #completed
+* medicationCodeableConcept.text = "Unsupported Dosage BoundsPeriod Medication"
+* dosageInstruction[+] = Unsupported-Dosage-17-BoundsPeriod
+
+Instance: MD-Unsupported-Dosage-18-of-20-BoundsRange
+InstanceOf: MedicationDispenseDgMP
+Usage: #example
+Title: "Unsupported Dosage BoundsRange"
+Description: "CAVE: This MedicationDispense is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
+* subject.display = "Unsupported Dosage BoundsRange"
+* status = #completed
+* medicationCodeableConcept.text = "Unsupported Dosage BoundsRange Medication"
+* dosageInstruction[+] = Unsupported-Dosage-18-BoundsRange
+
+Instance: MD-Unsupported-Dosage-19-of-20-Offset
+InstanceOf: MedicationDispenseDgMP
+Usage: #example
+Title: "Unsupported Dosage Offset"
+Description: "CAVE: This MedicationDispense is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
+* subject.display = "Unsupported Dosage Offset"
+* status = #completed
+* medicationCodeableConcept.text = "Unsupported Dosage Offset Medication"
+* dosageInstruction[+] = Unsupported-Dosage-19-Offset
+
+Instance: MD-Unsupported-Dosage-20-of-20-Event
+InstanceOf: MedicationDispenseDgMP
+Usage: #example
+Title: "Unsupported Dosage Event"
+Description: "CAVE: This MedicationDispense is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
+* subject.display = "Unsupported Dosage Event"
+* status = #completed
+* medicationCodeableConcept.text = "Unsupported Dosage Event Medication"
+* dosageInstruction[+] = Unsupported-Dosage-20-Event
+
+// --- MedicationStatement equivalents ---
+
+Instance: MS-Unsupported-Dosage-01-of-20-Count
+InstanceOf: MedicationStatementDgMP
+Usage: #example
+Title: "Unsupported Dosage Count"
+Description: "CAVE: This MedicationStatement is for validation purposes and does NOT represent a valid dosage. It only checks for unsupported Fields"
+* subject.display = "Unsupported Dosage Count"
+* status = #active
+* medicationCodeableConcept.text = "Unsupported Dosage Count Medication"
+* dosage[+] = Unsupported-Dosage-1-Count
+
+Instance: MS-Unsupported-Dosage-02-of-20-asNeededBoolean
+InstanceOf: MedicationStatementDgMP
+Usage: #example
+Title: "Unsupported Dosage asNeededBoolean"
+Description: "CAVE: This MedicationStatement is for validation purposes and does NOT represent a valid dosage. It only checks for unsupported Fields"
+* subject.display = "Unsupported Dosage asNeededBoolean"
+* status = #active
+* medicationCodeableConcept.text = "Unsupported Dosage asNeededBoolean Medication"
+* dosage[+] = Unsupported-Dosage-2-asNeededBoolean
+
+Instance: MS-Unsupported-Dosage-03-of-20-asNeededCodeableConcept
+InstanceOf: MedicationStatementDgMP
+Usage: #example
+Title: "Unsupported Dosage asNeededCodeableConcept"
+Description: "CAVE: This MedicationStatement is for validation purposes and does NOT represent a valid dosage. It only checks for unsupported Fields"
+* subject.display = "Unsupported Dosage asNeededCodeableConcept"
+* status = #active
+* medicationCodeableConcept.text = "Unsupported Dosage asNeededCodeableConcept Medication"
+* dosage[+] = Unsupported-Dosage-3-asNeededCodeableConcept
+
+Instance: MS-Unsupported-Dosage-04-of-20-Method
+InstanceOf: MedicationStatementDgMP
+Usage: #example
+Title: "Unsupported Dosage Method"
+Description: "CAVE: This MedicationStatement is for validation purposes and does NOT represent a valid dosage. It only checks for unsupported Fields"
+* subject.display = "Unsupported Dosage Method"
+* status = #active
+* medicationCodeableConcept.text = "Unsupported Dosage Method Medication"
+* dosage[+] = Unsupported-Dosage-4-Method
+
+Instance: MS-Unsupported-Dosage-05-of-20-Route
+InstanceOf: MedicationStatementDgMP
+Usage: #example
+Title: "Unsupported Dosage Route"
+Description: "CAVE: This MedicationStatement is for validation purposes and does NOT represent a valid dosage. It only checks for unsupported Fields"
+* subject.display = "Unsupported Dosage Route"
+* status = #active
+* medicationCodeableConcept.text = "Unsupported Dosage Route Medication"
+* dosage[+] = Unsupported-Dosage-5-Route
+
+Instance: MS-Unsupported-Dosage-06-of-20-Site
+InstanceOf: MedicationStatementDgMP
+Usage: #example
+Title: "Unsupported Dosage Site"
+Description: "CAVE: This MedicationStatement is for validation purposes and does NOT represent a valid dosage. It only checks for unsupported Fields"
+* subject.display = "Unsupported Dosage Site"
+* status = #active
+* medicationCodeableConcept.text = "Unsupported Dosage Site Medication"
+* dosage[+] = Unsupported-Dosage-6-Site
+
+Instance: MS-Unsupported-Dosage-07-of-20-DoseRange
+InstanceOf: MedicationStatementDgMP
+Usage: #example
+Title: "Unsupported Dosage DoseRange"
+Description: "CAVE: This MedicationStatement is for validation purposes and does NOT represent a valid dosage. It only checks for unsupported Fields"
+* subject.display = "Unsupported Dosage DoseRange"
+* status = #active
+* medicationCodeableConcept.text = "Unsupported Dosage DoseRange Medication"
+* dosage[+] = Unsupported-Dosage-7-DoseRange
+
+Instance: MS-Unsupported-Dosage-08-of-20-RateQuantity
+InstanceOf: MedicationStatementDgMP
+Usage: #example
+Title: "Unsupported Dosage RateQuantity"
+Description: "CAVE: This MedicationStatement is for validation purposes and does NOT represent a valid dosage. It only checks for unsupported Fields"
+* subject.display = "Unsupported Dosage RateQuantity"
+* status = #active
+* medicationCodeableConcept.text = "Unsupported Dosage RateQuantity Medication"
+* dosage[+] = Unsupported-Dosage-8-RateQuantity
+
+Instance: MS-Unsupported-Dosage-09-of-20-RateRange
+InstanceOf: MedicationStatementDgMP
+Usage: #example
+Title: "Unsupported Dosage RateRange"
+Description: "CAVE: This MedicationStatement is for validation purposes and does NOT represent a valid dosage. It only checks for unsupported Fields"
+* subject.display = "Unsupported Dosage RateRange"
+* status = #active
+* medicationCodeableConcept.text = "Unsupported Dosage RateRange Medication"
+* dosage[+] = Unsupported-Dosage-9-RateRange
+
+Instance: MS-Unsupported-Dosage-10-of-20-RateRatio
+InstanceOf: MedicationStatementDgMP
+Usage: #example
+Title: "Unsupported Dosage RateRatio"
+Description: "CAVE: This MedicationStatement is for validation purposes and does NOT represent a valid dosage. It only checks for unsupported Fields"
+* subject.display = "Unsupported Dosage RateRatio"
+* status = #active
+* medicationCodeableConcept.text = "Unsupported Dosage RateRatio Medication"
+* dosage[+] = Unsupported-Dosage-10-RateRatio
+
+Instance: MS-Unsupported-Dosage-11-of-20-AdditionalInstruction
+InstanceOf: MedicationStatementDgMP
+Usage: #example
+Title: "Unsupported Dosage AdditionalInstruction"
+Description: "CAVE: This MedicationStatement is for validation purposes and does NOT represent a valid dosage. It only checks for unsupported Fields"
+* subject.display = "Unsupported Dosage AdditionalInstruction"
+* status = #active
+* medicationCodeableConcept.text = "Unsupported Dosage AdditionalInstruction Medication"
+* dosage[+] = Unsupported-Dosage-11-AdditionalInstruction
+
+Instance: MS-Unsupported-Dosage-12-of-20-MaxDosePerPeriod
+InstanceOf: MedicationStatementDgMP
+Usage: #example
+Title: "Unsupported Dosage MaxDosePerPeriod"
+Description: "CAVE: This MedicationStatement is for validation purposes and does NOT represent a valid dosage. It only checks for unsupported Fields"
+* subject.display = "Unsupported Dosage MaxDosePerPeriod"
+* status = #active
+* medicationCodeableConcept.text = "Unsupported Dosage MaxDosePerPeriod Medication"
+* dosage[+] = Unsupported-Dosage-12-MaxDosePerPeriod
+
+Instance: MS-Unsupported-Dosage-13-of-20-MaxDosePerAdministration
+InstanceOf: MedicationStatementDgMP
+Usage: #example
+Title: "Unsupported Dosage MaxDosePerAdministration"
+Description: "CAVE: This MedicationStatement is for validation purposes and does NOT represent a valid dosage. It only checks for unsupported Fields"
+* subject.display = "Unsupported Dosage MaxDosePerAdministration"
+* status = #active
+* medicationCodeableConcept.text = "Unsupported Dosage MaxDosePerAdministration Medication"
+* dosage[+] = Unsupported-Dosage-13-MaxDosePerAdministration
+
+Instance: MS-Unsupported-Dosage-14-of-20-MaxDosePerLifetime
+InstanceOf: MedicationStatementDgMP
+Usage: #example
+Title: "Unsupported Dosage MaxDosePerLifetime"
+Description: "CAVE: This MedicationStatement is for validation purposes and does NOT represent a valid dosage. It only checks for unsupported Fields"
+* subject.display = "Unsupported Dosage MaxDosePerLifetime"
+* status = #active
+* medicationCodeableConcept.text = "Unsupported Dosage MaxDosePerLifetime Medication"
+* dosage[+] = Unsupported-Dosage-14-MaxDosePerLifetime
+
+Instance: MS-Unsupported-Dosage-15-of-20-Count
+InstanceOf: MedicationStatementDgMP
+Usage: #example
+Title: "Unsupported Dosage Count"
+Description: "CAVE: This MedicationStatement is for validation purposes and does NOT represent a valid dosage. It only checks for unsupported Fields"
+* subject.display = "Unsupported Dosage Count"
+* status = #active
+* medicationCodeableConcept.text = "Unsupported Dosage Count Medication"
+* dosage[+] = Unsupported-Dosage-15-Count
+
+Instance: MS-Unsupported-Dosage-16-of-20-CountMax
+InstanceOf: MedicationStatementDgMP
+Usage: #example
+Title: "Unsupported Dosage CountMax"
+Description: "CAVE: This MedicationStatement is for validation purposes and does NOT represent a valid dosage. It only checks for unsupported Fields"
+* subject.display = "Unsupported Dosage CountMax"
+* status = #active
+* medicationCodeableConcept.text = "Unsupported Dosage CountMax Medication"
+* dosage[+] = Unsupported-Dosage-16-CountMax
+
+Instance: MS-Unsupported-Dosage-17-of-20-BoundsPeriod
+InstanceOf: MedicationStatementDgMP
+Usage: #example
+Title: "Unsupported Dosage BoundsPeriod"
+Description: "CAVE: This MedicationStatement is for validation purposes and does NOT represent a valid dosage. It only checks for unsupported Fields"
+* subject.display = "Unsupported Dosage BoundsPeriod"
+* status = #active
+* medicationCodeableConcept.text = "Unsupported Dosage BoundsPeriod Medication"
+* dosage[+] = Unsupported-Dosage-17-BoundsPeriod
+
+Instance: MS-Unsupported-Dosage-18-of-20-BoundsRange
+InstanceOf: MedicationStatementDgMP
+Usage: #example
+Title: "Unsupported Dosage BoundsRange"
+Description: "CAVE: This MedicationStatement is for validation purposes and does NOT represent a valid dosage. It only checks for unsupported Fields"
+* subject.display = "Unsupported Dosage BoundsRange"
+* status = #active
+* medicationCodeableConcept.text = "Unsupported Dosage BoundsRange Medication"
+* dosage[+] = Unsupported-Dosage-18-BoundsRange
+
+Instance: MS-Unsupported-Dosage-19-of-20-Offset
+InstanceOf: MedicationStatementDgMP
+Usage: #example
+Title: "Unsupported Dosage Offset"
+Description: "CAVE: This MedicationStatement is for validation purposes and does NOT represent a valid dosage. It only checks for unsupported Fields"
+* subject.display = "Unsupported Dosage Offset"
+* status = #active
+* medicationCodeableConcept.text = "Unsupported Dosage Offset Medication"
+* dosage[+] = Unsupported-Dosage-19-Offset
+
+Instance: MS-Unsupported-Dosage-20-of-20-Event
+InstanceOf: MedicationStatementDgMP
+Usage: #example
+Title: "Unsupported Dosage Event"
+Description: "CAVE: This MedicationStatement is for validation purposes and does NOT represent a valid dosage. It only checks for unsupported Fields"
+* subject.display = "Unsupported Dosage Event"
+* status = #active
+* medicationCodeableConcept.text = "Unsupported Dosage Event Medication"
+* dosage[+] = Unsupported-Dosage-20-Event

@@ -7,7 +7,7 @@
   - **DosageDgMP**: `DosageStructuredOrFreeText`
   - **TimingDgMP**: `TimingOnlyOneType`, `TimingOnlyOneTimeForInterval`, `TimingOnlyOnePeriodForDayOfWeek`
 
-**Details je Invariante (logische Änderungen)**
+**Details je Invariante**
 
 - **`DosageStructuredOrFreeTextWarning` (`DosageDE`)**
   - Vom Fix betroffene Ressourcentypen: `MedicationDispense`, `MedicationStatement`

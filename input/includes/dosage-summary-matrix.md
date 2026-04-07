@@ -29,12 +29,6 @@
 |  |  | 3 Stück | 1 | 1 | d |  | 18:00:00 |  |  |
 | [MedicationDispense-MD-Dosage-weekday-mixed-doses](./MedicationDispense-MD-Dosage-weekday-mixed-doses.html) | montags — je 1 Stück; dienstags — je 3 Stück | 1 Stück | 1 | 1 | wk | mon |  |  |  |
 |  |  | 3 Stück | 1 | 1 | wk | tue |  |  |  |
-| [MedicationDispense-MD-Test-DifferentDaysEachOnce-Valid](./MedicationDispense-MD-Test-DifferentDaysEachOnce-Valid.html) | montags 1-0-0-0 Stück; samstags 0-0-1-0 Stück | 1 Stück | 1 | 1 | wk | mon |  | MORN |  |
-|  |  | 1 Stück | 1 | 1 | wk | sat |  | EVE |  |
-| [MedicationDispense-MD-Test-SameDayDifferentDoses-Valid](./MedicationDispense-MD-Test-SameDayDifferentDoses-Valid.html) | montags 08:00 Uhr — je 1 Stück; 20:00 Uhr — je 2 Stück | 1 Stück | 1 | 1 | wk | mon | 08:00:00 |  |  |
-|  |  | 2 Stück | 1 | 1 | wk | mon | 20:00:00 |  |  |
-| [MedicationDispense-MD-Test-SameDayDifferentDoses-When-Valid](./MedicationDispense-MD-Test-SameDayDifferentDoses-When-Valid.html) | dienstags 1-0-2-0 Stück | 1 Stück | 1 | 1 | wk | tue |  | MORN |  |
-|  |  | 2 Stück | 1 | 1 | wk | tue |  | EVE |  |
 | [MedicationRequest-Example-MR-Bug-EmptyLists](./MedicationRequest-Example-MR-Bug-EmptyLists.html) | täglich: je 1 Stück | 1 Stück | 1 | 1 | d |  |  |  |  |
 | [MedicationRequest-Example-MR-Bug-MultipleTimeOfDay-Daily](./MedicationRequest-Example-MR-Bug-MultipleTimeOfDay-Daily.html) | täglich: 08:00 Uhr, 14:00 Uhr, 22:00 Uhr — je 1 Stück | 1 Stück | 3 | 1 | d |  | 08:00:00, 14:00:00, 22:00:00 |  |  |
 | [MedicationRequest-Example-MR-Bug-MultipleTimeOfDay-DayOfWeek](./MedicationRequest-Example-MR-Bug-MultipleTimeOfDay-DayOfWeek.html) | montags 09:00 Uhr, 21:00 Uhr — je 1 Stück; mittwochs 09:00 Uhr, 21:00 Uhr — je 1 Stück; freitags 09:00 Uhr, 21:00 Uhr — je 1 Stück | 1 Stück | 6 | 1 | wk | mon, wed, fri | 09:00:00, 21:00:00 |  |  |
@@ -106,16 +100,6 @@
 |  |  | 3 Stück | 1 | 1 | d |  | 18:00:00 |  |  |
 | [MedicationRequest-MR-Dosage-weekday-mixed-doses](./MedicationRequest-MR-Dosage-weekday-mixed-doses.html) | montags — je 1 Stück; dienstags — je 3 Stück | 1 Stück | 1 | 1 | wk | mon |  |  |  |
 |  |  | 3 Stück | 1 | 1 | wk | tue |  |  |  |
-| [MedicationRequest-MR-Test-DifferentDaysEachOnce-Valid](./MedicationRequest-MR-Test-DifferentDaysEachOnce-Valid.html) | montags 1-0-0-0 Stück; samstags 0-0-1-0 Stück | 1 Stück | 1 | 1 | wk | mon |  | MORN |  |
-|  |  | 1 Stück | 1 | 1 | wk | sat |  | EVE |  |
-| [MedicationRequest-MR-Test-MultipleDaysDifferentDoses-Valid](./MedicationRequest-MR-Test-MultipleDaysDifferentDoses-Valid.html) | mittwochs 08:00 Uhr — je 1 Stück; 18:00 Uhr — je 2 Stück; freitags 09:00 Uhr — je 1 Stück; 21:00 Uhr — je 3 Stück | 1 Stück | 1 | 1 | wk | wed | 08:00:00 |  |  |
-|  |  | 2 Stück | 1 | 1 | wk | wed | 18:00:00 |  |  |
-|  |  | 1 Stück | 1 | 1 | wk | fri | 09:00:00 |  |  |
-|  |  | 3 Stück | 1 | 1 | wk | fri | 21:00:00 |  |  |
-| [MedicationRequest-MR-Test-SameDayDifferentDoses-Valid](./MedicationRequest-MR-Test-SameDayDifferentDoses-Valid.html) | montags 08:00 Uhr — je 1 Stück; 20:00 Uhr — je 2 Stück | 1 Stück | 1 | 1 | wk | mon | 08:00:00 |  |  |
-|  |  | 2 Stück | 1 | 1 | wk | mon | 20:00:00 |  |  |
-| [MedicationRequest-MR-Test-SameDayDifferentDoses-When-Valid](./MedicationRequest-MR-Test-SameDayDifferentDoses-When-Valid.html) | dienstags 1-0-2-0 Stück | 1 Stück | 1 | 1 | wk | tue |  | MORN |  |
-|  |  | 2 Stück | 1 | 1 | wk | tue |  | EVE |  |
 | [MedicationStatement-Example-MS-Dosage-UnitStueck-1020](./MedicationStatement-Example-MS-Dosage-UnitStueck-1020.html) | 1-0-2-0 Stück | 1 Stück | 1 | 1 | d |  |  | MORN |  |
 |  |  | 2 Stück | 1 | 1 | d |  |  | EVE |  |
 | [MedicationStatement-Example-MS-Dosage-UnitTasse-1000](./MedicationStatement-Example-MS-Dosage-UnitTasse-1000.html) | 2-0-0-0 Teelöffel | 2 Teelöffel | 1 | 1 | d |  |  | MORN |  |
@@ -145,9 +129,3 @@
 |  |  | 3 Stück | 1 | 1 | d |  | 18:00:00 |  |  |
 | [MedicationStatement-MS-Dosage-weekday-mixed-doses](./MedicationStatement-MS-Dosage-weekday-mixed-doses.html) | montags — je 1 Stück; dienstags — je 3 Stück | 1 Stück | 1 | 1 | wk | mon |  |  |  |
 |  |  | 3 Stück | 1 | 1 | wk | tue |  |  |  |
-| [MedicationStatement-MS-Test-DifferentDaysEachOnce-Valid](./MedicationStatement-MS-Test-DifferentDaysEachOnce-Valid.html) | montags 1-0-0-0 Stück; samstags 0-0-1-0 Stück | 1 Stück | 1 | 1 | wk | mon |  | MORN |  |
-|  |  | 1 Stück | 1 | 1 | wk | sat |  | EVE |  |
-| [MedicationStatement-MS-Test-SameDayDifferentDoses-Valid](./MedicationStatement-MS-Test-SameDayDifferentDoses-Valid.html) | montags 08:00 Uhr — je 1 Stück; 20:00 Uhr — je 2 Stück | 1 Stück | 1 | 1 | wk | mon | 08:00:00 |  |  |
-|  |  | 2 Stück | 1 | 1 | wk | mon | 20:00:00 |  |  |
-| [MedicationStatement-MS-Test-SameDayDifferentDoses-When-Valid](./MedicationStatement-MS-Test-SameDayDifferentDoses-When-Valid.html) | dienstags 1-0-2-0 Stück | 1 Stück | 1 | 1 | wk | tue |  | MORN |  |
-|  |  | 2 Stück | 1 | 1 | wk | tue |  | EVE |  |

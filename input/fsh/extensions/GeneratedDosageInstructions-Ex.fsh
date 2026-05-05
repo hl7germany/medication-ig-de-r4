@@ -9,8 +9,10 @@ Context: MedicationRequest, MedicationDispense, MedicationStatement
 * extension[language]
   * ^short = "Sprache der generierten Dosierungsanweisung"
   * ^comment = "Zur Auswahl der deutschen Sprache sollte der Code 'de-DE' verwendet werden"
+  * value[x] only code
   * valueCode 1.. MS
   * valueCode from $all-languages-vs
 * extension[algorithmVersion]
   * ^short = "Version des Algorithmus zur Generierung der Dosierungsanweisung (Version der zugrundeliegenden Python Referenzimplementierung)"
+  * value[x] only string
   * valueString 1.. MS

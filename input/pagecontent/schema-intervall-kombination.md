@@ -6,13 +6,7 @@ Es wird ermöglicht, die geplante Dauer der Anwendung zu begrenzen.
 
 {% fragment MedicationRequest/Example-MR-Dosage-comb-interval-1 JSON %}
 
-Folgende weitere Beispiele sind in diesem IG dargestellt:
-
-| Beispiel    | Beipspiel Datei |
-| -------- | ------- |
-| Jeden 2. Tag 1 Stück um 08:00 Uhr und 2 Stück um 18:00 Uhr  | [Example-MR-Dosage-comb-interval-1](./MedicationRequest-Example-MR-Dosage-comb-interval-1.html)    |  |
-| 1 x pro Woche 1 Stück morgens  | [Example-MR-Dosage-comb-interval-2](./MedicationRequest-Example-MR-Dosage-comb-interval-2.html)    |
-| Jeden 2. Tag 1 Stück um 08:00 Uhr und jeden 2. Tag 1 Stück um 08:00 Uhr  | [Example-MR-Dosage-comb-interval-3](./MedicationRequest-Example-MR-Dosage-comb-interval-3.html)    |
+Für eine Übersicht von weiteren Beispielen inklusive Belegung der Felder siehe [Beispielliste Dosierung](./dosierung-beispiele.html).
 
 ### Angabe und Erkennung der Dosierart 
 

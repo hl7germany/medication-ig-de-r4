@@ -10,14 +10,7 @@ In diesem Anwendungsfall wird davon ausgegangen, dass das Arzneimittel wöchentl
 
 {% fragment MedicationRequest/Example-MR-Dosage-comb-dayofweek-1 JSON %}
 
-Folgende weitere Beispiele sind in diesem IG dargestellt:
-
-| Beispiel    | Beipspiel Datei |
-| -------- | ------- |
-| Montags und Freitags 1-0-1-0  | [Example-MR-Dosage-comb-dayofweek-1](./MedicationRequest-Example-MR-Dosage-comb-dayofweek-1.html)    |  |
-| Montags und Freitags 1-0-2-0  | [Example-MR-Dosage-comb-dayofweek-2](./MedicationRequest-Example-MR-Dosage-comb-dayofweek-2.html)    |
-| Unsortierte Wochentage  | [Example-MR-Dosage-comb-dayofweek-unsorted](./MedicationRequest-Example-MR-Dosage-comb-dayofweek-unsorted.html)    |
-| Montags und Freitags 1 Stück um 08:00 Uhr und 2 Stück um 10:00 Uhr - für 3 Wochen  | [Example-MR-Dosage-comb-dayofweek-3](./MedicationRequest-Example-MR-Dosage-comb-dayofweek-3.html)    |
+Für eine Übersicht von weiteren Beispielen inklusive Belegung der Felder siehe [Beispielliste Dosierung](./dosierung-beispiele.html).
 
 ### Angabe und Erkennung der Dosierart 
 

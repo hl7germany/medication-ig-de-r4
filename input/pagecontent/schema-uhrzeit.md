@@ -9,15 +9,7 @@ In diesem Anwendungsfall wird davon ausgegangen, dass das Arzneimittel (für die
 
 {% fragment MedicationRequest/Example-MR-Dosage-tod-1t-8am JSON %}
 
-Folgende weitere Beispiele sind in diesem IG dargestellt:
-
-| Beispiel    | Beipspiel Datei |
-| -------- | ------- |
-| 1 Stück um 08:00 Uhr | [Example-MR-Dosage-tod-1t-8am](./MedicationRequest-Example-MR-Dosage-tod-1t-8am.html)    |
-| 1 Stück mit unsortierten Zeiten | [Example-MR-Dosage-tod-unsorted](./MedicationRequest-Example-MR-Dosage-tod-unsorted.html)    |
-| 2 Stück um 12:00 Uhr | [Example-MR-Dosage-tod-2-12am](./MedicationRequest-Example-MR-Dosage-tod-2-12am.html)     |
-| 8 Uhr 2 Stück - 11 Uhr 1 Stück - 14 Uhr 1 Stück - 17 Uhr 1 Stück - 20 Uhr 1 Stück - 23 Uhr 1 Stück    | [Example-MR-Dosage-tod-multi](./MedicationRequest-Example-MR-Dosage-tod-multi.html)    |
-| 8 Uhr 2 Stück - 11 Uhr 1 Stück - 14 Uhr 1 Stück - 17 Uhr 1 Stück - 20 Uhr 1 Stück - 23 Uhr 1 Stück, für 10 Tage    | [Example-MR-Dosage-tod-multi-bound](./MedicationRequest-Example-MR-Dosage-tod-multi-bound.html)    |
+Für eine Übersicht von weiteren Beispielen inklusive Belegung der Felder siehe [Beispielliste Dosierung](./dosierung-beispiele.html).
 
 ### Angabe und Erkennung der Dosierart
 

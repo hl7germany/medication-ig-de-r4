@@ -4,11 +4,7 @@ Es ist Möglich die Dosierung als Freitext anzugeben. Hierbei wird ausschließli
 
 {% fragment MedicationRequest/Example-MR-Dosage-Freetext JSON %}
 
-Folgende weitere Beispiele sind in diesem IG dargestellt:
-
-| Beispiel    | Beipspiel Datei |
-| -------- | ------- |
-| 2 Stück morgens zum Frühstück  | [Example-MR-Dosage-Freetext](./MedicationRequest-Example-MR-Dosage-Freetext.html)    |
+Für eine Übersicht von weiteren Beispielen inklusive Belegung der Felder siehe [Beispielliste Dosierung](./dosierung-beispiele.html).
 
 ### Angabe und Erkennung der Dosierart
 

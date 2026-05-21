@@ -26,23 +26,6 @@ Instance: Example-MR-Dosage-comb-interval-2
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-comb-interval-2"
-Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von 1 x pro Woche 1 Stück morgens dar"
-* subject.display = "Patient"
-* status = #active
-* intent = #order
-* medicationCodeableConcept.text = "Ibuprofen 400mg"
-* dosageInstruction[+]
-  * timing.repeat
-    * frequency = 1
-    * period = 1
-    * periodUnit = #wk
-    * when[+] = #MORN
-  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
-
-Instance: Example-MR-Dosage-comb-interval-3
-InstanceOf: MedicationRequestDgMP
-Usage: #example
-Title: "Example-MR-Dosage-comb-interval-3"
 Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von Jeden 2. Tag 1 Stück um 08:00 Uhr und jeden 2. Tag 1 Stück um 20:00 Uhr dar"
 * subject.display = "Patient"
 * status = #active
@@ -63,10 +46,10 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
     * timeOfDay[+] = "20:00:00"
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
-Instance: Example-MR-Dosage-comb-interval-4
+Instance: Example-MR-Dosage-comb-interval-3
 InstanceOf: MedicationRequestDgMP
 Usage: #example
-Title: "Example-MR-Dosage-comb-interval-4"
+Title: "Example-MR-Dosage-comb-interval-3"
 Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von Jeden 2. Tag 1 Stück um 08:00 & 20:00 Uhr und jeden 2. Tag 1 Stück um 08:00, 14:00 und 22:00 Uhr dar"
 * subject.display = "Patient"
 * status = #active

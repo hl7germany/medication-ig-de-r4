@@ -10,6 +10,7 @@ Description: "Gibt an, wie das Medikament eingenommen oder verabreicht wurde bzw
 * obeys DosageDoseUnitSameCode
 * obeys DosageWarnungViererschemaInText
 * obeys FreeTextSingleDosageOnlyWarning
+* obeys dos-1
 * text 0..1 MS
   * ^short = "Freitext-Dosierungsanweisungen, z. B. 'Maximal 3x täglich 1 Stück bei Bedarf'"
   * ^definition = "Freitext-Dosierungsanweisungen, z. B. 'Maximal 3x täglich 1 Stück bei Bedarf'. Als Quelle dient hier ausschließlich der Arzt oder Apotheker"
@@ -19,6 +20,13 @@ Description: "Gibt an, wie das Medikament eingenommen oder verabreicht wurde bzw
   * ^definition = "Wann das Medikament verabreicht werden soll."
   * ^comment = "Um widersprüchliche Anweisungen zu vermeiden, ist entweder Dosage.timing oder Dosage.text zu befüllen. Falls eine strukturierte Dosierung als Text abgebildet werden soll ist dafür die GeneratedDosageInstructionsMeta Extension zu verwenden."
 * timing only TimingDE
+* asNeeded[x] MS
+  * ^short = "Bedarfsdosierung"
+  * ^definition = "Gibt an, ob es sich um eine Bedarfsdosierung handelt."
+* extension contains $dosage-asNeededFor-r5 named asNeededFor 0..* MS
+* extension[asNeededFor]
+  * ^short = "Indikation für die Bedarfsdosierung"
+  * ^definition = "Gibt die Indikation für die Bedarfsdosierung an."
 * doseAndRate MS
   * ^short = "Menge des verabreichten Medikaments"
   * ^definition = "Die verabreichte Menge des Medikaments."
@@ -27,6 +35,8 @@ Description: "Gibt an, wie das Medikament eingenommen oder verabreicht wurde bzw
     * ^definition = "Menge des Medikaments pro Dosis."
     * ^comment = "Beachten Sie, dass dies die Menge des angegebenen Medikaments angibt, nicht die Menge für die einzelnen Wirkstoffe. Jede Wirkstoffmenge kann in der Medication-Ressource kommuniziert werden. Zum Beispiel, wenn man angeben möchte, dass eine Tablette 375 mg enthält und die Dosis eine Tablette beträgt, kann man die Medication-Ressource verwenden, um zu dokumentieren, dass die Tablette aus 375 mg des Wirkstoffs XYZ besteht. Alternativ, wenn die Dosis 375 mg beträgt, muss man möglicherweise nur angeben, dass es sich um eine Tablette handelt. Bei einer Infusion wie Dopamin, bei der 400 mg Dopamin in 500 ml einer Infusionslösung gemischt werden, würde dies alles in der Medication-Ressource kommuniziert werden. Wenn die Verabreichung nicht als sofortig vorgesehen ist (Rate ist vorhanden oder Timing hat eine Dauer), kann dies angegeben werden, um die Gesamtmenge anzugeben, die über den im Zeitplan angegebenen Zeitraum verabreicht werden soll, z. B. 500 ml in der Dosis, wobei Timing verwendet wird, um anzugeben, dass dies über 4 Stunden erfolgen soll."
   * doseQuantity from DosageDoseQuantityDEVS
+* maxDosePerPeriod MS
+  * ^short = "Maximale Dosis pro Zeitraum"
 
 Invariant: DosageStructuredOrFreeTextWarning
 Description: "Die Dosierungsangabe darf entweder nur als Freitext oder nur als vollständige strukturierte Information erfolgen — eine Mischung ist nicht erlaubt."
@@ -81,3 +91,8 @@ Invariant: DosageWarnungViererschemaInText
 Description: "Hinweis: In Dosage.text wurde ein Viererschema (z. B. 1-1-1-1) erkannt. Bitte prüfen, ob dies strukturiert abgebildet werden kann."
 Expression: "text.exists() implies text.matches('.*\\\\d+\\\\s*[-–]\\\\s*\\\\d+\\\\s*[-–]\\\\s*\\\\d+\\\\s*[-–]\\\\d+.*').not()"
 Severity: #warning
+
+Invariant: dos-1
+Description: "AsNeededFor can only be set if AsNeeded is empty or true"
+Severity: #error
+Expression: "extension.where(url='http://hl7.org/fhir/5.0/StructureDefinition/extension-Dosage.asNeededFor').empty() or asNeeded.empty() or asNeeded"

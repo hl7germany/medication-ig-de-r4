@@ -48,6 +48,7 @@
 | [MedicationRequest-Example-MR-Dosage-1111](./MedicationRequest-Example-MR-Dosage-1111.html) | 1-1-1-1 Stück | 1 Stück | 4 | 1 | d |  |  | EVE, MORN, NIGHT, NOON |  |
 | [MedicationRequest-Example-MR-Dosage-1220](./MedicationRequest-Example-MR-Dosage-1220.html) | 1-2-2-0 Stück | 1 Stück | 1 | 1 | d |  |  | MORN |  |
 |  |  | 2 Stück | 2 | 1 | d |  |  | NOON, EVE |  |
+| [MedicationRequest-Example-MR-Dosage-Bedarfsmedikation-Kopfschmerzen](./MedicationRequest-Example-MR-Dosage-Bedarfsmedikation-Kopfschmerzen.html) | alle 6 Stunden: je 1 Stück | 1 Stück | 1 | 6 | h |  |  |  |  |
 | [MedicationRequest-Example-MR-Dosage-Freetext](./MedicationRequest-Example-MR-Dosage-Freetext.html) | 2 Stück morgens zum Frühstück |  |  |  |  |  |  |  |  |
 | [MedicationRequest-Example-MR-Dosage-UnitStueck-1020](./MedicationRequest-Example-MR-Dosage-UnitStueck-1020.html) | 1-0-2-0 Stück | 1 Stück | 1 | 1 | d |  |  | MORN |  |
 |  |  | 2 Stück | 1 | 1 | d |  |  | EVE |  |

@@ -10,7 +10,7 @@ Description: "Dieses Beispiel stellt eine Bedarfsmedikation mit Einnahmeanlass, 
 * dosageInstruction[+]
   * asNeededBoolean = true
   * extension[asNeededFor].valueCodeableConcept.text = "Kopfschmerzen"
-  * extension[mindestabstandZwischenGaben].valueDuration = 4 $ucum#h "Stunde(n)"
+  * modifierExtension[mindestabstandZwischenGaben].valueDuration = 4 $ucum#h "Stunde(n)"
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
   * maxDosePerPeriod.numerator.value = 6
   * maxDosePerPeriod.numerator.system = $kbv-dosiereinheit

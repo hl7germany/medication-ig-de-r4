@@ -53,7 +53,7 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
       * ^comment = "Begründung Einschränkung Kardinalität: Eine Codierung der Indikation für die Bedarfsdosierung ist in der aktuellen Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
     * text 1.. MS
       * ^comment = "Indikation für die Bedarfsdosierung."  
-* extension[mindestabstandZwischenGaben]
+* modifierExtension[mindestabstandZwischenGaben]
   * valueDuration 1..1 MS
     * system 1..1 MS
     * code 1..1 MS
@@ -223,7 +223,7 @@ Expression: "timing.repeat.frequencyMax.empty() or maxDosePerPeriod.empty()"
 Invariant: VarPeriodNoMindestabstand
 Description: "Variable Periode und Mindestabstand zwischen zwei Einzelgaben dürfen nicht gemeinsam verwendet werden."
 Severity: #error
-Expression: "timing.repeat.periodMax.empty() or extension.where(url='http://ig.fhir.de/igs/medication/StructureDefinition/MindestabstandZwischenGaben').empty()"
+Expression: "timing.repeat.periodMax.empty() or modifierExtension.where(url='http://ig.fhir.de/igs/medication/StructureDefinition/MindestabstandZwischenGaben').empty()"
 
 Invariant: AsNeededRequiresAsNeededFor
 Description: "Bei Bedarfsmedikation müssen asNeededBoolean=true und ein Einnahmeanlass gemeinsam angegeben werden."

@@ -330,7 +330,7 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 #### VarPeriodNoMindestabstand
 
 **Beschreibung:**  
-Variable Periode (`periodMax`) und `extension[MindestabstandZwischenGaben]` dürfen nicht gemeinsam verwendet werden.
+Variable Periode (`periodMax`) und `modifierExtension[MindestabstandZwischenGaben]` dürfen nicht gemeinsam verwendet werden.
 
 **Warum?**  
 Beide Angaben beschreiben Abstände zwischen Gaben. Ihre gleichzeitige Verwendung erzeugt konkurrierende Zeitlogiken.

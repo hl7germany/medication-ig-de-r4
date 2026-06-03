@@ -6,7 +6,7 @@ Es wird zudem ermöglicht:
 
 - einen oder mehrere Einnahmeanlässe als Freitext anzugeben
   - Bei der Angabe mehrere Bedingungen gelten diese als *oder* verknüpft. Es muss also nur eine der Bedingungen zutreffen.
-- einen Mindestabstand zwischen zwei Gaben explizit über die Extension `MindestabstandZwischenGaben` anzugeben
+- einen Mindestabstand zwischen zwei Gaben explizit über die Modifier Extension `MindestabstandZwischenGaben` anzugeben
 - eine maximale Menge je Zeitraum anzugeben
 
 ### Beispiel
@@ -71,8 +71,8 @@ Die einzunehmende Menge wird wie in den anderen strukturierten Dosierschemata ü
 
 Bei einer reinen Bedarfsdosierung wird `timing` nicht befüllt.
 
-Der Mindestabstand zwischen zwei Gaben wird über die Extension `extension[MindestabstandZwischenGaben].valueDuration` angegeben.
+Der Mindestabstand zwischen zwei Gaben wird über die Modifier Extension `modifierExtension[MindestabstandZwischenGaben].valueDuration` angegeben.
 
 `maxDosePerPeriod` kann optional verwendet werden, um eine maximale Menge je Zeitraum anzugeben. Dabei muss die Einheit im `numerator` der Einheit von `doseAndRate.doseQuantity` entsprechen.
 
-Lesende Systeme werten `asNeededBoolean`, `extension[asNeededFor]`, `extension[MindestabstandZwischenGaben]` und `maxDosePerPeriod` aus. Sie müssen dem Nutzer insbesondere Einnahmeanlass, Mindestabstand und Maximalgabe verständlich darstellen.
+Lesende Systeme werten `asNeededBoolean`, `extension[asNeededFor]`, `modifierExtension[MindestabstandZwischenGaben]` und `maxDosePerPeriod` aus. Sie müssen dem Nutzer insbesondere Einnahmeanlass, Mindestabstand und Maximalgabe verständlich darstellen.

@@ -8,19 +8,35 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
 * obeys FreeTextSingleDosageOnly
 * obeys FreeTextMatchesRenderedText
 * obeys MaxDoseSameUnitAsDose
-* obeys AsNeededForRequiresAsNeeded
+* obeys DoseRangeHighRequiredWhenLowPresent
+* obeys DoseRangeLowAndHighSameUnit
+* obeys VarFreqNoMaxDose
+* obeys VarPeriodNoMindestabstand
+* obeys AsNeededRequiresAsNeededFor
 * timing only TimingDgMP
 * doseAndRate 0..1 // Nur eine Dosierung für eine Medikation erlauben
   * ^comment = "Begründung Einschränkung Kardinalität: Nur eine Dosierung pro Medikation ist in der ersten Ausbaustufe des dgMP vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
   * type 0..0
     * ^comment = "Begründung Einschränkung Kardinalität: Eine 'type'-Angabe ist in der ersten Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
-  * dose[x] only SimpleQuantity
-    * ^comment = "Begründung Einschränkung Datentyp: Nur einfache Mengenangaben sind in der ersten Ausbaustufe des dgMP vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
+  * dose[x] MS
   * doseQuantity
   * doseQuantity from $kbv-dosiereinheit-vs
     * system 1..1 MS
     * code 1..1 MS
     * unit 1..1 MS
+  * doseRange
+    * low MS
+    * low from $kbv-dosiereinheit-vs
+      * value 1..1 MS
+      * system 1..1 MS
+      * code 1..1 MS
+      * unit 1..1 MS
+    * high MS
+    * high from $kbv-dosiereinheit-vs
+      * value 1..1 MS
+      * system 1..1 MS
+      * code 1..1 MS
+      * unit 1..1 MS
   * rate[x] 0..0
     * ^comment = "Begründung Einschränkung Kardinalität: Eine Verabreichungsmenge pro Zeiteinheit ist in der ersten Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
 
@@ -159,13 +175,66 @@ Description: "maxDosePerPeriod muss die gleiche Einheit, den gleichen Code und d
 Severity: #error
 Expression: "
   maxDosePerPeriod.empty() or (
-    doseAndRate.dose.ofType(Quantity).system = maxDosePerPeriod.numerator.system and
-    doseAndRate.dose.ofType(Quantity).code = maxDosePerPeriod.numerator.code and
-    doseAndRate.dose.ofType(Quantity).unit = maxDosePerPeriod.numerator.unit
+    (
+      doseAndRate.dose.ofType(Quantity).exists() and
+      doseAndRate.dose.ofType(Quantity).system = maxDosePerPeriod.numerator.system and
+      doseAndRate.dose.ofType(Quantity).code = maxDosePerPeriod.numerator.code and
+      doseAndRate.dose.ofType(Quantity).unit = maxDosePerPeriod.numerator.unit
+    ) or (
+      doseAndRate.dose.ofType(Range).exists() and
+      (
+        doseAndRate.dose.ofType(Range).low.empty() or (
+          doseAndRate.dose.ofType(Range).low.system = maxDosePerPeriod.numerator.system and
+          doseAndRate.dose.ofType(Range).low.code = maxDosePerPeriod.numerator.code and
+          doseAndRate.dose.ofType(Range).low.unit = maxDosePerPeriod.numerator.unit
+        )
+      ) and (
+        doseAndRate.dose.ofType(Range).high.empty() or (
+          doseAndRate.dose.ofType(Range).high.system = maxDosePerPeriod.numerator.system and
+          doseAndRate.dose.ofType(Range).high.code = maxDosePerPeriod.numerator.code and
+          doseAndRate.dose.ofType(Range).high.unit = maxDosePerPeriod.numerator.unit
+        )
+      )
+    )
   )
 "
 
-Invariant: AsNeededForRequiresAsNeeded
-Description: "Bei Bedarfsmedikation muss immer ein Einnahmeanlass angegeben werden."
+Invariant: DoseRangeHighRequiredWhenLowPresent
+Description: "Wenn bei doseRange eine Untergrenze angegeben wird, muss auch eine Obergrenze angegeben werden."
 Severity: #error
-Expression: "asNeeded.empty() or asNeeded = false or extension.where(url='http://hl7.org/fhir/5.0/StructureDefinition/extension-Dosage.asNeededFor').exists()"
+Expression: "doseAndRate.dose.ofType(Range).low.empty() or doseAndRate.dose.ofType(Range).high.exists()"
+
+Invariant: DoseRangeLowAndHighSameUnit
+Description: "Unter- und Obergrenze einer variablen Einzeldosis müssen dieselbe Maßeinheit verwenden."
+Severity: #error
+Expression: "doseAndRate.dose.ofType(Range).low.empty()
+or doseAndRate.dose.ofType(Range).high.empty()
+or (
+  doseAndRate.dose.ofType(Range).low.system = doseAndRate.dose.ofType(Range).high.system
+  and doseAndRate.dose.ofType(Range).low.code = doseAndRate.dose.ofType(Range).high.code
+  and doseAndRate.dose.ofType(Range).low.unit = doseAndRate.dose.ofType(Range).high.unit
+)"
+
+Invariant: VarFreqNoMaxDose
+Description: "Variable Frequenz und maximale Dosis pro Zeitraum dürfen nicht gemeinsam verwendet werden."
+Severity: #error
+Expression: "timing.repeat.frequencyMax.empty() or maxDosePerPeriod.empty()"
+
+Invariant: VarPeriodNoMindestabstand
+Description: "Variable Periode und Mindestabstand zwischen zwei Einzelgaben dürfen nicht gemeinsam verwendet werden."
+Severity: #error
+Expression: "timing.repeat.periodMax.empty() or extension.where(url='http://ig.fhir.de/igs/medication/StructureDefinition/MindestabstandZwischenGaben').empty()"
+
+Invariant: AsNeededRequiresAsNeededFor
+Description: "Bei Bedarfsmedikation müssen asNeededBoolean=true und ein Einnahmeanlass gemeinsam angegeben werden."
+Severity: #error
+Expression: "(
+  extension.where(url='http://hl7.org/fhir/5.0/StructureDefinition/extension-Dosage.asNeededFor').exists() and
+  asNeeded.ofType(boolean) = true
+) or (
+  extension.where(url='http://hl7.org/fhir/5.0/StructureDefinition/extension-Dosage.asNeededFor').empty() and
+  (
+    asNeeded.ofType(boolean).empty() or
+    asNeeded.ofType(boolean) = false
+  )
+)"

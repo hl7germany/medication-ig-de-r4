@@ -33,17 +33,40 @@ Description: "Gibt an, wie das Medikament eingenommen oder verabreicht wurde bzw
 * extension[asNeededFor]
   * ^short = "Indikation für die Bedarfsdosierung"
   * ^definition = "Gibt die Indikation für die Bedarfsdosierung an."
+  * valueCodeableConcept
+    * text MS
 * extension[mindestabstandZwischenGaben]
   * ^short = "Mindestabstand zwischen zwei Gaben"
   * ^definition = "Gibt den Mindestabstand zwischen zwei Gaben einer Bedarfsmedikation an."
+  * valueDuration MS
+    * system MS
+    * code MS
+    * unit MS
 * doseAndRate MS
   * ^short = "Menge des verabreichten Medikaments"
   * ^definition = "Die verabreichte Menge des Medikaments."
+  * dose[x] MS
   * doseQuantity MS
     * ^short = "Menge des Medikaments pro Dosis"
     * ^definition = "Menge des Medikaments pro Dosis."
     * ^comment = "Beachten Sie, dass dies die Menge des angegebenen Medikaments angibt, nicht die Menge für die einzelnen Wirkstoffe. Jede Wirkstoffmenge kann in der Medication-Ressource kommuniziert werden. Zum Beispiel, wenn man angeben möchte, dass eine Tablette 375 mg enthält und die Dosis eine Tablette beträgt, kann man die Medication-Ressource verwenden, um zu dokumentieren, dass die Tablette aus 375 mg des Wirkstoffs XYZ besteht. Alternativ, wenn die Dosis 375 mg beträgt, muss man möglicherweise nur angeben, dass es sich um eine Tablette handelt. Bei einer Infusion wie Dopamin, bei der 400 mg Dopamin in 500 ml einer Infusionslösung gemischt werden, würde dies alles in der Medication-Ressource kommuniziert werden. Wenn die Verabreichung nicht als sofortig vorgesehen ist (Rate ist vorhanden oder Timing hat eine Dauer), kann dies angegeben werden, um die Gesamtmenge anzugeben, die über den im Zeitplan angegebenen Zeitraum verabreicht werden soll, z. B. 500 ml in der Dosis, wobei Timing verwendet wird, um anzugeben, dass dies über 4 Stunden erfolgen soll."
   * doseQuantity from DosageDoseQuantityDEVS
+    * system MS
+    * code MS
+    * unit MS
+  * doseRange MS
+    * low MS
+    * low from DosageDoseQuantityDEVS
+      * value MS
+      * system MS
+      * code MS
+      * unit MS
+    * high MS
+    * high from DosageDoseQuantityDEVS
+      * value MS
+      * system MS
+      * code MS
+      * unit MS
 * maxDosePerPeriod MS
   * ^short = "Maximale Dosis pro Zeitraum"
 
@@ -75,12 +98,16 @@ implies
 Severity: #warning
 
 Invariant: DosageStructuredRequiresBoth
-Description: "Wenn eine strukturierte Dosierungsangabe erfolgt, müssen sowohl timing als auch doseAndRate angegeben werden."
+Description: "Wenn eine strukturierte Dosierungsangabe erfolgt, müssen sowohl timing als auch doseAndRate angegeben werden. Für reine Bedarfsdosierungen darf doseAndRate auch ohne timing angegeben werden."
 Expression: "(%resource.ofType(MedicationRequest).dosageInstruction | 
  %resource.ofType(MedicationDispense).dosageInstruction | 
  %resource.ofType(MedicationStatement).dosage).all(
   (timing.exists() implies doseAndRate.exists()) and
-  (doseAndRate.exists() implies timing.exists())
+  (doseAndRate.exists() implies (
+    timing.exists() or
+    asNeeded.ofType(boolean) = true or
+    extension.where(url='http://hl7.org/fhir/5.0/StructureDefinition/extension-Dosage.asNeededFor').exists()
+  ))
 )"
 Severity: #error
 

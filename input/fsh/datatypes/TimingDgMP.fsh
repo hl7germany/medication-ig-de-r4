@@ -19,6 +19,9 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * obeys TimingOnlyOneBounds
   * obeys TimingFrequencyCount
   * obeys TimingPeriodUnit
+  * obeys TimingVarFreqOrPeriod
+  * obeys TimingVarFreqGtMin
+  * obeys TimingVarPeriodGtMin
   * bounds[x] MS
   * bounds[x] only Duration
     * ^comment = "Begründung Einschränkung Datentyp: Nur eine Angabe zur Dauer ist in der ersten Ausbaustufe des dgMP vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
@@ -30,7 +33,9 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
     * value 1..1 MS
     * comparator 0..0
   * frequency 1..1 MS
+  * frequencyMax MS
   * period 1..1 MS
+  * periodMax MS
   * periodUnit 1..1 MS
   * periodUnit from PeriodUnitsOfTimeDgMPVS (required)
   * dayOfWeek MS
@@ -49,13 +54,24 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
     * ^comment = "Begründung Einschränkung Kardinalität: Angaben zur maximalen Dauer einer Einzelgabe sind in der ersten Ausbaustufe desdgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
   * durationUnit 0..0
     * ^comment = "Begründung Einschränkung Kardinalität: Angaben zur Einheit der Dauer einer Einzelgabe sind in der ersten Ausbaustufe desdgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
-  * frequencyMax 0..0
-    * ^comment = "Begründung Einschränkung Kardinalität: Eine maximale Frequenz ist in der ersten Ausbaustufe des dgMP nicht vorgesehen - es wird immer eine Frequenz explizit gesetzt, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
-  * periodMax 0..0
-    * ^comment = "Begründung Einschränkung Kardinalität: Eine maximale Periodendauer ist in der ersten Ausbaustufe des dgMP nicht vorgesehen - es wird immer eine Dauer explizit gesetzt, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
   * offset 0..0
     * ^short = "Zeitversatz"
     * ^comment = "Begründung Einschränkung Kardinalität: Ein Zeitversatz ist in der ersten Ausbaustufe desdgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
+
+Invariant: TimingVarFreqOrPeriod
+Description: "Variable Frequenz und variable Periode dürfen nicht gemeinsam verwendet werden."
+Expression: "frequencyMax.empty() or periodMax.empty()"
+Severity: #error
+
+Invariant: TimingVarFreqGtMin
+Description: "Bei variabler Frequenz muss die maximale Frequenz größer als die minimale Frequenz sein."
+Expression: "frequencyMax.empty() or frequency.empty() or frequency < frequencyMax"
+Severity: #error
+
+Invariant: TimingVarPeriodGtMin
+Description: "Bei variabler Periode muss die maximale Periode größer als die minimale Periode sein."
+Expression: "periodMax.empty() or period.empty() or period < periodMax"
+Severity: #error
 
 Invariant: TimingFrequencyCount
 Description: "The frequency of the timing needs to reflect the count of timeOfDay or when"

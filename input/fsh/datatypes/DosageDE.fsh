@@ -29,9 +29,13 @@ Description: "Gibt an, wie das Medikament eingenommen oder verabreicht wurde bzw
   * ^short = "Bedarfsdosierung (nur Ja/Nein-Angabe)"
   * ^definition = "Gibt an, ob es sich um eine Bedarfsdosierung handelt. Es ist nur eine Ja/Nein-Angabe erlaubt. Die Abbildung der Indikation erfolgt über die Extension asNeededFor."
 * extension contains $dosage-asNeededFor-r5 named asNeededFor 0..* MS
+* extension contains MindestabstandZwischenGaben named mindestabstandZwischenGaben 0..1 MS
 * extension[asNeededFor]
   * ^short = "Indikation für die Bedarfsdosierung"
   * ^definition = "Gibt die Indikation für die Bedarfsdosierung an."
+* extension[mindestabstandZwischenGaben]
+  * ^short = "Mindestabstand zwischen zwei Gaben"
+  * ^definition = "Gibt den Mindestabstand zwischen zwei Gaben einer Bedarfsmedikation an."
 * doseAndRate MS
   * ^short = "Menge des verabreichten Medikaments"
   * ^definition = "Die verabreichte Menge des Medikaments."

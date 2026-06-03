@@ -92,7 +92,7 @@
 | [MedicationRequest-MR-Dosage-freetext-german-chars](./MedicationRequest-MR-Dosage-freetext-german-chars.html) | Nach dem Essen — 2 Stück täglich für 3 Wochen (Dosierung anpassen je nach Verträglichkeit) |  |  |  |  |  |  |  |  |  |  |
 | [MedicationRequest-Example-MR-Dosage-UnitTasse-1000](./MedicationRequest-Example-MR-Dosage-UnitTasse-1000.html) | 2-0-0-0 Teelöffel | 2 Teelöffel |  |  | 1 | 1 | d |  |  | MORN |  |
 | [MedicationStatement-Example-MS-Dosage-UnitStueck-1020](./MedicationStatement-Example-MS-Dosage-UnitStueck-1020.html) | 1-0-2-0 Stück | 1 Stück<br>2 Stück |  |  | 1 | 1 | d |  |  | MORN<br>EVE |  |
-| [MedicationRequest-Example-MR-Dosage-Bedarfsmedikation-Kopfschmerzen](./MedicationRequest-Example-MR-Dosage-Bedarfsmedikation-Kopfschmerzen.html) | alle 6 Stunden: je 1 Stück | 1 Stück |  |  | 1 | 6 | h |  |  |  |  |
+| [MedicationRequest-Example-MR-Dosage-Bedarfsmedikation-Kopfschmerzen](./MedicationRequest-Example-MR-Dosage-Bedarfsmedikation-Kopfschmerzen.html) | Unbekanntes Dosierungsschema: Unknown | 1 Stück |  |  |  |  |  |  |  |  |  |
 | [MedicationRequest-MR-Dosage-4schema-noon-only](./MedicationRequest-MR-Dosage-4schema-noon-only.html) | 0-1-0-0 Stück | 1 Stück |  |  | 1 | 1 | d |  |  | NOON |  |
 | [MedicationRequest-Example-MR-Dosage-1000](./MedicationRequest-Example-MR-Dosage-1000.html) | 1-0-0-0 Stück | 1 Stück |  |  | 1 | 1 | d |  |  | MORN |  |
 | [MedicationStatement-MS-Dosage-Freetext](./MedicationStatement-MS-Dosage-Freetext.html) | Bei Bedarf bis zu 3 mal täglich 1 Tablette |  |  |  |  |  |  |  |  |  |  |

@@ -1,14 +1,14 @@
 Bedarfsmedikation beschreibt eine Dosierung, die nicht ausschließlich nach einem festen Einnahmeplan, sondern bei auftretendem Bedarf angewendet wird. Der Bedarf kann ohne konkreten Anlass angegeben werden oder mit einem Einnahmeanlass, z. B. "bei Kopfschmerzen".
 
-In diesem Anwendungsfall wird davon ausgegangen, dass die Bedarfsangabe in einer eigenen `Dosage`-Instanz abgebildet wird. Die Angaben zu Menge, Häufigkeit, Mindestabstand oder Maximalgabe beziehen sich dann auf diese Bedarfsdosierung.
+In diesem Anwendungsfall wird davon ausgegangen, dass die Bedarfsangabe in einer eigenen `Dosage`-Instanz abgebildet wird. Die Angaben zu Menge, Mindestabstand oder Maximalgabe beziehen sich dann auf diese Bedarfsdosierung.
 
 Es wird zudem ermöglicht:
 
 - eine Bedarfsmedikation ohne Einnahmeanlass zu kennzeichnen
 - einen oder mehrere Einnahmeanlässe als Freitext anzugeben
   - Bei der Angabe mehrere Bedingungen gelten diese als *oder* verknüpft. Es muss also nur eine der Bedingungen zutreffen.
+- einen Mindestabstand zwischen zwei Gaben explizit über die Extension `MindestabstandZwischenGaben` anzugeben
 - eine maximale Menge je Zeitraum anzugeben
-- einen Mindestabstand näherungsweise über `maxDosePerPeriod` abzubilden
 
 ### Beispiel
 
@@ -18,7 +18,7 @@ Folgende weitere Beispiele sind in diesem IG dargestellt:
 
 | Beispiel | Beispiel Datei |
 | -------- | ------- |
-| Bei Kopfschmerzen: 1 Stück, höchstens 1 Stück alle 6 Stunden | [Example-MR-Dosage-Bedarfsmedikation-Kopfschmerzen](MedicationRequest-Example-MR-Dosage-Bedarfsmedikation-Kopfschmerzen.html) |
+| Bei Kopfschmerzen: 1 Stück, Mindestabstand 4 Stunden, maximal 6 Stück pro 24 Stunden | [Example-MR-Dosage-Bedarfsmedikation-Kopfschmerzen](MedicationRequest-Example-MR-Dosage-Bedarfsmedikation-Kopfschmerzen.html) |
 
 ### Angabe und Erkennung der Dosierart
 
@@ -72,8 +72,10 @@ Für die konkrete Interpretation der Dosierung gelten in diesem Fall die Regeln 
 
 Die einzunehmende Menge wird wie in den anderen strukturierten Dosierschemata über `doseAndRate.doseQuantity` angegeben.
 
-Bei einer reinen Bedarfsdosierung wird `timing` nicht befüllt. Ist `timing` angegeben, ist die Bedarfsangabe als Kennzeichnung eines bestehenden strukturierten Dosierschemas zu verstehen; die weitere Interpretation richtet sich dann nach dem jeweiligen Dosierschema.
+Bei einer reinen Bedarfsdosierung wird `timing` nicht befüllt.
+
+Der Mindestabstand zwischen zwei Gaben wird über die Extension `extension[MindestabstandZwischenGaben].valueDuration` angegeben.
 
 `maxDosePerPeriod` kann optional verwendet werden, um eine maximale Menge je Zeitraum anzugeben. Dabei muss die Einheit im `numerator` der Einheit von `doseAndRate.doseQuantity` entsprechen.
 
-Lesende Systeme werten `asNeededBoolean`, `extension[asNeededFor]` und das Vorhandensein von `timing` aus. Sie müssen dem Nutzer darstellen, ob es sich um eine reine Bedarfsdosierung oder um ein strukturiertes Dosierschema handelt, das nur bei Bedarf angewendet wird.
+Lesende Systeme werten `asNeededBoolean`, `extension[asNeededFor]`, `extension[MindestabstandZwischenGaben]` und `maxDosePerPeriod` aus. Sie müssen dem Nutzer insbesondere Einnahmeanlass, Mindestabstand und Maximalgabe verständlich darstellen.

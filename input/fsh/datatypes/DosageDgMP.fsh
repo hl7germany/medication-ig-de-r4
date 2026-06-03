@@ -37,6 +37,11 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
       * ^comment = "Begründung Einschränkung Kardinalität: Eine Codierung der Indikation für die Bedarfsdosierung ist in der aktuellen Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
     * text 1.. MS
       * ^comment = "Indikation für die Bedarfsdosierung."  
+* extension[mindestabstandZwischenGaben]
+  * valueDuration 1..1 MS
+    * system 1..1 MS
+    * code 1..1 MS
+    * unit 1..1 MS
 * site 0..0
   * ^comment = "Begründung Einschränkung Kardinalität: Eine Verabreichungsstelle ist in der aktuellen Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
 * route 0..0

@@ -40,24 +40,6 @@ Title: "Unsupported: asNeededBoolean"
 * text = "asNeededBoolean"
 * asNeededBoolean = true
 
-Instance: MR-Unsupported-Dosage-03-of-20-asNeededCodeableConcept
-InstanceOf: MedicationRequestDgMP
-Usage: #example
-Title: "Unsupported Dosage 1 asNeededCodeableConcept"
-Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
-* subject.display = "Unsupported Dosage asNeededCodeableConcept"
-* status = #active
-* intent = #order
-* medicationCodeableConcept.text = "Unsupported Dosage asNeededCodeableConcept Medication"
-* dosageInstruction[+] = Unsupported-Dosage-3-asNeededCodeableConcept
-
-Instance: Unsupported-Dosage-3-asNeededCodeableConcept
-InstanceOf: DosageDE
-Usage: #inline
-Title: "Unsupported: asNeededCodeableConcept"
-* text = "asNeededCodeableConcept"
-* asNeededCodeableConcept.text = "nur wenn nötig"
-
 Instance: MR-Unsupported-Dosage-04-of-20-Method
 InstanceOf: MedicationRequestDgMP
 Usage: #example
@@ -461,16 +443,6 @@ Description: "CAVE: This MedicationDispense is for validation purposes and does 
 * medicationCodeableConcept.text = "Unsupported Dosage asNeededBoolean Medication"
 * dosageInstruction[+] = Unsupported-Dosage-2-asNeededBoolean
 
-Instance: MD-Unsupported-Dosage-03-of-20-asNeededCodeableConcept
-InstanceOf: MedicationDispenseDgMP
-Usage: #example
-Title: "Unsupported Dosage asNeededCodeableConcept"
-Description: "CAVE: This MedicationDispense is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
-* subject.display = "Unsupported Dosage asNeededCodeableConcept"
-* status = #completed
-* medicationCodeableConcept.text = "Unsupported Dosage asNeededCodeableConcept Medication"
-* dosageInstruction[+] = Unsupported-Dosage-3-asNeededCodeableConcept
-
 Instance: MD-Unsupported-Dosage-04-of-20-Method
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
@@ -662,16 +634,6 @@ Description: "CAVE: This MedicationStatement is for validation purposes and does
 * status = #active
 * medicationCodeableConcept.text = "Unsupported Dosage asNeededBoolean Medication"
 * dosage[+] = Unsupported-Dosage-2-asNeededBoolean
-
-Instance: MS-Unsupported-Dosage-03-of-20-asNeededCodeableConcept
-InstanceOf: MedicationStatementDgMP
-Usage: #example
-Title: "Unsupported Dosage asNeededCodeableConcept"
-Description: "CAVE: This MedicationStatement is for validation purposes and does NOT represent a valid dosage. It only checks for unsupported Fields"
-* subject.display = "Unsupported Dosage asNeededCodeableConcept"
-* status = #active
-* medicationCodeableConcept.text = "Unsupported Dosage asNeededCodeableConcept Medication"
-* dosage[+] = Unsupported-Dosage-3-asNeededCodeableConcept
 
 Instance: MS-Unsupported-Dosage-04-of-20-Method
 InstanceOf: MedicationStatementDgMP

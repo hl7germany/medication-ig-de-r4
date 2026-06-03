@@ -56,6 +56,7 @@ Der digital gestützte Medikationsprozess unterstützt aktuell die folgenden Dos
 - [Schema für Kombinationen von Zeitintervallen](./schema-intervall-kombination.html)
 - [Schema für Kombinationen von Wochentagen](./schema-wochentag-kombination.html)
 - [Schema für Bedarfsmedikation](./schema-bedarfsmedikation.html)
+- [Variable Angaben](./schema-variable-angaben.html)
 
 #### Folgende Ausbaustufe
 

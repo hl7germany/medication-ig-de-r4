@@ -172,6 +172,42 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-TimingSingleDosageForWhen-examples.md%}
 
+#### TimingVarFreqOrPeriod
+
+**Beschreibung:**  
+Variable Frequenz (`frequencyMax`) und variable Periode (`periodMax`) dürfen nicht gemeinsam verwendet werden.
+
+**Warum?**  
+Die gleichzeitige Variation beider Achsen führt zu einem nur schwer eindeutig interpretierbaren Einnahmeschema.
+
+Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
+
+{% include dosage-constraint-TimingVarFreqOrPeriod-examples.md%}
+
+#### TimingVarFreqGtMin
+
+**Beschreibung:**  
+Wenn `frequencyMax` verwendet wird, muss der maximale Wert größer als `frequency` sein.
+
+**Warum?**  
+Dadurch wird sichergestellt, dass tatsächlich ein Bereich und kein redundanter oder widersprüchlicher Einzelwert modelliert wird.
+
+Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
+
+{% include dosage-constraint-TimingVarFreqGtMin-examples.md%}
+
+#### TimingVarPeriodGtMin
+
+**Beschreibung:**  
+Wenn `periodMax` verwendet wird, muss der maximale Wert größer als `period` sein.
+
+**Warum?**  
+Dadurch wird sichergestellt, dass tatsächlich ein Bereich und kein redundanter oder widersprüchlicher Einzelwert modelliert wird.
+
+Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
+
+{% include dosage-constraint-TimingVarPeriodGtMin-examples.md%}
+
 ### Dosage-bezogene Constraints
 
 Die folgenden Invarianten beziehen sich auf das Dosage-Element insgesamt (nicht nur auf `timing.repeat`). Sie wirken über alle Dosierungsinstanzen einer Ressource (z. B. alle `dosageInstruction` eines `MedicationRequest`).
@@ -254,6 +290,54 @@ Verhindert inkonsistente oder schwer vergleichbare Einträge (z. B. Mischung von
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-DosageDoseUnitSameCode-examples.md%}
+
+#### DoseRangeHighRequiredWhenLowPresent
+
+**Beschreibung:**  
+Wenn bei `doseRange` eine Untergrenze (`low`) angegeben wird, muss auch eine Obergrenze (`high`) vorhanden sein.
+
+**Warum?**  
+Die Modellierung einer variablen Einzeldosis soll stets einen tatsächlich interpretierbaren Bereich ergeben und keine einseitige Untergrenze.
+
+Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
+
+{% include dosage-constraint-DoseRangeHighRequiredWhenLowPresent-examples.md%}
+
+#### DoseRangeLowAndHighSameUnit
+
+**Beschreibung:**  
+Unter- und Obergrenze einer variablen Einzeldosis müssen dieselbe Maßeinheit (`system`, `code`, `unit`) verwenden.
+
+**Warum?**  
+Nur so ist der Bereich fachlich konsistent interpretierbar; gemischte Einheiten würden Mehrdeutigkeiten und Rechenfehler erzeugen.
+
+Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
+
+{% include dosage-constraint-DoseRangeLowAndHighSameUnit-examples.md%}
+
+#### VarFreqNoMaxDose
+
+**Beschreibung:**  
+Variable Frequenz (`frequencyMax`) und `maxDosePerPeriod` dürfen nicht gemeinsam verwendet werden.
+
+**Warum?**  
+Beide Angaben begrenzen die Häufigkeit bzw. Gesamtmenge pro Zeitraum. In Kombination entsteht eine doppelte, potenziell widersprüchliche Modellierung.
+
+Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
+
+{% include dosage-constraint-VarFreqNoMaxDose-examples.md%}
+
+#### VarPeriodNoMindestabstand
+
+**Beschreibung:**  
+Variable Periode (`periodMax`) und `extension[MindestabstandZwischenGaben]` dürfen nicht gemeinsam verwendet werden.
+
+**Warum?**  
+Beide Angaben beschreiben Abstände zwischen Gaben. Ihre gleichzeitige Verwendung erzeugt konkurrierende Zeitlogiken.
+
+Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
+
+{% include dosage-constraint-VarPeriodNoMindestabstand-examples.md%}
 
 #### DosageWarnungViererschemaInText
 

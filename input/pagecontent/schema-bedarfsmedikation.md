@@ -1,10 +1,9 @@
-Bedarfsmedikation beschreibt eine Dosierung, die nicht ausschließlich nach einem festen Einnahmeplan, sondern bei auftretendem Bedarf angewendet wird. Der Bedarf kann ohne konkreten Anlass angegeben werden oder mit einem Einnahmeanlass, z. B. "bei Kopfschmerzen".
+Bedarfsmedikation beschreibt eine Dosierung, die nicht ausschließlich nach einem festen Einnahmeplan, sondern bei auftretendem Bedarf angewendet wird. Der Bedarf wird dabei immer mit einem Einnahmeanlass angegeben, z. B. "bei Kopfschmerzen".
 
 In diesem Anwendungsfall wird davon ausgegangen, dass die Bedarfsangabe in einer eigenen `Dosage`-Instanz abgebildet wird. Die Angaben zu Menge, Mindestabstand oder Maximalgabe beziehen sich dann auf diese Bedarfsdosierung.
 
 Es wird zudem ermöglicht:
 
-- eine Bedarfsmedikation ohne Einnahmeanlass zu kennzeichnen
 - einen oder mehrere Einnahmeanlässe als Freitext anzugeben
   - Bei der Angabe mehrere Bedingungen gelten diese als *oder* verknüpft. Es muss also nur eine der Bedingungen zutreffen.
 - einen Mindestabstand zwischen zwei Gaben explizit über die Extension `MindestabstandZwischenGaben` anzugeben
@@ -29,15 +28,15 @@ Bedarfsangaben können in zwei unterschiedlichen Formen auftreten:
 
 Eine Bedarfsangabe wird daran erkannt, dass auf Ebene von `Dosage`
 
-- `asNeededBoolean = true` oder
+- `asNeededBoolean = true` und
 - `extension[asNeededFor]`
 
-angegeben ist.
+gemeinsam angegeben sind.
 
 Folgende FHIRPath Expression auf Ebene von `Dosage` liefert die Angabe, ob es sich grundsätzlich um eine Bedarfsangabe handelt:
 
 ```
-asNeeded.ofType(boolean) = true or
+asNeeded.ofType(boolean) = true and
 extension.where(url = 'http://hl7.org/fhir/5.0/StructureDefinition/extension-Dosage.asNeededFor').exists()
 ```
 
@@ -49,14 +48,12 @@ Folgende FHIRPath Expression auf Ebene von `Dosage` liefert die Angabe, ob es si
 
 ```
 (
-  asNeeded.ofType(boolean) = true or
+  asNeeded.ofType(boolean) = true and
   extension.where(url = 'http://hl7.org/fhir/5.0/StructureDefinition/extension-Dosage.asNeededFor').exists()
 ) and timing.empty()
 ```
 
-`asNeededBoolean` wird verwendet, wenn eine Bedarfsdosierung ohne Einnahmeanlass angegeben werden soll. Wird `asNeededBoolean` verwendet, muss der Wert `true` sein.
-
-Wird ein Einnahmeanlass angegeben, wird hierfür die Extension `asNeededFor` verwendet. Die Existenz von `asNeededFor` impliziert bereits, dass es sich um Bedarfsmedikation handelt; eine zusätzliche Angabe von `asNeededBoolean` ist dann nicht erforderlich.
+Für Bedarfsmedikation sind sowohl `asNeededBoolean = true` als auch die Extension `asNeededFor` verpflichtend anzugeben.
 
 Der Einnahmeanlass wird als Freitext in `extension[asNeededFor].valueCodeableConcept.text` angegeben. Mehrere `asNeededFor`-Extensions können verwendet werden; sie sind fachlich als ODER-Verknüpfung zu interpretieren.
 
@@ -66,7 +63,7 @@ Bei Verwendung von `asNeededFor` muss `valueCodeableConcept.text` befüllt sein.
 
 Ist zusätzlich zur Bedarfsangabe ein `timing` angegeben, handelt es sich nicht um eine reine Bedarfsdosierung. Die Bedarfsangabe kennzeichnet dann ein bestehendes strukturiertes Dosierschema als Bedarfsmedikation, z. B. eine Einnahme bei Bedarf nach einem angegebenen Intervall oder Schema.
 
-Für die konkrete Interpretation der Dosierung gelten in diesem Fall die Regeln des jeweils verwendeten strukturierten Dosierschemas. Lesende Systeme werten zusätzlich `asNeededBoolean` und `extension[asNeededFor]` aus und müssen dem Nutzer darstellen, dass das Dosierschema nur bei Bedarf angewendet wird.
+Für die konkrete Interpretation der Dosierung gelten in diesem Fall die Regeln des jeweils verwendeten strukturierten Dosierschemas. Lesende Systeme werten `asNeededBoolean` und `extension[asNeededFor]` aus und müssen dem Nutzer darstellen, dass das Dosierschema nur bei Bedarf angewendet wird.
 
 ### Strukturierte Angaben
 

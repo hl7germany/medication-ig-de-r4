@@ -8,6 +8,7 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
 * obeys FreeTextSingleDosageOnly
 * obeys FreeTextMatchesRenderedText
 * obeys MaxDoseSameUnitAsDose
+* obeys AsNeededForRequiresAsNeeded
 * timing only TimingDgMP
 * doseAndRate 0..1 // Nur eine Dosierung für eine Medikation erlauben
   * ^comment = "Begründung Einschränkung Kardinalität: Nur eine Dosierung pro Medikation ist in der ersten Ausbaustufe des dgMP vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
@@ -158,3 +159,8 @@ Expression: "
     doseAndRate.dose.ofType(Quantity).unit = maxDosePerPeriod.numerator.unit
   )
 "
+
+Invariant: AsNeededForRequiresAsNeeded
+Description: "Bei Bedarfsmedikation muss immer ein Einnahmeanlass angegeben werden."
+Severity: #error
+Expression: "asNeeded.empty() or asNeeded = false or extension.where(url='http://hl7.org/fhir/5.0/StructureDefinition/extension-Dosage.asNeededFor').exists()"

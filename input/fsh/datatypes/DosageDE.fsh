@@ -1,5 +1,6 @@
 // TODO: Infusion A direkt nach Infusion B geben soll laut FHIR Standard in .text. Hier müsste man noch eine Extension "PractitionerInstruction" definieren,
 // um .text nur für FreitextDosierungen zu verwenden und nicht für Dosisanweisung an HealthProfessionals.
+// UPDATE: PW: 27.05.26: ggfs kann auch additionalInstruction dafür verwendet werden.
 Profile: DosageDE
 Parent: Dosage
 Id: DosageDE
@@ -23,6 +24,10 @@ Description: "Gibt an, wie das Medikament eingenommen oder verabreicht wurde bzw
 * asNeeded[x] MS
   * ^short = "Bedarfsdosierung"
   * ^definition = "Gibt an, ob es sich um eine Bedarfsdosierung handelt."
+* asNeeded[x] only boolean
+* asNeededBoolean MS
+  * ^short = "Bedarfsdosierung (nur Ja/Nein-Angabe)"
+  * ^definition = "Gibt an, ob es sich um eine Bedarfsdosierung handelt. Es ist nur eine Ja/Nein-Angabe erlaubt. Die Abbildung der Indikation erfolgt über die Extension asNeededFor."
 * extension contains $dosage-asNeededFor-r5 named asNeededFor 0..* MS
 * extension[asNeededFor]
   * ^short = "Indikation für die Bedarfsdosierung"

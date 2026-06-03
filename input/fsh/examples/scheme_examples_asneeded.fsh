@@ -8,6 +8,7 @@ Description: "Dieses Beispiel stellt eine Bedarfsmedikation mit Einnahmeanlass, 
 * intent = #order
 * medicationCodeableConcept.text = "Ibuprofen 400mg"
 * dosageInstruction[+]
+  * asNeededBoolean = true
   * extension[asNeededFor].valueCodeableConcept.text = "Kopfschmerzen"
   * extension[mindestabstandZwischenGaben].valueDuration = 4 $ucum#h "Stunde(n)"
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"

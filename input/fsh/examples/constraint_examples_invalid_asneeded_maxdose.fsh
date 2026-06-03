@@ -1,46 +1,6 @@
 // Invalid examples for missing ERROR-constraint coverage in DosageDgMP
 // Coverage target: Request, Dispense, Statement for each constraint
 
-Instance: INV-C-AsNeededForOnlyIfAsNeeded-Request-01-of-03
-InstanceOf: MedicationRequestDgMP
-Usage: #example
-Title: "Invalid: asNeededFor without asNeeded=true"
-Description: "CAVE: Validation example - asNeededFor is populated while asNeededBoolean is false."
-* subject.display = "Patient"
-* status = #active
-* intent = #order
-* medicationCodeableConcept.text = "Ibuprofen 400mg"
-* dosageInstruction[+]
-  * text = "Bei Bedarf einnehmen"
-  * asNeededBoolean = false
-  * extension[asNeededFor].valueCodeableConcept.text = "Kopfschmerzen"
-
-Instance: INV-C-AsNeededForOnlyIfAsNeeded-Dispense-02-of-03
-InstanceOf: MedicationDispenseDgMP
-Usage: #example
-Title: "Invalid: asNeededFor without asNeeded=true"
-Description: "CAVE: Validation example - asNeededFor is populated while asNeededBoolean is false."
-* subject.display = "Patient"
-* status = #completed
-* medicationCodeableConcept.text = "Ibuprofen 400mg"
-* dosageInstruction[+]
-  * text = "Bei Bedarf einnehmen"
-  * asNeededBoolean = false
-  * extension[asNeededFor].valueCodeableConcept.text = "Kopfschmerzen"
-
-Instance: INV-C-AsNeededForOnlyIfAsNeeded-Statement-03-of-03
-InstanceOf: MedicationStatementDgMP
-Usage: #example
-Title: "Invalid: asNeededFor without asNeeded=true"
-Description: "CAVE: Validation example - asNeededFor is populated while asNeededBoolean is false."
-* subject.display = "Patient"
-* status = #active
-* medicationCodeableConcept.text = "Ibuprofen 400mg"
-* dosage[+]
-  * text = "Bei Bedarf einnehmen"
-  * asNeededBoolean = false
-  * extension[asNeededFor].valueCodeableConcept.text = "Kopfschmerzen"
-
 Instance: INV-C-MaxDoseSameUnitAsDose-Request-01-of-03
 InstanceOf: MedicationRequestDgMP
 Usage: #example

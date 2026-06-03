@@ -94,31 +94,6 @@ Title: "Unsupported: Site"
 * text = "site"
 * site.text = "linker Arm"
 
-Instance: MR-Unsupported-Dosage-07-of-20-DoseRange
-InstanceOf: MedicationRequestDgMP
-Usage: #example
-Title: "Unsupported Dosage 1 DoseRange"
-Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
-* subject.display = "Unsupported Dosage DoseRange"
-* status = #active
-* intent = #order
-* medicationCodeableConcept.text = "Unsupported Dosage DoseRange Medication"
-* dosageInstruction[+] = Unsupported-Dosage-7-DoseRange
-
-Instance: Unsupported-Dosage-7-DoseRange
-InstanceOf: DosageDE
-Usage: #inline
-Title: "Unsupported: DoseRange"
-* text = "doseRange"
-* doseAndRate[0].doseRange.low.value = 1
-* doseAndRate[0].doseRange.low.unit = "mg"
-* doseAndRate[0].doseRange.low.system = $ucum
-* doseAndRate[0].doseRange.low.code = #mg
-* doseAndRate[0].doseRange.high.value = 2
-* doseAndRate[0].doseRange.high.unit = "mg"
-* doseAndRate[0].doseRange.high.system = $ucum
-* doseAndRate[0].doseRange.high.code = #mg
-
 Instance: MR-Unsupported-Dosage-08-of-20-RateQuantity
 InstanceOf: MedicationRequestDgMP
 Usage: #example
@@ -473,16 +448,6 @@ Description: "CAVE: This MedicationDispense is for validation purposes and does 
 * medicationCodeableConcept.text = "Unsupported Dosage Site Medication"
 * dosageInstruction[+] = Unsupported-Dosage-6-Site
 
-Instance: MD-Unsupported-Dosage-07-of-20-DoseRange
-InstanceOf: MedicationDispenseDgMP
-Usage: #example
-Title: "Unsupported Dosage DoseRange"
-Description: "CAVE: This MedicationDispense is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for unsupported Fields"
-* subject.display = "Unsupported Dosage DoseRange"
-* status = #completed
-* medicationCodeableConcept.text = "Unsupported Dosage DoseRange Medication"
-* dosageInstruction[+] = Unsupported-Dosage-7-DoseRange
-
 Instance: MD-Unsupported-Dosage-08-of-20-RateQuantity
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
@@ -664,16 +629,6 @@ Description: "CAVE: This MedicationStatement is for validation purposes and does
 * status = #active
 * medicationCodeableConcept.text = "Unsupported Dosage Site Medication"
 * dosage[+] = Unsupported-Dosage-6-Site
-
-Instance: MS-Unsupported-Dosage-07-of-20-DoseRange
-InstanceOf: MedicationStatementDgMP
-Usage: #example
-Title: "Unsupported Dosage DoseRange"
-Description: "CAVE: This MedicationStatement is for validation purposes and does NOT represent a valid dosage. It only checks for unsupported Fields"
-* subject.display = "Unsupported Dosage DoseRange"
-* status = #active
-* medicationCodeableConcept.text = "Unsupported Dosage DoseRange Medication"
-* dosage[+] = Unsupported-Dosage-7-DoseRange
 
 Instance: MS-Unsupported-Dosage-08-of-20-RateQuantity
 InstanceOf: MedicationStatementDgMP

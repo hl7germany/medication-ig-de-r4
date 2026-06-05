@@ -1,5 +1,6 @@
 | File | generated dosage instruction text | doseQuantity | duration | durationUnit | frequency | period | periodUnit | Day<br>of<br>Week | Time<br>Of<br>Day | when | bounds[x] |
 | :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| [MedicationRequest-Example-MR-Dosage-1000-startdate](./MedicationRequest-Example-MR-Dosage-1000-startdate.html) | 1-0-0-0 Stück | 1 Stück |  |  | 1 | 1 | d |  |  | MORN | Period.start = 2026-06-05 |
 | [MedicationDispense-MD-Dosage-4schema-night-only](./MedicationDispense-MD-Dosage-4schema-night-only.html) | 0-0-0-1 Stück | 1 Stück |  |  | 1 | 1 | d |  |  | NIGHT |  |
 | [MedicationStatement-MS-Dosage-4schema-evening-only](./MedicationStatement-MS-Dosage-4schema-evening-only.html) | 0-0-1-0 Stück | 1 Stück |  |  | 1 | 1 | d |  |  | EVE |  |
 | [MedicationRequest-Example-MR-Dosage-comb-interval-1](./MedicationRequest-Example-MR-Dosage-comb-interval-1.html) | alle 2 Tage: 08:00 Uhr — je 1 Stück; 18:00 Uhr — je 2 Stück | 1 Stück<br>2 Stück |  |  | 1 | 2 | d |  | 08:00:00<br>18:00:00 |  |  |
@@ -69,6 +70,7 @@
 | [MedicationRequest-Example-MR-Dosage-interval-8d](./MedicationRequest-Example-MR-Dosage-interval-8d.html) | alle 8 Tage: je 1 Stück | 1 Stück |  |  | 1 | 8 | d |  |  |  |  |
 | [MedicationStatement-MS-Dosage-1010](./MedicationStatement-MS-Dosage-1010.html) | 1-0-1-0 Stück | 1 Stück |  |  | 2 | 1 | d |  |  | MORN, EVE |  |
 | [MedicationRequest-Dosage-W-DosageStructuredOrFreeTextWarning-01-of-03](./MedicationRequest-Dosage-W-DosageStructuredOrFreeTextWarning-01-of-03.html) | 1-0-1-0 |  |  |  |  |  |  |  |  |  |  |
+| [MedicationRequest-Example-MR-Dosage-1000-enddate](./MedicationRequest-Example-MR-Dosage-1000-enddate.html) | 1-0-0-0 Stück | 1 Stück |  |  | 1 | 1 | d |  |  | MORN | {'end': '2026-07-05'} |
 | [MedicationRequest-Example-MR-Dosage-comb-dayofweek-1](./MedicationRequest-Example-MR-Dosage-comb-dayofweek-1.html) | montags 1-0-1-0 Stück; freitags 1-0-1-0 Stück | 1 Stück |  |  | 4 | 1 | wk | mon, fri |  | MORN, EVE |  |
 | [MedicationDispense-MD-Dosage-Freetext](./MedicationDispense-MD-Dosage-Freetext.html) | Morgens und abends je 1 Kapsel nach dem Essen |  |  |  |  |  |  |  |  |  |  |
 | [MedicationStatement-Dosage-W-DosageStructuredOrFreeTextWarning-03-of-03](./MedicationStatement-Dosage-W-DosageStructuredOrFreeTextWarning-03-of-03.html) | 1-0-1-0 |  |  |  |  |  |  |  |  |  |  |
@@ -92,6 +94,7 @@
 | [MedicationStatement-MS-Dosage-4schema-night-only](./MedicationStatement-MS-Dosage-4schema-night-only.html) | 0-0-0-1 Stück | 1 Stück |  |  | 1 | 1 | d |  |  | NIGHT |  |
 | [MedicationRequest-Example-MR-Dosage-weekday-3t](./MedicationRequest-Example-MR-Dosage-weekday-3t.html) | dienstags — je 2 Stück; donnerstags — je 2 Stück; samstags — je 2 Stück | 2 Stück |  |  | 3 | 1 | wk | tue, thu, sat |  |  |  |
 | [MedicationStatement-MS-Dosage-TimeOfDay](./MedicationStatement-MS-Dosage-TimeOfDay.html) | täglich: 08:00 Uhr — je 2 Stück; 20:00 Uhr — je 1 Stück | 2 Stück<br>1 Stück |  |  | 1 | 1 | d |  | 08:00:00<br>20:00:00 |  |  |
+| [MedicationRequest-Example-MR-Dosage-1000-startandenddate](./MedicationRequest-Example-MR-Dosage-1000-startandenddate.html) | 1-0-0-0 Stück | 1 Stück |  |  | 1 | 1 | d |  |  | MORN | Period.start = 2026-06-05 |
 | [MedicationRequest-MR-Dosage-freetext-german-chars](./MedicationRequest-MR-Dosage-freetext-german-chars.html) | Nach dem Essen — 2 Stück täglich für 3 Wochen (Dosierung anpassen je nach Verträglichkeit) |  |  |  |  |  |  |  |  |  |  |
 | [MedicationRequest-Example-MR-Dosage-UnitTasse-1000](./MedicationRequest-Example-MR-Dosage-UnitTasse-1000.html) | 2-0-0-0 Teelöffel | 2 Teelöffel |  |  | 1 | 1 | d |  |  | MORN |  |
 | [MedicationStatement-Example-MS-Dosage-UnitStueck-1020](./MedicationStatement-Example-MS-Dosage-UnitStueck-1020.html) | 1-0-2-0 Stück | 1 Stück<br>2 Stück |  |  | 1 | 1 | d |  |  | MORN<br>EVE |  |

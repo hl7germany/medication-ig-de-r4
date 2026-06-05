@@ -35,6 +35,9 @@
 | [MedicationRequest-Example-MR-Bug-MultipleTimeOfDay-Interval](./MedicationRequest-Example-MR-Bug-MultipleTimeOfDay-Interval.html) | alle 2 Tage: 08:00 Uhr — je 1 Stück; 20:00 Uhr — je 1 Stück | 1 Stück | 2 | 2 | d |  | 08:00:00, 20:00:00 |  |  |
 | [MedicationRequest-Example-MR-Bug-MultipleWhen-DayOfWeek](./MedicationRequest-Example-MR-Bug-MultipleWhen-DayOfWeek.html) | dienstags 1-0-1-0 Stück; donnerstags 1-0-1-0 Stück | 1 Stück | 4 | 1 | wk | tue, thu |  | MORN, EVE |  |
 | [MedicationRequest-Example-MR-Bug-MultipleWhen-Interval](./MedicationRequest-Example-MR-Bug-MultipleWhen-Interval.html) | alle 3 Tage: morgens — je 1 Stück; abends — je 1 Stück | 1 Stück | 2 | 3 | d |  |  | MORN, EVE |  |
+| [MedicationRequest-Example-MR-Dosage-1000-enddate](./MedicationRequest-Example-MR-Dosage-1000-enddate.html) | 1-0-0-0 Stück | 1 Stück | 1 | 1 | d |  |  | MORN |  |
+| [MedicationRequest-Example-MR-Dosage-1000-startandenddate](./MedicationRequest-Example-MR-Dosage-1000-startandenddate.html) | 1-0-0-0 Stück | 1 Stück | 1 | 1 | d |  |  | MORN |  |
+| [MedicationRequest-Example-MR-Dosage-1000-startdate](./MedicationRequest-Example-MR-Dosage-1000-startdate.html) | 1-0-0-0 Stück | 1 Stück | 1 | 1 | d |  |  | MORN |  |
 | [MedicationRequest-Example-MR-Dosage-1000](./MedicationRequest-Example-MR-Dosage-1000.html) | 1-0-0-0 Stück | 1 Stück | 1 | 1 | d |  |  | MORN |  |
 | [MedicationRequest-Example-MR-Dosage-1010-10-Days](./MedicationRequest-Example-MR-Dosage-1010-10-Days.html) | für 10 Wochen: 1-0-1-0 Stück | 1 Stück | 2 | 1 | d |  |  | MORN, EVE | {'system': 'http://unitsofmeasure.org', 'value': 10, 'code': 'wk', 'unit': 'Woche(n)'} |
 | [MedicationRequest-Example-MR-Dosage-1010-Unsorted](./MedicationRequest-Example-MR-Dosage-1010-Unsorted.html) | 1-0-1-0 Stück | 1 Stück | 2 | 1 | d |  |  | EVE, MORN |  |

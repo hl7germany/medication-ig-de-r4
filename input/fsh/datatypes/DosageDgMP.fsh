@@ -7,6 +7,7 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
 * obeys DosageStructuredRequiresGeneratedText
 * obeys FreeTextSingleDosageOnly
 * obeys FreeTextMatchesRenderedText
+* obeys PatientInstructionIdentical
 * obeys MaxDoseSameUnitAsDose
 * obeys DoseRangeHighRequiredWhenLowPresent
 * obeys DoseRangeLowAndHighSameUnit
@@ -44,7 +45,10 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
 * sequence 0..0
   * ^comment = "Begründung Einschränkung Kardinalität: Eine Dosier-Sequenz ist in der ersten Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
 * additionalInstruction 0..0
-* patientInstruction 0..0
+* patientInstruction 0..1 MS
+  * ^short = "Ergänzende Anwendungshinweise für Patientinnen und Patienten"
+  * ^definition = "Ergänzende, nicht strukturiert abbildbare Anwendungshinweise für die sichere, korrekte oder verständliche Anwendung des Arzneimittels."
+  * ^comment = "Wenn mehrere Dosage-Elemente in einer Ressource vorhanden sind, muss patientInstruction in allen Dosierungen identisch befüllt werden."
 * asNeeded[x]
   * ^comment = "Bedarfsdosierung, Bedingung kann mit der Extension asNeededFor näher spezifiziert werden."
 * extension[asNeededFor]
@@ -166,6 +170,35 @@ implies
         url = 'http://hl7.org/fhir/5.0/StructureDefinition/extension-MedicationStatement.renderedDosageInstruction'
       ).value = %resource.dosage.text
     )
+  )
+)"
+Severity: #error
+
+Invariant: PatientInstructionIdentical
+Description: "Wenn patientInstruction in einer Ressource mit mehreren Dosierungen verwendet wird, muss das Feld in allen Dosage-Elementen identisch befüllt sein."
+Expression: "(
+  (
+    %resource.ofType(MedicationRequest).dosageInstruction |
+    %resource.ofType(MedicationDispense).dosageInstruction |
+    %resource.ofType(MedicationStatement).dosage
+  ).patientInstruction.distinct().count() <= 1
+)
+and
+(
+  (
+    (
+      %resource.ofType(MedicationRequest).dosageInstruction |
+      %resource.ofType(MedicationDispense).dosageInstruction |
+      %resource.ofType(MedicationStatement).dosage
+    ).patientInstruction.exists()
+  )
+  implies
+  (
+    (
+      %resource.ofType(MedicationRequest).dosageInstruction |
+      %resource.ofType(MedicationDispense).dosageInstruction |
+      %resource.ofType(MedicationStatement).dosage
+    ).all(patientInstruction.exists())
   )
 )"
 Severity: #error

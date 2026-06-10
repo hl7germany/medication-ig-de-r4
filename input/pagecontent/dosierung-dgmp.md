@@ -14,6 +14,14 @@ Das Feld `Dosage.text` ist **ausschließlich** für vom Menschen erstelleten Fre
 
 Im Kontext des dgMP sorgt die [Infrastruktur zur Bereitstellung des Dosierungstextes](./dosierung-text-hinzufuegen.html) dafür, dass zu jeder strukturierten Dosierung auch eine einheitliche, maschinell generierte textuelle Repräsentation bereitgestellt wird. Dieser Text wird in der Extension `Dosage.extension[GeneratedDosageInstructionsMeta]` hinterlegt.
 
+#### Nutzung des Feldes `patientInstruction`
+
+Das Feld `Dosage.patientInstruction` dient für ergänzende, nicht strukturiert abbildbare Anwendungshinweise für Versicherte. Dazu gehören insbesondere qualitative Hinweise wie "Tablette nicht zerkauen" oder situative Hinweise wie "Bei Fieber über 39 Grad Arzt kontaktieren".
+
+Informationen, die bereits eindeutig über strukturierte Felder ausdrückbar sind, dürfen hier nicht wiederholt werden. Nicht in `patientInstruction` gehören daher insbesondere Dosisangaben, Aussagen zum Einnahmezeitpunkt, Einnahmefrequenzen oder Behandlungsdauern.
+
+Wenn eine Ressource mehrere `dosageInstruction`-Einträge enthält, muss `patientInstruction` in allen Dosierungen identisch befüllt sein. So bleibt semantisch klar, dass es sich um eine ergänzende Instruktion zur gesamten Dosierung handelt und nicht um eine abweichende Regel pro Einzeldosierung.
+
 #### Nutzung von Sequenzen
 
 In der aktuellen Ausbaustufe und im Kontext dgMP ist die Verwendung von `Dosage.sequence` nicht erlaubt. Dieses Feld dient beispielsweise dazu, aufeinander aufbauende Dosierungen (wie Ein- oder Ausschleichen) zu kennzeichnen. Die Nutzung kann in zukünftigen Ausbaustufen geprüft werden.
@@ -49,6 +57,7 @@ Der digital gestützte Medikationsprozess unterstützt aktuell die folgenden Dos
 #### Aktuelle Ausbaustufe
 
 - [Freitext-Dosierung](./schema-freitext.html)
+- [Zusätzliche Instruktionen](./schema-zusaetzliche-instruktionen.html)
 - [Schema mit Tageszeiten-Bezug](./schema-tageszeit.html)
 - [Schema mit Uhrzeiten-Bezug](./schema-uhrzeit.html)
 - [Schema mit Wochentags-Bezug](./schema-wochentag.html)

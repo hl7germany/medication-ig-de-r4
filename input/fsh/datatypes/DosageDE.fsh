@@ -16,6 +16,10 @@ Description: "Gibt an, wie das Medikament eingenommen oder verabreicht wurde bzw
   * ^short = "Freitext-Dosierungsanweisungen, z. B. 'Maximal 3x täglich 1 Stück bei Bedarf'"
   * ^definition = "Freitext-Dosierungsanweisungen, z. B. 'Maximal 3x täglich 1 Stück bei Bedarf'. Als Quelle dient hier ausschließlich der Arzt oder Apotheker"
   * ^comment = "Die Freitextdosierung sollte nur angegeben werden, wenn aufgrund der Komplexität keine strukturierte Dosierung möglich ist, um widersprüchliche Anweisungen zu vermeiden."
+* patientInstruction 0..1 MS
+  * ^short = "Ergänzende Anwendungshinweise für Patientinnen und Patienten"
+  * ^definition = "Ergänzende, nicht strukturiert abbildbare Anwendungshinweise für die sichere, korrekte oder verständliche Anwendung des Arzneimittels."
+  * ^comment = "Dieses Feld dient ausschließlich für zusätzliche Instruktionen, die nicht bereits eindeutig über strukturierte Dosierungsangaben abbildbar sind, z. B. qualitative oder situative Hinweise."
 * timing MS
   * ^short = "Wann das Medikament verabreicht werden soll"
   * ^definition = "Wann das Medikament verabreicht werden soll."

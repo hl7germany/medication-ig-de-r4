@@ -68,7 +68,7 @@ Severity: #error
 
 Invariant: TimingVarFreqGtMin
 Description: "Bei variabler Frequenz muss die maximale Frequenz größer als die minimale Frequenz sein."
-Expression: "frequencyMax.empty() or frequency.empty() or frequency < frequencyMax"
+Expression: "frequencyMax.empty() or frequency.empty() or frequency.value < frequencyMax.value"
 Severity: #error
 
 Invariant: TimingVarPeriodGtMin

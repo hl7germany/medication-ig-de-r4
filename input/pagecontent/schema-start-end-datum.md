@@ -13,14 +13,14 @@ Folgende weitere Beispiele sind in diesem IG dargestellt:
 
 | Beispiel | Beispiel Datei |
 | -------- | ------- |
-| Dosierung mit Startdatum | [Example-MR-Dosage-startend-startdate](MedicationRequest-Example-MR-Dosage-startend-startdate.html) |
-| Dosierung mit Enddatum | [Example-MR-Dosage-startend-enddate](MedicationRequest-Example-MR-Dosage-startend-enddate.html) |
-| Dosierung mit Start und Enddatum | [Example-MR-Dosage-startend-startenddate](MedicationRequest-Example-MR-Dosage-startend-startenddate.html) |
+| Dosierung mit Startdatum | [Example-MR-Dosage-1000-startdate](MedicationRequest-Example-MR-Dosage-1000-startdate.html) |
+| Dosierung mit Enddatum | [Example-MR-Dosage-1000-enddate](MedicationRequest-Example-MR-Dosage-1000-enddate.html) |
+| Dosierung mit Start und Enddatum | [Example-MR-Dosage-1000-startandenddate](MedicationRequest-Example-MR-Dosage-1000-startandenddate.html) |
 
 
 ### Beispiel
 
-{% fragment MedicationRequest/Example-MR-Dosage-startend-startenddate JSON %}
+{% fragment MedicationRequest/Example-MR-Dosage-1000-startandenddate JSON %}
 
 #### Technische Anforderungen
 

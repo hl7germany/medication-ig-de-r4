@@ -40,6 +40,7 @@
 | [MedicationRequest-Example-MR-Dosage-1000-startdate](./MedicationRequest-Example-MR-Dosage-1000-startdate.html) | 1-0-0-0 Stück | 1 Stück | 1 | 1 | d |  |  | MORN |  |
 | [MedicationRequest-Example-MR-Dosage-1000](./MedicationRequest-Example-MR-Dosage-1000.html) | 1-0-0-0 Stück | 1 Stück | 1 | 1 | d |  |  | MORN |  |
 | [MedicationRequest-Example-MR-Dosage-1010-10-Days](./MedicationRequest-Example-MR-Dosage-1010-10-Days.html) | für 10 Wochen: 1-0-1-0 Stück | 1 Stück | 2 | 1 | d |  |  | MORN, EVE | {'system': 'http://unitsofmeasure.org', 'value': 10, 'code': 'wk', 'unit': 'Woche(n)'} |
+| [MedicationRequest-Example-MR-Dosage-1010-PatientInstruction](./MedicationRequest-Example-MR-Dosage-1010-PatientInstruction.html) | 1-0-1-0 Stück | 1 Stück | 2 | 1 | d |  |  | MORN, EVE |  |
 | [MedicationRequest-Example-MR-Dosage-1010-Unsorted](./MedicationRequest-Example-MR-Dosage-1010-Unsorted.html) | 1-0-1-0 Stück | 1 Stück | 2 | 1 | d |  |  | EVE, MORN |  |
 | [MedicationRequest-Example-MR-Dosage-1010](./MedicationRequest-Example-MR-Dosage-1010.html) | 1-0-1-0 Stück | 1 Stück | 2 | 1 | d |  |  | MORN, EVE |  |
 | [MedicationRequest-Example-MR-Dosage-10120](./MedicationRequest-Example-MR-Dosage-10120.html) | 1-0-0,5-0 Stück | 1 Stück | 1 | 1 | d |  |  | MORN |  |
@@ -83,7 +84,7 @@
 | [MedicationRequest-Example-MR-Dosage-tod-unsorted](./MedicationRequest-Example-MR-Dosage-tod-unsorted.html) | täglich: 08:00 Uhr, 15:00 Uhr — je 1 Stück | 1 Stück | 2 | 1 | d |  | 15:00:00, 08:00:00 |  |  |
 | [MedicationRequest-Example-MR-Dosage-variable-doseRange](./MedicationRequest-Example-MR-Dosage-variable-doseRange.html) | täglich |  | 1 | 1 | d |  |  |  |  |
 | [MedicationRequest-Example-MR-Dosage-variable-frequency](./MedicationRequest-Example-MR-Dosage-variable-frequency.html) | täglich: je 1 Stück | 1 Stück | 1 | 1 | d |  |  |  |  |
-| [MedicationRequest-Example-MR-Dosage-variable-period](./MedicationRequest-Example-MR-Dosage-variable-period.html) | alle 4 Stunden: je 1 Stück | 1 Stück | 1 | 4 | h |  |  |  |  |
+| [MedicationRequest-Example-MR-Dosage-variable-period](./MedicationRequest-Example-MR-Dosage-variable-period.html) | alle 4 Tage: je 1 Stück | 1 Stück | 1 | 4 | d |  |  |  |  |
 | [MedicationRequest-Example-MR-Dosage-weekday-2t-1t](./MedicationRequest-Example-MR-Dosage-weekday-2t-1t.html) | montags — je 2 Stück; donnerstags — je 1 Stück | 2 Stück | 1 | 1 | wk | mon |  |  |  |
 |  |  | 1 Stück | 1 | 1 | wk | thu |  |  |  |
 | [MedicationRequest-Example-MR-Dosage-weekday-2t-bound](./MedicationRequest-Example-MR-Dosage-weekday-2t-bound.html) | für 10 Wochen: montags — je 2 Stück | 2 Stück | 1 | 1 | wk | mon |  |  | {'system': 'http://unitsofmeasure.org', 'value': 10, 'code': 'wk', 'unit': 'Woche(n)'} |

@@ -23,8 +23,8 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * obeys TimingVarFreqGtMin
   * obeys TimingVarPeriodGtMin
   * bounds[x] MS
-  * bounds[x] only Duration
-    * ^comment = "Begründung Einschränkung Datentyp: Nur eine Angabe zur Dauer ist in der ersten Ausbaustufe des dgMP vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
+  * bounds[x] only Duration or Period
+    * ^comment = "Begründung Einschränkung Datentyp: Nur eine Angabe zur Dauer und Start- bzw. Enddatum sind in der aktuellen Ausbaustufe des dgMP vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
   * boundsDuration MS
     * code 1..1 MS
     * code from DurationUnitsOfTimeDgMPVS (required)
@@ -32,6 +32,9 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
     * unit 1..1 MS
     * value 1..1 MS
     * comparator 0..0
+  * boundsPeriod MS
+    * start MS
+    * end MS
   * frequency 1..1 MS
   * frequencyMax MS
   * period 1..1 MS

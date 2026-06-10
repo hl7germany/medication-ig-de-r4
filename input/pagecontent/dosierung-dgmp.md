@@ -46,7 +46,7 @@ Es ist somit bspw. nicht möglich, in einer `MedicationRequest`-Ressource, im dg
 
 Der digital gestützte Medikationsprozess unterstützt aktuell die folgenden Dosierschemata, gegliedert nach Ausbaustufen. Die jeweiligen Seiten enthalten eine fachliche Beschreibung, Beispiele und technische Hinweise zur Instanziierung.
 
-#### Ausbaustufe 1
+#### Aktuelle Ausbaustufe
 
 - [Freitext-Dosierung](./schema-freitext.html)
 - [Schema mit Tageszeiten-Bezug](./schema-tageszeit.html)
@@ -57,14 +57,13 @@ Der digital gestützte Medikationsprozess unterstützt aktuell die folgenden Dos
 - [Schema für Kombinationen von Wochentagen](./schema-wochentag-kombination.html)
 - [Schema für Bedarfsmedikation](./schema-bedarfsmedikation.html)
 - [Variable Angaben](./schema-variable-angaben.html)
+- [Angabe von Start- und Enddatum](./schema-start-end-datum.html)
 
 #### Folgende Ausbaustufe
 
 In weiteren Ausbaustufen sollen weitere Schemata entwickelt, die bestehenden Schemata ergänzt und Regeln für die übergeordnete Beziehung zwischen mehreren Schemata aufgebaut werden. Untenstehend findet sich eine Übersicht über Erweiterungen, die in zukünftigen Ausbaustufen berücksichtigt werden sollen, mitsamt Erläuterungen und/oder Beispielen. Diese Liste kann in der Zukunft erweitert oder angepasst werden. Für eine zweite Ausbaustufe wird empfohlen, die folgenden zwei bzw. drei Punkte anzugehen:
 
-- Schema für Bedarfsmedikation
 - Alternativen zur eindeutigen “Gesamtdauer”, um die gesamte Anwendung eines Arzneimittels zeitlich zu begrenzen
-- Einführung eines Start- und Enddatums
 - Evaluation hinsichtlich der zeitnahen Umsetzbarkeit von Wertelisten
   - für die Körperstelle, an der das Arzneimittel angewandt werden soll
   - für die Technik, mit der das Arzneimittel angewandt werden soll

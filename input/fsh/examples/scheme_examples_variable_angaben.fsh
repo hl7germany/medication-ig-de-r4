@@ -40,7 +40,7 @@ Instance: Example-MR-Dosage-variable-period
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-variable-period"
-Description: "Dieses Beispiel stellt eine variable Periode von 4 bis 6 Stunden zwischen den Gaben dar."
+Description: "Dieses Beispiel stellt eine variable Periode von 4 bis 6 Tagen zwischen den Gaben dar."
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -49,5 +49,5 @@ Description: "Dieses Beispiel stellt eine variable Periode von 4 bis 6 Stunden z
   * timing.repeat.frequency = 1
   * timing.repeat.period = 4
   * timing.repeat.periodMax = 6
-  * timing.repeat.periodUnit = #h
+  * timing.repeat.periodUnit = #d
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"

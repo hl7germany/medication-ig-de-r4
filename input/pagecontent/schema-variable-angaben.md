@@ -10,11 +10,11 @@ Die Seite beschreibt die hierfür geltenden technischen Anforderungen im dgMP-Ko
 
 Folgende weitere Beispiele sind in diesem IG dargestellt:
 
-| Beispiel | Beispiel Datei |
-| -------- | ------- |
-| Variable Einzeldosis: 1 bis 2 Stück täglich | [Example-MR-Dosage-variable-doseRange](MedicationRequest-Example-MR-Dosage-variable-doseRange.html) |
-| Variable Frequenz: 1 bis 2 Stück pro Tag | [Example-MR-Dosage-variable-frequency](MedicationRequest-Example-MR-Dosage-variable-frequency.html) |
-| Variable Periode: 1 Stück alle 4 bis 6 Tage | [Example-MR-Dosage-variable-period](MedicationRequest-Example-MR-Dosage-variable-period.html) |
+| Fall | Beispielstring | Beispiel-Datei |
+| -------- | ------- | ------- |
+| Variable Einzeldosis | täglich: je 1 bis 2 Stück | [Example-MR-Dosage-variable-doseRange](MedicationRequest-Example-MR-Dosage-variable-doseRange.html) |
+| Variable Frequenz | 1 bis 2 x täglich: je 1 Stück | [Example-MR-Dosage-variable-frequency](MedicationRequest-Example-MR-Dosage-variable-frequency.html) |
+| Variable Periode | alle 4 bis 6 Tage: je 1 Stück | [Example-MR-Dosage-variable-period](MedicationRequest-Example-MR-Dosage-variable-period.html) |
 
 ### Variable Einzeldosis
 

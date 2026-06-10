@@ -23,20 +23,37 @@ Folgende weitere Beispiele sind in diesem IG dargestellt:
 
 ### Angabe und Erkennung der Dosierart
 
-Diese Ergänzung wird daran erkannt, dass `Dosage.patientInstruction` befüllt ist. Das Feld ergänzt ein bestehendes Dosierschema und ersetzt es nicht.
+Diese Ergänzung wird daran erkannt, dass `Dosage.patientInstruction` befüllt ist. Das Feld ergänzt ein bestehendes Dosierschema und ersetzt es nicht. Es handelt sich daher nicht um ein eigenständiges Dosierschema, sondern um eine zusätzliche Information innerhalb eines bereits vorhandenen Schemas.
 
 Wenn mehrere `Dosage`-Elemente in einer Ressource vorhanden sind, muss `patientInstruction` in allen Dosierungen identisch befüllt sein.
 
-Folgende FHIRPath-Expression auf Ebene der übergeordneten Ressource prüft diese Anforderung:
+Im dgMP wird diese Anforderung durch den Constraint `PatientInstructionIdentical` im Profil [DosageDgMP](./StructureDefinition-DosageDgMP.html) geprüft. Die zugrunde liegende FHIRPath-Expression lautet:
 
 ```fhirpath
 (
-  dosageInstruction.patientInstruction.distinct().count() <= 1
+  (
+    %resource.ofType(MedicationRequest).dosageInstruction |
+    %resource.ofType(MedicationDispense).dosageInstruction |
+    %resource.ofType(MedicationStatement).dosage
+  ).patientInstruction.distinct().count() <= 1
 )
 and
 (
-  dosageInstruction.patientInstruction.exists()
-  implies dosageInstruction.all(patientInstruction.exists())
+  (
+    (
+      %resource.ofType(MedicationRequest).dosageInstruction |
+      %resource.ofType(MedicationDispense).dosageInstruction |
+      %resource.ofType(MedicationStatement).dosage
+    ).patientInstruction.exists()
+  )
+  implies
+  (
+    (
+      %resource.ofType(MedicationRequest).dosageInstruction |
+      %resource.ofType(MedicationDispense).dosageInstruction |
+      %resource.ofType(MedicationStatement).dosage
+    ).all(patientInstruction.exists())
+  )
 )
 ```
 

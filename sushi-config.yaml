@@ -74,6 +74,8 @@ pages:
     title: Schema für Bedarfsmedikation
   schema-variable-angaben.md:
     title: Variable Angaben
+  schema-start-end-datum.md:
+    title: Angabe von Start- und Enddatum
   dosierung-beispiele.md:
     title: Beispielliste Dosierung
   artifacts.html:
@@ -127,6 +129,7 @@ menu:
     Schema für Kombinationen von Wochentagen: schema-wochentag-kombination.html
     Schema für Bedarfsmedikation: schema-bedarfsmedikation.html
     Variable Angaben: schema-variable-angaben.html
+    Angabe von Start- und Enddatum: schema-start-end-datum.html
     Beispiel Dosierungen: dosierung-beispiele.html
   FHIR-Artefakte: artifacts.html
   Anhänge:

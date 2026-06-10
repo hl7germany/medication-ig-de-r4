@@ -1,4 +1,4 @@
-Dieses Schema beschreibt die ergänzende Verwendung von `Dosage.patientInstruction` für zusätzliche, nicht strukturiert abbildbare Anwendungshinweise. Das Feld ist optional und kann jedes bestehende strukturierte Dosierschema ergänzen.
+Dieser Abschnitt beschreibt die ergänzende Verwendung von Dosage.patientInstruction für zusätzliche Anwendungshinweise, für die im dgMP keine strukturierte Abbildung vorgesehen ist. Das Feld ist optional und kann jedes bestehende strukturierte Dosierschema ergänzen.
 
 Es ist ausschließlich für Inhalte vorgesehen, die nicht bereits eindeutig in strukturierten Feldern ausgedrückt werden können. Typische Beispiele sind:
 
@@ -21,7 +21,7 @@ Folgende weitere Beispiele sind in diesem IG dargestellt:
 | -------- | ------- |
 | Strukturierte Dosierung mit identischer zusätzlicher Instruktion in allen Dosierungen | [Example-MR-Dosage-1010-PatientInstruction](./MedicationRequest-Example-MR-Dosage-1010-PatientInstruction.html) |
 
-### Angabe und Erkennung der Dosierart
+### Verwendung und Konsistenz von patientInstruction
 
 Diese Ergänzung wird daran erkannt, dass `Dosage.patientInstruction` befüllt ist. Das Feld ergänzt ein bestehendes Dosierschema und ersetzt es nicht. Es handelt sich daher nicht um ein eigenständiges Dosierschema, sondern um eine zusätzliche Information innerhalb eines bereits vorhandenen Schemas.
 

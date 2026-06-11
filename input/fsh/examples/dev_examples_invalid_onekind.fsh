@@ -50,7 +50,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * periodUnit = #wk
 
 // when + dayOfWeek
-Instance: INV-C-TimingOnlyOneType-Request-01-of-05
+Instance: INV-C-TimingOnlyOneType-Request-01-of-13
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid (Request): when + dayOfWeek"
@@ -75,7 +75,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * periodUnit = #wk
 
 // when + interval
-Instance: INV-C-TimingOnlyOneType-Request-02-of-05
+Instance: INV-C-TimingOnlyOneType-Request-02-of-13
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid (Request): when + interval"
@@ -99,7 +99,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * periodUnit = #d
 
 // timeOfDay + dayOfWeek
-Instance: INV-C-TimingOnlyOneType-Request-03-of-05
+Instance: INV-C-TimingOnlyOneType-Request-03-of-13
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid (Request): timeOfDay + dayOfWeek"
@@ -125,7 +125,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
 
 
 // timeOfDay + interval
-Instance: INV-C-TimingOnlyOneType-Request-04-of-05
+Instance: INV-C-TimingOnlyOneType-Request-04-of-13
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid (Request): timeOfDay + interval"
@@ -149,7 +149,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * periodUnit = #d
 
 // dayOfWeek + interval
-Instance: INV-C-TimingOnlyOneType-Request-05-of-05
+Instance: INV-C-TimingOnlyOneType-Request-05-of-13
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid (Request): dayOfWeek + interval"
@@ -481,7 +481,7 @@ Description: "CAVE: This MedicationStatement is for validation purposes and does
 // ============================================================
 
 // when + dayOfWeek - Dispense
-Instance: INV-C-TimingOnlyOneType-Dispense-01-of-05
+Instance: INV-C-TimingOnlyOneType-Dispense-01-of-13
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
 Title: "Invalid (Dispense): when + dayOfWeek"
@@ -505,7 +505,7 @@ Description: "CAVE: This MedicationDispense is for validation purposes and does 
     * periodUnit = #wk
 
 // when + interval - Dispense
-Instance: INV-C-TimingOnlyOneType-Dispense-02-of-05
+Instance: INV-C-TimingOnlyOneType-Dispense-02-of-13
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
 Title: "Invalid (Dispense): when + interval"
@@ -528,7 +528,7 @@ Description: "CAVE: This MedicationDispense is for validation purposes and does 
     * periodUnit = #d
 
 // timeOfDay + dayOfWeek - Dispense
-Instance: INV-C-TimingOnlyOneType-Dispense-03-of-05
+Instance: INV-C-TimingOnlyOneType-Dispense-03-of-13
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
 Title: "Invalid (Dispense): timeOfDay + dayOfWeek"
@@ -552,7 +552,7 @@ Description: "CAVE: This MedicationDispense is for validation purposes and does 
     * periodUnit = #wk
 
 // timeOfDay + interval - Dispense
-Instance: INV-C-TimingOnlyOneType-Dispense-04-of-05
+Instance: INV-C-TimingOnlyOneType-Dispense-04-of-13
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
 Title: "Invalid (Dispense): timeOfDay + interval"
@@ -575,7 +575,7 @@ Description: "CAVE: This MedicationDispense is for validation purposes and does 
     * periodUnit = #d
 
 // dayOfWeek + interval - Dispense
-Instance: INV-C-TimingOnlyOneType-Dispense-05-of-05
+Instance: INV-C-TimingOnlyOneType-Dispense-05-of-13
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
 Title: "Invalid (Dispense): dayOfWeek + interval"
@@ -796,7 +796,7 @@ Description: "CAVE: This MedicationDispense is for validation purposes and does 
 // ============================================================
 
 // when + dayOfWeek - Statement
-Instance: INV-C-TimingOnlyOneType-Statement-01-of-05
+Instance: INV-C-TimingOnlyOneType-Statement-01-of-13
 InstanceOf: MedicationStatementDgMP
 Usage: #example
 Title: "Invalid (Statement): when + dayOfWeek"
@@ -820,7 +820,7 @@ Description: "CAVE: This MedicationStatement is for validation purposes and does
     * periodUnit = #wk
 
 // when + interval - Statement
-Instance: INV-C-TimingOnlyOneType-Statement-02-of-05
+Instance: INV-C-TimingOnlyOneType-Statement-02-of-13
 InstanceOf: MedicationStatementDgMP
 Usage: #example
 Title: "Invalid (Statement): when + interval"
@@ -843,7 +843,7 @@ Description: "CAVE: This MedicationStatement is for validation purposes and does
     * periodUnit = #d
 
 // timeOfDay + dayOfWeek - Statement
-Instance: INV-C-TimingOnlyOneType-Statement-03-of-05
+Instance: INV-C-TimingOnlyOneType-Statement-03-of-13
 InstanceOf: MedicationStatementDgMP
 Usage: #example
 Title: "Invalid (Statement): timeOfDay + dayOfWeek"
@@ -867,7 +867,7 @@ Description: "CAVE: This MedicationStatement is for validation purposes and does
     * periodUnit = #wk
 
 // timeOfDay + interval - Statement
-Instance: INV-C-TimingOnlyOneType-Statement-04-of-05
+Instance: INV-C-TimingOnlyOneType-Statement-04-of-13
 InstanceOf: MedicationStatementDgMP
 Usage: #example
 Title: "Invalid (Statement): timeOfDay + interval"
@@ -890,7 +890,7 @@ Description: "CAVE: This MedicationStatement is for validation purposes and does
     * periodUnit = #d
 
 // dayOfWeek + interval - Statement
-Instance: INV-C-TimingOnlyOneType-Statement-05-of-05
+Instance: INV-C-TimingOnlyOneType-Statement-05-of-13
 InstanceOf: MedicationStatementDgMP
 Usage: #example
 Title: "Invalid (Statement): dayOfWeek + interval"

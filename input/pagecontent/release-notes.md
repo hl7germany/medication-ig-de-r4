@@ -1,3 +1,18 @@
+### Release: 1.0.5
+
+**What's Changed**
+
+- **Fix für Timing-Schema-Mischungen mit `dayOfWeek`:**
+  - **TimingDgMP**: `TimingOnlyWhenOrTimeOfDay`
+
+**Details**
+
+- **`TimingOnlyWhenOrTimeOfDay` (`TimingDgMP`)**
+  - Vom Fix betroffene Ressourcentypen: `MedicationRequest`, `MedicationDispense`, `MedicationStatement`
+  - Fix: Die Einschränkung `dayOfWeek.empty()` wurde aus der Schema-Erkennung entfernt. Dadurch wird jetzt auch der Fall korrekt invalidiert, in dem innerhalb einer Ressource `dayOfWeek + timeOfDay` und `dayOfWeek + when` gemischt werden.
+
+---
+
 ### Release: 1.0.4
 
 **What's Changed**

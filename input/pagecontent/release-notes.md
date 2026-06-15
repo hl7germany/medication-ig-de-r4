@@ -1,3 +1,22 @@
+### Release: 1.0.7
+
+**What's Changed**
+
+- **Fehlerkorrektur in der `package.json`**
+  - Behebung eines Fehlers im Feld `url`, der durch den Tooling-Workaround bei der Nutzung der alten Sushi Version entstanden ist.
+  - Es gibt keine fachlichen Änderungen. Das Bugfix-Release stellt lediglich sicher, dass die Abhängigkeiten unverändert zu Version 1.0.4 bleiben.
+---
+
+### Release: 1.0.6
+
+**What's Changed**
+
+- **Technischer Rebuild von `1.0.5`**
+  - Neu gebaut mit SUSHI `3.18.1`, um zu verhindern, dass das Paket `hl7.fhir.uv.xver-r5.r4#0.1.0` automatisch als Abhängigkeit aufgenommen wird.
+  - Es gibt keine fachlichen Änderungen. Das Bugfix-Release stellt lediglich sicher, dass die Abhängigkeiten unverändert zu Version 1.0.4 bleiben.
+
+---
+
 ### Release: 1.0.5
 
 **What's Changed**

@@ -1,10 +1,10 @@
 {
   "package-id" : "de.fhir.medication",
-  "version": "1.0.5",
-  "path": "http://ig.fhir.de/igs/medication/1.0.5",
+  "version": "1.0.7",
+  "path": "http://ig.fhir.de/igs/medication/1.0.7",
   "mode" : "milestone",
   "status" : "release",
   "sequence" : "STU1",
-  "desc": "Fixes TimingDgMP schema detection for dayOfWeek with timeOfDay/when combinations.",
+  "desc": "Rebuilt of 1.0.5 :Bugfix release correcting the package.json url field introduced by the tooling workaround. No functional changes; dependencies remain unchanged compared to version 1.0.4.",
   "first" : false
 }

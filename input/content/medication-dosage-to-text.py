@@ -28,7 +28,7 @@ import json
 import sys
 import os
 
-__version__ = "1.0.1"
+__version__ = "1.1.0-beta-1"
 __language__ = "de-DE"
 
 class MedicationDosageTextGenerator:
@@ -220,34 +220,28 @@ class MedicationDosageTextGenerator:
                             repeat_element.get('periodUnit') == 'd')
         is_non_daily_pattern = (has_period and has_period_unit and not is_daily_pattern)
 
-        # Schema 2: 4-Schema - daily frequency with 'when' codes only
-        if (has_frequency and is_daily_pattern and has_when_codes and
-            not has_time_of_day and not has_day_of_week):
+        # Schema 2: 4-Schema - 'when' codes only (frequency/period optional)
+        if (has_when_codes and not has_time_of_day and not has_day_of_week):
             return self.SCHEMA_4_PATTERN
 
-        # Schema 3: DayOfWeek - specific weekdays, daily period, no timing details
-        if (has_day_of_week and has_frequency and has_period and has_period_unit and
-            not has_when_codes and not has_time_of_day):
+        # Schema 3: DayOfWeek - specific weekdays, no timing details
+        if (has_day_of_week and not has_when_codes and not has_time_of_day):
             return self.SCHEMA_DAY_OF_WEEK
 
         # Schema 4: DayOfWeek + Time/4-Schema - weekdays plus timing
-        if (has_day_of_week and has_frequency and has_period and has_period_unit and
-            (has_time_of_day or has_when_codes)):
+        if (has_day_of_week and (has_time_of_day or has_when_codes)):
             return self.SCHEMA_DAY_TIME_COMBO
 
-        # Schema 5: TimeOfDay - daily period with specific times only
-        if (has_frequency and is_daily_pattern and
-            not has_day_of_week and has_time_of_day and not has_when_codes):
+        # Schema 5: TimeOfDay - specific times only
+        if (has_time_of_day and not has_day_of_week and not has_when_codes):
             return self.SCHEMA_TIME_OF_DAY
 
         # Schema 6: Interval + Time/4-Schema - non-daily period with timing
-        if (has_frequency and has_period and has_period_unit and not has_day_of_week and
-            (has_time_of_day or has_when_codes) and not is_daily_pattern):
+        if (is_non_daily_pattern and (has_time_of_day or has_when_codes)):
             return self.SCHEMA_INTERVAL_TIME_COMBO
 
         # Schema 7: Interval - pure interval without timing details
-        if (has_frequency and has_period and has_period_unit and
-            not has_when_codes and not has_time_of_day and not has_day_of_week):
+        if (is_non_daily_pattern and not has_when_codes and not has_time_of_day and not has_day_of_week):
             return self.SCHEMA_INTERVAL
 
         return "Unknown"

@@ -30,9 +30,6 @@ Description: "Example showing 4-Schema pattern with only night dose (0-0-0-1)"
 * medicationCodeableConcept.text = "Test Medication"
 * status = #active
 * intent = #order
-* dosageInstruction.timing.repeat.frequency = 1
-* dosageInstruction.timing.repeat.period = 1
-* dosageInstruction.timing.repeat.periodUnit = #d
 * dosageInstruction.timing.repeat.when = #NIGHT
 * dosageInstruction.doseAndRate[0].doseQuantity = 1 '1' "Stück"
 
@@ -45,9 +42,6 @@ Description: "Example showing 4-Schema pattern with only evening dose (0-0-1-0)"
 * medicationCodeableConcept.text = "Test Medication"
 * status = #active
 * intent = #order
-* dosageInstruction.timing.repeat.frequency = 1
-* dosageInstruction.timing.repeat.period = 1
-* dosageInstruction.timing.repeat.periodUnit = #d
 * dosageInstruction.timing.repeat.when = #EVE
 * dosageInstruction.doseAndRate[0].doseQuantity = 1 '1' "Stück"
 
@@ -60,9 +54,6 @@ Description: "Example showing 4-Schema pattern with only noon dose (0-1-0-0)"
 * medicationCodeableConcept.text = "Test Medication"
 * status = #active
 * intent = #order
-* dosageInstruction.timing.repeat.frequency = 1
-* dosageInstruction.timing.repeat.period = 1
-* dosageInstruction.timing.repeat.periodUnit = #d
 * dosageInstruction.timing.repeat.when = #NOON
 * dosageInstruction.doseAndRate[0].doseQuantity = 1 '1' "Stück"
 
@@ -86,14 +77,8 @@ Description: "Example showing different doses on different days of the week"
 * medicationCodeableConcept.text = "Test Medication"
 * status = #active
 * intent = #order
-* dosageInstruction[0].timing.repeat.frequency = 1
-* dosageInstruction[0].timing.repeat.period = 1
-* dosageInstruction[0].timing.repeat.periodUnit = #wk
 * dosageInstruction[0].timing.repeat.dayOfWeek = #mon
 * dosageInstruction[0].doseAndRate[0].doseQuantity = 1 '1' "Stück"
-* dosageInstruction[1].timing.repeat.frequency = 1
-* dosageInstruction[1].timing.repeat.period = 1
-* dosageInstruction[1].timing.repeat.periodUnit = #wk
 * dosageInstruction[1].timing.repeat.dayOfWeek = #tue
 * dosageInstruction[1].doseAndRate[0].doseQuantity = 3 '1' "Stück"
 
@@ -106,14 +91,8 @@ Description: "Example showing different doses at different times of day"
 * medicationCodeableConcept.text = "Test Medication"
 * status = #active
 * intent = #order
-* dosageInstruction[0].timing.repeat.frequency = 1
-* dosageInstruction[0].timing.repeat.period = 1
-* dosageInstruction[0].timing.repeat.periodUnit = #d
 * dosageInstruction[0].timing.repeat.timeOfDay = "08:00:00"
 * dosageInstruction[0].doseAndRate[0].doseQuantity = 1 '1' "Stück"
-* dosageInstruction[1].timing.repeat.frequency = 1
-* dosageInstruction[1].timing.repeat.period = 1
-* dosageInstruction[1].timing.repeat.periodUnit = #d
 * dosageInstruction[1].timing.repeat.timeOfDay = "18:00:00"
 * dosageInstruction[1].doseAndRate[0].doseQuantity = 3 '1' "Stück"
 
@@ -126,14 +105,8 @@ Description: "Example showing 4-Schema pattern with ml units instead of Stück"
 * medicationCodeableConcept.text = "Test Medication"
 * status = #active
 * intent = #order
-* dosageInstruction[0].timing.repeat.frequency = 1
-* dosageInstruction[0].timing.repeat.period = 1
-* dosageInstruction[0].timing.repeat.periodUnit = #d
 * dosageInstruction[0].timing.repeat.when = #MORN
 * dosageInstruction[0].doseAndRate[0].doseQuantity = 2 'mL' "ml"
-* dosageInstruction[1].timing.repeat.frequency = 1
-* dosageInstruction[1].timing.repeat.period = 1
-* dosageInstruction[1].timing.repeat.periodUnit = #d
 * dosageInstruction[1].timing.repeat.when = #EVE
 * dosageInstruction[1].doseAndRate[0].doseQuantity = 1 'mL' "ml"
 
@@ -146,9 +119,6 @@ Description: "Example showing minimal dayOfWeek + timeOfDay combination"
 * medicationCodeableConcept.text = "Test Medication"
 * status = #active
 * intent = #order
-* dosageInstruction.timing.repeat.frequency = 1
-* dosageInstruction.timing.repeat.period = 1
-* dosageInstruction.timing.repeat.periodUnit = #wk
 * dosageInstruction.timing.repeat.dayOfWeek = #mon
 * dosageInstruction.timing.repeat.timeOfDay = "08:00:00"
 * dosageInstruction.doseAndRate[0].doseQuantity = 1 '1' "Stück"
@@ -166,9 +136,6 @@ Description: "Example showing multiple dayOfWeek + timeOfDay combination"
     * dayOfWeek[+] = #tue
     * dayOfWeek[+] = #thu
     * timeOfDay[+] = "08:00:00"
-    * frequency = 2
-    * period = 1
-    * periodUnit = #wk
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 * dosageInstruction[+]
   * timing.repeat
@@ -176,9 +143,6 @@ Description: "Example showing multiple dayOfWeek + timeOfDay combination"
     * dayOfWeek[+] = #fri
     * timeOfDay[+] = "08:00:00"
     * timeOfDay[+] = "20:00:00"
-    * frequency = 4
-    * period = 1
-    * periodUnit = #wk
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
 // 10. Interval with monthly period unit
@@ -224,9 +188,6 @@ Description: "Example showing 4-Schema pattern with only night dose (0-0-0-1)"
 * subject.display = "Patient"
 * medicationCodeableConcept.text = "Test Medication"
 * status = #completed
-* dosageInstruction.timing.repeat.frequency = 1
-* dosageInstruction.timing.repeat.period = 1
-* dosageInstruction.timing.repeat.periodUnit = #d
 * dosageInstruction.timing.repeat.when = #NIGHT
 * dosageInstruction.doseAndRate[0].doseQuantity = 1 '1' "Stück"
 
@@ -238,9 +199,6 @@ Description: "Example showing 4-Schema pattern with only evening dose (0-0-1-0)"
 * subject.display = "Patient"
 * medicationCodeableConcept.text = "Test Medication"
 * status = #completed
-* dosageInstruction.timing.repeat.frequency = 1
-* dosageInstruction.timing.repeat.period = 1
-* dosageInstruction.timing.repeat.periodUnit = #d
 * dosageInstruction.timing.repeat.when = #EVE
 * dosageInstruction.doseAndRate[0].doseQuantity = 1 '1' "Stück"
 
@@ -252,9 +210,6 @@ Description: "Example showing 4-Schema pattern with only noon dose (0-1-0-0)"
 * subject.display = "Patient"
 * medicationCodeableConcept.text = "Test Medication"
 * status = #completed
-* dosageInstruction.timing.repeat.frequency = 1
-* dosageInstruction.timing.repeat.period = 1
-* dosageInstruction.timing.repeat.periodUnit = #d
 * dosageInstruction.timing.repeat.when = #NOON
 * dosageInstruction.doseAndRate[0].doseQuantity = 1 '1' "Stück"
 
@@ -276,14 +231,8 @@ Description: "Example showing different doses on different days of the week"
 * subject.display = "Patient"
 * medicationCodeableConcept.text = "Test Medication"
 * status = #completed
-* dosageInstruction[0].timing.repeat.frequency = 1
-* dosageInstruction[0].timing.repeat.period = 1
-* dosageInstruction[0].timing.repeat.periodUnit = #wk
 * dosageInstruction[0].timing.repeat.dayOfWeek = #mon
 * dosageInstruction[0].doseAndRate[0].doseQuantity = 1 '1' "Stück"
-* dosageInstruction[1].timing.repeat.frequency = 1
-* dosageInstruction[1].timing.repeat.period = 1
-* dosageInstruction[1].timing.repeat.periodUnit = #wk
 * dosageInstruction[1].timing.repeat.dayOfWeek = #tue
 * dosageInstruction[1].doseAndRate[0].doseQuantity = 3 '1' "Stück"
 
@@ -295,14 +244,8 @@ Description: "Example showing different doses at different times of day"
 * subject.display = "Patient"
 * medicationCodeableConcept.text = "Test Medication"
 * status = #completed
-* dosageInstruction[0].timing.repeat.frequency = 1
-* dosageInstruction[0].timing.repeat.period = 1
-* dosageInstruction[0].timing.repeat.periodUnit = #d
 * dosageInstruction[0].timing.repeat.timeOfDay = "08:00:00"
 * dosageInstruction[0].doseAndRate[0].doseQuantity = 1 '1' "Stück"
-* dosageInstruction[1].timing.repeat.frequency = 1
-* dosageInstruction[1].timing.repeat.period = 1
-* dosageInstruction[1].timing.repeat.periodUnit = #d
 * dosageInstruction[1].timing.repeat.timeOfDay = "18:00:00"
 * dosageInstruction[1].doseAndRate[0].doseQuantity = 3 '1' "Stück"
 
@@ -314,14 +257,8 @@ Description: "Example showing 4-Schema pattern with ml units instead of Stück"
 * subject.display = "Patient"
 * medicationCodeableConcept.text = "Test Medication"
 * status = #completed
-* dosageInstruction[0].timing.repeat.frequency = 1
-* dosageInstruction[0].timing.repeat.period = 1
-* dosageInstruction[0].timing.repeat.periodUnit = #d
 * dosageInstruction[0].timing.repeat.when = #MORN
 * dosageInstruction[0].doseAndRate[0].doseQuantity = 2 'mL' "ml"
-* dosageInstruction[1].timing.repeat.frequency = 1
-* dosageInstruction[1].timing.repeat.period = 1
-* dosageInstruction[1].timing.repeat.periodUnit = #d
 * dosageInstruction[1].timing.repeat.when = #EVE
 * dosageInstruction[1].doseAndRate[0].doseQuantity = 1 'mL' "ml"
 
@@ -333,9 +270,6 @@ Description: "Example showing minimal dayOfWeek + timeOfDay combination"
 * subject.display = "Patient"
 * medicationCodeableConcept.text = "Test Medication"
 * status = #completed
-* dosageInstruction.timing.repeat.frequency = 1
-* dosageInstruction.timing.repeat.period = 1
-* dosageInstruction.timing.repeat.periodUnit = #wk
 * dosageInstruction.timing.repeat.dayOfWeek = #mon
 * dosageInstruction.timing.repeat.timeOfDay = "08:00:00"
 * dosageInstruction.doseAndRate[0].doseQuantity = 1 '1' "Stück"
@@ -429,9 +363,6 @@ Description: "Example showing 4-Schema pattern with only night dose (0-0-0-1)"
 * subject.display = "Patient"
 * medicationCodeableConcept.text = "Test Medication"
 * status = #active
-* dosage.timing.repeat.frequency = 1
-* dosage.timing.repeat.period = 1
-* dosage.timing.repeat.periodUnit = #d
 * dosage.timing.repeat.when = #NIGHT
 * dosage.doseAndRate[0].doseQuantity = 1 '1' "Stück"
 
@@ -443,9 +374,6 @@ Description: "Example showing 4-Schema pattern with only evening dose (0-0-1-0)"
 * subject.display = "Patient"
 * medicationCodeableConcept.text = "Test Medication"
 * status = #active
-* dosage.timing.repeat.frequency = 1
-* dosage.timing.repeat.period = 1
-* dosage.timing.repeat.periodUnit = #d
 * dosage.timing.repeat.when = #EVE
 * dosage.doseAndRate[0].doseQuantity = 1 '1' "Stück"
 
@@ -457,9 +385,6 @@ Description: "Example showing 4-Schema pattern with only noon dose (0-1-0-0)"
 * subject.display = "Patient"
 * medicationCodeableConcept.text = "Test Medication"
 * status = #active
-* dosage.timing.repeat.frequency = 1
-* dosage.timing.repeat.period = 1
-* dosage.timing.repeat.periodUnit = #d
 * dosage.timing.repeat.when = #NOON
 * dosage.doseAndRate[0].doseQuantity = 1 '1' "Stück"
 
@@ -481,14 +406,8 @@ Description: "Example showing different doses on different days of the week"
 * subject.display = "Patient"
 * medicationCodeableConcept.text = "Test Medication"
 * status = #active
-* dosage[0].timing.repeat.frequency = 1
-* dosage[0].timing.repeat.period = 1
-* dosage[0].timing.repeat.periodUnit = #wk
 * dosage[0].timing.repeat.dayOfWeek = #mon
 * dosage[0].doseAndRate[0].doseQuantity = 1 '1' "Stück"
-* dosage[1].timing.repeat.frequency = 1
-* dosage[1].timing.repeat.period = 1
-* dosage[1].timing.repeat.periodUnit = #wk
 * dosage[1].timing.repeat.dayOfWeek = #tue
 * dosage[1].doseAndRate[0].doseQuantity = 3 '1' "Stück"
 
@@ -500,14 +419,8 @@ Description: "Example showing different doses at different times of day"
 * subject.display = "Patient"
 * medicationCodeableConcept.text = "Test Medication"
 * status = #active
-* dosage[0].timing.repeat.frequency = 1
-* dosage[0].timing.repeat.period = 1
-* dosage[0].timing.repeat.periodUnit = #d
 * dosage[0].timing.repeat.timeOfDay = "08:00:00"
 * dosage[0].doseAndRate[0].doseQuantity = 1 '1' "Stück"
-* dosage[1].timing.repeat.frequency = 1
-* dosage[1].timing.repeat.period = 1
-* dosage[1].timing.repeat.periodUnit = #d
 * dosage[1].timing.repeat.timeOfDay = "18:00:00"
 * dosage[1].doseAndRate[0].doseQuantity = 3 '1' "Stück"
 
@@ -519,14 +432,8 @@ Description: "Example showing 4-Schema pattern with ml units instead of Stück"
 * subject.display = "Patient"
 * medicationCodeableConcept.text = "Test Medication"
 * status = #active
-* dosage[0].timing.repeat.frequency = 1
-* dosage[0].timing.repeat.period = 1
-* dosage[0].timing.repeat.periodUnit = #d
 * dosage[0].timing.repeat.when = #MORN
 * dosage[0].doseAndRate[0].doseQuantity = 2 'mL' "ml"
-* dosage[1].timing.repeat.frequency = 1
-* dosage[1].timing.repeat.period = 1
-* dosage[1].timing.repeat.periodUnit = #d
 * dosage[1].timing.repeat.when = #EVE
 * dosage[1].doseAndRate[0].doseQuantity = 1 'mL' "ml"
 
@@ -538,9 +445,6 @@ Description: "Example showing minimal dayOfWeek + timeOfDay combination"
 * subject.display = "Patient"
 * medicationCodeableConcept.text = "Test Medication"
 * status = #active
-* dosage.timing.repeat.frequency = 1
-* dosage.timing.repeat.period = 1
-* dosage.timing.repeat.periodUnit = #wk
 * dosage.timing.repeat.dayOfWeek = #mon
 * dosage.timing.repeat.timeOfDay = "08:00:00"
 * dosage.doseAndRate[0].doseQuantity = 1 '1' "Stück"
@@ -558,9 +462,6 @@ Description: "Example showing multiple dayOfWeek + timeOfDay combination"
     * dayOfWeek[+] = #tue
     * dayOfWeek[+] = #thu
     * timeOfDay[+] = "08:00:00"
-    * frequency = 2
-    * period = 1
-    * periodUnit = #wk
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 * dosage[+]
   * timing.repeat
@@ -568,9 +469,6 @@ Description: "Example showing multiple dayOfWeek + timeOfDay combination"
     * dayOfWeek[+] = #fri
     * timeOfDay[+] = "08:00:00"
     * timeOfDay[+] = "20:00:00"
-    * frequency = 4
-    * period = 1
-    * periodUnit = #wk
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
 Instance: MS-Dosage-interval-monthly

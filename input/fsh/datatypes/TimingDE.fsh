@@ -56,9 +56,7 @@ Expression: "(
   (
     timing.repeat.dayOfWeek.empty() and
     timing.repeat.timeOfDay.exists() and
-    timing.repeat.when.empty() and
-    (timing.repeat.period.exists() and timing.repeat.period = 1) and
-    (timing.repeat.periodUnit.exists() and timing.repeat.periodUnit = 'd')
+    timing.repeat.when.empty()
   )
   implies
   (
@@ -68,7 +66,7 @@ Expression: "(
         | %resource.ofType(MedicationDispense).dosageInstruction
         | %resource.ofType(MedicationStatement).dosage
       ).where(
-        timing.repeat.dayOfWeek.empty() and timing.repeat.timeOfDay.exists() and timing.repeat.when.empty() and (timing.repeat.period.exists() and timing.repeat.period = 1) and (timing.repeat.periodUnit.exists() and timing.repeat.periodUnit = 'd')
+        timing.repeat.dayOfWeek.empty() and timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()
       ).count() = 1
     )
     or
@@ -78,7 +76,7 @@ Expression: "(
         | %resource.ofType(MedicationDispense).dosageInstruction
         | %resource.ofType(MedicationStatement).dosage
       ).where(
-        timing.repeat.dayOfWeek.empty() and timing.repeat.timeOfDay.exists() and timing.repeat.when.empty() and (timing.repeat.period.exists() and timing.repeat.period = 1) and (timing.repeat.periodUnit.exists() and timing.repeat.periodUnit = 'd')
+        timing.repeat.dayOfWeek.empty() and timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()
       ).doseAndRate.dose.ofType(Quantity).value.distinct().count() > 1
     )
   )
@@ -95,9 +93,7 @@ Expression: "(
   (
     timing.repeat.dayOfWeek.empty() and
     timing.repeat.when.exists() and
-    timing.repeat.timeOfDay.empty() and
-    (timing.repeat.period.exists() and timing.repeat.period = 1) and
-    (timing.repeat.periodUnit.exists() and timing.repeat.periodUnit = 'd')
+    timing.repeat.timeOfDay.empty()
   )
   implies
   (
@@ -107,7 +103,7 @@ Expression: "(
         | %resource.ofType(MedicationDispense).dosageInstruction
         | %resource.ofType(MedicationStatement).dosage
       ).where(
-        timing.repeat.dayOfWeek.empty() and timing.repeat.when.exists() and timing.repeat.timeOfDay.empty() and (timing.repeat.period.exists() and timing.repeat.period = 1) and (timing.repeat.periodUnit.exists() and timing.repeat.periodUnit = 'd')
+        timing.repeat.dayOfWeek.empty() and timing.repeat.when.exists() and timing.repeat.timeOfDay.empty()
       ).count() = 1
     )
     or
@@ -117,7 +113,7 @@ Expression: "(
         | %resource.ofType(MedicationDispense).dosageInstruction
         | %resource.ofType(MedicationStatement).dosage
       ).where(
-        timing.repeat.dayOfWeek.empty() and timing.repeat.when.exists() and timing.repeat.timeOfDay.empty() and (timing.repeat.period.exists() and timing.repeat.period = 1) and (timing.repeat.periodUnit.exists() and timing.repeat.periodUnit = 'd')
+        timing.repeat.dayOfWeek.empty() and timing.repeat.when.exists() and timing.repeat.timeOfDay.empty()
       ).doseAndRate.dose.ofType(Quantity).value.distinct().count() > 1
     )
   )

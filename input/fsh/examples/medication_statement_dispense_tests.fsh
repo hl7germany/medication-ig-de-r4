@@ -11,9 +11,6 @@ Description: "Example showing 4-Schema pattern in MedicationStatement"
 * subject.display = "Patient"
 * medicationCodeableConcept.text = "Test Medication"
 * status = #active
-* dosage[0].timing.repeat.frequency = 2
-* dosage[0].timing.repeat.period = 1
-* dosage[0].timing.repeat.periodUnit = #d
 * dosage[0].timing.repeat.when[+] = #MORN
 * dosage[0].timing.repeat.when[+] = #EVE
 * dosage[0].doseAndRate[0].doseQuantity = 1 '1' "Stück"
@@ -36,14 +33,8 @@ Description: "Example showing TimeOfDay pattern in MedicationStatement"
 * subject.display = "Patient"
 * medicationCodeableConcept.text = "Test Medication"
 * status = #active
-* dosage[0].timing.repeat.frequency = 1
-* dosage[0].timing.repeat.period = 1
-* dosage[0].timing.repeat.periodUnit = #d
 * dosage[0].timing.repeat.timeOfDay = "08:00:00"
 * dosage[0].doseAndRate[0].doseQuantity = 2 '1' "Stück"
-* dosage[1].timing.repeat.frequency = 1
-* dosage[1].timing.repeat.period = 1
-* dosage[1].timing.repeat.periodUnit = #d
 * dosage[1].timing.repeat.timeOfDay = "20:00:00"
 * dosage[1].doseAndRate[0].doseQuantity = 1 '1' "Stück"
 
@@ -55,14 +46,8 @@ Description: "Example showing DayOfWeek pattern in MedicationStatement"
 * subject.display = "Patient"
 * medicationCodeableConcept.text = "Test Medication"
 * status = #active
-* dosage[0].timing.repeat.frequency = 1
-* dosage[0].timing.repeat.period = 1
-* dosage[0].timing.repeat.periodUnit = #wk
 * dosage[0].timing.repeat.dayOfWeek = #mon
 * dosage[0].doseAndRate[0].doseQuantity = 2 '1' "Stück"
-* dosage[1].timing.repeat.frequency = 1
-* dosage[1].timing.repeat.period = 1
-* dosage[1].timing.repeat.periodUnit = #wk
 * dosage[1].timing.repeat.dayOfWeek = #fri
 * dosage[1].doseAndRate[0].doseQuantity = 1 '1' "Stück"
 
@@ -89,14 +74,8 @@ Description: "Example showing 4-Schema pattern in MedicationDispense"
 * subject.display = "Patient"
 * medicationCodeableConcept.text = "Test Medication"
 * status = #completed
-* dosageInstruction[0].timing.repeat.frequency = 1
-* dosageInstruction[0].timing.repeat.period = 1
-* dosageInstruction[0].timing.repeat.periodUnit = #d
 * dosageInstruction[0].timing.repeat.when = #MORN
 * dosageInstruction[0].doseAndRate[0].doseQuantity = 1 '1' "Stück"
-* dosageInstruction[1].timing.repeat.frequency = 1
-* dosageInstruction[1].timing.repeat.period = 1
-* dosageInstruction[1].timing.repeat.periodUnit = #d
 * dosageInstruction[1].timing.repeat.when = #EVE
 * dosageInstruction[1].doseAndRate[0].doseQuantity = 2 '1' "Stück"
 
@@ -137,15 +116,9 @@ Description: "Example showing DayOfWeek and Time pattern in MedicationDispense"
 * subject.display = "Patient"
 * medicationCodeableConcept.text = "Test Medication"
 * status = #completed
-* dosageInstruction[0].timing.repeat.frequency = 1
-* dosageInstruction[0].timing.repeat.period = 1
-* dosageInstruction[0].timing.repeat.periodUnit = #wk
 * dosageInstruction[0].timing.repeat.dayOfWeek = #mon
 * dosageInstruction[0].timing.repeat.when = #MORN
 * dosageInstruction[0].doseAndRate[0].doseQuantity = 1 '1' "Stück"
-* dosageInstruction[1].timing.repeat.frequency = 1
-* dosageInstruction[1].timing.repeat.period = 1
-* dosageInstruction[1].timing.repeat.periodUnit = #wk
 * dosageInstruction[1].timing.repeat.dayOfWeek = #wed
 * dosageInstruction[1].timing.repeat.when = #EVE
 * dosageInstruction[1].doseAndRate[0].doseQuantity = 2 '1' "Stück"
@@ -158,15 +131,9 @@ Description: "Example showing bounds and decimal doses in MedicationDispense"
 * subject.display = "Patient"
 * medicationCodeableConcept.text = "Test Medication"
 * status = #completed
-* dosageInstruction[0].timing.repeat.frequency = 1
-* dosageInstruction[0].timing.repeat.period = 1
-* dosageInstruction[0].timing.repeat.periodUnit = #d
 * dosageInstruction[0].timing.repeat.when = #MORN
 * dosageInstruction[0].timing.repeat.boundsDuration = 2 'wk' "Wochen"
 * dosageInstruction[0].doseAndRate[0].doseQuantity = 0.5 '1' "Stück"
-* dosageInstruction[1].timing.repeat.frequency = 1
-* dosageInstruction[1].timing.repeat.period = 1
-* dosageInstruction[1].timing.repeat.periodUnit = #d
 * dosageInstruction[1].timing.repeat.when = #EVE
 * dosageInstruction[1].timing.repeat.boundsDuration = 2 'wk' "Wochen"
 * dosageInstruction[1].doseAndRate[0].doseQuantity = 1.5 '1' "Stück"

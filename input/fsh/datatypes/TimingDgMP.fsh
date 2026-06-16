@@ -167,7 +167,6 @@ Expression: "(
   | %resource.ofType(MedicationDispense).dosageInstruction
   | %resource.ofType(MedicationStatement).dosage
 ).all(
-    timing.repeat.dayOfWeek.empty() and
     (timing.repeat.when.exists() or 
     timing.repeat.timeOfDay.exists())
   implies

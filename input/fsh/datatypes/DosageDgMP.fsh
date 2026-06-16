@@ -7,6 +7,7 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
 * obeys DosageStructuredRequiresGeneratedText
 * obeys FreeTextSingleDosageOnly
 * obeys FreeTextMatchesRenderedText
+* obeys DosageDoseQuantityAllowedFractions
 * timing only TimingDgMP
 * doseAndRate 0..1 // Nur eine Dosierung für eine Medikation erlauben
   * ^comment = "Begründung Einschränkung Kardinalität: Nur eine Dosierung pro Medikation ist in der ersten Ausbaustufe des dgMP vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
@@ -139,5 +140,18 @@ implies
       ).value = %resource.dosage.text
     )
   )
+)"
+Severity: #error
+
+Invariant: DosageDoseQuantityAllowedFractions
+Description: "Der Wert von doseAndRate.doseQuantity.value darf nur ganzzahlig sein oder die Nachkommastellen .25, .33, .5, .66, .75 enthalten."
+Expression: "doseAndRate.doseQuantity.value.exists() implies
+doseAndRate.doseQuantity.value.all(
+  ($this mod 1 = 0) or
+  ($this mod 1 = 0.25) or
+  ($this mod 1 = 0.33) or
+  ($this mod 1 = 0.5) or
+  ($this mod 1 = 0.66) or
+  ($this mod 1 = 0.75)
 )"
 Severity: #error

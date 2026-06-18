@@ -232,8 +232,8 @@ class MedicationDosageTextGenerator:
         if (has_day_of_week and (has_time_of_day or has_when_codes)):
             return self.SCHEMA_DAY_TIME_COMBO
 
-        # Schema 5: TimeOfDay - specific times only
-        if (has_time_of_day and not has_day_of_week and not has_when_codes):
+        # Schema 5: TimeOfDay - specific times only (daily pattern)
+        if (has_time_of_day and not has_day_of_week and not has_when_codes and is_daily_pattern):
             return self.SCHEMA_TIME_OF_DAY
 
         # Schema 6: Interval + Time/4-Schema - non-daily period with timing

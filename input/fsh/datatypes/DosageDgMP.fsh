@@ -143,15 +143,45 @@ implies
 )"
 Severity: #error
 
-Invariant: DosageDoseQuantityAllowedFractions
-Description: "Der Wert von doseAndRate.doseQuantity.value darf nur ganzzahlig sein oder die Nachkommastellen .25, .33, .5, .66, .75 enthalten."
-Expression: "doseAndRate.doseQuantity.value.exists() implies
-doseAndRate.doseQuantity.value.all(
-  ($this mod 1 = 0) or
-  ($this mod 1 = 0.25) or
-  ($this mod 1 = 0.33) or
-  ($this mod 1 = 0.5) or
-  ($this mod 1 = 0.66) or
-  ($this mod 1 = 0.75)
-)"
+Invariant: DosageDoseAllowedFractions
+Description: "Dosiswerte in doseQuantity oder doseRange dürfen nur ganzzahlig sein oder einen der folgenden Dezimalanteile verwenden: .25, .33, .5, .66 oder .75."
+Expression: """
+doseAndRate.all(
+  (
+    dose.ofType(Quantity).value.empty() or
+    dose.ofType(Quantity).value.all(
+      ($this mod 1 = 0) or
+      ($this mod 1 = 0.25) or
+      ($this mod 1 = 0.33) or
+      ($this mod 1 = 0.5) or
+      ($this mod 1 = 0.66) or
+      ($this mod 1 = 0.75)
+    )
+  )
+  and
+  (
+    dose.ofType(Range).low.value.empty() or
+    dose.ofType(Range).low.value.all(
+      ($this mod 1 = 0) or
+      ($this mod 1 = 0.25) or
+      ($this mod 1 = 0.33) or
+      ($this mod 1 = 0.5) or
+      ($this mod 1 = 0.66) or
+      ($this mod 1 = 0.75)
+    )
+  )
+  and
+  (
+    dose.ofType(Range).high.value.empty() or
+    dose.ofType(Range).high.value.all(
+      ($this mod 1 = 0) or
+      ($this mod 1 = 0.25) or
+      ($this mod 1 = 0.33) or
+      ($this mod 1 = 0.5) or
+      ($this mod 1 = 0.66) or
+      ($this mod 1 = 0.75)
+    )
+  )
+)
+"""
 Severity: #error

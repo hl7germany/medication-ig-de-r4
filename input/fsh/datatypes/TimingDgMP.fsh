@@ -80,7 +80,7 @@ Severity: #error
 
 Invariant: TimingPeriodOnlyWholeNumber
 Description: "The period should only describe whole numbers, decimals are not allowed"
-Expression: "period mod 1 = 0"
+Expression: "(period.exists() implies period mod 1 = 0) and (periodMax.exists() implies periodMax mod 1 = 0)"
 Severity: #error
 
 Invariant: TimingOnlyOneType

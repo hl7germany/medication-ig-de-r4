@@ -24,12 +24,19 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * code MS
   * unit MS
   * value MS
+* repeat.boundsPeriod MS
+  * ^short = "Start und Enddatum der Dosieranweisung ausgedrückt in Datum mit optional Uhrzeit."
+  * ^definition = "Beschreibt die Dauer einer Dosieranweisung mit konkreten Start- und oder Enddatum."
+  * start MS
+  * end MS
 * repeat.frequency MS
   * ^short = "Ereignis tritt frequency-mal pro Zeitraum auf"
   * ^definition = "Die Anzahl der Wiederholungen innerhalb des angegebenen Zeitraums. Falls frequencyMax vorhanden ist, gibt dieses Element die Untergrenze des zulässigen Bereichs der Häufigkeit an."
+* repeat.frequencyMax MS
 * repeat.period MS
   * ^short = "Ereignis tritt frequency-mal pro Zeitraum auf"
   * ^definition = "Gibt die Zeitspanne an, über die die Wiederholungen stattfinden sollen; z. B. um „3-mal täglich“ auszudrücken, wäre 3 die Häufigkeit und „1 Tag“ der Zeitraum. Falls periodMax vorhanden ist, gibt dieses Element die Untergrenze des zulässigen Bereichs der Zeitspanne an."
+* repeat.periodMax MS
 * repeat.periodUnit MS
   * ^short = "s | min | h | d | wk | mo | a - Zeiteinheit (UCUM)"
   * ^definition = "Die Zeiteinheit für den Zeitraum, in UCUM-Einheiten."

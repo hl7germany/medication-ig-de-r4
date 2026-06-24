@@ -38,7 +38,8 @@ def extract_constraint_key(issue):
     if details_text is None:
         return None
     value = details_text.attrib.get("value", "")
-    match = re.search(r"Constraint failed: ([A-Za-z0-9]+):", value)
+    # Constraint keys may include "-", ".", and "_" (e.g. "dos-1").
+    match = re.search(r"Constraint failed: ([A-Za-z0-9][A-Za-z0-9._-]*):", value)
     if match:
         return match.group(1)
     return None
@@ -52,13 +53,15 @@ def extract_expected_constraint_key(filename):
     - ...-C-<Key>-MD.json / -MS.json
     - ...-C-<Key>-Request-01-of-05.json (and Dispense/Statement variants)
     """
-    match = re.match(
-        r".*-C-([A-Za-z0-9]+)(?:-(?:Request|Dispense|Statement|MR|MD|MS))?(?:-\d+-of-\d+)?\.json$",
-        filename,
-    )
-    if match:
-        return match.group(1)
-    return None
+    if not filename.endswith(".json") or "-C-" not in filename:
+        return None
+
+    # Extract everything after "-C-" and strip known trailing resource markers.
+    key = filename[:-5].split("-C-", 1)[1]
+    key = re.sub(r"-(?:Request|Dispense|Statement|MR|MD|MS)-\d+-of-\d+$", "", key)
+    key = re.sub(r"-(?:Request|Dispense|Statement|MR|MD|MS)$", "", key)
+    key = re.sub(r"-\d+-of-\d+$", "", key)
+    return key or None
 
 
 def get_resource_type_from_filename(filename):

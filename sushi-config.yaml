@@ -56,6 +56,8 @@ pages:
     title: Übersicht der Timing & Dosierungs-Invarianten
   schema-freitext.md:
     title: Freitext-Dosierung
+  schema-zusaetzliche-instruktionen.md:
+    title: Zusätzliche Instruktionen
   schema-tageszeit.md:
     title: Schema mit Tageszeiten-Bezug
   schema-uhrzeit.md:
@@ -68,6 +70,12 @@ pages:
     title: Schema für Kombinationen von Zeitintervallen
   schema-wochentag-kombination.md:
     title: Schema für Kombinationen von Wochentagen
+  schema-bedarfsmedikation.md:
+    title: Schema für Bedarfsmedikation
+  schema-variable-angaben.md:
+    title: Variable Angaben
+  schema-start-end-datum.md:
+    title: Angabe von Start- und Enddatum
   dosierung-beispiele.md:
     title: Beispielliste Dosierung
   artifacts.html:
@@ -112,12 +120,16 @@ menu:
     Übersicht der Timing & Dosierungs-Invarianten: dosierung-constraints.html
   Dosierschemata:
     Freitext-Dosierung: schema-freitext.html
+    Zusätzliche Instruktionen: schema-zusaetzliche-instruktionen.html
     Schema mit Tageszeiten-Bezug: schema-tageszeit.html
     Schema mit Uhrzeiten-Bezug: schema-uhrzeit.html
     Schema mit Wochentags-Bezug: schema-wochentag.html
     Schema für wiederkehrende Intervalle: schema-intervall.html
     Schema für Kombinationen von Zeitintervallen: schema-intervall-kombination.html
     Schema für Kombinationen von Wochentagen: schema-wochentag-kombination.html
+    Schema für Bedarfsmedikation: schema-bedarfsmedikation.html
+    Variable Angaben: schema-variable-angaben.html
+    Angabe von Start- und Enddatum: schema-start-end-datum.html
     Beispiel Dosierungen: dosierung-beispiele.html
   FHIR-Artefakte: artifacts.html
   Anhänge:
@@ -127,6 +139,8 @@ menu:
 parameters:
   path-pages:
     - input/content
+  special-url:
+    - http://hl7.org/fhir/5.0/StructureDefinition/extension-Dosage.asNeededFor
     
 # ╭───────────────────────────Less Common Implementation Guide Properties──────────────────────────╮
 # │  Uncomment the properties below to configure additional properties on the ImplementationGuide  │

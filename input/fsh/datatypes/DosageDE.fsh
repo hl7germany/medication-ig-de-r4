@@ -1,5 +1,6 @@
 // TODO: Infusion A direkt nach Infusion B geben soll laut FHIR Standard in .text. Hier müsste man noch eine Extension "PractitionerInstruction" definieren,
 // um .text nur für FreitextDosierungen zu verwenden und nicht für Dosisanweisung an HealthProfessionals.
+// UPDATE: PW: 27.05.26: ggfs kann auch additionalInstruction dafür verwendet werden.
 Profile: DosageDE
 Parent: Dosage
 Id: DosageDE
@@ -10,23 +11,68 @@ Description: "Gibt an, wie das Medikament eingenommen oder verabreicht wurde bzw
 * obeys DosageDoseUnitSameCode
 * obeys DosageWarnungViererschemaInText
 * obeys FreeTextSingleDosageOnlyWarning
+* obeys dos-1
 * text 0..1 MS
   * ^short = "Freitext-Dosierungsanweisungen, z. B. 'Maximal 3x täglich 1 Stück bei Bedarf'"
   * ^definition = "Freitext-Dosierungsanweisungen, z. B. 'Maximal 3x täglich 1 Stück bei Bedarf'. Als Quelle dient hier ausschließlich der Arzt oder Apotheker"
   * ^comment = "Die Freitextdosierung sollte nur angegeben werden, wenn aufgrund der Komplexität keine strukturierte Dosierung möglich ist, um widersprüchliche Anweisungen zu vermeiden."
+* patientInstruction 0..1 MS
+  * ^short = "Ergänzende Anwendungshinweise für Patientinnen und Patienten"
+  * ^definition = "Ergänzende, nicht strukturiert abbildbare Anwendungshinweise für die sichere, korrekte oder verständliche Anwendung des Arzneimittels."
+  * ^comment = "Dieses Feld dient ausschließlich für zusätzliche Instruktionen, die nicht bereits eindeutig über strukturierte Dosierungsangaben abbildbar sind, z. B. qualitative oder situative Hinweise."
 * timing MS
   * ^short = "Wann das Medikament verabreicht werden soll"
   * ^definition = "Wann das Medikament verabreicht werden soll."
   * ^comment = "Um widersprüchliche Anweisungen zu vermeiden, ist entweder Dosage.timing oder Dosage.text zu befüllen. Falls eine strukturierte Dosierung als Text abgebildet werden soll ist dafür die GeneratedDosageInstructionsMeta Extension zu verwenden."
 * timing only TimingDE
+* asNeeded[x] MS
+  * ^short = "Bedarfsdosierung"
+  * ^definition = "Gibt an, ob es sich um eine Bedarfsdosierung handelt."
+* asNeeded[x] only boolean
+* asNeededBoolean MS
+  * ^short = "Bedarfsdosierung (nur Ja/Nein-Angabe)"
+  * ^definition = "Gibt an, ob es sich um eine Bedarfsdosierung handelt. Es ist nur eine Ja/Nein-Angabe erlaubt. Die Abbildung der Indikation erfolgt über die Extension asNeededFor."
+* extension contains $dosage-asNeededFor-r5 named asNeededFor 0..* MS
+* modifierExtension contains MindestabstandZwischenGaben named mindestabstandZwischenGaben 0..1 MS
+* extension[asNeededFor]
+  * ^short = "Indikation für die Bedarfsdosierung"
+  * ^definition = "Gibt die Indikation für die Bedarfsdosierung an."
+  * valueCodeableConcept
+    * text MS
+* modifierExtension[mindestabstandZwischenGaben]
+  * ^short = "Mindestabstand zwischen zwei Gaben"
+  * ^definition = "Gibt den Mindestabstand zwischen zwei Gaben einer Bedarfsmedikation an."
+  * valueDuration MS
+    * system MS
+    * code MS
+    * unit MS
 * doseAndRate MS
   * ^short = "Menge des verabreichten Medikaments"
   * ^definition = "Die verabreichte Menge des Medikaments."
+  * dose[x] MS
   * doseQuantity MS
     * ^short = "Menge des Medikaments pro Dosis"
     * ^definition = "Menge des Medikaments pro Dosis."
     * ^comment = "Beachten Sie, dass dies die Menge des angegebenen Medikaments angibt, nicht die Menge für die einzelnen Wirkstoffe. Jede Wirkstoffmenge kann in der Medication-Ressource kommuniziert werden. Zum Beispiel, wenn man angeben möchte, dass eine Tablette 375 mg enthält und die Dosis eine Tablette beträgt, kann man die Medication-Ressource verwenden, um zu dokumentieren, dass die Tablette aus 375 mg des Wirkstoffs XYZ besteht. Alternativ, wenn die Dosis 375 mg beträgt, muss man möglicherweise nur angeben, dass es sich um eine Tablette handelt. Bei einer Infusion wie Dopamin, bei der 400 mg Dopamin in 500 ml einer Infusionslösung gemischt werden, würde dies alles in der Medication-Ressource kommuniziert werden. Wenn die Verabreichung nicht als sofortig vorgesehen ist (Rate ist vorhanden oder Timing hat eine Dauer), kann dies angegeben werden, um die Gesamtmenge anzugeben, die über den im Zeitplan angegebenen Zeitraum verabreicht werden soll, z. B. 500 ml in der Dosis, wobei Timing verwendet wird, um anzugeben, dass dies über 4 Stunden erfolgen soll."
   * doseQuantity from DosageDoseQuantityDEVS
+    * system MS
+    * code MS
+    * unit MS
+  * doseRange MS
+    * low MS
+    * low from DosageDoseQuantityDEVS
+      * value MS
+      * system MS
+      * code MS
+      * unit MS
+    * high MS
+    * high from DosageDoseQuantityDEVS
+      * value MS
+      * system MS
+      * code MS
+      * unit MS
+* maxDosePerPeriod MS
+  * ^short = "Maximale Dosis pro Zeitraum"
 
 Invariant: DosageStructuredOrFreeTextWarning
 Description: "Die Dosierungsangabe darf entweder nur als Freitext oder nur als vollständige strukturierte Information erfolgen — eine Mischung ist nicht erlaubt."
@@ -56,12 +102,16 @@ implies
 Severity: #warning
 
 Invariant: DosageStructuredRequiresBoth
-Description: "Wenn eine strukturierte Dosierungsangabe erfolgt, müssen sowohl timing als auch doseAndRate angegeben werden."
+Description: "Wenn eine strukturierte Dosierungsangabe erfolgt, müssen sowohl timing als auch doseAndRate angegeben werden. Für reine Bedarfsdosierungen darf doseAndRate auch ohne timing angegeben werden."
 Expression: "(%resource.ofType(MedicationRequest).dosageInstruction | 
  %resource.ofType(MedicationDispense).dosageInstruction | 
  %resource.ofType(MedicationStatement).dosage).all(
   (timing.exists() implies doseAndRate.exists()) and
-  (doseAndRate.exists() implies timing.exists())
+  (doseAndRate.exists() implies (
+    timing.exists() or
+    asNeeded.ofType(boolean) = true or
+    extension.where(url='http://hl7.org/fhir/5.0/StructureDefinition/extension-Dosage.asNeededFor').exists()
+  ))
 )"
 Severity: #error
 
@@ -81,3 +131,8 @@ Invariant: DosageWarnungViererschemaInText
 Description: "Hinweis: In Dosage.text wurde ein Viererschema (z. B. 1-1-1-1) erkannt. Bitte prüfen, ob dies strukturiert abgebildet werden kann."
 Expression: "text.exists() implies text.matches('.*\\\\d+\\\\s*[-–]\\\\s*\\\\d+\\\\s*[-–]\\\\s*\\\\d+\\\\s*[-–]\\\\d+.*').not()"
 Severity: #warning
+
+Invariant: dos-1
+Description: "AsNeededFor can only be set if AsNeeded is empty or true"
+Severity: #error
+Expression: "extension.where(url='http://hl7.org/fhir/5.0/StructureDefinition/extension-Dosage.asNeededFor').empty() or asNeeded.empty() or asNeeded"

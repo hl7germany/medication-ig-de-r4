@@ -14,6 +14,14 @@ Das Feld `Dosage.text` ist **ausschließlich** für vom Menschen erstelleten Fre
 
 Im Kontext des dgMP sorgt die [Infrastruktur zur Bereitstellung des Dosierungstextes](./dosierung-text-hinzufuegen.html) dafür, dass zu jeder strukturierten Dosierung auch eine einheitliche, maschinell generierte textuelle Repräsentation bereitgestellt wird. Dieser Text wird in der Extension `Dosage.extension[GeneratedDosageInstructionsMeta]` hinterlegt.
 
+#### Nutzung des Feldes `patientInstruction`
+
+Das Feld `Dosage.patientInstruction` dient für ergänzende, nicht strukturiert abbildbare Anwendungshinweise für Versicherte. Dazu gehören insbesondere qualitative Hinweise wie "Tablette nicht zerkauen" oder situative Hinweise wie "Bei Fieber über 39 Grad Arzt kontaktieren".
+
+Informationen, die bereits eindeutig über strukturierte Felder ausdrückbar sind, dürfen hier nicht wiederholt werden. Nicht in `patientInstruction` gehören daher insbesondere Dosisangaben, Aussagen zum Einnahmezeitpunkt, Einnahmefrequenzen oder Behandlungsdauern.
+
+Wenn eine Ressource mehrere `dosageInstruction`-Einträge enthält, muss `patientInstruction` in allen Dosierungen identisch befüllt sein. So bleibt semantisch klar, dass es sich um eine ergänzende Instruktion zur gesamten Dosierung handelt und nicht um eine abweichende Regel pro Einzeldosierung.
+
 #### Nutzung von Sequenzen
 
 In der aktuellen Ausbaustufe und im Kontext dgMP ist die Verwendung von `Dosage.sequence` nicht erlaubt. Dieses Feld dient beispielsweise dazu, aufeinander aufbauende Dosierungen (wie Ein- oder Ausschleichen) zu kennzeichnen. Die Nutzung kann in zukünftigen Ausbaustufen geprüft werden.
@@ -46,23 +54,25 @@ Es ist somit bspw. nicht möglich, in einer `MedicationRequest`-Ressource, im dg
 
 Der digital gestützte Medikationsprozess unterstützt aktuell die folgenden Dosierschemata, gegliedert nach Ausbaustufen. Die jeweiligen Seiten enthalten eine fachliche Beschreibung, Beispiele und technische Hinweise zur Instanziierung.
 
-#### Ausbaustufe 1
+#### Aktuelle Ausbaustufe
 
 - [Freitext-Dosierung](./schema-freitext.html)
+- [Zusätzliche Instruktionen](./schema-zusaetzliche-instruktionen.html)
 - [Schema mit Tageszeiten-Bezug](./schema-tageszeit.html)
 - [Schema mit Uhrzeiten-Bezug](./schema-uhrzeit.html)
 - [Schema mit Wochentags-Bezug](./schema-wochentag.html)
 - [Schema für wiederkehrende Intervalle](./schema-intervall.html)
 - [Schema für Kombinationen von Zeitintervallen](./schema-intervall-kombination.html)
 - [Schema für Kombinationen von Wochentagen](./schema-wochentag-kombination.html)
+- [Schema für Bedarfsmedikation](./schema-bedarfsmedikation.html)
+- [Variable Angaben](./schema-variable-angaben.html)
+- [Angabe von Start- und Enddatum](./schema-start-end-datum.html)
 
 #### Folgende Ausbaustufe
 
 In weiteren Ausbaustufen sollen weitere Schemata entwickelt, die bestehenden Schemata ergänzt und Regeln für die übergeordnete Beziehung zwischen mehreren Schemata aufgebaut werden. Untenstehend findet sich eine Übersicht über Erweiterungen, die in zukünftigen Ausbaustufen berücksichtigt werden sollen, mitsamt Erläuterungen und/oder Beispielen. Diese Liste kann in der Zukunft erweitert oder angepasst werden. Für eine zweite Ausbaustufe wird empfohlen, die folgenden zwei bzw. drei Punkte anzugehen:
 
-- Schema für Bedarfsmedikation
 - Alternativen zur eindeutigen “Gesamtdauer”, um die gesamte Anwendung eines Arzneimittels zeitlich zu begrenzen
-- Einführung eines Start- und Enddatums
 - Evaluation hinsichtlich der zeitnahen Umsetzbarkeit von Wertelisten
   - für die Körperstelle, an der das Arzneimittel angewandt werden soll
   - für die Technik, mit der das Arzneimittel angewandt werden soll

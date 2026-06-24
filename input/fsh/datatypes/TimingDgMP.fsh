@@ -19,9 +19,12 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * obeys TimingOnlyOneBounds
   * obeys TimingFrequencyCount
   * obeys TimingPeriodUnit
+  * obeys TimingVarFreqOrPeriod
+  * obeys TimingVarFreqGtMin
+  * obeys TimingVarPeriodGtMin
   * bounds[x] MS
-  * bounds[x] only Duration
-    * ^comment = "Begründung Einschränkung Datentyp: Nur eine Angabe zur Dauer ist in der ersten Ausbaustufe des dgMP vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
+  * bounds[x] only Duration or Period
+    * ^comment = "Begründung Einschränkung Datentyp: Nur eine Angabe zur Dauer und Start- bzw. Enddatum sind in der aktuellen Ausbaustufe des dgMP vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
   * boundsDuration MS
     * code 1..1 MS
     * code from DurationUnitsOfTimeDgMPVS (required)
@@ -29,10 +32,15 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
     * unit 1..1 MS
     * value 1..1 MS
     * comparator 0..0
+  * boundsPeriod MS
+    * start MS
+    * end MS
   * frequency 0..1 MS
+  * frequencyMax MS
   * period 0..1 MS
   * periodUnit 0..1 MS
   * periodUnit from PeriodUnitsOfTimeDgMPVS (required)
+  * periodMax MS
   * dayOfWeek MS
   * timeOfDay MS
   * when MS
@@ -56,6 +64,21 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * offset 0..0
     * ^short = "Zeitversatz"
     * ^comment = "Begründung Einschränkung Kardinalität: Ein Zeitversatz ist in der ersten Ausbaustufe desdgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
+
+Invariant: TimingVarFreqOrPeriod
+Description: "Variable Frequenz und variable Periode dürfen nicht gemeinsam verwendet werden."
+Expression: "frequencyMax.empty() or periodMax.empty()"
+Severity: #error
+
+Invariant: TimingVarFreqGtMin
+Description: "Bei variabler Frequenz muss die maximale Frequenz größer als die minimale Frequenz sein."
+Expression: "frequencyMax.empty() or frequency.empty() or frequency.value < frequencyMax.value"
+Severity: #error
+
+Invariant: TimingVarPeriodGtMin
+Description: "Bei variabler Periode muss die maximale Periode größer als die minimale Periode sein."
+Expression: "periodMax.empty() or period.empty() or period < periodMax"
+Severity: #error
 
 Invariant: TimingFrequencyCount
 Description: "The frequency of the timing needs to reflect the count of timeOfDay or when"

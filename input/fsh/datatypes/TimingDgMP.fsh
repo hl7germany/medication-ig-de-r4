@@ -62,9 +62,28 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
     * ^comment = "Begründung Einschränkung Kardinalität: Ein Zeitversatz ist in der ersten Ausbaustufe desdgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
 
 Invariant: TimingVarFreqOrPeriod
-Description: "Variable Frequenz und variable Periode dürfen nicht gemeinsam verwendet werden."
-Expression: "frequencyMax.empty() or periodMax.empty()"
-Severity: #error
+Description: "Bei gleichzeitiger Angabe von Frequenz und Periode sollte entweder nur die Frequenz einschließlich frequencyMax oder nur die Periode einschließlich periodMax größer als 1 sein."
+Expression: "frequency.exists() and period.exists() implies
+(
+  (
+    ((frequency.exists() and frequency > 1) or (frequencyMax.exists() and frequencyMax > 1))
+    implies
+    (
+      period = 1 and
+      (periodMax.empty() or periodMax = 1)
+    )
+  )
+  and
+  (
+    ((period.exists() and period > 1) or (periodMax.exists() and periodMax > 1))
+    implies
+    (
+      frequency = 1 and
+      (frequencyMax.empty() or frequencyMax = 1)
+    )
+  )
+)"
+Severity: #warning
 
 Invariant: TimingVarFreqGtMin
 Description: "Bei variabler Frequenz muss die maximale Frequenz größer als die minimale Frequenz sein."

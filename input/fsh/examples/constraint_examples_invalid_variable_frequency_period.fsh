@@ -1,6 +1,6 @@
 // Warning/error examples for variable frequency and period constraints
 
-Instance: INV-C-TimingVarFreqOrPeriod-Request-01-of-03
+Instance: W-TimingVarFreqOrPeriod-Request-01-of-03
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Warning: frequencyMax and periodMax together"
@@ -17,7 +17,7 @@ Description: "CAVE: Validation example - variable frequency and variable period 
   * timing.repeat.periodUnit = #h
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-C-TimingVarFreqOrPeriod-Dispense-02-of-03
+Instance: W-TimingVarFreqOrPeriod-Dispense-02-of-03
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
 Title: "Warning: frequencyMax and periodMax together"
@@ -33,7 +33,7 @@ Description: "CAVE: Validation example - variable frequency and variable period 
   * timing.repeat.periodUnit = #h
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-C-TimingVarFreqOrPeriod-Statement-03-of-03
+Instance: W-TimingVarFreqOrPeriod-Statement-03-of-03
 InstanceOf: MedicationStatementDgMP
 Usage: #example
 Title: "Warning: frequencyMax and periodMax together"

@@ -1,10 +1,10 @@
-// Invalid examples for variable frequency and period constraints
+// Warning/error examples for variable frequency and period constraints
 
-Instance: INV-C-TimingVarFreqOrPeriod-Request-01-of-03
+Instance: W-TimingVarFreqOrPeriod-Request-01-of-03
 InstanceOf: MedicationRequestDgMP
 Usage: #example
-Title: "Invalid: frequencyMax and periodMax together"
-Description: "CAVE: Validation example - variable frequency and variable period are both populated."
+Title: "Warning: frequencyMax and periodMax together"
+Description: "CAVE: Validation example - variable frequency and variable period are both populated and should trigger a warning."
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -17,11 +17,11 @@ Description: "CAVE: Validation example - variable frequency and variable period 
   * timing.repeat.periodUnit = #h
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-C-TimingVarFreqOrPeriod-Dispense-02-of-03
+Instance: W-TimingVarFreqOrPeriod-Dispense-02-of-03
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
-Title: "Invalid: frequencyMax and periodMax together"
-Description: "CAVE: Validation example - variable frequency and variable period are both populated."
+Title: "Warning: frequencyMax and periodMax together"
+Description: "CAVE: Validation example - variable frequency and variable period are both populated and should trigger a warning."
 * subject.display = "Patient"
 * status = #completed
 * medicationCodeableConcept.text = "Ibuprofen 400mg"
@@ -33,11 +33,11 @@ Description: "CAVE: Validation example - variable frequency and variable period 
   * timing.repeat.periodUnit = #h
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-C-TimingVarFreqOrPeriod-Statement-03-of-03
+Instance: W-TimingVarFreqOrPeriod-Statement-03-of-03
 InstanceOf: MedicationStatementDgMP
 Usage: #example
-Title: "Invalid: frequencyMax and periodMax together"
-Description: "CAVE: Validation example - variable frequency and variable period are both populated."
+Title: "Warning: frequencyMax and periodMax together"
+Description: "CAVE: Validation example - variable frequency and variable period are both populated and should trigger a warning."
 * subject.display = "Patient"
 * status = #active
 * medicationCodeableConcept.text = "Ibuprofen 400mg"

@@ -1,6 +1,6 @@
 // Warning examples for FreeTextSingleDosageOnlyWarning
 
-Instance: Dosage-W-FreeTextSingleDosageOnlyWarning-Request-01-of-03
+Instance: W-FreeTextSingleDosageOnlyWarning-MR
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Warning (Request): multiple free text dosages"
@@ -14,7 +14,7 @@ Description: "Warning example - pure free text dosage is split across multiple D
 * dosageInstruction[+]
   * text = "Abends je 1 Tablette"
 
-Instance: Dosage-W-FreeTextSingleDosageOnlyWarning-Dispense-02-of-03
+Instance: W-FreeTextSingleDosageOnlyWarning-MD
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
 Title: "Warning (Dispense): multiple free text dosages"
@@ -27,7 +27,7 @@ Description: "Warning example - pure free text dosage is split across multiple D
 * dosageInstruction[+]
   * text = "Abends je 1 Tablette"
 
-Instance: Dosage-W-FreeTextSingleDosageOnlyWarning-Statement-03-of-03
+Instance: W-FreeTextSingleDosageOnlyWarning-MS
 InstanceOf: MedicationStatementDgMP
 Usage: #example
 Title: "Warning (Statement): multiple free text dosages"

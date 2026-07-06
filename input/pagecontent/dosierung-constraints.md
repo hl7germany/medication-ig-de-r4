@@ -7,10 +7,10 @@ Neben den Timing-bezogenen Regeln existieren weitere Invarianten auf Ebene des D
 #### TimingFrequencyCount
 
 **Beschreibung:**  
-Die Häufigkeit (`frequency`) muss mit der Anzahl der angegebenen Zeitpunkte (`timeOfDay` oder `when`) übereinstimmen, abhängig davon, welche Felder gesetzt sind.
+Wenn die Häufigkeit (`frequency`) angegeben ist, muss sie mit der Anzahl der angegebenen Zeitpunkte (`timeOfDay` oder `when`) übereinstimmen, abhängig davon, welche Felder gesetzt sind.
 
 **Warum?**  
-Diese Regel stellt sicher, dass die Anzahl der Dosierungen pro Periode korrekt mit den angegebenen Zeitpunkten übereinstimmt. So wird verhindert, dass widersprüchliche oder unklare Dosierungsangaben entstehen.
+Diese Regel stellt sicher, dass die Anzahl der Dosierungen pro Periode korrekt mit den angegebenen Zeitpunkten übereinstimmt, wenn `frequency` explizit angegeben wird. So wird verhindert, dass widersprüchliche oder unklare Dosierungsangaben entstehen.
 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
@@ -19,7 +19,7 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 #### TimingPeriodUnit
 
 **Beschreibung:**  
-Wenn Wochentage (`dayOfWeek`) angegeben sind, muss die Zeiteinheit (`periodUnit`) "Woche" (`wk`) sein, andernfalls "Tag" (`d`).
+Wenn `periodUnit` angegeben ist und Wochentage (`dayOfWeek`) angegeben sind, muss die Zeiteinheit (`periodUnit`) „Woche“ (`wk`) sein; andernfalls muss sie „Tag“ (`d`) sein.
 
 **Warum?**  
 Dadurch wird sichergestellt, dass die Zeiteinheit zur Angabe der Dosierungsperiode konsistent zu den verwendeten Feldern passt und keine Missverständnisse bei der Interpretation entstehen.

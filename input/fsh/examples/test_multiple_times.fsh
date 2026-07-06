@@ -53,9 +53,6 @@ Description: "Test case for multiple timeOfDay entries in DayOfWeek+Time schema.
     * dayOfWeek[+] = #fri
     * timeOfDay[+] = "09:00:00"
     * timeOfDay[+] = "21:00:00"
-    * frequency = 6
-    * period = 1
-    * periodUnit = #wk
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 Instance: Example-MR-Bug-MultipleWhen-DayOfWeek
@@ -73,9 +70,6 @@ Description: "Test case for multiple when codes in DayOfWeek+When schema. Should
     * dayOfWeek[+] = #thu
     * when[+] = #MORN
     * when[+] = #EVE
-    * frequency = 4
-    * period = 1
-    * periodUnit = #wk
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 Instance: Example-MR-Bug-MultipleTimeOfDay-Daily
@@ -92,9 +86,6 @@ Description: "Test case for TimeOfDay schema with multiple times. Should show al
     * timeOfDay[+] = "08:00:00"
     * timeOfDay[+] = "14:00:00"
     * timeOfDay[+] = "22:00:00"
-    * frequency = 3
-    * period = 1
-    * periodUnit = #d
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 // Edge case: Empty lists (should be treated as False, not truthy)

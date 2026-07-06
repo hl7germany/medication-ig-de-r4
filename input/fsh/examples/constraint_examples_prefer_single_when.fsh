@@ -9,16 +9,10 @@ Description: "Zwei Dosages mit identischem Intervall und Dosis, jeweils ein Zeit
 * medicationCodeableConcept.text = "Ibuprofen 400mg"
 * dosageInstruction[+]
   * timing.repeat
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
     * when[+] = #MORN
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 * dosageInstruction[+]
   * timing.repeat
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
     * when[+] = #EVE
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
@@ -32,16 +26,10 @@ Description: "Zwei Dosages mit identischem Intervall und Dosis, jeweils ein Zeit
 * medicationCodeableConcept.text = "Ibuprofen 400mg"
 * dosageInstruction[+]
   * timing.repeat
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
     * when[+] = #MORN
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 * dosageInstruction[+]
   * timing.repeat
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
     * when[+] = #EVE
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
@@ -55,15 +43,9 @@ Description: "Zwei Dosages mit identischem Intervall und Dosis, jeweils ein Zeit
 * medicationCodeableConcept.text = "Ibuprofen 400mg"
 * dosage[+]
   * timing.repeat
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
     * when[+] = #MORN
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 * dosage[+]
   * timing.repeat
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
     * when[+] = #EVE
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"

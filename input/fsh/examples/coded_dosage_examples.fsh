@@ -9,16 +9,10 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
 * medicationCodeableConcept.text = "Ibuprofen 400mg"
 * dosageInstruction[+]
   * timing.repeat
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
     * when[+] = #MORN
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 * dosageInstruction[+]
   * timing.repeat
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
     * when[+] = #EVE
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
@@ -34,9 +28,6 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
 * dosageInstruction[+]
   * timing.repeat
     * when[+] = #MORN
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
   * doseAndRate.doseQuantity = 20 $kbv-dosiereinheit#6 "Tropfen"
 
 Instance: Example-MR-Dosage-UnitTasse-1000
@@ -51,9 +42,6 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
 * dosageInstruction[+]
   * timing.repeat
     * when[+] = #MORN
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#7 "Teelöffel"
 
 // --- MedicationDispense equivalents ---
@@ -68,16 +56,10 @@ Description: "Dieses Beispiel stellt eine Medikationsabgabe mit einer Dosierung 
 * medicationCodeableConcept.text = "Ibuprofen 400mg"
 * dosageInstruction[+]
   * timing.repeat
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
     * when[+] = #MORN
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 * dosageInstruction[+]
   * timing.repeat
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
     * when[+] = #EVE
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
@@ -92,9 +74,6 @@ Description: "Dieses Beispiel stellt eine Medikationsabgabe mit einer Dosierung 
 * dosageInstruction[+]
   * timing.repeat
     * when[+] = #MORN
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
   * doseAndRate.doseQuantity = 20 $kbv-dosiereinheit#6 "Tropfen"
 
 Instance: Example-MD-Dosage-UnitTasse-1000
@@ -108,9 +87,6 @@ Description: "Dieses Beispiel stellt eine Medikationsabgabe mit einer Dosierung 
 * dosageInstruction[+]
   * timing.repeat
     * when[+] = #MORN
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#7 "Teelöffel"
 
 // --- MedicationStatement equivalents ---
@@ -125,16 +101,10 @@ Description: "Dieses Beispiel stellt eine Medikationsaussage mit einer Dosierung
 * medicationCodeableConcept.text = "Ibuprofen 400mg"
 * dosage[+]
   * timing.repeat
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
     * when[+] = #MORN
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 * dosage[+]
   * timing.repeat
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
     * when[+] = #EVE
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
@@ -149,9 +119,6 @@ Description: "Dieses Beispiel stellt eine Medikationsaussage mit einer Dosierung
 * dosage[+]
   * timing.repeat
     * when[+] = #MORN
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
   * doseAndRate.doseQuantity = 20 $kbv-dosiereinheit#6 "Tropfen"
 
 Instance: Example-MS-Dosage-UnitTasse-1000
@@ -165,7 +132,4 @@ Description: "Dieses Beispiel stellt eine Medikationsaussage mit einer Dosierung
 * dosage[+]
   * timing.repeat
     * when[+] = #MORN
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#7 "Teelöffel"

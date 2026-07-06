@@ -9,12 +9,13 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
 * obeys FreeTextMatchesRenderedText
 * obeys PatientInstructionIdentical
 * obeys MaxDoseSameUnitAsDose
+* obeys MaxDosePerPeriodOnly24hOr1d
 * obeys DoseRangeHighRequiredWhenLowPresent
 * obeys DoseRangeLowAndHighSameUnit
 * obeys DoseRangeNoVarPeriod
 * obeys VarFreqNoMaxDose
 * obeys VarPeriodNoMindestabstand
-* obeys AsNeededRequiresAsNeededFor
+* obeys AsNeededForRequiresAsNeeded
 * timing only TimingDgMP
 * doseAndRate 0..1 // Nur eine Dosierung für eine Medikation erlauben
   * ^comment = "Begründung Einschränkung Kardinalität: Nur eine Dosierung pro Medikation ist in der ersten Ausbaustufe des dgMP vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
@@ -233,6 +234,14 @@ Expression: "
   )
 "
 
+Invariant: MaxDosePerPeriodOnly24hOr1d
+Description: "maxDosePerPeriod ist nur mit einem Bezugszeitraum von 24 Stunden (24 h) oder 1 Tag (1 d) zulässig. Andere Perioden (z. B. maximal 3 alle 6 h) sind nicht erlaubt."
+Severity: #error
+Expression: "maxDosePerPeriod.empty() or (
+  (maxDosePerPeriod.denominator.value = 24 and maxDosePerPeriod.denominator.code = 'h') or
+  (maxDosePerPeriod.denominator.value = 1 and maxDosePerPeriod.denominator.code = 'd')
+)"
+
 Invariant: DoseRangeHighRequiredWhenLowPresent
 Description: "Wenn bei doseRange eine Untergrenze angegeben wird, muss auch eine Obergrenze angegeben werden."
 Severity: #error
@@ -264,16 +273,7 @@ Description: "Variable Periode und Mindestabstand zwischen zwei Einzelgaben dür
 Severity: #error
 Expression: "timing.repeat.periodMax.empty() or modifierExtension.where(url='http://ig.fhir.de/igs/medication/StructureDefinition/MindestabstandZwischenGaben').empty()"
 
-Invariant: AsNeededRequiresAsNeededFor
-Description: "Bei Bedarfsmedikation müssen asNeededBoolean=true und ein Einnahmeanlass gemeinsam angegeben werden."
+Invariant: AsNeededForRequiresAsNeeded
+Description: "Ein Einnahmeanlass (asNeededFor) darf nur bei einer Bedarfsdosierung (asNeededBoolean=true) angegeben werden. Eine Bedarfsdosierung selbst benötigt keinen Einnahmeanlass."
 Severity: #error
-Expression: "(
-  extension.where(url='http://hl7.org/fhir/5.0/StructureDefinition/extension-Dosage.asNeededFor').exists() and
-  asNeeded.ofType(boolean) = true
-) or (
-  extension.where(url='http://hl7.org/fhir/5.0/StructureDefinition/extension-Dosage.asNeededFor').empty() and
-  (
-    asNeeded.ofType(boolean).empty() or
-    asNeeded.ofType(boolean) = false
-  )
-)"
+Expression: "extension.where(url='http://hl7.org/fhir/5.0/StructureDefinition/extension-Dosage.asNeededFor').exists() implies asNeeded.ofType(boolean) = true"

@@ -70,10 +70,13 @@
 |  |  | 2 Stück | 1 | 2 | d |  | 20:00:00 |  |  |
 | [MedicationRequest-Example-MR-Dosage-comb-interval-4](./MedicationRequest-Example-MR-Dosage-comb-interval-4.html) | alle 2 Tage: 08:00 Uhr — je 1 Stück; 10:00 Uhr — je 2 Stück; 14:00 Uhr — je 2 Stück; 20:00 Uhr — je 1 Stück; 22:00 Uhr — je 2 Stück | 1 Stück | 2 | 2 | d |  | 08:00:00, 20:00:00 |  |  |
 |  |  | 2 Stück | 3 | 2 | d |  | 10:00:00, 14:00:00, 22:00:00 |  |  |
+| [MedicationRequest-Example-MR-Dosage-interval-1mo](./MedicationRequest-Example-MR-Dosage-interval-1mo.html) | alle 1 Monat: je 1 Stück | 1 Stück | 1 | 1 | mo |  |  |  |  |
 | [MedicationRequest-Example-MR-Dosage-interval-2d-bound](./MedicationRequest-Example-MR-Dosage-interval-2d-bound.html) | für 6 Wochen alle 2 Tage: je 2 Stück | 2 Stück | 1 | 2 | d |  |  |  | {'system': 'http://unitsofmeasure.org', 'value': 6, 'code': 'wk', 'unit': 'Woche(n)'} |
 | [MedicationRequest-Example-MR-Dosage-interval-2wk](./MedicationRequest-Example-MR-Dosage-interval-2wk.html) | alle 2 Wochen: je 1 Stück | 1 Stück | 1 | 2 | wk |  |  |  |  |
+| [MedicationRequest-Example-MR-Dosage-interval-30min](./MedicationRequest-Example-MR-Dosage-interval-30min.html) | alle 30 Minuten: je 1 Stück | 1 Stück | 1 | 30 | min |  |  |  |  |
 | [MedicationRequest-Example-MR-Dosage-interval-3d](./MedicationRequest-Example-MR-Dosage-interval-3d.html) | alle 3 Tage: je 1 Stück | 1 Stück | 1 | 3 | d |  |  |  |  |
 | [MedicationRequest-Example-MR-Dosage-interval-4times-d](./MedicationRequest-Example-MR-Dosage-interval-4times-d.html) | Unbekanntes Dosierungsschema: Unknown | 1 Stück | 4 | 1 | d |  |  |  |  |
+| [MedicationRequest-Example-MR-Dosage-interval-6h](./MedicationRequest-Example-MR-Dosage-interval-6h.html) | alle 6 Stunden: je 1 Stück | 1 Stück | 1 | 6 | h |  |  |  |  |
 | [MedicationRequest-Example-MR-Dosage-interval-8d](./MedicationRequest-Example-MR-Dosage-interval-8d.html) | alle 8 Tage: je 1 Stück | 1 Stück | 1 | 8 | d |  |  |  |  |
 | [MedicationRequest-Example-MR-Dosage-tod-1t-8am](./MedicationRequest-Example-MR-Dosage-tod-1t-8am.html) | Unbekanntes Dosierungsschema: Unknown | 1 Stück |  |  |  |  | 08:00:00 |  |  |
 | [MedicationRequest-Example-MR-Dosage-tod-2-12am](./MedicationRequest-Example-MR-Dosage-tod-2-12am.html) | Unbekanntes Dosierungsschema: Unknown | 2 Stück |  |  |  |  | 12:00:00 |  |  |

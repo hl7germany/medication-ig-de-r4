@@ -279,6 +279,18 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-FreeTextSingleDosageOnly-examples.md%}
 
+#### FreeTextSingleDosageOnlyWarning
+
+**Beschreibung:**  
+Wird eine Dosierung als reiner Freitext angegeben, soll nur genau ein `Dosage`‑Element existieren.
+
+**Warum?**  
+Warnungs-Variante aus dem generischen Profil `DosageDE` zur error-Regel `FreeTextSingleDosageOnly` im dgMP‑Profil. Sie weist auf mehrere Freitext‑Dosierungen hin, ohne sie strikt zu verbieten.
+
+Beispiele (Warnungskontext – mehrere Freitext‑Dosierungen):
+
+{% include dosage-constraint-FreeTextSingleDosageOnlyWarning-examples.md%}
+
 #### DosageDoseUnitSameCode
 
 **Beschreibung:**  
@@ -323,6 +335,10 @@ Eine variable Einzeldosis (`doseRange`) und eine variable Periode (`periodMax`) 
 **Warum?**  
 Die Kombination aus variabler Dosis und variabler Periode ist für Implementierungen und Darstellung nur schwer eindeutig zu verarbeiten. Sie bleibt zulässig, löst aber eine Warnung aus.
 
+Beispiele (Warnungskontext – variable Einzeldosis und variable Periode):
+
+{% include dosage-constraint-DoseRangeNoVarPeriod-examples.md%}
+
 #### VarFreqNoMaxDose
 
 **Beschreibung:**  
@@ -358,3 +374,63 @@ Ermutigt zur strukturierten Modellierung der Einnahmezeiten anstelle rein schema
 Gültige Beispiele (Warnungskontext – Freitext enthält 4-Schema):
 
 {% include dosage-constraint-DosageWarnungViererschemaInText-examples.md%}
+
+#### PatientInstructionIdentical
+
+**Beschreibung:**  
+Wird `patientInstruction` in einer Ressource mit mehreren Dosierungen verwendet, muss das Feld in allen `Dosage`‑Elementen identisch befüllt sein.
+
+**Warum?**  
+Verhindert widersprüchliche patientenbezogene Anwendungshinweise innerhalb derselben Ressource und stellt eine einheitliche Darstellung sicher.
+
+Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
+
+{% include dosage-constraint-PatientInstructionIdentical-examples.md%}
+
+#### MaxDoseSameUnitAsDose
+
+**Beschreibung:**  
+`maxDosePerPeriod` muss dieselbe Einheit, denselben Code und dasselbe System wie `doseQuantity` verwenden.
+
+**Warum?**  
+Nur bei gleicher Einheit lässt sich die Maximalmenge fachlich korrekt zur Einzeldosis in Beziehung setzen (z. B. „je 1 Stück — nicht mehr als 6 Stück in 24 Stunden“).
+
+Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
+
+{% include dosage-constraint-MaxDoseSameUnitAsDose-examples.md%}
+
+#### MaxDosePerPeriodOnly24hOr1d
+
+**Beschreibung:**  
+`maxDosePerPeriod` ist nur mit einem Bezugszeitraum von **24 Stunden** (`24 h`) oder **1 Tag** (`1 d`) zulässig. Andere Perioden (z. B. „maximal 3 alle 6 h“) sind nicht erlaubt.
+
+**Warum?**  
+Fachliche Festlegung: Die Maximalmenge wird stets auf einen Tag bezogen. Die beiden gleichwertigen Schreibweisen `24 h` und `1 d` bleiben zur Wahl, um unterschiedliche Erfassungsgewohnheiten zu unterstützen; abweichende Zeiträume würden die einheitliche Darstellung („… in 24 Stunden“) und Auswertung erschweren.
+
+Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
+
+{% include dosage-constraint-MaxDosePerPeriodOnly24hOr1d-examples.md%}
+
+#### AsNeededForRequiresAsNeeded
+
+**Beschreibung:**  
+Ein Einnahmeanlass (`extension[asNeededFor]`) darf nur bei einer Bedarfsdosierung (`asNeededBoolean = true`) angegeben werden. Eine Bedarfsdosierung selbst benötigt keinen Einnahmeanlass.
+
+**Warum?**  
+Ein Einnahmeanlass ohne Bedarfskennzeichnung wäre fachlich unstimmig. Umgekehrt ist der Anlass optional, da eine Bedarfsdosierung auch ohne konkrete Indikation zulässig ist.
+
+Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
+
+{% include dosage-constraint-AsNeededForRequiresAsNeeded-examples.md%}
+
+#### dos-1
+
+**Beschreibung:**  
+Basisregel aus dem generischen Profil `DosageDE`: Ein Einnahmeanlass (`asNeededFor`) darf nur gesetzt sein, wenn `asNeeded` leer oder `true` ist. Das dgMP‑Profil verschärft dies über `AsNeededForRequiresAsNeeded` auf `asNeeded = true`.
+
+**Warum?**  
+Stellt sicher, dass ein Einnahmeanlass nicht einer Nicht‑Bedarfsdosierung zugeordnet wird.
+
+Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
+
+{% include dosage-constraint-dos-1-examples.md%}

@@ -23,10 +23,12 @@ false_positive_files = set()
 
 # Track which -INV- resources have errors (store just the filename, not the full path)
 inv_resources_with_errors = set()
-# Track constraint keys observed per file from QA errors
-constraint_keys_by_file = {}
+# Track constraint keys observed per file from QA issues
+error_constraint_keys_by_file = {}
+warning_constraint_keys_by_file = {}
 # Track in which resource types a constraint key was triggered
-constraint_resource_types = {}
+error_constraint_resource_types = {}
+warning_constraint_resource_types = {}
 
 
 def extract_constraint_key(issue):
@@ -45,19 +47,19 @@ def extract_constraint_key(issue):
     return None
 
 
-def extract_expected_constraint_key(filename):
+def extract_expected_constraint_key(filename, marker="-C-"):
     """
-    Extract expected key from a -C- constraint filename.
+    Extract expected key from a constraint filename.
     Supported naming patterns include both:
-    - ...-C-<Key>.json
-    - ...-C-<Key>-MD.json / -MS.json
-    - ...-C-<Key>-Request-01-of-05.json (and Dispense/Statement variants)
+    - ...<marker><Key>.json
+    - ...<marker><Key>-MD.json / -MS.json
+    - ...<marker><Key>-Request-01-of-05.json (and Dispense/Statement variants)
     """
-    if not filename.endswith(".json") or "-C-" not in filename:
+    if not filename.endswith(".json") or marker not in filename:
         return None
 
-    # Extract everything after "-C-" and strip known trailing resource markers.
-    key = filename[:-5].split("-C-", 1)[1]
+    # Extract everything after the marker and strip known trailing resource markers.
+    key = filename[:-5].split(marker, 1)[1]
     key = re.sub(r"-(?:Request|Dispense|Statement|MR|MD|MS)-\d+-of-\d+$", "", key)
     key = re.sub(r"-(?:Request|Dispense|Statement|MR|MD|MS)$", "", key)
     key = re.sub(r"-\d+-of-\d+$", "", key)
@@ -73,8 +75,8 @@ def get_resource_type_from_filename(filename):
     return None
 
 
-def load_error_constraint_keys(resources_path):
-    """Load all error-level constraint keys from local medication StructureDefinitions."""
+def load_constraint_keys(resources_path, severity):
+    """Load constraint keys with the given severity from local medication StructureDefinitions."""
     sd_names = {"TimingDgMP", "TimingDE", "DosageDE", "DosageDgMP"}
     keys = set()
 
@@ -94,7 +96,7 @@ def load_error_constraint_keys(resources_path):
             continue
         for element in sd.get("differential", {}).get("element", []):
             for constraint in (element.get("constraint") or []):
-                if constraint.get("severity", "").lower() == "error":
+                if constraint.get("severity", "").lower() == severity:
                     key = constraint.get("key")
                     if key:
                         keys.add(key)
@@ -116,24 +118,38 @@ for entry in root.findall("fhir:entry", FHIR_NS):
             if val is not None and "value" in val.attrib:
                 filename = val.attrib["value"]
 
-    # Check all issues for errors
+    # Check all issues for errors and warnings
     for issue in op_outcome.findall("fhir:issue", FHIR_NS):
         sev = issue.find("fhir:severity", FHIR_NS)
-        if sev is not None and sev.attrib.get("value", "").lower() == "error":
+        severity = sev.attrib.get("value", "").lower() if sev is not None else ""
+        if severity == "warning" and filename:
+            base_file = os.path.basename(filename)
+            key = extract_constraint_key(issue)
+            if key:
+                if base_file not in warning_constraint_keys_by_file:
+                    warning_constraint_keys_by_file[base_file] = set()
+                warning_constraint_keys_by_file[base_file].add(key)
+                resource_type = get_resource_type_from_filename(base_file)
+                if resource_type:
+                    if key not in warning_constraint_resource_types:
+                        warning_constraint_resource_types[key] = set()
+                    warning_constraint_resource_types[key].add(resource_type)
+
+        if severity == "error":
             total_errors += 1
             # Track which constraint key(s) actually fired for this file
             if filename:
                 base_file = os.path.basename(filename)
                 key = extract_constraint_key(issue)
                 if key:
-                    if base_file not in constraint_keys_by_file:
-                        constraint_keys_by_file[base_file] = set()
-                    constraint_keys_by_file[base_file].add(key)
+                    if base_file not in error_constraint_keys_by_file:
+                        error_constraint_keys_by_file[base_file] = set()
+                    error_constraint_keys_by_file[base_file].add(key)
                     resource_type = get_resource_type_from_filename(base_file)
                     if resource_type:
-                        if key not in constraint_resource_types:
-                            constraint_resource_types[key] = set()
-                        constraint_resource_types[key].add(resource_type)
+                        if key not in error_constraint_resource_types:
+                            error_constraint_resource_types[key] = set()
+                        error_constraint_resource_types[key].add(resource_type)
             # Determine expected/unexpected
             # Expected errors: -INV-, -INV-C, -Invalid-, -Unsupported-, or contain "inv-", "invalid", "unsupported"
             if filename and ("-INV-" in filename or "-INV-C" in filename or "-Invalid-" in filename or "-Unsupported-" in filename or 
@@ -169,15 +185,33 @@ if os.path.isdir(resources_dir):
     for filename in os.listdir(resources_dir):
         if not filename.endswith(".json"):
             continue
-        expected_key = extract_expected_constraint_key(filename)
+        expected_key = extract_expected_constraint_key(filename, "-C-")
         if not expected_key:
             continue
         constraint_files_checked += 1
-        observed = constraint_keys_by_file.get(filename, set())
+        observed = error_constraint_keys_by_file.get(filename, set())
         if expected_key in observed:
             constraint_files_expected_found += 1
         else:
             constraint_missing_expected.append((filename, expected_key, sorted(observed)))
+
+# Check whether -W- files actually trigger the expected warning constraint key
+warning_files_checked = 0
+warning_files_expected_found = 0
+warning_missing_expected = []
+if os.path.isdir(resources_dir):
+    for filename in os.listdir(resources_dir):
+        if not filename.endswith(".json"):
+            continue
+        expected_key = extract_expected_constraint_key(filename, "-W-")
+        if not expected_key:
+            continue
+        warning_files_checked += 1
+        observed = warning_constraint_keys_by_file.get(filename, set())
+        if expected_key in observed:
+            warning_files_expected_found += 1
+        else:
+            warning_missing_expected.append((filename, expected_key, sorted(observed)))
 
 print("==Error Check==")
 print(f"{total_errors} Errors")
@@ -200,13 +234,22 @@ if constraint_missing_expected:
         observed_text = ", ".join(observed) if observed else "<none>"
         print(f"- {filename}: expected {expected_key}, observed {observed_text}")
 
+print("\n==Warning Constraint Check")
+print(f"{warning_files_expected_found}/{warning_files_checked} files include expected warning constraint key")
+
+if warning_missing_expected:
+    print(f"\n{len(warning_missing_expected)} files missing expected warning key:")
+    for filename, expected_key, observed in sorted(warning_missing_expected):
+        observed_text = ", ".join(observed) if observed else "<none>"
+        print(f"- {filename}: expected {expected_key}, observed {observed_text}")
+
 print("\n==Error Constraint Coverage (by resource type)==")
-error_constraint_keys = load_error_constraint_keys(resources_dir)
+error_constraint_keys = load_constraint_keys(resources_dir, "error")
 fully_covered = 0
 missing_coverage = []
 
 for key in sorted(error_constraint_keys):
-    covered_types = constraint_resource_types.get(key, set())
+    covered_types = error_constraint_resource_types.get(key, set())
     missing_types = [rt for rt in RESOURCE_TYPES if rt not in covered_types]
     if missing_types:
         missing_coverage.append((key, missing_types, sorted(covered_types)))
@@ -218,5 +261,26 @@ print(f"{fully_covered}/{len(error_constraint_keys)} error constraints triggered
 if missing_coverage:
     print(f"\n{len(missing_coverage)} error constraints with missing resource-type coverage:")
     for key, missing_types, covered_types in missing_coverage:
+        covered_text = ", ".join(covered_types) if covered_types else "<none>"
+        print(f"- {key}: missing {', '.join(missing_types)} (covered: {covered_text})")
+
+print("\n==Warning Constraint Coverage (by resource type)==")
+warning_constraint_keys = load_constraint_keys(resources_dir, "warning")
+warning_fully_covered = 0
+warning_missing_coverage = []
+
+for key in sorted(warning_constraint_keys):
+    covered_types = warning_constraint_resource_types.get(key, set())
+    missing_types = [rt for rt in RESOURCE_TYPES if rt not in covered_types]
+    if missing_types:
+        warning_missing_coverage.append((key, missing_types, sorted(covered_types)))
+    else:
+        warning_fully_covered += 1
+
+print(f"{warning_fully_covered}/{len(warning_constraint_keys)} warning constraints triggered in all 3 resource types")
+
+if warning_missing_coverage:
+    print(f"\n{len(warning_missing_coverage)} warning constraints with missing resource-type coverage:")
+    for key, missing_types, covered_types in warning_missing_coverage:
         covered_text = ", ".join(covered_types) if covered_types else "<none>"
         print(f"- {key}: missing {', '.join(missing_types)} (covered: {covered_text})")

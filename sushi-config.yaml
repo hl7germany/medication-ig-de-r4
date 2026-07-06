@@ -137,8 +137,6 @@ menu:
     Release Notes: release-notes.html
 
 parameters:
-  path-pages:
-    - input/content
   special-url:
     - http://hl7.org/fhir/5.0/StructureDefinition/extension-Dosage.asNeededFor
     

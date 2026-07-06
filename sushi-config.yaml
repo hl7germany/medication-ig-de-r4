@@ -9,7 +9,7 @@ name: MedicationDE
 title: Medication IG DE
 # description: Example Implementation Guide for getting started with SUSHI
 status: active # draft | active | retired | unknown
-version: 1.0.5
+version: 1.1.0
 fhirVersion: 4.0.1 # https://www.hl7.org/fhir/valueset-FHIR-version.html
 copyrightYear: 2025+
 releaseLabel: STU1
@@ -137,8 +137,6 @@ menu:
     Release Notes: release-notes.html
 
 parameters:
-  path-pages:
-    - input/content
   special-url:
     - http://hl7.org/fhir/5.0/StructureDefinition/extension-Dosage.asNeededFor
     

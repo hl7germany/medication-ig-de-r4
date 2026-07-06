@@ -11,6 +11,7 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
 * obeys MaxDoseSameUnitAsDose
 * obeys DoseRangeHighRequiredWhenLowPresent
 * obeys DoseRangeLowAndHighSameUnit
+* obeys DoseRangeNoVarPeriod
 * obeys VarFreqNoMaxDose
 * obeys VarPeriodNoMindestabstand
 * obeys AsNeededRequiresAsNeededFor
@@ -247,6 +248,11 @@ or (
   and doseAndRate.dose.ofType(Range).low.code = doseAndRate.dose.ofType(Range).high.code
   and doseAndRate.dose.ofType(Range).low.unit = doseAndRate.dose.ofType(Range).high.unit
 )"
+
+Invariant: DoseRangeNoVarPeriod
+Description: "Eine variable Einzeldosis und eine variable Periode sollten nicht gemeinsam verwendet werden."
+Severity: #warning
+Expression: "doseAndRate.dose.ofType(Range).empty() or timing.repeat.periodMax.empty()"
 
 Invariant: VarFreqNoMaxDose
 Description: "Variable Frequenz und maximale Dosis pro Zeitraum dürfen nicht gemeinsam verwendet werden."

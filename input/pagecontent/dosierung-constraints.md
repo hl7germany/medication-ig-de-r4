@@ -175,12 +175,12 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 #### TimingVarFreqOrPeriod
 
 **Beschreibung:**  
-Variable Frequenz (`frequencyMax`) und variable Periode (`periodMax`) dürfen nicht gemeinsam verwendet werden.
+Bei gleichzeitiger Angabe von Frequenz und Periode sollte entweder nur die Frequenz einschließlich `frequencyMax` oder nur die Periode einschließlich `periodMax` größer als 1 sein.
 
 **Warum?**  
 Die gleichzeitige Variation beider Achsen führt zu einem nur schwer eindeutig interpretierbaren Einnahmeschema.
 
-Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
+Folgende Beispiele lösen eine Warnung aus:
 
 {% include dosage-constraint-TimingVarFreqOrPeriod-examples.md%}
 
@@ -314,6 +314,14 @@ Nur so ist der Bereich fachlich konsistent interpretierbar; gemischte Einheiten 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-DoseRangeLowAndHighSameUnit-examples.md%}
+
+#### DoseRangeNoVarPeriod
+
+**Beschreibung:**  
+Eine variable Einzeldosis (`doseRange`) und eine variable Periode (`periodMax`) sollten nicht gemeinsam verwendet werden.
+
+**Warum?**  
+Die Kombination aus variabler Dosis und variabler Periode ist für Implementierungen und Darstellung nur schwer eindeutig zu verarbeiten. Sie bleibt zulässig, löst aber eine Warnung aus.
 
 #### VarFreqNoMaxDose
 

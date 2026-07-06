@@ -24,9 +24,8 @@ Folgende weitere Beispiele sind in diesem IG dargestellt:
 Diese Dosierungsart wird daran erkannt, dass folgende Felder unter `Dosage.timing.repeat` angegeben sind:
 
 - `dayOfWeek`
-- `frequency`
-- `period`
-- `periodUnit` in Wochen (wk)
+- opt. Angabe von `frequency`
+- opt. Angabe von `period` und `periodUnit` in Wochen (`wk`)
 - und `when` ODER `timeOfDay` existieren
 - opt. Angabe von `bounds[x]`
 
@@ -34,16 +33,13 @@ Folgende FHIR-Path Expression auf Ebene von `Dosage.timing.repeat` liefert die A
 
 ```
 timing.repeat.dayOfWeek.exists() and
-timing.repeat.frequency.exists() and
-timing.repeat.period.exists() and
-timing.repeat.periodUnit = 'wk' and
   (
     (timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()) or
     (timing.repeat.when.exists() and timing.repeat.timeOfDay.empty())
   )
 ```
 
-Der Wert von frequency entspricht dabei dem Produkt aus der Anzahl von Elementen in `when`, bzw. `timeOfDay` und `dayOfWeek`.
+Der Wert von `frequency` entspricht dabei – sofern angegeben – dem Produkt aus der Anzahl von Elementen in `when`, bzw. `timeOfDay` und `dayOfWeek`.
 
 und entweder `when` oder `timeOfDay`. Damit kann diese Dosierangabe verwendet werden um eine Interval angabe auf Tageszeit oder Uhrzeit zu kombinieren.
 

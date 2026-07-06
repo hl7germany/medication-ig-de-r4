@@ -23,10 +23,9 @@ Folgende weitere Beispiele sind in diesem IG dargestellt:
 
 Diese Dosierungsart wird daran erkannt, dass unter `Dosage.timing.repeat`
 
-- `frequency`
-- `period`
-- `periodUnit` in Tagen (d)
 - `timeOfDay`
+- opt. Angabe von `frequency` (muss bei Angabe der Anzahl der `timeOfDay`-Elemente entsprechen)
+- opt. Angabe von `period` und `periodUnit` in Tagen (`d`) – Standardinterpretation: täglich
 - opt. Angabe von `bounds[x]`
 
 angegeben ist. An diesem Feld wird dann kodiert die Uhrzeit angegeben an der eine konkrete Dosierung einzunehmen ist.
@@ -35,14 +34,11 @@ Folgende FHIR-Path Expression auf Ebene von `Dosage.timing.repeat` liefert die A
 
 ```
 timing.repeat.timeOfDay.exists() and
-timing.repeat.frequency.exists() and
-timing.repeat.period = 1 and
-timing.repeat.periodUnit = 'd' and
 timing.repeat.when.empty() and
 timing.repeat.dayOfWeek.empty()
 ```
 
-Der Wert von frequency entspricht dabei der Anzahl an Elementen in `timeOfDay`.
+Der Wert von `frequency` entspricht dabei – sofern angegeben – der Anzahl an Elementen in `timeOfDay`.
 
 Soll das Arzneimittel in derselben Dosierung zu mehreren Uhrzeiten angewandt werden, wird dies über mehrere Angaben von `.timeOfDay` ausgedrückt. Die angegebene Dosierung ist dann zu jeder der genannten Uhrzeiten anzuwenden.
 

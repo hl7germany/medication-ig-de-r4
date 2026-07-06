@@ -10,9 +10,6 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
 * dosageInstruction[+]
   * timing.repeat
     * when[+] = #MORN
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 Instance: INV-C-DosageStructuredRequiresGeneratedText-Dispense-01-of-01
@@ -26,9 +23,6 @@ Description: "CAVE: This MedicationDispense is for validation purposes and does 
 * dosageInstruction[+]
   * timing.repeat
     * when[+] = #MORN
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 Instance: INV-C-DosageStructuredRequiresGeneratedText-Statement-01-of-01
@@ -42,7 +36,4 @@ Description: "CAVE: This MedicationStatement is for validation purposes and does
 * dosage[+]
   * timing.repeat
     * when[+] = #MORN
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"

@@ -7,7 +7,7 @@ Die Seite beschreibt die hierfür geltenden technischen Anforderungen im dgMP-Ko
 | Startdatum | Das Startdatum legt fest, ab wann das Dosierschema anzuwenden ist.| `Timing.repeat.boundsPeriod.start` | [dateTime](https://hl7.org/fhir/R4/datatypes.html#dateTime) |
 | Enddatum | Das Enddatum legt fest, bis wann das Dosierschema anzuwenden ist.| `Timing.repeat.boundsPeriod.end` | [dateTime](https://hl7.org/fhir/R4/datatypes.html#dateTime) |
 
-Die Kombination von Start- und Enddatum definiert den zeitlichen Gültigkeitsbereich einer Dosieranweisung.
+Die Angabe von Start- und Enddatum definiert den zeitlichen Gültigkeitsbereich einer Dosieranweisung. Sie kann nicht mit der Dauer einer Anwendung (`.boundsDuration`) kombiniert werden.
 
 Folgende weitere Beispiele sind in diesem IG dargestellt:
 
@@ -17,6 +17,7 @@ Folgende weitere Beispiele sind in diesem IG dargestellt:
 | Dosierung mit Enddatum | [Example-MR-Dosage-1000-enddate](MedicationRequest-Example-MR-Dosage-1000-enddate.html) |
 | Dosierung mit Start und Enddatum | [Example-MR-Dosage-1000-startandenddate](MedicationRequest-Example-MR-Dosage-1000-startandenddate.html) |
 
+*Hinweis:* Für eine gute UI eignet es sich das Start-Datum in Kombination mit dem Uhrzeiten- oder Tageszeitenschema entsprechend der Eingabe des Nutzers vorzuschlagen.
 
 ### Beispiel
 

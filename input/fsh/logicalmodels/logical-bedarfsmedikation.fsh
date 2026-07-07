@@ -11,7 +11,8 @@ im Bedarfsfall aber zu festen Zeitpunkten erfolgt.
 
 * insert Zeitrahmen
 * einnahmeanlass 0..* string "Auslöser oder Bedingung, bei deren Auftreten das Arzneimittel angewandt werden soll."
-* dosis[x] 1..1 Quantity or Ratio or Range "Dosis pro Gabe. Die Angabe kann als fester Wert (z.B. \"1 Tablette\"), Bereich (z.B. \"1-2 Tabletten\") oder Obergrenze (\"bis zu 2 Tabletten\") erfolgen."
+* dosis[x] 1..1 BackboneElement "Dosis pro Gabe. Die Angabe kann als fester Wert (z.B. \"1 Tablette\"), Bereich (z.B. \"1-2 Tabletten\") oder Obergrenze (\"bis zu 2 Tabletten\") erfolgen."
+  * dosisQuantity 0..1 Quantity "test"
 * mindestabstand 0..1 Duration "Mindestzeit, die zwischen zwei aufeinanderfolgenden Einzelgaben einzuhalten ist. Optionale Angabe. Zulässige Einheiten: Stunde und Minute."
 * maximaldosis 0..1 Quantity "Maximale Dosis des Arzneimittels, die innerhalb von 24 Stunden (1 Tag) angewandt werden darf. Die Einheit entspricht der Einheit der Einzeldosis."
 * insert Hinweise

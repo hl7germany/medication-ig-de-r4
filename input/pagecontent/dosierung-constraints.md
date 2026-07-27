@@ -263,6 +263,9 @@ Wenn auf einer MedicationRequest, MedicationDispense oder MedicationStatement di
 **Warum?**
 Die Dosierungs-Extensions enthalten Metadaten beziehungsweise den gerenderten Text zu einer Dosierungsangabe. Ohne Dosierung fehlt ihr fachlicher Bezug. Da es in diesem Fall kein `Dosage`-Objekt gibt, ist die Anforderung als Constraint an den jeweiligen Elternressourcen modelliert.
 
+**Hinweis zur Implementierung:**
+Diese Invariante ist nicht auf den Dosage-Profilen definiert, sondern auf den abstrakten Profilen `MedicationRequestDgMP`, `MedicationDispenseDgMP` und `MedicationStatementDgMP`. Eigene Implementierungsprofile, die nicht von diesen abstrakten dgMP-Profilen ableiten, müssen den jeweils passenden Constraint daher manuell übernehmen.
+
 #### FreeTextMatchesRenderedText
 
 **Beschreibung:**  

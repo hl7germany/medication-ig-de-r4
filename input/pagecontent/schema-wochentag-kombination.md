@@ -6,7 +6,7 @@ In diesem Anwendungsfall wird davon ausgegangen, dass das Arzneimittel wöchentl
 - eine abweichende Dosis abhängig von der Uhrzeit/Tageszeit/Wochentag anzugeben und
 - die geplante Dauer der Anwendung zu begrenzen. 
 
-### Beipiel
+### Beispiel
 
 {% fragment MedicationRequest/Example-MR-Dosage-comb-dayofweek-1 JSON %}
 

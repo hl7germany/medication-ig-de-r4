@@ -9,7 +9,7 @@ Es konkretisiert dabei nicht, zu welchem Zeitpunkt das Arzneimittel an dem betre
 
 Es wird ermöglicht, die geplante Dauer der Anwendung zu begrenzen.   
 
-### Beipiel
+### Beispiel
 
 {% fragment MedicationRequest/Example-MR-Dosage-weekday-2t JSON %}
 

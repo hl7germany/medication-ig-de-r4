@@ -5,7 +5,7 @@ In diesem Anwendungsfall wird davon ausgegangen, dass das Arzneimittel (für die
 - die geplante Dauer der Anwendung zu begrenzen (bspw. in Tagen)
 - eine abweichende Dosis abhängig von der Uhrzeit anzugeben (in einer weiteren Dosage-Instanz).
 
-### Beipiel
+### Beispiel
 
 {% fragment MedicationRequest/Example-MR-Dosage-tod-1t-8am JSON %}
 

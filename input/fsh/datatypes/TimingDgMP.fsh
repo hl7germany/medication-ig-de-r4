@@ -39,6 +39,7 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * frequencyMax MS
   * period 0..1 MS
   * periodUnit 0..1 MS
+    * ^short = "min | h | d | wk | mo - Zeiteinheit (UCUM)"
   * periodUnit from PeriodUnitsOfTimeDgMPVS (required)
   * periodMax MS
   * dayOfWeek MS

@@ -68,6 +68,6 @@ Bei einer reinen Bedarfsdosierung wird `timing` nicht befüllt.
 
 Der Mindestabstand zwischen zwei Gaben wird über die Modifier Extension `modifierExtension[MindestabstandZwischenGaben].valueDuration` angegeben.
 
-`maxDosePerPeriod` kann optional verwendet werden, um eine maximale Menge je Zeitraum anzugeben. Dabei muss die Einheit im `numerator` der Einheit von `doseAndRate.doseQuantity` entsprechen. Als Bezugszeitraum (`denominator`) ist ausschließlich **24 Stunden** (`24 h`) oder **1 Tag** (`1 d`) zulässig; beide Angaben sind gleichwertig, andere Perioden sind nicht erlaubt.
+`maxDosePerPeriod` kann optional verwendet werden, um eine maximale Menge je Zeitraum anzugeben. Dabei muss die Einheit im `numerator` der Einheit von `doseAndRate.doseQuantity` entsprechen. Als Bezugszeitraum (`denominator`) ist ausschließlich **24 Stunden** (`24 h`) oder **1 Tag** (`1 d`) zulässig; andere Perioden sind nicht erlaubt. Die Auswahl wird eingabetreu wiedergegeben: `24 h` ergibt „in 24 Stunden", `1 d` ergibt „pro Tag".
 
 Lesende Systeme werten `asNeededBoolean`, `extension[asNeededFor]`, `modifierExtension[MindestabstandZwischenGaben]` und `maxDosePerPeriod` aus. Sie müssen dem Nutzer insbesondere Einnahmeanlass, Mindestabstand und Maximalgabe verständlich darstellen.

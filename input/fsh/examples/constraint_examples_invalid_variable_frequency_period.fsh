@@ -109,6 +109,7 @@ Description: "CAVE: Validation example - frequencyMax and maxDosePerPeriod are p
   * timing.repeat.frequencyMax = 2
   * timing.repeat.period = 1
   * timing.repeat.periodUnit = #d
+  * asNeededBoolean = true
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
   * maxDosePerPeriod.numerator.value = 6
   * maxDosePerPeriod.numerator.system = $kbv-dosiereinheit
@@ -132,6 +133,7 @@ Description: "CAVE: Validation example - frequencyMax and maxDosePerPeriod are p
   * timing.repeat.frequencyMax = 2
   * timing.repeat.period = 1
   * timing.repeat.periodUnit = #d
+  * asNeededBoolean = true
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
   * maxDosePerPeriod.numerator.value = 6
   * maxDosePerPeriod.numerator.system = $kbv-dosiereinheit
@@ -155,6 +157,7 @@ Description: "CAVE: Validation example - frequencyMax and maxDosePerPeriod are p
   * timing.repeat.frequencyMax = 2
   * timing.repeat.period = 1
   * timing.repeat.periodUnit = #d
+  * asNeededBoolean = true
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
   * maxDosePerPeriod.numerator.value = 6
   * maxDosePerPeriod.numerator.system = $kbv-dosiereinheit

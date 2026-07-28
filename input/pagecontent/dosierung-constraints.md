@@ -422,6 +422,18 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-MaxDosePerPeriodOnly24hOr1d-examples.md%}
 
+#### MaxDoseOnlyWhenAsNeeded
+
+**Beschreibung:**  
+Eine Maximalmenge (`maxDosePerPeriod`) darf nur bei einer Bedarfsdosierung (`asNeededBoolean = true`) angegeben werden.
+
+**Warum?**  
+Die Maximalmenge wird in der Textgenerierung ausschließlich im Bedarfsfall dargestellt. Ohne die Kopplung an `asNeededBoolean` könnte eine profilvalide Nicht-Bedarf-Dosierung eine `maxDosePerPeriod` tragen, die im generierten Text stillschweigend entfiele – der Constraint verhindert diese Inkonsistenz.
+
+Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
+
+{% include dosage-constraint-MaxDoseOnlyWhenAsNeeded-examples.md%}
+
 #### AsNeededForRequiresAsNeeded
 
 **Beschreibung:**  
@@ -433,6 +445,18 @@ Ein Einnahmeanlass ohne Bedarfskennzeichnung wäre fachlich unstimmig. Umgekehrt
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-AsNeededForRequiresAsNeeded-examples.md%}
+
+#### AsNeededSingleDosageOnly
+
+**Beschreibung:**
+Eine reine Bedarfsdosierung (`asNeededBoolean = true` ohne `timing`) darf nur als einziges `Dosage`-Element der Ressource angegeben werden.
+
+**Warum?**
+Ohne zeitliche Zuordnung lassen sich mehrere Bedarfsdosen nicht eindeutig zu einer gemeinsamen Dosierungsanweisung aggregieren. Die Beschränkung verhindert, dass die Textgenerierung nur das erste Element ausgibt und weitere Dosen unbemerkt entfallen.
+
+Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
+
+{% include dosage-constraint-AsNeededSingleDosageOnly-examples.md%}
 
 #### dos-1
 

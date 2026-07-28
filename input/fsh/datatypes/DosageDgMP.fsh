@@ -10,12 +10,14 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
 * obeys PatientInstructionIdentical
 * obeys MaxDoseSameUnitAsDose
 * obeys MaxDosePerPeriodOnly24hOr1d
+* obeys MaxDoseOnlyWhenAsNeeded
 * obeys DoseRangeHighRequiredWhenLowPresent
 * obeys DoseRangeLowAndHighSameUnit
 * obeys DoseRangeNoVarPeriod
 * obeys VarFreqNoMaxDose
 * obeys VarPeriodNoMindestabstand
 * obeys AsNeededForRequiresAsNeeded
+* obeys AsNeededSingleDosageOnly
 * timing only TimingDgMP
 * doseAndRate 0..1 // Nur eine Dosierung für eine Medikation erlauben
   * ^comment = "Begründung Einschränkung Kardinalität: Nur eine Dosierung pro Medikation ist in der ersten Ausbaustufe des dgMP vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
@@ -24,6 +26,7 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
   * dose[x] MS
   * doseQuantity
   * doseQuantity from $kbv-dosiereinheit-vs
+    * value 1..1 MS
     * system 1..1 MS
     * code 1..1 MS
     * unit 1..1 MS
@@ -274,6 +277,28 @@ Severity: #error
 Expression: "timing.repeat.periodMax.empty() or modifierExtension.where(url='http://ig.fhir.de/igs/medication/StructureDefinition/MindestabstandZwischenGaben').empty()"
 
 Invariant: AsNeededForRequiresAsNeeded
-Description: "Ein Einnahmeanlass (asNeededFor) darf nur bei einer Bedarfsdosierung (asNeededBoolean=true) angegeben werden. Eine Bedarfsdosierung selbst benötigt keinen Einnahmeanlass."
+Description: "Ein Einnahmeanlass (asNeededFor) darf nur bei einer Bedarfsdosierung (asNeededBoolean=true) angegeben werden."
 Severity: #error
 Expression: "extension.where(url='http://hl7.org/fhir/5.0/StructureDefinition/extension-Dosage.asNeededFor').exists() implies asNeeded.ofType(boolean) = true"
+
+Invariant: AsNeededSingleDosageOnly
+Description: "Wenn eine Bedarfsdosierung mit asNeededBoolean = true ohne timing angegeben ist, muss genau ein Dosage-Element in der Ressource existieren."
+Expression: "(
+  %resource.ofType(MedicationRequest).dosageInstruction |
+  %resource.ofType(MedicationDispense).dosageInstruction |
+  %resource.ofType(MedicationStatement).dosage
+).where(
+  asNeeded.ofType(boolean) = true and timing.empty()
+).exists()
+implies
+(
+  %resource.ofType(MedicationRequest).dosageInstruction |
+  %resource.ofType(MedicationDispense).dosageInstruction |
+  %resource.ofType(MedicationStatement).dosage
+).count() = 1"
+Severity: #error
+
+Invariant: MaxDoseOnlyWhenAsNeeded
+Description: "Eine Maximalmenge (maxDosePerPeriod) darf nur bei einer Bedarfsdosierung (asNeededBoolean=true) angegeben werden."
+Severity: #error
+Expression: "maxDosePerPeriod.empty() or asNeeded.ofType(boolean) = true"

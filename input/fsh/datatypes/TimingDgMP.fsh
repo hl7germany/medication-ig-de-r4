@@ -33,8 +33,12 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
     * value 1..1 MS
     * comparator 0..0
   * boundsPeriod MS
+    * ^short = "Start- und Endzeitpunkt der Dosieranweisung."
+    * ^definition = "Beschreibt die Gültigkeit einer Dosieranweisung mit einem konkreten Start- und/oder Endzeitpunkt. Neben einem Datum kann eine Uhrzeit mit Zeitzone angegeben werden."
     * start MS
+      * ^short = "Startdatum mit optionaler Uhrzeit und Zeitzone"
     * end MS
+      * ^short = "Enddatum mit optionaler Uhrzeit und Zeitzone"
   * frequency 0..1 MS
   * frequencyMax MS
   * period 0..1 MS

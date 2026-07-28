@@ -29,8 +29,9 @@ import re
 import sys
 import os
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
-__version__ = "1.1.0-beta-1"
+__version__ = "1.1.0-beta-7"
 __language__ = "de-DE"
 
 class MedicationDosageTextGenerator:
@@ -93,6 +94,14 @@ class MedicationDosageTextGenerator:
         'a': 'Jahre'
     }
 
+    # Kanonische Extension-URLs (exakter Vergleich, kein Teilstring-Match)
+    URL_AS_NEEDED_FOR = 'http://hl7.org/fhir/5.0/StructureDefinition/extension-Dosage.asNeededFor'
+    URL_MINDESTABSTAND = 'http://ig.fhir.de/igs/medication/StructureDefinition/MindestabstandZwischenGaben'
+
+    # Verbindliche IANA-Zielzeitzone für die Darstellung von boundsPeriod.
+    OUTPUT_TIMEZONE_NAME = "Europe/Berlin"
+    OUTPUT_TIMEZONE = ZoneInfo(OUTPUT_TIMEZONE_NAME)
+
     def __init__(self):
         """Initialize the dosage text generator with German language settings."""
         pass
@@ -122,6 +131,21 @@ class MedicationDosageTextGenerator:
         dosage_instructions = self._extract_dosage_instructions(resource)
         if not dosage_instructions:
             return ""
+
+        # Eine reine Bedarfsdosierung (asNeededBoolean=true ohne timing) ist
+        # nicht aggregierbar und muss das einzige Dosage-Element sein. Diese
+        # defensive Prüfung spiegelt AsNeededSingleDosageOnly auch für Input,
+        # der vor der Textgenerierung nicht gegen das Profil validiert wurde.
+        if (
+            any(
+                self._is_as_needed(dosage) and not dosage.get("timing")
+                for dosage in dosage_instructions
+            )
+            and len(dosage_instructions) != 1
+        ):
+            raise ValueError(
+                "Reine Bedarfsmedikation erlaubt genau ein Dosage-Element."
+            )
 
         # Step 2: Determine which dosage schema applies (implements TimingOnlyOneType logic)
         schema_type = self._determine_dosage_schema(dosage_instructions)
@@ -224,10 +248,10 @@ class MedicationDosageTextGenerator:
         has_day_of_week = 'dayOfWeek' in repeat_element and repeat_element['dayOfWeek']
         has_when_codes = 'when' in repeat_element and repeat_element['when']
         has_time_of_day = 'timeOfDay' in repeat_element and repeat_element['timeOfDay']
-        # Reine Bedarfsdosierung: Bedarfskennzeichen (asNeededBoolean=true UND asNeededFor)
-        # ohne timing. Ist zusätzlich ein timing vorhanden, kennzeichnet der Bedarf nur ein
-        # strukturiertes Schema und wird dort als Präfix "bei {Anlass}" dargestellt
-        # (siehe _extract_leftframe_text).
+        # Reine Bedarfsdosierung: Bedarfskennzeichen (asNeededBoolean=true) ohne timing.
+        # Ist zusätzlich ein timing vorhanden, kennzeichnet der Bedarf nur ein
+        # strukturiertes Schema und wird dort als Präfix "bei {Anlass}:" dargestellt
+        # (siehe _assemble).
         if self._is_as_needed(first_dosage) and not first_dosage.get('timing'):
             return self.SCHEMA_AS_NEEDED
 
@@ -291,8 +315,8 @@ class MedicationDosageTextGenerator:
         """
         # Initialize dose amounts for each time period (default to 0)
         dose_amounts = {code: 0 for code in self.WHEN_CODES_ORDER}
+        assigned_slots = set()  # bereits belegte when-Positionen (Duplikaterkennung)
         unit_text = ""
-        bounds_text = ""
 
         # Process each dosage instruction to extract dose amounts
         for dosage in dosage_instructions:
@@ -300,12 +324,10 @@ class MedicationDosageTextGenerator:
             repeat_element = timing.get('repeat', {})
             when_codes = repeat_element.get('when', [])
 
-            # Extract duration bounds (should be consistent across all dosages)
-            if not bounds_text:
-                bounds_text = self._extract_leftframe_text(dosage)
-
             # Extract dose quantity information
             dose_info = self._extract_dose_quantity(dosage)
+            if when_codes and not dose_info:
+                raise ValueError("Tagesabschnitt (when) ohne Dosisangabe ist nicht zulässig.")
             if dose_info:
                 dose_value, dose_unit = dose_info
                 if not unit_text:
@@ -314,25 +336,47 @@ class MedicationDosageTextGenerator:
                 # Assign dose value to each specified time period
                 for when_code in when_codes:
                     if when_code in dose_amounts:
+                        if when_code in assigned_slots:
+                            raise ValueError(
+                                f"Doppelte Belegung des Tagesabschnitts '{when_code}' im 4-Schema.")
+                        assigned_slots.add(when_code)
                         dose_amounts[when_code] = dose_value
 
-        # Format as "morning-noon-evening-night" pattern
-        dose_values = []
-        for when_code in self.WHEN_CODES_ORDER:
-            dose_value = dose_amounts[when_code]
-            # Format dose value (preserve decimals only if needed)
-            formatted_dose = dose_value if isinstance(dose_value, str) else self._format_decimal_value(dose_value)
-            dose_values.append(formatted_dose)
-
-        dose_pattern = "-".join(dose_values)
-
-        # Add unit if available
-        if unit_text:
-            dose_pattern = f"{dose_pattern} {unit_text}"
-
-        # Add bounds if present (e.g., "für 7 Tage: 1-0-2-0 Stück")
-        text = f"{bounds_text}: {dose_pattern}" if bounds_text else dose_pattern
+        # Feste Dosen -> kompakt "1-0-2-0"; sobald eine Position variabel ist,
+        # wird gemäß Option 2 die ausgeschriebene Segmentform verwendet
+        # (siehe _render_when_doses).
+        dose_pattern = self._render_when_doses(dose_amounts, unit_text)
+        text = self._assemble(dosage_instructions[0], "", dose_pattern)
         return self._append_trailing_instructions(text, dosage_instructions[0])
+
+    def _render_when_doses(self, dose_amounts, unit_text):
+        """
+        Render eine MORN/NOON/EVE/NIGHT-Dosisbelegung.
+
+        Feste Dosen ergeben die kompakte, positionelle Notation
+        "1-0-2-0 [Einheit]". Sobald eine Position variabel ist (Bereich, z. B.
+        "1 bis 2"), wird das Schema gemäß Option 2 in die ausgeschriebene
+        Segmentform überführt: nur belegte (nicht-null) Positionen erscheinen als
+        "morgens — je 1 bis 2 Stück; abends — je 2 Stück".
+        """
+        has_variable = any(isinstance(value, str) for value in dose_amounts.values())
+
+        if not has_variable:
+            pattern = "-".join(self._format_decimal_value(dose_amounts[code])
+                               for code in self.WHEN_CODES_ORDER)
+            return f"{pattern} {unit_text}" if unit_text else pattern
+
+        segments = []
+        for code in self.WHEN_CODES_ORDER:
+            value = dose_amounts[code]
+            # Unbelegte Positionen (0) entfallen in der ausgeschriebenen Form.
+            if not isinstance(value, str) and value == 0:
+                continue
+            formatted = value if isinstance(value, str) else self._format_decimal_value(value)
+            dose = f"je {formatted} {unit_text}" if unit_text else f"je {formatted}"
+            segments.append(f"{self.WHEN_CODE_TRANSLATIONS[code]} — {dose}")
+        # Tagesabschnitts-Segmente werden mit Komma getrennt (siehe Trennzeichen).
+        return ", ".join(segments)
 
     def _generate_freetext_schema_text(self, dosage_instructions):
         """
@@ -386,7 +430,6 @@ class MedicationDosageTextGenerator:
             return ""
 
         time_dose_parts = []
-        bounds_text = ""
 
         # Process each dosage instruction
         for dosage in dosage_instructions:
@@ -394,38 +437,29 @@ class MedicationDosageTextGenerator:
             repeat_element = timing.get('repeat', {})
             time_of_day_list = repeat_element.get('timeOfDay', [])
 
-            # Extract duration bounds (should be consistent across all dosages)
-            if not bounds_text:
-                bounds_text = self._extract_leftframe_text(dosage)
-
             if not time_of_day_list:
                 continue
 
             # Format times as German time expressions (sort chronologically)
-            formatted_times = []
-            for time_value in sorted(time_of_day_list):
-                formatted_time = self._format_time_german(time_value)
-                formatted_times.append(formatted_time)
+            sorted_times = sorted(time_of_day_list)
+            formatted_times = [self._format_time_german(t) for t in sorted_times]
 
             # Extract dose information
             dose_text = self._extract_dose_text_with_prefix(dosage)
 
-            # Combine times and dose for this instruction
+            # Combine times and dose for this instruction; sort key = früheste Uhrzeit,
+            # damit die Segmentreihenfolge deterministisch (nicht eingabeabhängig) ist.
             if formatted_times and dose_text:
                 times_combined = ", ".join(formatted_times)
-                time_dose_parts.append(f"{times_combined} — {dose_text}")
+                time_dose_parts.append((sorted_times[0], f"{times_combined} — {dose_text}"))
 
         if not time_dose_parts:
             return ""
 
-        # Combine multiple time-dose pairs with semicolons
-        combined_instructions = "; ".join(time_dose_parts)
-
-        # Build final text with bounds and daily indicator
-        if bounds_text:
-            text = f"{bounds_text} täglich: {combined_instructions}"
-        else:
-            text = f"täglich: {combined_instructions}"
+        # Segmente aufsteigend nach Uhrzeit sortieren; Trennung mit Komma (Trennzeichen).
+        time_dose_parts.sort(key=lambda item: item[0])
+        combined_instructions = ", ".join(text for _, text in time_dose_parts)
+        text = self._assemble(dosage_instructions[0], "täglich", combined_instructions)
         return self._append_trailing_instructions(text, dosage_instructions[0])
 
     # ============================================================================
@@ -451,26 +485,43 @@ class MedicationDosageTextGenerator:
             return None
 
         first_dose = dose_and_rate[0]
-        dose_quantity = first_dose.get('doseQuantity')
-        if not dose_quantity:
-            dose_range = first_dose.get('doseRange')
-            if not dose_range:
-                return None
 
-            low = dose_range.get('low', {})
-            high = dose_range.get('high', {})
-            unit = high.get('unit') or low.get('unit', '')
-            if low.get('value') is not None and high.get('value') is not None:
-                value = f"{self._format_decimal_value(low.get('value'))} bis {self._format_decimal_value(high.get('value'))}"
-            elif high.get('value') is not None:
-                value = f"bis zu {self._format_decimal_value(high.get('value'))}"
+        if 'doseQuantity' in first_dose:
+            dose_quantity = first_dose.get('doseQuantity') or {}
+            dose_value = dose_quantity.get('value')
+            unit = dose_quantity.get('unit')
+            if dose_value is None:
+                raise ValueError("doseQuantity.value ist für die Textgenerierung erforderlich.")
+            if not unit:
+                raise ValueError("doseQuantity.unit ist für die Textgenerierung erforderlich.")
+            return (dose_value, unit)
+
+        if 'doseRange' in first_dose:
+            dose_range = first_dose.get('doseRange') or {}
+            low = dose_range.get('low')
+            high = dose_range.get('high')
+
+            if not high or high.get('value') is None:
+                raise ValueError("doseRange.high.value ist für die Textgenerierung erforderlich.")
+            if not high.get('unit'):
+                raise ValueError("doseRange.high.unit ist für die Textgenerierung erforderlich.")
+
+            if low:
+                if low.get('value') is None:
+                    raise ValueError("doseRange.low.value ist für die Textgenerierung erforderlich.")
+                if not low.get('unit'):
+                    raise ValueError("doseRange.low.unit ist für die Textgenerierung erforderlich.")
+                if low.get('unit') != high.get('unit'):
+                    raise ValueError("doseRange.low.unit und doseRange.high.unit müssen übereinstimmen.")
+                value = (
+                    f"{self._format_decimal_value(low.get('value'))} bis "
+                    f"{self._format_decimal_value(high.get('value'))}"
+                )
             else:
-                return None
-            return (value, unit)
+                value = f"bis zu {self._format_decimal_value(high.get('value'))}"
+            return (value, high.get('unit'))
 
-        dose_value = dose_quantity.get('value', 0)
-        unit = dose_quantity.get('unit', '')
-        return (dose_value, unit)
+        raise ValueError("Dosisangabe in doseAndRate[0] fehlt.")
 
     def _extract_dose_text_with_prefix(self, dosage):
         """
@@ -509,11 +560,22 @@ class MedicationDosageTextGenerator:
         bounds_duration = repeat_element.get('boundsDuration')
         bounds_period = repeat_element.get('boundsPeriod')
 
-        if bounds_period:
-            return self._format_bounds_period(bounds_period)
+        has_bounds_duration = 'boundsDuration' in repeat_element
+        has_bounds_period = 'boundsPeriod' in repeat_element
+        if has_bounds_duration and has_bounds_period:
+            raise ValueError(
+                "boundsPeriod und boundsDuration dürfen nicht gleichzeitig vorhanden sein."
+            )
 
-        if bounds_duration:
-            return self._format_duration_text(bounds_duration, prefix="für")
+        if has_bounds_period:
+            return self._format_bounds_period(bounds_period or {})
+
+        if has_bounds_duration:
+            return self._format_duration_text(
+                bounds_duration or {},
+                prefix="für",
+                field_name="boundsDuration"
+            )
 
         return ""
 
@@ -529,34 +591,44 @@ class MedicationDosageTextGenerator:
         """
         return dosage.get('asNeededBoolean') is True
 
-    def _extract_leftframe_text(self, dosage):
+    def _assemble(self, dosage, middle, core):
         """
-        Baut den linken Rahmen einer Dosieranweisung: Zeitrahmen und – bei
-        Bedarfsmedikation – der Einnahmeanlass samt Mindestabstand.
+        Baut den finalen Dosierungstext aus optionalem Zeitrahmen, optionalem
+        Bedarfs-Einnahmeanlass, einem Zwischenteil `middle` (Intervall/Marker wie
+        "täglich", "alle 8 Stunden" oder "") und dem Kern `core` (Dosis, 4-Schema-
+        Muster oder Zeit-/Tagesabschnitts-Segmente).
 
-        Ergebnisreihenfolge entspricht dem allgemeinen Aufbau
-        [{Zeitrahmen}] [bei {Einnahmeanlass}[ im Abstand von mindestens {…}]].
-        Für Nicht-Bedarfs-Dosierungen entspricht das Ergebnis dem reinen
-        Zeitrahmen. Das anschließende Intervall/Tagesmuster sowie der Doppelpunkt
-        werden vom jeweiligen Schema-Generator ergänzt.
+        Nicht-Bedarf: [{Zeitrahmen} ][{middle}]: {core}
+          - der Doppelpunkt trennt Zeitrahmen/Intervall (links) von der Dosis (rechts).
+
+        Bedarf: [{Zeitrahmen} ]bei {Einnahmeanlass}: [{Mindestabstand} ][{middle} ]{core}
+          - der Doppelpunkt steht direkt hinter dem Einnahmeanlass; Mindestabstand,
+            Intervall/Marker und Kern folgen rechts ohne weiteren Doppelpunkt.
         """
-        parts = []
-
         bounds_text = self._extract_bounds_text(dosage)
-        if bounds_text:
-            parts.append(bounds_text)
 
         if self._is_as_needed(dosage):
-            # Einnahmeanlass ist optional; ohne Anlass wird generisch "bei Bedarf"
-            # gesetzt, damit der Bedarfscharakter im Text erkennbar bleibt.
+            # Einnahmeanlass ist optional; ohne Anlass generisch "bei Bedarf".
             reason_text = self._extract_as_needed_for_text(dosage)
-            parts.append(f"bei {reason_text}" if reason_text else "bei Bedarf")
+            anlass = f"bei {reason_text}" if reason_text else "bei Bedarf"
+            left = " ".join(part for part in [bounds_text, anlass] if part)
 
+            right_parts = []
             minimum_interval = self._extract_minimum_interval_text(dosage)
             if minimum_interval:
-                parts.append(f"im Abstand von mindestens {minimum_interval}")
+                right_parts.append(f"im Abstand von mindestens {minimum_interval}")
+            if middle:
+                right_parts.append(middle)
+            if core:
+                right_parts.append(core)
+            right = " ".join(right_parts)
+            return f"{left}: {right}" if right else left
 
-        return " ".join(parts)
+        # Nicht-Bedarf: Zeitrahmen und Intervall/Marker links, Kern rechts.
+        left = " ".join(part for part in [bounds_text, middle] if part)
+        if left and core:
+            return f"{left}: {core}"
+        return left or core
 
     def _finalize_text(self, text, dosage):
         """
@@ -582,37 +654,72 @@ class MedicationDosageTextGenerator:
         text = re.sub(r'[ \t]+([;:.,])', r'\1', text)
         return text.strip()
 
-    def _format_duration_text(self, duration, prefix=""):
-        duration_value = duration.get('value', 0)
-        duration_unit = duration.get('code', '')
-        if not duration_value or not duration_unit:
-            return ""
+    def _format_duration_text(self, duration, prefix="", field_name="Duration"):
+        duration_value = duration.get('value')
+        duration_unit = duration.get('code')
+        if duration_value is None:
+            raise ValueError(f"{field_name}.value ist für die Textgenerierung erforderlich.")
+        if (isinstance(duration_value, bool) or
+                not isinstance(duration_value, (int, float)) or
+                duration_value <= 0):
+            raise ValueError(f"{field_name}.value muss größer als 0 sein.")
+        if not duration_unit:
+            raise ValueError(f"{field_name}.code ist für die Textgenerierung erforderlich.")
         formatted_value = self._format_decimal_value(duration_value)
         formatted_unit = self._format_time_unit_german(duration_value, duration_unit)
         duration_text = f"{formatted_value} {formatted_unit}"
         return f"{prefix} {duration_text}" if prefix else duration_text
 
     def _format_bounds_period(self, bounds_period):
-        start = bounds_period.get('start')
-        end = bounds_period.get('end')
-        if start and end:
-            return f"Vom {self._format_datetime_german(start)} bis zum {self._format_datetime_german(end)}"
-        if start:
-            return f"Ab dem {self._format_datetime_german(start)}"
-        return ""
+        has_start = 'start' in bounds_period
+        has_end = 'end' in bounds_period
+        if not has_start and not has_end:
+            raise ValueError("boundsPeriod muss start und/oder end enthalten.")
 
-    def _format_datetime_german(self, value):
-        date_part = value
-        time_part = ""
-        if "T" in value:
-            date_part, time_part = value.split("T", 1)
+        start_text = (
+            self._format_datetime_german(bounds_period.get('start'), "boundsPeriod.start")
+            if has_start else ""
+        )
+        end_text = (
+            self._format_datetime_german(bounds_period.get('end'), "boundsPeriod.end")
+            if has_end else ""
+        )
+        if has_start and has_end:
+            return f"Vom {start_text} bis zum {end_text}"
+        if has_start:
+            return f"Ab dem {start_text}"
+        return f"Bis zum {end_text}"
+
+    def _format_datetime_german(self, value, field_name="dateTime"):
+        error_message = (
+            f"{field_name} muss ein parsebares FHIR-dateTime mit vollständigem Datum "
+            "im Format JJJJ-MM-TT sein; eine Uhrzeit erfordert eine Zeitzone."
+        )
+        if not isinstance(value, str):
+            raise ValueError(error_message)
+
+        if re.fullmatch(r'\d{4}-\d{2}-\d{2}', value):
+            try:
+                return datetime.strptime(value, "%Y-%m-%d").strftime("%d.%m.%Y")
+            except ValueError:
+                raise ValueError(error_message) from None
+
+        if not re.fullmatch(
+            r'\d{4}-\d{2}-\d{2}'
+            r'T(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d'
+            r'(?:\.\d+)?'
+            r'(?:Z|[+-](?:(?:0\d|1[0-3]):[0-5]\d|14:00))',
+            value
+        ):
+            raise ValueError(error_message)
+
         try:
-            formatted_date = datetime.strptime(date_part[:10], "%Y-%m-%d").strftime("%d.%m.%Y")
+            parsed_datetime = datetime.fromisoformat(value.replace("Z", "+00:00"))
+            berlin_datetime = parsed_datetime.astimezone(self.OUTPUT_TIMEZONE)
         except ValueError:
-            formatted_date = date_part
-        if time_part:
-            return f"{formatted_date} um {self._format_time_german(time_part)}"
-        return formatted_date
+            raise ValueError(error_message) from None
+
+        return berlin_datetime.strftime("%d.%m.%Y um %H:%M Uhr")
 
     def _format_decimal_value(self, value):
         """
@@ -645,15 +752,23 @@ class MedicationDosageTextGenerator:
             Input: "08:30"
             Output: "08:30 Uhr"
         """
-        try:
-            # Extract hour and minute from time string
-            time_parts = time_string.split(':')
-            hour = int(time_parts[0])
-            minute = time_parts[1] if len(time_parts) > 1 else '00'
-            return f"{hour:02d}:{minute} Uhr"
-        except (ValueError, IndexError):
-            # Fallback: return original string if parsing fails
-            return time_string
+        if not isinstance(time_string, str):
+            raise ValueError(
+                "timeOfDay muss im Format HH:MM oder HH:MM:SS"
+                "[.Bruchteile] angegeben sein."
+            )
+
+        match = re.fullmatch(
+            r'((?:[01]\d|2[0-3])):([0-5]\d)'
+            r'(?::[0-5]\d(?:\.\d+)?)?',
+            time_string
+        )
+        if not match:
+            raise ValueError(
+                "timeOfDay muss im Format HH:MM oder HH:MM:SS"
+                "[.Bruchteile] angegeben sein."
+            )
+        return f"{match.group(1)}:{match.group(2)} Uhr"
 
     def _format_time_unit_german(self, value, unit):
         """
@@ -694,17 +809,12 @@ class MedicationDosageTextGenerator:
 
         # Group dosages by day and collect dose information
         day_to_dose = {}  # day_code -> dose_value
-        bounds_text = ""
         unit_text = ""
 
         for dosage in dosage_instructions:
             timing = dosage.get('timing', {})
             repeat_element = timing.get('repeat', {})
             day_codes = repeat_element.get('dayOfWeek', [])
-
-            # Extract duration bounds (should be consistent across dosages)
-            if not bounds_text:
-                bounds_text = self._extract_leftframe_text(dosage)
 
             # Extract dose information
             dose_info = self._extract_dose_quantity(dosage)
@@ -739,14 +849,8 @@ class MedicationDosageTextGenerator:
 
             day_text_parts.append(f"{day_name} — {dose_text}")
 
-        # Combine all days with semicolons (each day is a complete dosage instruction with unit)
         combined_days = "; ".join(day_text_parts)
-
-        # Add bounds if present
-        if bounds_text:
-            text = f"{bounds_text}: {combined_days}"
-        else:
-            text = combined_days
+        text = self._assemble(dosage_instructions[0], "", combined_days)
         return self._append_trailing_instructions(text, dosage_instructions[0])
 
     def _generate_interval_text(self, dosage_instructions):
@@ -780,27 +884,8 @@ class MedicationDosageTextGenerator:
         # Extract dose information
         dose_text = self._extract_dose_text_with_prefix(dosage)
 
-        # Extract bounds if present
-        bounds_text = self._extract_leftframe_text(dosage)
-
-        # Combine parts: [bounds] frequency: dose
-        text_parts = []
-        if bounds_text:
-            text_parts.append(bounds_text)
-        if frequency_text:
-            text_parts.append(frequency_text)
-
-        left_side = " ".join(text_parts)
-
-        # Format final text
-        if left_side and dose_text:
-            text = f"{left_side}: {dose_text}"
-        elif left_side:
-            text = left_side
-        elif dose_text:
-            text = dose_text
-        else:
-            text = ""
+        # [Zeitrahmen] [bei Anlass:] Intervall: Dosis  (Assembler regelt Bedarf/Doppelpunkt)
+        text = self._assemble(dosage, frequency_text, dose_text)
         return self._append_trailing_instructions(text, dosage)
 
     def _generate_frequency_description(self, dosage):
@@ -846,12 +931,12 @@ class MedicationDosageTextGenerator:
             else:
                 return f"{self._format_range_value(frequency, frequency_max)} x wöchentlich"
 
-        # Interval patterns (frequency=1 with various periods)
-        if frequency == 1:
+        # Kurzform nur für eine feste Frequenz von genau 1.
+        if frequency == 1 and frequency_max is None:
             period_description = self._format_period_description(period, period_unit, period_max)
             return f"alle {period_description}"
 
-        # Complex patterns (frequency > 1 with intervals)
+        # Feste Frequenzen > 1 und Frequenzbereiche (auch 1 bis n).
         frequency_text = f"{self._format_range_value(frequency, frequency_max)} x"
         period_description = self._format_period_description(period, period_unit, period_max)
         return f"{frequency_text} alle {period_description}"
@@ -927,16 +1012,11 @@ class MedicationDosageTextGenerator:
 
         # Group dosages by day of week
         day_to_dosages = {}  # day_code -> list of dosages
-        bounds_text = ""
 
         for dosage in dosage_instructions:
             timing = dosage.get('timing', {})
             repeat_element = timing.get('repeat', {})
             day_codes = repeat_element.get('dayOfWeek', [])
-
-            # Extract bounds (should be consistent across dosages)
-            if not bounds_text:
-                bounds_text = self._extract_leftframe_text(dosage)
 
             # Group dosages by day
             for day_code in day_codes:
@@ -964,32 +1044,25 @@ class MedicationDosageTextGenerator:
                     continue
 
                 # Format times (sort chronologically)
-                formatted_times = []
-                for time_value in sorted(time_list):
-                    formatted_time = self._format_time_german(time_value)
-                    formatted_times.append(formatted_time)
+                sorted_times = sorted(time_list)
+                formatted_times = [self._format_time_german(t) for t in sorted_times]
 
                 # Extract dose information
                 dose_text = self._extract_dose_text_with_prefix(dosage)
 
-                # Combine times and dose for this dosage
+                # Sort key = früheste Uhrzeit -> deterministische Segmentreihenfolge.
                 if formatted_times and dose_text:
                     times_combined = ", ".join(formatted_times)
-                    time_dose_parts.append(f"{times_combined} — {dose_text}")
+                    time_dose_parts.append((sorted_times[0], f"{times_combined} — {dose_text}"))
 
-            # Combine all time-dose parts for this day
+            # Uhrzeiten innerhalb eines Tages: aufsteigend sortiert, mit Komma getrennt.
             if time_dose_parts:
-                combined_times = "; ".join(time_dose_parts)
+                time_dose_parts.sort(key=lambda item: item[0])
+                combined_times = ", ".join(text for _, text in time_dose_parts)
                 day_text_parts.append(f"{day_name} {combined_times}")
 
-        # Combine all days with semicolons (each day is a complete dosage instruction with unit)
         combined_days = "; ".join(day_text_parts)
-
-        # Add bounds if present
-        if bounds_text:
-            text = f"{bounds_text}: {combined_days}"
-        else:
-            text = combined_days
+        text = self._assemble(dosage_instructions[0], "", combined_days)
         return self._append_trailing_instructions(text, dosage_instructions[0])
 
     def _generate_dayofweek_when_combination(self, dosage_instructions):
@@ -1003,7 +1076,6 @@ class MedicationDosageTextGenerator:
 
         # Group dosages by day and build 4-schema pattern for each day
         day_to_patterns = {}  # day_code -> {MORN: dose, NOON: dose, EVE: dose, NIGHT: dose}
-        bounds_text = ""
         unit_text = ""
 
         for dosage in dosage_instructions:
@@ -1013,12 +1085,10 @@ class MedicationDosageTextGenerator:
             day_codes = repeat_element.get('dayOfWeek', [])
             when_codes = repeat_element.get('when', [])
 
-            # Extract bounds (should be consistent across dosages)
-            if not bounds_text:
-                bounds_text = self._extract_leftframe_text(dosage)
-
             # Extract dose information
             dose_info = self._extract_dose_quantity(dosage)
+            if when_codes and not dose_info:
+                raise ValueError("Tagesabschnitt (when) ohne Dosisangabe ist nicht zulässig.")
             if dose_info:
                 dose_value, dose_unit = dose_info
                 if not unit_text:
@@ -1045,29 +1115,12 @@ class MedicationDosageTextGenerator:
             dose_pattern = day_to_patterns[day_code]
             day_name = self.DAY_TRANSLATIONS.get(day_code, day_code)
 
-            # Format doses as "1-2-1-0" pattern
-            dose_values = []
-            for when_code in self.WHEN_CODES_ORDER:
-                dose_value = dose_pattern[when_code]
-                formatted_dose = dose_value if isinstance(dose_value, str) else self._format_decimal_value(dose_value)
-                dose_values.append(formatted_dose)
+            # Feste Dosen -> kompakt "1-0-1-0"; variable -> ausgeschrieben (Option 2).
+            day_content = self._render_when_doses(dose_pattern, unit_text)
+            day_text_parts.append(f"{day_name} {day_content}")
 
-            dose_pattern_text = "-".join(dose_values)
-
-            # Add unit to each day if available
-            if unit_text:
-                day_text_parts.append(f"{day_name} {dose_pattern_text} {unit_text}")
-            else:
-                day_text_parts.append(f"{day_name} {dose_pattern_text}")
-
-        # Combine all days with semicolons (each day is a complete dosage instruction with unit)
         combined_days = "; ".join(day_text_parts)
-
-        # Add bounds if present
-        if bounds_text:
-            text = f"{bounds_text}: {combined_days}"
-        else:
-            text = combined_days
+        text = self._assemble(dosage_instructions[0], "", combined_days)
         return self._append_trailing_instructions(text, dosage_instructions[0])
 
     def _generate_interval_and_time_schema_text(self, dosage_instructions):
@@ -1097,9 +1150,6 @@ class MedicationDosageTextGenerator:
         timing = first_dosage.get('timing', {})
         repeat_element = timing.get('repeat', {})
 
-        # Extract bounds if present
-        bounds_text = self._extract_leftframe_text(first_dosage)
-
         interval_text = self._generate_frequency_description(first_dosage)
 
         # Group dosages by time or when code
@@ -1118,6 +1168,8 @@ class MedicationDosageTextGenerator:
 
             # Process when code entries
             elif 'when' in repeat_element and repeat_element['when']:
+                if not self._extract_dose_quantity(dosage):
+                    raise ValueError("Tagesabschnitt (when) ohne Dosisangabe ist nicht zulässig.")
                 for when_code in repeat_element['when']:
                     if when_code in self.WHEN_CODE_TRANSLATIONS:
                         if when_code not in time_to_dosages:
@@ -1153,25 +1205,21 @@ class MedicationDosageTextGenerator:
 
             time_dose_parts.append(f"{time_display} — {dose_text}")
 
-        # Combine all time-dose parts
-        combined_times = "; ".join(time_dose_parts)
-
-        # Build final text with bounds and interval
-        if bounds_text:
-            text = f"{bounds_text} {interval_text}: {combined_times}"
-        else:
-            text = f"{interval_text}: {combined_times}"
+        # Zeit-/Abschnitts-Segmente werden mit Komma getrennt (siehe Trennzeichen).
+        combined_times = ", ".join(time_dose_parts)
+        text = self._assemble(first_dosage, interval_text, combined_times)
         return self._append_trailing_instructions(text, first_dosage)
 
     def _generate_as_needed_text(self, dosage_instructions):
         """
         Reine Bedarfsdosierung (Option 1, einzeilig).
 
-        Aufbau: [[{Zeitrahmen} ]bei {Einnahmeanlass}[ im Abstand von mindestens
-        {Mindestabstand}]]: je {Dosis}[ — nicht mehr als {Maximalmenge} in 24 Stunden]
+        Aufbau: [{Zeitrahmen} ]bei {Einnahmeanlass}: [im Abstand von mindestens
+        {Mindestabstand} ]je {Dosis}[ — nicht mehr als {Maximalmenge} {Zeitraum}]
+        ({Zeitraum} = "in 24 Stunden" bei 24 h bzw. "pro Tag" bei 1 d)
 
-        Der Zeitrahmen sowie Einnahmeanlass und Mindestabstand liefert
-        _extract_leftframe_text; die Maximalmenge und der Großbuchstabe am
+        Der Doppelpunkt hinter dem Einnahmeanlass, Zeitrahmen und Mindestabstand
+        werden von _assemble gesetzt; die Maximalmenge und der Großbuchstabe am
         Zeilenanfang werden zentral ergänzt (_append_trailing_instructions /
         _finalize_text).
         """
@@ -1179,41 +1227,102 @@ class MedicationDosageTextGenerator:
             return ""
 
         dosage = dosage_instructions[0]
-        left_side = self._extract_leftframe_text(dosage)
         dose_text = self._extract_dose_text_with_prefix(dosage)
-        text = f"{left_side}: {dose_text}" if left_side else dose_text
+        text = self._assemble(dosage, "", dose_text)
         return self._append_trailing_instructions(text, dosage)
 
     def _extract_as_needed_for_text(self, dosage):
+        # Mehrere asNeededFor sind zulässig (0..*); alle Anlässe werden in der
+        # angegebenen Reihenfolge übernommen und als deutsche Aufzählung mit
+        # abschließendem "oder" verbunden (z. B. "Kopfschmerzen oder Fieber").
+        reasons = []
         for extension in dosage.get('extension', []):
-            if 'asNeededFor' not in extension.get('url', ''):
+            if extension.get('url') != self.URL_AS_NEEDED_FOR:
                 continue
-            value = extension.get('valueCodeableConcept', {})
-            if value.get('text'):
-                return value['text']
-        return ""
+            concept = extension.get('valueCodeableConcept') or {}
+            reason_text = concept.get('text')
+            if not isinstance(reason_text, str) or not reason_text.strip():
+                raise ValueError(
+                    "asNeededFor.valueCodeableConcept.text ist für die "
+                    "Textgenerierung erforderlich."
+                )
+            reasons.append(reason_text.strip())
+        if not reasons:
+            return ""
+        if len(reasons) == 1:
+            return reasons[0]
+        return f"{', '.join(reasons[:-1])} oder {reasons[-1]}"
 
     def _extract_minimum_interval_text(self, dosage):
         for extension in dosage.get('modifierExtension', []):
-            if 'MindestabstandZwischenGaben' not in extension.get('url', ''):
+            if extension.get('url') != self.URL_MINDESTABSTAND:
                 continue
             duration = extension.get('valueDuration')
-            if duration:
-                return self._format_duration_text(duration)
+            if not duration:
+                raise ValueError(
+                    "MindestabstandZwischenGaben.valueDuration ist "
+                    "für die Textgenerierung erforderlich."
+                )
+            return self._format_duration_text(
+                duration,
+                field_name="MindestabstandZwischenGaben.valueDuration"
+            )
         return ""
 
     def _extract_max_dose_text(self, dosage):
-        max_dose = dosage.get('maxDosePerPeriod')
-        if not max_dose:
+        if 'maxDosePerPeriod' not in dosage:
             return ""
-        numerator = max_dose.get('numerator', {})
+
+        max_dose = dosage.get('maxDosePerPeriod') or {}
+        numerator = max_dose.get('numerator') or {}
         value = numerator.get('value')
-        unit = numerator.get('unit', '')
+        unit = numerator.get('unit')
         if value is None:
-            return ""
+            raise ValueError(
+                "maxDosePerPeriod.numerator.value ist für die "
+                "Textgenerierung erforderlich."
+            )
+        if (isinstance(value, bool) or
+                not isinstance(value, (int, float))):
+            raise ValueError(
+                "maxDosePerPeriod.numerator.value muss numerisch sein."
+            )
+        if not isinstance(unit, str) or not unit.strip():
+            raise ValueError(
+                "maxDosePerPeriod.numerator.unit ist für die "
+                "Textgenerierung erforderlich."
+            )
+
         dose = self._format_decimal_value(value)
-        dose = f"{dose} {unit}" if unit else dose
-        return f"nicht mehr als {dose} in 24 Stunden"
+        dose = f"{dose} {unit.strip()}"
+        period = self._format_max_dose_period(max_dose.get('denominator') or {})
+        return f"nicht mehr als {dose} {period}"
+
+    def _format_max_dose_period(self, denominator):
+        """
+        Bezugszeitraum der Maximalmenge, eingabetreu aus dem Nenner.
+        Ausschließlich 1 d und 24 h sind zulässig; andere oder unvollständige
+        Nenner führen zu einem Fehler.
+        """
+        value = denominator.get('value')
+        code = denominator.get('code')
+        if value is None:
+            raise ValueError(
+                "maxDosePerPeriod.denominator.value ist für die "
+                "Textgenerierung erforderlich."
+            )
+        if not code:
+            raise ValueError(
+                "maxDosePerPeriod.denominator.code ist für die "
+                "Textgenerierung erforderlich."
+            )
+        if value == 1 and code == 'd':
+            return "pro Tag"
+        if value == 24 and code == 'h':
+            return "in 24 Stunden"
+        raise ValueError(
+            "maxDosePerPeriod.denominator muss 1 d oder 24 h sein."
+        )
 
     def _append_trailing_instructions(self, text, dosage):
         # Maximalmenge (nur Bedarfsmedikation): der Dosis mit Gedankenstrich nachgestellt.
@@ -1222,33 +1331,24 @@ class MedicationDosageTextGenerator:
             if max_dose_text:
                 text = f"{text} — {max_dose_text}"
 
-        route_text = self._extract_route_text(dosage)
-        if route_text:
-            # Verabreichungsweg als eigener Satz, mit abschließendem Punkt.
-            text = f"{text}. {route_text}."
+        # Verabreichungsweg (route) ist im dgMP-Profil 0..0 und wird nicht dargestellt.
 
-        instruction_text = self._extract_additional_instruction_text(dosage)
+        instruction_text = self._extract_patient_instruction_text(dosage)
         if instruction_text:
-            # Kein doppelter Punkt, falls davor bereits der Verabreichungsweg-Satz endet.
             separator = " " if text.endswith(".") else ". "
             text = f"{text}{separator}Hinweis: {instruction_text}"
 
         return text
 
-    def _extract_route_text(self, dosage):
-        route = dosage.get('route', {})
-        if route.get('text'):
-            return route['text']
-        codings = route.get('coding', [])
-        return codings[0].get('display', '') if codings else ""
-
-    def _extract_additional_instruction_text(self, dosage):
-        instructions = []
-        for instruction in dosage.get('additionalInstruction', []):
-            text = instruction.get('text')
-            if text:
-                instructions.append(text)
-        return "; ".join(instructions)
+    def _extract_patient_instruction_text(self, dosage):
+        """
+        Freitext-Einnahmehinweis aus patientInstruction (einzelner String, 0..1).
+        In dgMP ist dies das Feld für ergänzende Patientenhinweise;
+        additionalInstruction ist dort gestrichen (für künftige strukturierte
+        Angaben reserviert).
+        """
+        instruction = dosage.get('patientInstruction')
+        return instruction.strip() if instruction else ""
 
 # ============================================================================
 # MAIN FUNCTION - Command line interface

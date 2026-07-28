@@ -4,10 +4,12 @@ Die Seite beschreibt die hierfür geltenden technischen Anforderungen im dgMP-Ko
 
 | Information | Beschreibung | FHIR-Modellierung | Datentyp |
 | -------- | ------- | ------- | ------- |
-| Startdatum | Das Startdatum legt fest, ab wann das Dosierschema anzuwenden ist.| `Timing.repeat.boundsPeriod.start` | [dateTime](https://hl7.org/fhir/R4/datatypes.html#dateTime) |
-| Enddatum | Das Enddatum legt fest, bis wann das Dosierschema anzuwenden ist.| `Timing.repeat.boundsPeriod.end` | [dateTime](https://hl7.org/fhir/R4/datatypes.html#dateTime) |
+| Startdatum | Das Startdatum legt fest, ab wann das Dosierschema anzuwenden ist.| `Timing.repeat.boundsPeriod.start` | [dateTime](https://hl7.org/fhir/R4/datatypes.html#dateTime), eingeschränkt auf `JJJJ-MM-TT` |
+| Enddatum | Das Enddatum legt fest, bis wann das Dosierschema anzuwenden ist.| `Timing.repeat.boundsPeriod.end` | [dateTime](https://hl7.org/fhir/R4/datatypes.html#dateTime), eingeschränkt auf `JJJJ-MM-TT` |
 
 Die Angabe von Start- und Enddatum definiert den zeitlichen Gültigkeitsbereich einer Dosieranweisung. Sie kann nicht mit der Dauer einer Anwendung (`.boundsDuration`) kombiniert werden.
+
+Start und Ende werden ausschließlich als vollständige Kalenderdaten mit Tagespräzision im Format `JJJJ-MM-TT` unterstützt. Uhrzeiten und Zeitzonen sind nicht zulässig.
 
 Folgende weitere Beispiele sind in diesem IG dargestellt:
 

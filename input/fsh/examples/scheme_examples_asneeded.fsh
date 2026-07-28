@@ -21,6 +21,31 @@ Description: "Dieses Beispiel stellt eine Bedarfsmedikation mit Einnahmeanlass, 
   * maxDosePerPeriod.denominator.code = #h
   * maxDosePerPeriod.denominator.unit = "Stunde(n)"
 
+Instance: Example-MR-Dosage-Bedarfsmedikation-MehrereAnlaesse
+InstanceOf: MedicationRequestDgMP
+Usage: #example
+Title: "Example-MR-Dosage-Bedarfsmedikation-MehrereAnlaesse"
+Description: "Bedarfsmedikation mit mehreren Einnahmeanlässen (asNeededFor 0..*). Die Anlässe sind fachlich ODER-verknüpft; im generierten Text werden sie als deutsche Aufzählung mit abschließendem \"oder\" dargestellt (z. B. \"Bei Kopfschmerzen, Fieber oder Gliederschmerzen: ...\")."
+* subject.display = "Patient"
+* status = #active
+* intent = #order
+* medicationCodeableConcept.text = "Ibuprofen 400mg"
+* dosageInstruction[+]
+  * asNeededBoolean = true
+  * extension[asNeededFor][+].valueCodeableConcept.text = "Kopfschmerzen"
+  * extension[asNeededFor][+].valueCodeableConcept.text = "Fieber"
+  * extension[asNeededFor][+].valueCodeableConcept.text = "Gliederschmerzen"
+  * modifierExtension[mindestabstandZwischenGaben].valueDuration = 6 $ucum#h "Stunde(n)"
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
+  * maxDosePerPeriod.numerator.value = 4
+  * maxDosePerPeriod.numerator.system = $kbv-dosiereinheit
+  * maxDosePerPeriod.numerator.code = #1
+  * maxDosePerPeriod.numerator.unit = "Stück"
+  * maxDosePerPeriod.denominator.value = 24
+  * maxDosePerPeriod.denominator.system = $ucum
+  * maxDosePerPeriod.denominator.code = #h
+  * maxDosePerPeriod.denominator.unit = "Stunde(n)"
+
 Instance: Example-MR-Dosage-Bedarfsmedikation-Struktur-Intervall
 InstanceOf: MedicationRequestDgMP
 Usage: #example

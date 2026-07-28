@@ -20,6 +20,7 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * obeys TimingFrequencyCount
   * obeys TimingPeriodUnit
   * obeys TimingPeriodOnlyWholeNumber
+  * obeys TimingBoundsDurationOnlyWholeNumber
   * obeys TimingVarFreqOrPeriod
   * obeys TimingVarFreqGtMin
   * obeys TimingVarPeriodGtMin
@@ -542,4 +543,9 @@ Expression: "/* Detect Interval and Time/4-Schema */
     )
   )
 )"
+Severity: #error
+
+Invariant: TimingBoundsDurationOnlyWholeNumber
+Description: "The boundsDuration.value should only describe whole numbers, decimals are not allowed"
+Expression: "bounds.ofType(Duration).value.empty() or bounds.ofType(Duration).value mod 1 = 0"
 Severity: #error

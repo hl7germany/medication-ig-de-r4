@@ -29,8 +29,9 @@ import re
 import sys
 import os
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
-__version__ = "1.1.0-beta-1"
+__version__ = "1.1.0-beta-7"
 __language__ = "de-DE"
 
 class MedicationDosageTextGenerator:
@@ -97,6 +98,10 @@ class MedicationDosageTextGenerator:
     URL_AS_NEEDED_FOR = 'http://hl7.org/fhir/5.0/StructureDefinition/extension-Dosage.asNeededFor'
     URL_MINDESTABSTAND = 'http://ig.fhir.de/igs/medication/StructureDefinition/MindestabstandZwischenGaben'
 
+    # Verbindliche IANA-Zielzeitzone für die Darstellung von boundsPeriod.
+    OUTPUT_TIMEZONE_NAME = "Europe/Berlin"
+    OUTPUT_TIMEZONE = ZoneInfo(OUTPUT_TIMEZONE_NAME)
+
     def __init__(self):
         """Initialize the dosage text generator with German language settings."""
         pass
@@ -126,6 +131,21 @@ class MedicationDosageTextGenerator:
         dosage_instructions = self._extract_dosage_instructions(resource)
         if not dosage_instructions:
             return ""
+
+        # Eine reine Bedarfsdosierung (asNeededBoolean=true ohne timing) ist
+        # nicht aggregierbar und muss das einzige Dosage-Element sein. Diese
+        # defensive Prüfung spiegelt AsNeededSingleDosageOnly auch für Input,
+        # der vor der Textgenerierung nicht gegen das Profil validiert wurde.
+        if (
+            any(
+                self._is_as_needed(dosage) and not dosage.get("timing")
+                for dosage in dosage_instructions
+            )
+            and len(dosage_instructions) != 1
+        ):
+            raise ValueError(
+                "Reine Bedarfsmedikation erlaubt genau ein Dosage-Element."
+            )
 
         # Step 2: Determine which dosage schema applies (implements TimingOnlyOneType logic)
         schema_type = self._determine_dosage_schema(dosage_instructions)
@@ -465,26 +485,43 @@ class MedicationDosageTextGenerator:
             return None
 
         first_dose = dose_and_rate[0]
-        dose_quantity = first_dose.get('doseQuantity')
-        if not dose_quantity:
-            dose_range = first_dose.get('doseRange')
-            if not dose_range:
-                return None
 
-            low = dose_range.get('low', {})
-            high = dose_range.get('high', {})
-            unit = high.get('unit') or low.get('unit', '')
-            if low.get('value') is not None and high.get('value') is not None:
-                value = f"{self._format_decimal_value(low.get('value'))} bis {self._format_decimal_value(high.get('value'))}"
-            elif high.get('value') is not None:
-                value = f"bis zu {self._format_decimal_value(high.get('value'))}"
+        if 'doseQuantity' in first_dose:
+            dose_quantity = first_dose.get('doseQuantity') or {}
+            dose_value = dose_quantity.get('value')
+            unit = dose_quantity.get('unit')
+            if dose_value is None:
+                raise ValueError("doseQuantity.value ist für die Textgenerierung erforderlich.")
+            if not unit:
+                raise ValueError("doseQuantity.unit ist für die Textgenerierung erforderlich.")
+            return (dose_value, unit)
+
+        if 'doseRange' in first_dose:
+            dose_range = first_dose.get('doseRange') or {}
+            low = dose_range.get('low')
+            high = dose_range.get('high')
+
+            if not high or high.get('value') is None:
+                raise ValueError("doseRange.high.value ist für die Textgenerierung erforderlich.")
+            if not high.get('unit'):
+                raise ValueError("doseRange.high.unit ist für die Textgenerierung erforderlich.")
+
+            if low:
+                if low.get('value') is None:
+                    raise ValueError("doseRange.low.value ist für die Textgenerierung erforderlich.")
+                if not low.get('unit'):
+                    raise ValueError("doseRange.low.unit ist für die Textgenerierung erforderlich.")
+                if low.get('unit') != high.get('unit'):
+                    raise ValueError("doseRange.low.unit und doseRange.high.unit müssen übereinstimmen.")
+                value = (
+                    f"{self._format_decimal_value(low.get('value'))} bis "
+                    f"{self._format_decimal_value(high.get('value'))}"
+                )
             else:
-                return None
-            return (value, unit)
+                value = f"bis zu {self._format_decimal_value(high.get('value'))}"
+            return (value, high.get('unit'))
 
-        dose_value = dose_quantity.get('value', 0)
-        unit = dose_quantity.get('unit', '')
-        return (dose_value, unit)
+        raise ValueError("Dosisangabe in doseAndRate[0] fehlt.")
 
     def _extract_dose_text_with_prefix(self, dosage):
         """
@@ -523,11 +560,22 @@ class MedicationDosageTextGenerator:
         bounds_duration = repeat_element.get('boundsDuration')
         bounds_period = repeat_element.get('boundsPeriod')
 
-        if bounds_period:
-            return self._format_bounds_period(bounds_period)
+        has_bounds_duration = 'boundsDuration' in repeat_element
+        has_bounds_period = 'boundsPeriod' in repeat_element
+        if has_bounds_duration and has_bounds_period:
+            raise ValueError(
+                "boundsPeriod und boundsDuration dürfen nicht gleichzeitig vorhanden sein."
+            )
 
-        if bounds_duration:
-            return self._format_duration_text(bounds_duration, prefix="für")
+        if has_bounds_period:
+            return self._format_bounds_period(bounds_period or {})
+
+        if has_bounds_duration:
+            return self._format_duration_text(
+                bounds_duration or {},
+                prefix="für",
+                field_name="boundsDuration"
+            )
 
         return ""
 
@@ -606,39 +654,72 @@ class MedicationDosageTextGenerator:
         text = re.sub(r'[ \t]+([;:.,])', r'\1', text)
         return text.strip()
 
-    def _format_duration_text(self, duration, prefix=""):
-        duration_value = duration.get('value', 0)
-        duration_unit = duration.get('code', '')
-        if not duration_value or not duration_unit:
-            return ""
+    def _format_duration_text(self, duration, prefix="", field_name="Duration"):
+        duration_value = duration.get('value')
+        duration_unit = duration.get('code')
+        if duration_value is None:
+            raise ValueError(f"{field_name}.value ist für die Textgenerierung erforderlich.")
+        if (isinstance(duration_value, bool) or
+                not isinstance(duration_value, (int, float)) or
+                duration_value <= 0):
+            raise ValueError(f"{field_name}.value muss größer als 0 sein.")
+        if not duration_unit:
+            raise ValueError(f"{field_name}.code ist für die Textgenerierung erforderlich.")
         formatted_value = self._format_decimal_value(duration_value)
         formatted_unit = self._format_time_unit_german(duration_value, duration_unit)
         duration_text = f"{formatted_value} {formatted_unit}"
         return f"{prefix} {duration_text}" if prefix else duration_text
 
     def _format_bounds_period(self, bounds_period):
-        start = bounds_period.get('start')
-        end = bounds_period.get('end')
-        if start and end:
-            return f"Vom {self._format_datetime_german(start)} bis zum {self._format_datetime_german(end)}"
-        if start:
-            return f"Ab dem {self._format_datetime_german(start)}"
-        if end:
-            return f"Bis zum {self._format_datetime_german(end)}"
-        return ""
+        has_start = 'start' in bounds_period
+        has_end = 'end' in bounds_period
+        if not has_start and not has_end:
+            raise ValueError("boundsPeriod muss start und/oder end enthalten.")
 
-    def _format_datetime_german(self, value):
-        date_part = value
-        time_part = ""
-        if "T" in value:
-            date_part, time_part = value.split("T", 1)
+        start_text = (
+            self._format_datetime_german(bounds_period.get('start'), "boundsPeriod.start")
+            if has_start else ""
+        )
+        end_text = (
+            self._format_datetime_german(bounds_period.get('end'), "boundsPeriod.end")
+            if has_end else ""
+        )
+        if has_start and has_end:
+            return f"Vom {start_text} bis zum {end_text}"
+        if has_start:
+            return f"Ab dem {start_text}"
+        return f"Bis zum {end_text}"
+
+    def _format_datetime_german(self, value, field_name="dateTime"):
+        error_message = (
+            f"{field_name} muss ein parsebares FHIR-dateTime mit vollständigem Datum "
+            "im Format JJJJ-MM-TT sein; eine Uhrzeit erfordert eine Zeitzone."
+        )
+        if not isinstance(value, str):
+            raise ValueError(error_message)
+
+        if re.fullmatch(r'\d{4}-\d{2}-\d{2}', value):
+            try:
+                return datetime.strptime(value, "%Y-%m-%d").strftime("%d.%m.%Y")
+            except ValueError:
+                raise ValueError(error_message) from None
+
+        if not re.fullmatch(
+            r'\d{4}-\d{2}-\d{2}'
+            r'T(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d'
+            r'(?:\.\d+)?'
+            r'(?:Z|[+-](?:(?:0\d|1[0-3]):[0-5]\d|14:00))',
+            value
+        ):
+            raise ValueError(error_message)
+
         try:
-            formatted_date = datetime.strptime(date_part[:10], "%Y-%m-%d").strftime("%d.%m.%Y")
+            parsed_datetime = datetime.fromisoformat(value.replace("Z", "+00:00"))
+            berlin_datetime = parsed_datetime.astimezone(self.OUTPUT_TIMEZONE)
         except ValueError:
-            formatted_date = date_part
-        if time_part:
-            return f"{formatted_date} um {self._format_time_german(time_part)}"
-        return formatted_date
+            raise ValueError(error_message) from None
+
+        return berlin_datetime.strftime("%d.%m.%Y um %H:%M Uhr")
 
     def _format_decimal_value(self, value):
         """
@@ -671,15 +752,23 @@ class MedicationDosageTextGenerator:
             Input: "08:30"
             Output: "08:30 Uhr"
         """
-        try:
-            # Extract hour and minute from time string
-            time_parts = time_string.split(':')
-            hour = int(time_parts[0])
-            minute = time_parts[1] if len(time_parts) > 1 else '00'
-            return f"{hour:02d}:{minute} Uhr"
-        except (ValueError, IndexError):
-            # Fallback: return original string if parsing fails
-            return time_string
+        if not isinstance(time_string, str):
+            raise ValueError(
+                "timeOfDay muss im Format HH:MM oder HH:MM:SS"
+                "[.Bruchteile] angegeben sein."
+            )
+
+        match = re.fullmatch(
+            r'((?:[01]\d|2[0-3])):([0-5]\d)'
+            r'(?::[0-5]\d(?:\.\d+)?)?',
+            time_string
+        )
+        if not match:
+            raise ValueError(
+                "timeOfDay muss im Format HH:MM oder HH:MM:SS"
+                "[.Bruchteile] angegeben sein."
+            )
+        return f"{match.group(1)}:{match.group(2)} Uhr"
 
     def _format_time_unit_german(self, value, unit):
         """
@@ -842,12 +931,12 @@ class MedicationDosageTextGenerator:
             else:
                 return f"{self._format_range_value(frequency, frequency_max)} x wöchentlich"
 
-        # Interval patterns (frequency=1 with various periods)
-        if frequency == 1:
+        # Kurzform nur für eine feste Frequenz von genau 1.
+        if frequency == 1 and frequency_max is None:
             period_description = self._format_period_description(period, period_unit, period_max)
             return f"alle {period_description}"
 
-        # Complex patterns (frequency > 1 with intervals)
+        # Feste Frequenzen > 1 und Frequenzbereiche (auch 1 bis n).
         frequency_text = f"{self._format_range_value(frequency, frequency_max)} x"
         period_description = self._format_period_description(period, period_unit, period_max)
         return f"{frequency_text} alle {period_description}"
@@ -1150,9 +1239,14 @@ class MedicationDosageTextGenerator:
         for extension in dosage.get('extension', []):
             if extension.get('url') != self.URL_AS_NEEDED_FOR:
                 continue
-            text = extension.get('valueCodeableConcept', {}).get('text')
-            if text:
-                reasons.append(text)
+            concept = extension.get('valueCodeableConcept') or {}
+            reason_text = concept.get('text')
+            if not isinstance(reason_text, str) or not reason_text.strip():
+                raise ValueError(
+                    "asNeededFor.valueCodeableConcept.text ist für die "
+                    "Textgenerierung erforderlich."
+                )
+            reasons.append(reason_text.strip())
         if not reasons:
             return ""
         if len(reasons) == 1:
@@ -1164,33 +1258,71 @@ class MedicationDosageTextGenerator:
             if extension.get('url') != self.URL_MINDESTABSTAND:
                 continue
             duration = extension.get('valueDuration')
-            if duration:
-                return self._format_duration_text(duration)
+            if not duration:
+                raise ValueError(
+                    "MindestabstandZwischenGaben.valueDuration ist "
+                    "für die Textgenerierung erforderlich."
+                )
+            return self._format_duration_text(
+                duration,
+                field_name="MindestabstandZwischenGaben.valueDuration"
+            )
         return ""
 
     def _extract_max_dose_text(self, dosage):
-        max_dose = dosage.get('maxDosePerPeriod')
-        if not max_dose:
+        if 'maxDosePerPeriod' not in dosage:
             return ""
-        numerator = max_dose.get('numerator', {})
+
+        max_dose = dosage.get('maxDosePerPeriod') or {}
+        numerator = max_dose.get('numerator') or {}
         value = numerator.get('value')
-        unit = numerator.get('unit', '')
+        unit = numerator.get('unit')
         if value is None:
-            return ""
+            raise ValueError(
+                "maxDosePerPeriod.numerator.value ist für die "
+                "Textgenerierung erforderlich."
+            )
+        if (isinstance(value, bool) or
+                not isinstance(value, (int, float))):
+            raise ValueError(
+                "maxDosePerPeriod.numerator.value muss numerisch sein."
+            )
+        if not isinstance(unit, str) or not unit.strip():
+            raise ValueError(
+                "maxDosePerPeriod.numerator.unit ist für die "
+                "Textgenerierung erforderlich."
+            )
+
         dose = self._format_decimal_value(value)
-        dose = f"{dose} {unit}" if unit else dose
-        period = self._format_max_dose_period(max_dose.get('denominator', {}))
+        dose = f"{dose} {unit.strip()}"
+        period = self._format_max_dose_period(max_dose.get('denominator') or {})
         return f"nicht mehr als {dose} {period}"
 
     def _format_max_dose_period(self, denominator):
         """
-        Bezugszeitraum der Maximalmenge, eingabetreu aus dem Nenner (Invariante
-        MaxDosePerPeriodOnly24hOr1d lässt nur 24 h oder 1 d zu):
-        1 d -> "pro Tag", sonst (24 h) -> "in 24 Stunden".
+        Bezugszeitraum der Maximalmenge, eingabetreu aus dem Nenner.
+        Ausschließlich 1 d und 24 h sind zulässig; andere oder unvollständige
+        Nenner führen zu einem Fehler.
         """
-        if denominator.get('value') == 1 and denominator.get('code') == 'd':
+        value = denominator.get('value')
+        code = denominator.get('code')
+        if value is None:
+            raise ValueError(
+                "maxDosePerPeriod.denominator.value ist für die "
+                "Textgenerierung erforderlich."
+            )
+        if not code:
+            raise ValueError(
+                "maxDosePerPeriod.denominator.code ist für die "
+                "Textgenerierung erforderlich."
+            )
+        if value == 1 and code == 'd':
             return "pro Tag"
-        return "in 24 Stunden"
+        if value == 24 and code == 'h':
+            return "in 24 Stunden"
+        raise ValueError(
+            "maxDosePerPeriod.denominator muss 1 d oder 24 h sein."
+        )
 
     def _append_trailing_instructions(self, text, dosage):
         # Maximalmenge (nur Bedarfsmedikation): der Dosis mit Gedankenstrich nachgestellt.

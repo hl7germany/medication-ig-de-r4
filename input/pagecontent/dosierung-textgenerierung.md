@@ -1,8 +1,8 @@
 Diese Seite beschreibt die Erzeugung eines menschenlesbaren Dosierungstextes aus einer gesamten Arzneimittel‑Ressource (`MedicationRequest`, `MedicationDispense` oder `MedicationStatement`).
 
-Referenz-Implementierung: [Python Skript](https://github.com/hl7germany/dgMP-DosageTextgenerierung-Skript/blob/main/medication-dosage-to-text.py). Die dortige Logik übernimmt die Prüfung der unterstützten Felder, die Erkennung des passenden Dosierschemas und die Texterzeugung. Das Skript ist außerhalb dieses Implementation Guides gelagert und kann eigenständig versioniert sein. In den Beispielen ist ersichtlich, welche Version der Referenzimplementierung zum Zeitpunkt der Erstellung genutzt wurde (siehe [Versionierung](#versionierung)).
+Referenz-Implementierung: [Python Skript](https://github.com/hl7germany/dgMP-DosageTextgenerierung-Skript/blob/main/medication-dosage-to-text.py). Die nachfolgende Beschreibung bildet den Algorithmus des im IG verwendeten Skripts `scripts/medication-dosage-to-text.py` vollständig ab. Das verlinkte Skript kann außerhalb dieses Implementation Guides eigenständig versioniert sein. In den Beispielen ist ersichtlich, welche Version der Referenzimplementierung zum Zeitpunkt der Erstellung genutzt wurde (siehe [Versionierung](#versionierung)).
 
-Voraussetzung für eine erfolgreiche Texterzeugung ist stets ein **profilkonformer Input**; im Profil gestrichene Elemente sind nicht Teil der Verarbeitung.
+Voraussetzung für eine erfolgreiche Texterzeugung ist stets ein **profilkonformer Input**; im Profil gestrichene Elemente sind nicht Teil der Verarbeitung. Das Skript ist kein Ersatz für die FHIR-Profilvalidierung: Es prüft einige nicht zulässige Konstellationen defensiv, führt aber keine vollständige Invariantenprüfung durch.
 
 Diese Seite stellt zwei Aspekte dar: **Teil A** beschreibt, wie jede einzelne Angabe einer `Dosage` in Text überführt wird. **Teil B** beschreibt, wie diese Bausteine je zulässigem Schema zu einem vollständigen Dosierungstext zusammengesetzt werden.
 
@@ -10,11 +10,50 @@ Diese Seite stellt zwei Aspekte dar: **Teil A** beschreibt, wie jede einzelne An
 
 ---
 
+## Gesamtalgorithmus
+
+Die Verarbeitung erfolgt in dieser Reihenfolge:
+
+1. Anhand von `resourceType` wird die Liste der Dosierungen gelesen:
+   * `MedicationRequest.dosageInstruction`
+   * `MedicationDispense.dosageInstruction`
+   * `MedicationStatement.dosage`
+2. Bei einem anderen Ressourcentyp wird mit einem Fehler abgebrochen (`Unsupported resource type: {resourceType}`). Ist die gelesene Liste leer oder fehlt sie, ist das Ergebnis ein leerer String.
+3. Enthält die Liste eine reine Bedarfsdosierung (`asNeededBoolean = true` ohne `timing`) und insgesamt nicht genau ein `Dosage`-Element, wird die Verarbeitung abgebrochen.
+4. Das Darstellungsschema wird ausschließlich anhand des **ersten** `Dosage`-Elements und in der unter [Schema-Erkennung](#schema-erkennung) angegebenen Priorität bestimmt.
+5. Der schemaspezifische Generator sammelt die benötigten Dosis-/Zeitsegmente. Je nach Schema werden alle `Dosage`-Elemente oder nur das erste verarbeitet; die genaue Aggregation ist unter [Aggregation mehrerer Dosage-Elemente](#aggregation-mehrerer-dosage-elemente) festgelegt.
+6. Der Generator setzt Zeitrahmen, Bedarfsangaben, Rhythmus und Kerntext zusammen. Danach werden – außer bei Freitext – Maximalmenge und `patientInstruction` ergänzt.
+7. Abschließend wird der Text – außer bei Freitext – normalisiert. Ist das erste `Dosage`-Element als Bedarf gekennzeichnet, wird zusätzlich exakt das erste Zeichen des Ergebnisses in einen Großbuchstaben umgewandelt.
+
+Das folgende Pseudocode-Gerüst zeigt den vollständigen Kontrollfluss:
+
+```text
+dosierungen = extrahiereDosierungen(resource)
+wenn dosierungen leer: return ""
+
+wenn irgendeine dosierung reine Bedarfsdosierung ist
+und anzahl(dosierungen) != 1:
+  Fehler
+
+schema = erkenneSchema(dosierungen[0])
+wenn schema unbekannt: return "Unbekanntes Dosierungsschema: Unknown"
+
+text = erzeugeSchemaspezifischenText(schema, dosierungen)
+wenn schema = Freitext: return text
+
+text = normalisiere(text)
+wenn dosierungen[0].asNeededBoolean = true:
+  text = großschreibenNurDesErstenZeichens(text)
+return text
+```
+
+---
+
 ## Teil A: Übersetzung der einzelnen Angaben
 
 ### Dosis (`doseAndRate.doseQuantity` / `doseRange`)
 
-Verwendet wird die erste vorhandene `doseQuantity` oder `doseRange`. Die Standardform lautet `je {Wert} {Einheit}` (z. B. `je 1 Stück`). Bei einem `doseRange` gilt abhängig davon, ob ein beidseitig oder einseitig begrenzter Bereich vorliegt:
+Es wird ausschließlich `doseAndRate[0]` ausgewertet. Ist dort `doseQuantity` vorhanden, hat sie Vorrang; andernfalls wird `doseRange` gelesen. Weitere `doseAndRate`-Einträge werden ignoriert. Die Standardform lautet `je {Wert} {Einheit}` (z. B. `je 1 Stück`). Bei einem `doseRange` gilt abhängig davon, ob ein beidseitig oder einseitig begrenzter Bereich vorliegt:
 
 * beidseitig: `je {von} bis {bis} {Einheit}` (z. B. `je 1 bis 2 Stück`)
 * nur obere Grenze: `je bis zu {bis} {Einheit}` (z. B. `je bis zu 2 Stück`)
@@ -22,6 +61,10 @@ Verwendet wird die erste vorhandene `doseQuantity` oder `doseRange`. Die Standar
 > Nur die untere Grenze (`low` ohne `high`) ist **nicht zulässig** und wird durch die Invariante `DoseRangeHighRequiredWhenLowPresent` ausgeschlossen.
 
 Ganzzahlige Werte werden ohne Nachkommastelle dargestellt; überflüssige Dezimalstelle und Komma entfallen (`1.0` → `1`). Dezimalwerte werden mit **deutschem Dezimalkomma** ausgegeben (z. B. `1,5`).
+
+`doseQuantity.value` und `doseQuantity.unit` sind für die Textgenerierung verpflichtend. Fehlt eine dieser Angaben trotz vorhandener `doseQuantity`, bricht der Algorithmus mit einem Fehler ab.
+
+Bei `doseRange` muss die Obergrenze mit `high.value` und `high.unit` vorhanden sein. Ist zusätzlich `low` vorhanden, müssen auch `low.value` und `low.unit` vorhanden sein und beide Einheiten müssen übereinstimmen. Eine fehlende Pflichtangabe oder eine abweichende Einheit führt zum Abbruch. Die Ausgabeeinheit stammt stets aus `high.unit`. Enthält `doseAndRate[0]` weder `doseQuantity` noch `doseRange`, wird ebenfalls abgebrochen.
 
 Der so gebildete Dosis-Baustein – einschließlich der **Bereichsform** (`je {von} bis {bis} {Einheit}`) – ist in **allen** Schemata einsetzbar; überall dort, wo in Teil B der Platzhalter `{Dosis}` steht, kann ein fester Wert **oder** ein Bereich stehen (z. B. `alle 8 Stunden: je 1 bis 2 Stück`).
 
@@ -33,6 +76,8 @@ Der so gebildete Dosis-Baustein – einschließlich der **Bereichsform** (`je {v
 
 Eine begrenzte Anwendungsdauer wird vorangestellt als `für {Wert} {Einheit}`. Die Einheit wird nach den Regeln unter [Einheiten und Pluralisierung](#einheiten-und-pluralisierung) ausgegeben, z. B. `für 1 Tag` bzw. `für 7 Tage`.
 
+`boundsDuration.value` und `boundsDuration.code` sind für die Textgenerierung verpflichtend, sobald `boundsDuration` vorhanden ist. Der Wert muss numerisch und größer als `0` sein. Fehlt eine Pflichtangabe oder ist der Wert nicht größer als `0`, bricht der Algorithmus mit einem Fehler ab.
+
 #### Start- und Endzeitpunkt (`boundsPeriod`)
 
 Start- und/oder Endzeitpunkt werden vorangestellt:
@@ -41,23 +86,30 @@ Start- und/oder Endzeitpunkt werden vorangestellt:
 * Start und Ende: `Vom {Startdatum}[ um {Uhrzeit}] bis zum {Enddatum}[ um {Uhrzeit}]`
 * nur Ende: `Bis zum {Enddatum}[ um {Uhrzeit}]`
 
-Das Datum wird im Format `TT.MM.JJJJ` ausgegeben, die Uhrzeit im Format `HH:MM Uhr`. Fehlt die Uhrzeit, entfällt der Zusatz `um {Uhrzeit}`.
+Das Datum wird im Format `TT.MM.JJJJ`, eine vorhandene Uhrzeit im Format `HH:MM Uhr` ausgegeben. Sekunden werden nicht dargestellt.
+
+`boundsPeriod` und `boundsDuration` dürfen nicht gleichzeitig vorhanden sein. Andernfalls bricht die Textgenerierung ab. Ein vorhandenes `boundsPeriod` muss `start` und/oder `end` enthalten. Jeder vorhandene Wert muss als FHIR-`dateTime` mit vollständigem Datum `JJJJ-MM-TT` parsebar sein. Bei einer reinen Datumsangabe erfolgt keine Zeitzonenverarbeitung. Enthält der Wert eine Uhrzeit, muss gemäß FHIR eine Zeitzone als `Z` oder Offset vorhanden sein. Der Zeitpunkt wird in die verbindliche IANA-Zielzeitzone `Europe/Berlin` umgerechnet; erst danach werden das gegebenenfalls verschobene Datum sowie Stunde und Minute formatiert. Die Umrechnung berücksichtigt automatisch Sommer- und Winterzeit.
+
+*Beispiel:* `2026-06-05T23:30:45Z` wird in `Europe/Berlin` zu `06.06.2026 um 01:30 Uhr`.
 
 ### Intervall (`frequency` / `period` / `periodUnit`)
 
-Aus Frequenz und Periode entsteht der einleitende Rhythmus:
+Aus `frequency`, `frequencyMax`, `period`, `periodMax` und `periodUnit` entsteht der einleitende Rhythmus:
 
-* tägliches Muster (`periodUnit='d'`, `period=1`): `täglich` bei `frequency=1`, sonst `{frequency} x täglich`
-* wöchentliches Muster (`periodUnit='wk'`, `period=1`): `wöchentlich` bzw. `{frequency} x wöchentlich`
-* sonstige Perioden: `alle {period} {Einheit}` bei `frequency=1` (z. B. `alle 8 Stunden`), sonst `{frequency} x alle {period} {Einheit}`
+* tägliches Muster (`periodUnit='d'`, `period=1`): `täglich` bei `frequency=1` und fehlendem `frequencyMax`, sonst `{Frequenzwert} x täglich`
+* wöchentliches Muster (`periodUnit='wk'`, `period=1`): `wöchentlich` bei `frequency=1` und fehlendem `frequencyMax`, sonst `{Frequenzwert} x wöchentlich`
+* sonstige Perioden bei einer **festen Frequenz von genau 1** (`frequency=1`, `frequencyMax` fehlt): `alle {Periodenwert} {Einheit}` (z. B. `alle 8 Stunden`)
+* sonstige Perioden bei einem **Frequenzbereich** (`frequencyMax` vorhanden, auch bei `frequency=1`) oder einer festen Frequenz größer als 1: `{Frequenzwert} x alle {Periodenwert} {Einheit}` (z. B. `1 bis 2 x alle 8 Stunden` beziehungsweise `2 x alle 8 Stunden`)
 
-Die Perioden-Einheit wird nach den Regeln unter [Einheiten und Pluralisierung](#einheiten-und-pluralisierung) ausgegeben. Frequenz und Periode können statt eines festen Wertes einen **Bereich** angeben; Bereiche werden mit „bis" gebildet: `{von} bis {bis} x täglich` (z. B. `2 bis 3 x täglich`) sowie `alle {von} bis {bis} {Einheit}` (z. B. `alle 2 bis 3 Tage`).
+`{Frequenzwert}` bezeichnet entweder `frequency` allein oder `frequency bis frequencyMax`; `{Periodenwert}` entsprechend `period` allein oder `period bis periodMax`. Die Perioden-Einheit wird nach den Regeln unter [Einheiten und Pluralisierung](#einheiten-und-pluralisierung) ausgegeben. Beispiele für Bereiche sind `2 bis 3 x täglich` und `alle 2 bis 3 Tage`.
+
+Fehlen `frequency`, `period` und `periodUnit` vollständig, wird kein Intervallbaustein erzeugt. Dies ist nur bei Schemata zulässig, deren zeitlicher Bezug bereits durch `when`, `timeOfDay` oder `dayOfWeek` bestimmt wird. Für ein Intervallschema müssen die dafür erforderlichen Angaben vollständig vorhanden sein; unvollständige Intervallangaben führen zu einem Fehler.
 
 ### Einheiten und Pluralisierung
 
 Es sind zwei Arten von Einheiten zu unterscheiden:
 
-**1. Zeit-Einheiten** (aus `periodUnit`, `boundsDuration.code`, `MindestabstandZwischenGaben`): Sie werden über eine **feste Tabelle** in ihre deutsche Bezeichnung übersetzt. Die Form richtet sich ausschließlich nach dem Wert: **Singular genau dann, wenn der Wert gleich `1` ist**, sonst **Plural**. Bei einem Bereich (`{von} bis {bis}`) wird stets die Plural-Form verwendet.
+**1. Zeit-Einheiten** (aus `periodUnit`, `boundsDuration.code`, `MindestabstandZwischenGaben`): Sie werden über eine **feste Tabelle** in ihre deutsche Bezeichnung übersetzt. Die Form richtet sich ausschließlich nach dem für die Einheit verwendeten Bezugswert: **Singular genau dann, wenn dieser Wert gleich `1` ist**, sonst **Plural**. Bei einem Periodenbereich ist `periodMax` der Bezugswert; ohne `periodMax` ist es `period`.
 
 | Code | Singular (Wert = 1) | Plural (sonst) |
 |------|---------------------|----------------|
@@ -89,7 +141,15 @@ Wochentage werden, sofern vorhanden, in kanonischer Reihenfolge (Montag bis Sonn
 
 ### Konkrete Zeiten (`timeOfDay`)
 
-Uhrzeiten werden aufsteigend sortiert und im Format `HH:MM Uhr` ausgegeben (z. B. `08:00 Uhr`).
+Uhrzeiten werden anhand ihres Eingabestrings aufsteigend sortiert und im Format `HH:MM Uhr` ausgegeben (z. B. `08:00 Uhr`). Akzeptiert werden nullaufgefüllte Werte im Format `HH:MM` oder `HH:MM:SS` mit optionalen Sekundenbruchteilen. Stunde und Minute werden übernommen, Sekunden und Sekundenbruchteile entfallen. Ein nicht parsebarer oder außerhalb des zulässigen Uhrzeitbereichs liegender Wert führt zum Abbruch.
+
+Mehrere Uhrzeiten innerhalb **desselben** `Dosage`-Elements werden vor dem Gedankenstrich mit Komma zusammengefasst und teilen sich dessen Dosis, z. B. `08:00 Uhr, 20:00 Uhr — je 1 Stück`. Uhrzeitgruppen aus verschiedenen `Dosage`-Elementen werden anhand ihrer jeweils frühesten Uhrzeit sortiert und anschließend ebenfalls mit Komma verbunden.
+
+*Beispiel:* Das erste `Dosage`-Element enthält `timeOfDay = [08:00:00, 12:00:00]` und eine Dosis von `1 Stück`; das zweite enthält `timeOfDay = [20:00:00]` und eine Dosis von `2 Stück`. Das Ergebnis lautet:
+
+```text
+täglich: 08:00 Uhr, 12:00 Uhr — je 1 Stück, 20:00 Uhr — je 2 Stück
+```
 
 ### Tagesabschnitt (`when`-Codes)
 
@@ -106,7 +166,20 @@ Je nach Schema erscheinen die Codes entweder als kompaktes, positionelles Muster
 
 ### Einnahmeanlass (`asNeededFor`)
 
-Der Einnahmeanlass wird bei Bedarfsmedikation vorangestellt als `bei {Anlass}` (z. B. `bei Kopfschmerzen`). Der Einnahmeanlass ist **optional**; fehlt er, wird generisch `bei Bedarf` gesetzt. Mehrere Einnahmeanlässe werden als ODER-Verknüpfung interpretiert. Details zur Zusammensetzung siehe [Schema für Bedarfsmedikation](#schema-für-bedarfsmedikation).
+Der Einnahmeanlass wird bei Bedarfsmedikation vorangestellt als `bei {Anlass}` (z. B. `bei Kopfschmerzen`). Der Einnahmeanlass ist **optional**; fehlt er, wird generisch `bei Bedarf` gesetzt.
+
+Es können **mehrere** Einnahmeanlässe angegeben sein (`asNeededFor 0..*`, fachlich ODER-verknüpft). Sie werden in der angegebenen Reihenfolge als **deutsche Aufzählung** verbunden: alle bis auf den letzten mit Komma, der letzte mit „ oder " (kein Komma vor „oder"):
+
+* 2 Anlässe: `bei Kopfschmerzen oder Fieber`
+* 3+ Anlässe: `bei Kopfschmerzen, Fieber oder Gliederschmerzen`
+
+Details zur Zusammensetzung siehe [Schema für Bedarfsmedikation](#schema-für-bedarfsmedikation).
+
+Ausgewertet werden nur Extensions mit der exakten kanonischen URL aus der [Feldreferenz](#feldreferenz). Von jeder passenden Extension wird ausschließlich `valueCodeableConcept.text` übernommen. Im Profil `DosageDgMP` ist `coding` auf `0..0` eingeschränkt und `.text` verpflichtend. Fehlt dennoch ein nicht leerer Text, bricht die Referenzimplementierung mit einem Fehler ab; die Extension wird nicht stillschweigend ignoriert. Führender und abschließender Leerraum des Textes wird entfernt.
+
+### Mindestabstand zwischen Gaben
+
+Der Mindestabstand wird nur im Bedarfsfall ausgegeben und lautet `im Abstand von mindestens {Wert} {Zeiteinheit}`. Das Skript durchsucht `modifierExtension` nach der exakten kanonischen URL `MindestabstandZwischenGaben` und verwendet die erste passende Extension. `valueDuration`, `valueDuration.value` und `valueDuration.code` sind dann verpflichtend; der Wert muss numerisch und größer als `0` sein. Andernfalls bricht der Algorithmus mit einem Fehler ab. Die Formatierung entspricht `boundsDuration`, jedoch ohne das Wort `für`.
 
 ### Maximalmenge (`maxDosePerPeriod`)
 
@@ -117,11 +190,19 @@ Die Maximalmenge wird der Dosis nachgestellt als `nicht mehr als {Wert} {Einheit
 
 Die Einheit entspricht der Dosiereinheit.
 
+Die Maximalmenge ist **nur bei Bedarfsmedikation** (`asNeededBoolean = true`) zulässig (durchgesetzt über die Invariante `MaxDoseOnlyWhenAsNeeded`) und wird **ausschließlich im Bedarfsfall** dargestellt. In strukturierten Nicht-Bedarf-Schemata wird `maxDosePerPeriod` nicht ausgegeben.
+
+Ist `maxDosePerPeriod` vorhanden, müssen `numerator.value`, `numerator.unit`, `denominator.value` und `denominator.code` vorhanden sein. `numerator.value` muss numerisch und `numerator.unit` darf nicht leer sein. Als Nenner werden ausschließlich `1 d` und `24 h` akzeptiert. Fehlende oder andere Angaben führen zum Abbruch; es gibt keinen Fallback und keine unvollständige Ausgabe der Maximalmenge.
+
 ### Freitext-Hinweise (`patientInstruction`)
 
-Ergänzende Einnahmehinweise werden aus `patientInstruction` als abschließender Satz mit vorangestelltem `Hinweis:` wiedergegeben (z. B. `Hinweis: Mit ausreichend Wasser einnehmen`).
+Ergänzende Einnahmehinweise werden aus `patientInstruction` (einzelner String, `0..1`) als abschließender Satz mit vorangestelltem `Hinweis:` wiedergegeben (z. B. `Hinweis: Mit ausreichend Wasser einnehmen`). Führender und abschließender Leerraum des Feldwerts wird entfernt; ein danach leerer Wert wird nicht ausgegeben.
+
+Der Hinweis wird als **eigener Satz** angehängt. Der bisherige strukturierte Dosierungstext erhält einen abschließenden Punkt, gefolgt von `Hinweis: {Text}`. Ist bereits ein Punkt vorhanden, wird kein zweiter ergänzt. Bei profilkonformen Eingaben erzeugt der Algorithmus den Punkt regulär beim Anhängen des Hinweises. Beispiel: `1-0-1-0 Stück. Hinweis: Nach dem Essen`.
 
 > `additionalInstruction` wird **nicht** verwendet und ist im Profil `DosageDgMP` auf `0..0` gestrichen; es bleibt für künftige strukturierte Zusatzangaben reserviert.
+
+Auch `route` wird vom Algorithmus nicht gelesen oder ausgegeben; das Element ist im Profil `DosageDgMP` auf `0..0` eingeschränkt.
 
 ### Trennzeichen
 
@@ -131,11 +212,19 @@ Ergänzende Einnahmehinweise werden aus `patientInstruction` als abschließender
 * **Semikolon mit Leerzeichen** (`; `) trennt aufeinanderfolgende **Wochentagssegmente**, unabhängig davon, ob sie aus derselben oder aus verschiedenen `Dosage`-Einträgen stammen.
 * **Bindestrich** (`-`) trennt die vier Positionen des 4‑Schemas.
 
-Es werden keine Zeilenumbrüche erzeugt; der Text einer Ressource steht in einer Zeile. Ausnahme ist die Freitext-Dosierung, in der mehrere `text`-Felder mit Leerzeichen verkettet werden.
+Beim Gedankenstrich handelt es sich exakt um den Unicode-**Em-Dash** `—` (U+2014); die vier Positionen des 4‑Schemas werden mit dem ASCII-Bindestrich-Minus `-` (U+002D) getrennt.
 
-**Normalisierung:** Mehrfache Leerzeichen durch ausgelassene Bestandteile werden zu einem Leerzeichen reduziert und vor Satzzeichen entfernt.
+Strukturierte Schemata erzeugen keine Zeilenumbrüche; ihr Text steht in einer Zeile. Die Freitext-Dosierung durchläuft die nachfolgende Normalisierung nicht und kann daher im Feld enthaltene Zeilenumbrüche beibehalten; lediglich der unter [Freitext-Dosierung](#freitext-dosierung) beschriebene `trim` wird angewendet.
 
-**Deterministische Reihenfolge:** Die Reihenfolge der Segmente im erzeugten Text ist grundsätzlich **unabhängig von der Reihenfolge der `Dosage`-Elemente** in der Ressource. Segmente werden ausschließlich nach ihrem Inhalt sortiert (Uhrzeiten aufsteigend, Tagesabschnitte in fester Reihenfolge morgens → mittags → abends → zur Nacht, Wochentage kanonisch Montag → Sonntag).
+**Normalisierung:** Nach dem Zusammensetzen wird der Text normalisiert – dies gilt für **alle Schemata außer der Freitext-Dosierung**:
+
+* In strukturiert erzeugten Texten werden Folgen aus zwei oder mehr Leerzeichen oder Tabs unabhängig von ihrer Herkunft zu **einem** Leerzeichen reduziert. Freitext-Dosierungen werden nicht normalisiert.
+* Leerzeichen/Tabs **unmittelbar vor** den Satzzeichen `;` `:` `.` `,` werden entfernt.
+* Führende und abschließende Leerzeichen werden entfernt (trim).
+
+Der Gedankenstrich (`—`) und Klammern bleiben dabei unangetastet.
+
+**Deterministische Reihenfolge:** Bei profilkonformem Input ist die Reihenfolge der Segmente im erzeugten Text grundsätzlich **unabhängig von der Reihenfolge der `Dosage`-Elemente** in der Ressource. Segmente werden ausschließlich nach ihrem Inhalt sortiert (Uhrzeiten aufsteigend, Tagesabschnitte in fester Reihenfolge morgens → mittags → abends → zur Nacht, Wochentage kanonisch Montag → Sonntag).
 
 ---
 
@@ -147,12 +236,12 @@ Bevor die Bausteine zusammengesetzt werden, wird genau **ein** Darstellungsschem
 
 | Merkmal | Bedingung |
 |---------|-----------|
-| `hatText` | `Dosage.text` ist belegt |
-| `hatTiming` | `Dosage.timing` ist vorhanden |
+| `hatText` | `Dosage.text` hat einen nicht leeren Wert |
+| `hatTiming` | `Dosage.timing` hat ein nicht leeres Objekt |
 | `istBedarf` | `Dosage.asNeededBoolean = true` |
-| `hatFrequenz` | `repeat.frequency` ist vorhanden |
-| `hatPeriode` | `repeat.period` ist vorhanden |
-| `hatPeriodeneinheit` | `repeat.periodUnit` ist vorhanden |
+| `hatFrequenz` | der Schlüssel `repeat.frequency` ist vorhanden (unabhängig von seinem Wert) |
+| `hatPeriode` | der Schlüssel `repeat.period` ist vorhanden (unabhängig von seinem Wert) |
+| `hatPeriodeneinheit` | der Schlüssel `repeat.periodUnit` ist vorhanden (unabhängig von seinem Wert) |
 | `hatWochentag` | `repeat.dayOfWeek` ist vorhanden **und** nicht leer |
 | `hatWhenCodes` | `repeat.when` ist vorhanden **und** nicht leer |
 | `hatUhrzeit` | `repeat.timeOfDay` ist vorhanden **und** nicht leer |
@@ -188,10 +277,12 @@ Die Regeln werden **von oben nach unten** geprüft; die **erste** zutreffende Re
 Ein generierter Dosierungstext folgt grundsätzlich dem Aufbau:
 
 ```
-[{Zeitrahmen}] [{Intervall}]: [{Wochentag}] [{Zeit- oder Tagesabschnittsangabe} — ]{Dosis}[. Hinweis: {Instruktionen}]
+[{Zeitrahmen}] [{Intervall}]: [{Wochentag}] [{Zeit- oder Tagesabschnittsangabe} — ]je {Dosis}[. Hinweis: {Instruktionen}]
 ```
 
 `{…}` kennzeichnet einen Platzhalter, `[...]` einen optionalen Bestandteil, der nur erscheint, wenn die zugehörige Angabe vorliegt. Klammern können geschachtelt werden; eine äußere optionale Klammer entfällt vollständig, wenn alle inneren Bestandteile fehlen.
+
+In den Schemata von Teil B bezeichnet `{Dosis}` den formatierten Dosiswert einschließlich optionaler Einheit, jedoch **ohne** das Wort `je`; deshalb steht in den ausgeschriebenen Mustern ausdrücklich `je {Dosis}`. Der in Teil A beschriebene vollständige Dosis-Baustein entspricht somit `je {Dosis}`.
 
 Je nach Schema werden einzelne Bestandteile weggelassen oder unterschiedlich kombiniert. Stehen mehrere Uhrzeiten, Tagesabschnitte oder Wochentage zur Verfügung, entstehen getrennte Segmente. Das kompakte **4‑Schema** und die **Bedarfsmedikation** stellen Ausnahmen von diesem allgemeinen Aufbau dar.
 
@@ -203,6 +294,8 @@ Je nach Schema werden einzelne Bestandteile weggelassen oder unterschiedlich kom
 
 Nicht belegte Positionen erhalten den Wert `0`.
 
+Die Werte werden über alle `Dosage`-Elemente eingesammelt. Für jedes Element wird dessen Dosis allen unterstützten `when`-Codes dieses Elements zugeordnet. Die Dosis-Einheit der Ausgabe stammt aus dem ersten Element mit auswertbarer Dosis. Ein unterstützter Tagesabschnitt darf nur einmal belegt sein; eine doppelte Belegung führt defensiv zu einem Fehler. Nicht unterstützte `when`-Codes werden bei der Belegung ignoriert (profilkonformer Input enthält sie nicht). `frequency`, `frequencyMax`, `period`, `periodMax` und `periodUnit` beeinflussen die Ausgabe dieses Schemas nicht.
+
 *Beispiel:* `für 5 Tage: 1-1-1-1 Kapseln`
 
 > **Variabilität:** Enthält eine der Positionen einen variablen Wert (Bereich), wird das kompakte Schema in die ausgeschriebene Segmentform (nur belegte Positionen) überführt, z. B. `morgens — je 1 bis 2 Stück, abends — je 2 Stück`. Feste 4‑Schemata bleiben kompakt (`1-0-2-0 Stück`).
@@ -210,12 +303,12 @@ Nicht belegte Positionen erhalten den Wert `0`.
 ### Schema mit Uhrzeiten-Bezug
 
 ```
-[{Zeitrahmen} ][{Intervall} ]täglich: {Zeit} — je {Dosis}[, {Zeit2} — je {Dosis2} …][. Hinweis: {Instruktionen}]
+[{Zeitrahmen} ]täglich: {Zeitgruppe} — je {Dosis}[, {Zeitgruppe2} — je {Dosis2} …][. Hinweis: {Instruktionen}]
 ```
 
-Jede Uhrzeit bildet mit ihrer Dosis ein Segment. Mehrere Segmente werden aufsteigend nach Uhrzeit sortiert und mit Komma getrennt; das gilt auch, wenn die Dosis zwischen mehreren oder allen Uhrzeiten übereinstimmt.
+Eine `{Zeitgruppe}` enthält alle aufsteigend sortierten `timeOfDay`-Werte **eines** `Dosage`-Elements, mit Komma getrennt. Die Gruppe wird über einen Gedankenstrich mit der Dosis dieses Elements verbunden. Mehrere Gruppen werden anhand ihrer jeweils frühesten Uhrzeit sortiert und mit Komma getrennt. Der Marker lautet in diesem Schema immer `täglich`; vorhandene Frequenzwerte werden hier nicht zusätzlich ausgegeben.
 
-*Beispiel:* `täglich: 08:00 Uhr — je 1 Stück, 20:00 Uhr — je 2 Stück`
+*Beispiele:* `täglich: 08:00 Uhr — je 1 Stück, 20:00 Uhr — je 2 Stück` · bei zwei Uhrzeiten im selben `Dosage`-Element: `täglich: 08:00 Uhr, 20:00 Uhr — je 1 Stück`
 
 ### Schema mit Wochentags-Bezug
 
@@ -226,6 +319,8 @@ Jede Uhrzeit bildet mit ihrer Dosis ein Segment. Mehrere Segmente werden aufstei
 Jeder belegte Tag bildet mit seiner Dosis ein Segment. Mehrere Segmente werden in kanonischer Reihenfolge der Wochentage sortiert und mit Semikolon getrennt; das gilt auch, wenn die Dosis zwischen mehreren oder allen Wochentagen übereinstimmt.
 
 *Beispiel:* `montags — je 1 Stück; mittwochs — je 2 Stück`
+
+Die Dosis-Einheit stammt aus dem ersten Element mit auswertbarer Dosis. Wird bei nicht profilkonformem Input derselbe Wochentag mehrfach belegt, überschreibt die später durchlaufene Dosis den zuvor gespeicherten Wert.
 
 ### Schema für wiederkehrende Intervalle
 
@@ -241,7 +336,7 @@ Jeder belegte Tag bildet mit seiner Dosis ein Segment. Mehrere Segmente werden i
 [{Zeitrahmen} ]{Intervall}: {Zeit oder Abschnitt} — je {Dosis}[, … ][. Hinweis: {Instruktionen}]
 ```
 
-Jede Uhrzeit oder jeder Tagesabschnitt bildet gemeinsam mit seiner Dosis ein Segment. Das gilt auch, wenn die Dosis zwischen mehreren oder allen Segmenten übereinstimmt. Segmente mit Tagesabschnitten werden in der festen Reihenfolge morgens, mittags, abends, zur Nacht sortiert; Segmente mit Uhrzeiten aufsteigend. Die Segmente werden mit Komma getrennt.
+Jede Uhrzeit oder jeder Tagesabschnitt bildet gemeinsam mit seiner Dosis ein Segment. Das gilt auch, wenn die Dosis zwischen mehreren oder allen Segmenten übereinstimmt. Segmente mit Tagesabschnitten werden in der festen Reihenfolge morgens, mittags, abends, zur Nacht sortiert; Segmente mit Uhrzeiten anhand des Eingabestrings aufsteigend. Die Segmente werden mit Komma getrennt. Bei mehrfacher Belegung desselben Zeit-Schlüssels verwendet die Referenzimplementierung die Dosis des zuerst durchlaufenen zugehörigen `Dosage`-Elements; profilkonformer Input verhindert diesen Mehrdeutigkeitsfall.
 
 *Beispiel:* `alle 2 Tage: 08:00 Uhr — je 1 Stück, 18:00 Uhr — je 2 Stück`
 
@@ -252,30 +347,35 @@ Aufbau (mit Uhrzeiten):        [[{Zeitrahmen} ]: ]{Wochentag} {Zeit} — je {Dos
 Aufbau (mit Tagesabschnitten): [[{Zeitrahmen} ]: ]{Wochentag} <MORN>-<NOON>-<EVE>-<NIGHT> {Einheit}[; …][. Hinweis: {Instruktionen}]
 ```
 
-Jeder belegte Tag bildet mit seinen Uhrzeiten oder seinem Tagesabschnitts-Muster ein Segment. Mehrere Segmente werden in kanonischer Reihenfolge der Wochentage sortiert und mit Semikolon getrennt; das gilt auch, wenn die Angabe zwischen mehreren oder allen Wochentagen übereinstimmt. Innerhalb eines Tages werden Uhrzeiten aufsteigend dargestellt (mehrere Uhrzeiten mit Komma getrennt), Tagesabschnitte zum Vier-Positionen-Muster zusammengezogen.
+Jeder belegte Tag bildet mit seinen Uhrzeiten oder seinem Tagesabschnitts-Muster ein Segment. Mehrere Segmente werden in kanonischer Reihenfolge der Wochentage sortiert und mit Semikolon getrennt; das gilt auch, wenn die Angabe zwischen mehreren oder allen Wochentagen übereinstimmt. Innerhalb eines Tages werden Uhrzeitgruppen anhand ihrer frühesten Uhrzeit sortiert. Mehrere Uhrzeiten desselben `Dosage`-Elements stehen vor einem gemeinsamen Gedankenstrich; Uhrzeitgruppen werden mit Komma getrennt. Tagesabschnitte werden zum Vier-Positionen-Muster zusammengezogen.
 
 *Beispiele:*
 
 * `montags 08:00 Uhr — je 1 Stück, 12:00 Uhr — je 2 Stück; mittwochs 20:00 Uhr — je 1 Stück`
 * `montags 1-0-1-0 Stück; mittwochs 2-1-2-0 Stück`
 
+Bei der Kombination mit Tagesabschnitten stammt die gemeinsame Einheit aus dem ersten Element mit auswertbarer Dosis. Eine spätere Belegung derselben Kombination aus Wochentag und Tagesabschnitt überschreibt bei nicht profilkonformem Input die frühere.
+
 ### Schema für Bedarfsmedikation
 
 Eine Bedarfsmedikation liegt vor, wenn auf Ebene der `Dosage` `asNeededBoolean = true` gesetzt ist. Sie kann als **reine Bedarfsdosierung** (ohne `timing`) oder als **Kennzeichnung eines strukturierten Dosierschemas** auftreten (siehe [Bedarfsmedikation](./schema-bedarfsmedikation.html)).
 
+Bei einer **reinen Bedarfsdosierung** muss die Ressource genau ein `Dosage`-Element enthalten (Invariante `AsNeededSingleDosageOnly`). Mehrere Dosen ohne zeitliche Zuordnung wären nicht eindeutig zu einem gemeinsamen Text zusammenführbar. Das Skript bricht deshalb auch bei nicht vorab validiertem Input mit mehreren `Dosage`-Elementen ab.
+
 ```
-[{Zeitrahmen} ]bei {Einnahmeanlass}: [im Abstand von mindestens {Mindestabstand} ]{Dosis}[ — nicht mehr als {Maximalmenge}][. Hinweis: {Instruktionen}]
+[{Zeitrahmen} ]bei {Einnahmeanlass}: [im Abstand von mindestens {Mindestabstand} ]je {Dosis}[ — nicht mehr als {Maximalmenge}][. Hinweis: {Instruktionen}]
 ```
 
 * Sofern vorhanden, steht der **Zeitrahmen** am Anfang, gefolgt vom **Einnahmeanlass** und einem **Doppelpunkt**. Der Doppelpunkt steht damit direkt hinter dem Einnahmeanlass.
 * Ist kein Einnahmeanlass angegeben, wird generisch `bei Bedarf` gesetzt.
 * Das **erste Zeichen der Zeile** wird großgeschrieben (`Bei Kopfschmerzen: …`, `Bei Bedarf: …`).
 * Ein optionaler **Mindestabstand** (`modifierExtension[MindestabstandZwischenGaben]`) und – bei strukturiertem Bedarf – das jeweilige Schema (Intervall, 4‑Schema …) folgen rechts des Doppelpunkts.
-* Nach der Dosis wird die **Maximalmenge**, sofern angegeben, mit Gedankenstrich angebunden.
+  Die **Maximalmenge** wird genau einmal am Ende der Dosierungsanweisung angefügt. Enthält die Anweisung mehrere Uhrzeit-, Tagesabschnitts- oder Wochentagssegmente, steht die Maximalmenge nach dem letzten Segment. Sie gilt für die Gesamtmenge im angegebenen Zeitraum. Ein anschließender `Hinweis: ` folgt erst danach.
 
 *Beispiele:*
 
 * `Bei Kopfschmerzen: im Abstand von mindestens 4 Stunden je 1 Stück — nicht mehr als 6 Stück in 24 Stunden`
+* `Bei Bedarf: täglich 08:00 Uhr — je 1 Stück, 20:00 Uhr — je 2 Stück — nicht mehr als 6 Stück pro Tag`
 * `Bei Kopfschmerzen: alle 8 Stunden je 1 Stück`
 * `Bei Bedarf: 1-0-2-0 Stück`
 
@@ -285,7 +385,7 @@ Eine Bedarfsmedikation liegt vor, wenn auf Ebene der `Dosage` `asNeededBoolean =
 {Text}
 ```
 
-Enthält die `Dosage` ausschließlich freien Text (`text` vorhanden, `timing` und `doseAndRate` leer), wird dieser **unverändert** übernommen. Bei reinem Freitext darf die Ressource **genau ein** `Dosage`-Element enthalten (Invariante `FreeTextSingleDosageOnly`), und `Dosage.text` ist `0..1`; es gibt also genau **ein** Textfeld – eine Verkettung mehrerer Freitexte findet nicht statt. Bei einer Freitext-Dosierung werden **keine** weiteren Bausteine (Hinweis, Maximalmenge, Normalisierung …) angehängt; der Freitext muss alle Angaben selbst enthalten.
+Enthält die `Dosage` ausschließlich freien Text (`text` vorhanden, `timing` und `doseAndRate` leer), wird dieser übernommen. Bei reinem Freitext darf die Ressource **genau ein** `Dosage`-Element enthalten (Invariante `FreeTextSingleDosageOnly`), und `Dosage.text` ist `0..1`; bei profilkonformem Input gibt es also genau **ein** Textfeld. Das Skript entfernt an dessen Anfang und Ende Leerraum. Der verbleibende Inhalt wird ansonsten unverändert ausgegeben.
 
 *Beispiel:* `Nach Bedarf bei Schmerzen`
 
@@ -303,7 +403,7 @@ Die folgende Tabelle nennt für jeden dynamischen Baustein den genauen Lese-Pfad
 | Dosis (Bereich) | `doseAndRate[0].doseRange` | `.low.value`, `.high.value`, `.unit` (für `low` und `high` identisch — erzwungen durch Invariante `DoseRangeLowAndHighSameUnit`) |
 | Dauer | `timing.repeat.boundsDuration` | `.value`, Einheit aus `.code` |
 | Start-/Endzeitpunkt | `timing.repeat.boundsPeriod` | `.start`, `.end` |
-| Intervall | `timing.repeat.frequency` / `.period` / `.periodUnit` | Werte bzw. Bereich |
+| Intervall | `timing.repeat.frequency` / `.frequencyMax` / `.period` / `.periodMax` / `.periodUnit` | Unter-/Obergrenzen und Einheit |
 | Wochentage | `timing.repeat.dayOfWeek` | Code-Liste |
 | Uhrzeiten | `timing.repeat.timeOfDay` | Zeit-Liste |
 | Tagesabschnitt | `timing.repeat.when` | Code-Liste |
@@ -327,9 +427,11 @@ Für **unterschiedliche** Dosierungen, die sich nicht in einem einzelnen `Dosage
 
 * **Segmente** (Uhrzeit-, Tagesabschnitts- und Wochentagssegmente) werden über **alle** `Dosage`-Elemente eingesammelt und gemeinsam sortiert. Ein Segment kann daher aus demselben oder aus verschiedenen `Dosage`-Einträgen stammen; im erzeugten Text erscheinen sie zusammengeführt (siehe Trennzeichen-Regeln). Dies betrifft die Schemata 4‑Schema, Uhrzeiten, Wochentage, Wochentag-Kombinationen und Intervall-Kombinationen.
 * Die **Rahmen-Angaben** – Zeitrahmen (Dauer/Start-Ende), Bedarfskennzeichen inkl. Einnahmeanlass, Mindestabstand und Maximalmenge sowie der abschließende Hinweis – werden **ausschließlich aus dem ersten** `Dosage`-Element gelesen. Es wird angenommen, dass diese Angaben über alle Elemente konsistent sind.
-* Bei den Schemata **wiederkehrende Intervalle** und **reine Bedarfsmedikation** wird ausschließlich das **erste** `Dosage`-Element verarbeitet (keine Segment-Aggregation).
+* Bei den Schemata **wiederkehrende Intervalle** und **reine Bedarfsmedikation** ist jeweils genau ein `Dosage`-Element zulässig. Dies erzwingen `TimingIntervalOnlyOneFrequency` beziehungsweise `AsNeededSingleDosageOnly`; eine Segment-Aggregation findet daher nicht statt.
 
-Die resultierende Reihenfolge der Segmente ist **deterministisch** und hängt nicht von der Reihenfolge der `Dosage`-Elemente ab (Uhrzeiten aufsteigend, Tagesabschnitte in fester Reihenfolge, Wochentage kanonisch).
+Bei profilkonformem Input ist die resultierende Reihenfolge der Segmente **deterministisch** und hängt nicht von der Reihenfolge der `Dosage`-Elemente ab (Uhrzeiten aufsteigend, Tagesabschnitte in fester Reihenfolge, Wochentage kanonisch).
+
+Die gemeinsame Dosis-Einheit aggregierender 4‑ und Wochentagsschemata wird aus der ersten angetroffenen auswertbaren Dosis übernommen. Die Profil-Invarianten müssen sicherstellen, dass Einheiten und Rahmen-Angaben über alle beteiligten Elemente konsistent sind.
 
 ---
 
@@ -339,7 +441,30 @@ Für eine Übersicht der in diesem IG bereitgestellten Beispiele siehe [Beispiel
 
 ## Fehler und Validierung
 
-Felder außerhalb des unterstützten Umfangs oder nicht eindeutig klassifizierbare Muster führen zu einem Fehlertext mit Auflistung der betroffenen Felder. Die formale Definition der zulässigen Felder und die Schema-Erkennung sind in den Timing- und Dosierungs-Invarianten dieses IG spezifiziert (siehe [Constraints](./dosierung-constraints.html)).
+Die formale Definition zulässiger Felder und Kombinationen liegt in den Timing- und Dosierungs-Invarianten dieses IG (siehe [Constraints](./dosierung-constraints.html)). Die Referenzimplementierung führt **keine vollständige Validierung** und keine Auflistung unzulässiger Felder durch. Ihr konkretes Fehlerverhalten lautet:
+
+* nicht unterstützter `resourceType`: Abbruch mit `ValueError("Unsupported resource type: {resourceType}")`
+* nicht klassifizierbare Merkmalskombination: Rückgabe von `Unbekanntes Dosierungsschema: Unknown`
+* mehrere `Dosage`-Elemente, sobald eines davon eine reine Bedarfsdosierung (`asNeededBoolean = true` ohne `timing`) ist: Abbruch mit `ValueError("Reine Bedarfsmedikation erlaubt genau ein Dosage-Element.")`
+* `doseAndRate[0]` ohne `doseQuantity` oder `doseRange`: Abbruch mit `ValueError("Dosisangabe in doseAndRate[0] fehlt.")`
+* `doseQuantity` ohne `.value` oder `.unit`: Abbruch mit `ValueError("doseQuantity.value ist für die Textgenerierung erforderlich.")` beziehungsweise `ValueError("doseQuantity.unit ist für die Textgenerierung erforderlich.")`
+* `doseRange` ohne erforderliche obere Grenze: Abbruch mit `ValueError("doseRange.high.value ist für die Textgenerierung erforderlich.")`; eine fehlende Einheit führt entsprechend zu `ValueError("doseRange.high.unit ist für die Textgenerierung erforderlich.")`
+* vorhandenes `doseRange.low` ohne `.value` oder `.unit`: Abbruch mit der entsprechenden Fehlermeldung für `doseRange.low.value` beziehungsweise `doseRange.low.unit`
+* unterschiedliche Einheiten in `doseRange.low` und `doseRange.high`: Abbruch mit `ValueError("doseRange.low.unit und doseRange.high.unit müssen übereinstimmen.")`
+* vorhandenes `boundsDuration` ohne `.value` oder `.code`: Abbruch mit einer entsprechenden Pflichtfeldmeldung; ein nicht numerischer Wert oder ein Wert `<= 0` führt zu `ValueError("boundsDuration.value muss größer als 0 sein.")`
+* gleichzeitig vorhandenes `boundsPeriod` und `boundsDuration`: Abbruch mit `ValueError("boundsPeriod und boundsDuration dürfen nicht gleichzeitig vorhanden sein.")`
+* `boundsPeriod` ohne `start` und `end`: Abbruch mit `ValueError("boundsPeriod muss start und/oder end enthalten.")`
+* nicht parsebares oder unvollständiges `boundsPeriod.start` beziehungsweise `.end` sowie eine Uhrzeit ohne Zeitzone: Abbruch mit einer Meldung, dass das Feld ein parsebares FHIR-`dateTime` mit vollständigem Datum sein und eine Uhrzeit eine Zeitzone enthalten muss
+* nicht parsebares oder außerhalb des zulässigen Bereichs liegendes `timeOfDay`: Abbruch mit `ValueError("timeOfDay muss im Format HH:MM oder HH:MM:SS[.Bruchteile] angegeben sein.")`
+* `asNeededFor` ohne nicht leeres `valueCodeableConcept.text`: Abbruch mit `ValueError("asNeededFor.valueCodeableConcept.text ist für die Textgenerierung erforderlich.")`
+* Extension `MindestabstandZwischenGaben` ohne `valueDuration`: Abbruch mit `ValueError("MindestabstandZwischenGaben.valueDuration ist für die Textgenerierung erforderlich.")`; für fehlende Unterfelder und Werte `<= 0` gelten die entsprechenden Meldungen mit dem Pfad `MindestabstandZwischenGaben.valueDuration`
+* `maxDosePerPeriod` ohne `numerator.value`, `numerator.unit`, `denominator.value` oder `denominator.code`: Abbruch mit einer entsprechenden Pflichtfeldmeldung
+* nicht numerisches `maxDosePerPeriod.numerator.value`: Abbruch mit `ValueError("maxDosePerPeriod.numerator.value muss numerisch sein.")`
+* anderer Nenner als `1 d` oder `24 h`: Abbruch mit `ValueError("maxDosePerPeriod.denominator muss 1 d oder 24 h sein.")`
+* unterstützter `when`-Code ohne auswertbare Dosis in einem verarbeiteten Tagesabschnittsschema: Abbruch mit `ValueError("Tagesabschnitt (when) ohne Dosisangabe ist nicht zulässig.")`
+* doppelte Belegung eines Tagesabschnitts im reinen 4‑Schema: Abbruch mit `ValueError("Doppelte Belegung des Tagesabschnitts '{code}' im 4-Schema.")`
+
+Andere Profilverletzungen können abhängig vom fehlenden Feld zu einem unvollständigen Text, zu defensivem Fallback-Verhalten oder zu einem Laufzeitfehler führen. Deshalb muss die Profilvalidierung vor der Textgenerierung erfolgen.
 
 ## Versionierung
 

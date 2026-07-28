@@ -11,7 +11,7 @@ Description: "CAVE: Validation example - contains both text and timing (should b
 * intent = #order
 * medicationCodeableConcept.text = "Ibuprofen 400mg"
 * dosageInstruction[+]
-  * text = "1-0-1-0"
+  * text = "1 Stück morgens"
   * timing.repeat
     * when[+] = #MORN
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
@@ -38,7 +38,7 @@ Description: "CAVE: Validation example - contains both text and timing (should b
 * status = #completed
 * medicationCodeableConcept.text = "Ibuprofen 400mg"
 * dosageInstruction[+]
-  * text = "1-0-1-0"
+  * text = "1 Stück morgens"
   * timing.repeat
     * when[+] = #MORN
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
@@ -52,7 +52,7 @@ Description: "CAVE: Validation example - contains both text and timing (should b
 * status = #active
 * medicationCodeableConcept.text = "Ibuprofen 400mg"
 * dosage[+]
-  * text = "1-0-1-0"
+  * text = "1 Stück morgens"
   * timing.repeat
     * when[+] = #MORN
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"

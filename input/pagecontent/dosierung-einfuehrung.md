@@ -87,12 +87,8 @@ Ein Mapping zwischen den verschiedenen Kodiersystemen wird aktuell erarbeitet un
 
 ### Technische Validierung der Dosierungen
 
-Um die syntaktische Korrektheit von Dosierungen sicherzustellen, wurden folgende technischen Prüfungen implementiert:
+Die syntaktische Korrektheit von Dosierungen wird über Invarianten auf den Profilen [DosageDE](./StructureDefinition-DosageDE.html), [DosageDgMP](./StructureDefinition-DosageDgMP.html), [TimingDE](./StructureDefinition-TimingDE.html) und [TimingDgMP](./StructureDefinition-TimingDgMP.html) sichergestellt.
 
-#### Freitext oder strukturierte Dosierung
+Dabei gilt durchgängig: Was in den generischen DE-Profilen als Warnung modelliert ist, ist in den dgMP-Profilen überwiegend ein Fehler. Die DE-Profile lassen bewusst Spielraum für Versorgungssituationen, die sich nicht vollständig strukturieren lassen, während der dgMP durchgängig maschinell auswertbare Dosierungen voraussetzt.
 
-Der Constraint `DosageStructuredOrFreeTextWarning` im Profil [DosageDE](./StructureDefinition-DosageDE.html) gibt eine Warnung aus, sobald das Element `.text` zusammen mit einer strukturierten Dosieranweisung verwendet wird.
-
-Der Constraint `DosageStructuredRequiresBothWarning` im Profil [DosageDE](./StructureDefinition-DosageDE.html) gibt eine Warnung aus, wenn bei einer strukturierten Dosierungsangabe nur timing oder nur doseAndRate angegeben wird. Als Warnung ist er modelliert, weil Fälle mit festen Einnahmezeiten und nicht vorab festgelegter Dosis vorkommen, etwa Insulin nach Plan. Im Profil [DosageDgMP](./StructureDefinition-DosageDgMP.html) gilt derselbe Sachverhalt über `DosageStructuredRequiresBoth` als Fehler.
-
-Der Constraint `DosageDoseUnitSameCode`im im Profil [DosageDE](./StructureDefinition-DosageDE.html) stellt sicher, dass die Dosiereinheit über alle Dosierungen gleich ist.
+Alle Invarianten sind mit Beschreibung, Begründung und Beispielen unter [Constraints](./dosierung-constraints.html) aufgeführt.

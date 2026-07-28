@@ -29,8 +29,6 @@
 |  |  | 3 Stück |  |  |  |  | 18:00:00 |  |  |
 | [MedicationDispense-MD-Dosage-weekday-mixed-doses](./MedicationDispense-MD-Dosage-weekday-mixed-doses.html) | montags — je 1 Stück; dienstags — je 3 Stück | 1 Stück |  |  |  | mon |  |  |  |
 |  |  | 3 Stück |  |  |  | tue |  |  |  |
-| [MedicationDispense-W-DoseRangeNoVarPeriod-Dispense-02-of-03](./MedicationDispense-W-DoseRangeNoVarPeriod-Dispense-02-of-03.html) | alle 4 bis 6 Stunden: je 2 bis 3 Stück | 2-3 Stück | 1 | 4-6 | h |  |  |  |  |
-| [MedicationDispense-W-TimingVarFreqOrPeriod-Dispense-02-of-03](./MedicationDispense-W-TimingVarFreqOrPeriod-Dispense-02-of-03.html) | 1 bis 2 x alle 4 bis 6 Stunden: je 1 Stück | 1 Stück | 1-2 | 4-6 | h |  |  |  |  |
 | [MedicationRequest-Example-MR-Bug-EmptyLists](./MedicationRequest-Example-MR-Bug-EmptyLists.html) | täglich: je 1 Stück | 1 Stück | 1 | 1 | d |  |  |  |  |
 | [MedicationRequest-Example-MR-Bug-MultipleTimeOfDay-Daily](./MedicationRequest-Example-MR-Bug-MultipleTimeOfDay-Daily.html) | täglich: 08:00 Uhr, 14:00 Uhr, 22:00 Uhr — je 1 Stück | 1 Stück |  |  |  |  | 08:00:00, 14:00:00, 22:00:00 |  |  |
 | [MedicationRequest-Example-MR-Bug-MultipleTimeOfDay-DayOfWeek](./MedicationRequest-Example-MR-Bug-MultipleTimeOfDay-DayOfWeek.html) | montags 09:00 Uhr, 21:00 Uhr — je 1 Stück; mittwochs 09:00 Uhr, 21:00 Uhr — je 1 Stück; freitags 09:00 Uhr, 21:00 Uhr — je 1 Stück | 1 Stück |  |  |  | mon, wed, fri | 09:00:00, 21:00:00 |  |  |
@@ -118,8 +116,6 @@
 |  |  | 3 Stück |  |  |  |  | 18:00:00 |  |  |
 | [MedicationRequest-MR-Dosage-weekday-mixed-doses](./MedicationRequest-MR-Dosage-weekday-mixed-doses.html) | montags — je 1 Stück; dienstags — je 3 Stück | 1 Stück |  |  |  | mon |  |  |  |
 |  |  | 3 Stück |  |  |  | tue |  |  |  |
-| [MedicationRequest-W-DoseRangeNoVarPeriod-Request-01-of-03](./MedicationRequest-W-DoseRangeNoVarPeriod-Request-01-of-03.html) | alle 4 bis 6 Stunden: je 2 bis 3 Stück | 2-3 Stück | 1 | 4-6 | h |  |  |  |  |
-| [MedicationRequest-W-TimingVarFreqOrPeriod-Request-01-of-03](./MedicationRequest-W-TimingVarFreqOrPeriod-Request-01-of-03.html) | 1 bis 2 x alle 4 bis 6 Stunden: je 1 Stück | 1 Stück | 1-2 | 4-6 | h |  |  |  |  |
 | [MedicationStatement-Example-MS-Dosage-UnitStueck-1020](./MedicationStatement-Example-MS-Dosage-UnitStueck-1020.html) | 1-0-2-0 Stück | 1 Stück |  |  |  |  |  | MORN |  |
 |  |  | 2 Stück |  |  |  |  |  | EVE |  |
 | [MedicationStatement-Example-MS-Dosage-UnitTasse-1000](./MedicationStatement-Example-MS-Dosage-UnitTasse-1000.html) | 2-0-0-0 Teelöffel | 2 Teelöffel |  |  |  |  |  | MORN |  |
@@ -149,5 +145,3 @@
 |  |  | 3 Stück |  |  |  |  | 18:00:00 |  |  |
 | [MedicationStatement-MS-Dosage-weekday-mixed-doses](./MedicationStatement-MS-Dosage-weekday-mixed-doses.html) | montags — je 1 Stück; dienstags — je 3 Stück | 1 Stück |  |  |  | mon |  |  |  |
 |  |  | 3 Stück |  |  |  | tue |  |  |  |
-| [MedicationStatement-W-DoseRangeNoVarPeriod-Statement-03-of-03](./MedicationStatement-W-DoseRangeNoVarPeriod-Statement-03-of-03.html) | alle 4 bis 6 Stunden: je 2 bis 3 Stück | 2-3 Stück | 1 | 4-6 | h |  |  |  |  |
-| [MedicationStatement-W-TimingVarFreqOrPeriod-Statement-03-of-03](./MedicationStatement-W-TimingVarFreqOrPeriod-Statement-03-of-03.html) | 1 bis 2 x alle 4 bis 6 Stunden: je 1 Stück | 1 Stück | 1-2 | 4-6 | h |  |  |  |  |

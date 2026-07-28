@@ -133,7 +133,9 @@ def generate_matrix_for_constraint(input_folder, output_path, constraint_key, se
 
     Examples: filenames containing -C-<key> (error) or -W-<key> (warning).
     """
-    markers = [f"-C-{constraint_key}", f"-W-{constraint_key}"]
+    # The key must be followed by '-' or '.', otherwise a key would also match example
+    # files of a longer key sharing the same prefix (e.g. 'Foo' vs. 'FooWarning').
+    marker_pattern = re.compile(rf"-[CW]-{re.escape(constraint_key)}(?=[-.]|$)")
     all_files: List[str] = []
     for f in os.listdir(input_folder):
         if not (f.startswith('MedicationRequest-') or f.startswith('MedicationDispense-') or f.startswith('MedicationStatement-')):
@@ -141,7 +143,7 @@ def generate_matrix_for_constraint(input_folder, output_path, constraint_key, se
         fp = os.path.join(input_folder, f)
         if not os.path.isfile(fp):
             continue
-        if any(m in f for m in markers):
+        if marker_pattern.search(f):
             all_files.append(f)
     
     # Sort files naturally (01-of-02 before 02-of-02)

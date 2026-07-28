@@ -7,6 +7,7 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
 * obeys DosageStructuredRequiresGeneratedText
 * obeys FreeTextSingleDosageOnly
 * obeys FreeTextMatchesRenderedText
+* obeys DosageDoseQuantityAllowedFractions
 * obeys PatientInstructionIdentical
 * obeys MaxDoseSameUnitAsDose
 * obeys MaxDosePerPeriodOnly24hOr1d
@@ -57,11 +58,11 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
 * asNeeded[x]
   * ^comment = "Bedarfsdosierung, Bedingung kann mit der Extension asNeededFor näher spezifiziert werden."
 * extension[asNeededFor]
-  * valueCodeableConcept 
+  * valueCodeableConcept
     * coding 0..0
       * ^comment = "Begründung Einschränkung Kardinalität: Eine Codierung der Indikation für die Bedarfsdosierung ist in der aktuellen Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
     * text 1.. MS
-      * ^comment = "Indikation für die Bedarfsdosierung."  
+      * ^comment = "Indikation für die Bedarfsdosierung."
 * modifierExtension[mindestabstandZwischenGaben]
   * valueDuration 1..1 MS
     * system 1..1 MS
@@ -73,7 +74,7 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
   * ^comment = "Begründung Einschränkung Kardinalität: Ein Verabreichungsweg ist in der aktuellen Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
 * method 0..0
   * ^comment = "Begründung Einschränkung Kardinalität: Eine Verabreichungsmethode ist in der aktuellen Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
-* maxDosePerPeriod  
+* maxDosePerPeriod
 * maxDosePerAdministration 0..0
   * ^comment = "Begründung Einschränkung Kardinalität: Eine maximale Dosis pro Verabreichung ist in der aktuellen Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
 * maxDosePerLifetime 0..0
@@ -179,6 +180,48 @@ implies
 )"
 Severity: #error
 
+Invariant: DosageDoseAllowedFractions
+Description: "Dosiswerte in doseQuantity oder doseRange dürfen nur ganzzahlig sein oder einen der folgenden Dezimalanteile verwenden: .25, .33, .5, .66 oder .75."
+Expression: """
+doseAndRate.all(
+  (
+    dose.ofType(Quantity).value.empty() or
+    dose.ofType(Quantity).value.all(
+      ($this mod 1 = 0) or
+      ($this mod 1 = 0.25) or
+      ($this mod 1 = 0.33) or
+      ($this mod 1 = 0.5) or
+      ($this mod 1 = 0.66) or
+      ($this mod 1 = 0.75)
+    )
+  )
+  and
+  (
+    dose.ofType(Range).low.value.empty() or
+    dose.ofType(Range).low.value.all(
+      ($this mod 1 = 0) or
+      ($this mod 1 = 0.25) or
+      ($this mod 1 = 0.33) or
+      ($this mod 1 = 0.5) or
+      ($this mod 1 = 0.66) or
+      ($this mod 1 = 0.75)
+    )
+  )
+  and
+  (
+    dose.ofType(Range).high.value.empty() or
+    dose.ofType(Range).high.value.all(
+      ($this mod 1 = 0) or
+      ($this mod 1 = 0.25) or
+      ($this mod 1 = 0.33) or
+      ($this mod 1 = 0.5) or
+      ($this mod 1 = 0.66) or
+      ($this mod 1 = 0.75)
+    )
+  )
+)
+"""
+Severity: #error
 Invariant: PatientInstructionIdentical
 Description: "Wenn patientInstruction in einer Ressource mit mehreren Dosierungen verwendet wird, muss das Feld in allen Dosage-Elementen identisch befüllt sein."
 Expression: "(

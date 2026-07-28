@@ -19,6 +19,7 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * obeys TimingOnlyOneBounds
   * obeys TimingFrequencyCount
   * obeys TimingPeriodUnit
+  * obeys TimingPeriodOnlyWholeNumber
   * obeys TimingVarFreqOrPeriod
   * obeys TimingVarFreqGtMin
   * obeys TimingVarPeriodGtMin
@@ -120,7 +121,10 @@ and
 ((dayOfWeek.empty() and (when.exists() or timeOfDay.exists()) and periodUnit.exists()) implies periodUnit = 'd')"
 Severity: #error
 
-
+Invariant: TimingPeriodOnlyWholeNumber
+Description: "The period should only describe whole numbers, decimals are not allowed"
+Expression: "(period.exists() implies period mod 1 = 0) and (periodMax.exists() implies periodMax mod 1 = 0)"
+Severity: #error
 
 Invariant: TimingOnlyOneType
 Description: "Only one kind of Timing is allowed. Current allowed timings: 4-Scheme/TimeOfDay (with optional Interval), DayOfWeek (with optional Time/4-Schema), Interval only"

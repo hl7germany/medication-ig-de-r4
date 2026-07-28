@@ -22,6 +22,7 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * obeys TimingVarFreqOrPeriod
   * obeys TimingVarFreqGtMin
   * obeys TimingVarPeriodGtMin
+  * obeys TimingBoundsPeriodDateOnly
   * bounds[x] MS
   * bounds[x] only Duration or Period
     * ^comment = "Begründung Einschränkung Datentyp: Nur eine Angabe zur Dauer und Start- bzw. Enddatum sind in der aktuellen Ausbaustufe des dgMP vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
@@ -33,8 +34,12 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
     * value 1..1 MS
     * comparator 0..0
   * boundsPeriod MS
+    * ^short = "Start- und Enddatum der Dosieranweisung mit Tagespräzision."
+    * ^definition = "Beschreibt die Gültigkeit einer Dosieranweisung mit einem konkreten Start- und/oder Enddatum. Uhrzeiten und Zeitzonen sind nicht zulässig."
     * start MS
+      * ^short = "Startdatum im Format JJJJ-MM-TT"
     * end MS
+      * ^short = "Enddatum im Format JJJJ-MM-TT"
   * frequency 0..1 MS
   * frequencyMax MS
   * period 0..1 MS
@@ -531,6 +536,21 @@ Expression: "/* Detect Interval and Time/4-Schema */
         (%resource.dosage.timing.repeat.when.distinct().count() = %resource.dosage.timing.repeat.when.count())
       )
     )
+  )
+)"
+Severity: #error
+
+Invariant: TimingBoundsPeriodDateOnly
+Description: "boundsPeriod.start und boundsPeriod.end dürfen nur als vollständiges Kalenderdatum im Format JJJJ-MM-TT ohne Uhrzeit oder Zeitzone angegeben werden."
+Expression: "bounds.ofType(Period).empty() or (
+  (
+    bounds.ofType(Period).start.empty() or
+    bounds.ofType(Period).start.toString().matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')
+  )
+  and
+  (
+    bounds.ofType(Period).end.empty() or
+    bounds.ofType(Period).end.toString().matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')
   )
 )"
 Severity: #error

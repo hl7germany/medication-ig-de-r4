@@ -1143,13 +1143,21 @@ class MedicationDosageTextGenerator:
         return self._append_trailing_instructions(text, dosage)
 
     def _extract_as_needed_for_text(self, dosage):
+        # Mehrere asNeededFor sind zulässig (0..*); alle Anlässe werden in der
+        # angegebenen Reihenfolge übernommen und als deutsche Aufzählung mit
+        # abschließendem "oder" verbunden (z. B. "Kopfschmerzen oder Fieber").
+        reasons = []
         for extension in dosage.get('extension', []):
             if extension.get('url') != self.URL_AS_NEEDED_FOR:
                 continue
-            value = extension.get('valueCodeableConcept', {})
-            if value.get('text'):
-                return value['text']
-        return ""
+            text = extension.get('valueCodeableConcept', {}).get('text')
+            if text:
+                reasons.append(text)
+        if not reasons:
+            return ""
+        if len(reasons) == 1:
+            return reasons[0]
+        return f"{', '.join(reasons[:-1])} oder {reasons[-1]}"
 
     def _extract_minimum_interval_text(self, dosage):
         for extension in dosage.get('modifierExtension', []):
@@ -1191,25 +1199,14 @@ class MedicationDosageTextGenerator:
             if max_dose_text:
                 text = f"{text} — {max_dose_text}"
 
-        route_text = self._extract_route_text(dosage)
-        if route_text:
-            # Verabreichungsweg als eigener Satz, mit abschließendem Punkt.
-            text = f"{text}. {route_text}."
+        # Verabreichungsweg (route) ist im dgMP-Profil 0..0 und wird nicht dargestellt.
 
         instruction_text = self._extract_patient_instruction_text(dosage)
         if instruction_text:
-            # Kein doppelter Punkt, falls davor bereits der Verabreichungsweg-Satz endet.
             separator = " " if text.endswith(".") else ". "
             text = f"{text}{separator}Hinweis: {instruction_text}"
 
         return text
-
-    def _extract_route_text(self, dosage):
-        route = dosage.get('route', {})
-        if route.get('text'):
-            return route['text']
-        codings = route.get('coding', [])
-        return codings[0].get('display', '') if codings else ""
 
     def _extract_patient_instruction_text(self, dosage):
         """

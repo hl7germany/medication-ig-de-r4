@@ -58,6 +58,7 @@
 | [MedicationStatement-MS-Dosage-DayOfWeek](./MedicationStatement-MS-Dosage-DayOfWeek.html) | montags — je 2 Stück; freitags — je 1 Stück | 2 Stück<br>1 Stück |  |  |  |  |  | mon<br>fri |  |  |  |
 | [MedicationRequest-Example-MR-Dosage-1010-10-Days](./MedicationRequest-Example-MR-Dosage-1010-10-Days.html) | für 10 Wochen: 1-0-1-0 Stück | 1 Stück |  |  |  |  |  |  |  | MORN, EVE | {'system': 'http://unitsofmeasure.org', 'value': 10, 'code': 'wk', 'unit': 'Woche(n)'} |
 | [MedicationRequest-Example-MR-Dosage-variable-doseRange](./MedicationRequest-Example-MR-Dosage-variable-doseRange.html) | täglich: je 1 bis 2 Stück | 1-2 Stück |  |  | 1 | 1 | d |  |  |  |  |
+| [MedicationRequest-Example-MR-Dosage-10340](./MedicationRequest-Example-MR-Dosage-10340.html) | 1-0-0,75-0 Stück | 1 Stück<br>0.75 Stück |  |  | 1 | 1 | d |  |  | MORN<br>EVE |  |
 | [MedicationDispense-MD-Dosage-interval-monthly](./MedicationDispense-MD-Dosage-interval-monthly.html) | alle 2 Monate: je 1 Stück | 1 Stück |  |  | 1 | 2 | mo |  |  |  |  |
 | [MedicationStatement-MS-Dosage-interval-when-3d](./MedicationStatement-MS-Dosage-interval-when-3d.html) | 1-0-2-0 Stück | 1 Stück<br>2 Stück |  |  | 1 | 3 | d |  |  | MORN<br>EVE |  |
 | [MedicationStatement-MS-Dosage-weekday-mixed-doses](./MedicationStatement-MS-Dosage-weekday-mixed-doses.html) | montags — je 1 Stück; dienstags — je 3 Stück | 1 Stück<br>3 Stück |  |  |  |  |  | mon<br>tue |  |  |  |

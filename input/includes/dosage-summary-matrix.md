@@ -52,6 +52,8 @@
 |  |  | 1 Stück |  |  |  |  |  | MORN |  |
 | [MedicationRequest-Example-MR-Dosage-1020](./MedicationRequest-Example-MR-Dosage-1020.html) | 1-0-2-0 Stück | 1 Stück |  |  |  |  |  | MORN |  |
 |  |  | 2 Stück |  |  |  |  |  | EVE |  |
+| [MedicationRequest-Example-MR-Dosage-10340](./MedicationRequest-Example-MR-Dosage-10340.html) | 1-0-0,75-0 Stück | 1 Stück | 1 | 1 | d |  |  | MORN |  |
+|  |  | 0.75 Stück | 1 | 1 | d |  |  | EVE |  |
 | [MedicationRequest-Example-MR-Dosage-1111](./MedicationRequest-Example-MR-Dosage-1111.html) | 1-1-1-1 Stück | 1 Stück |  |  |  |  |  | EVE, MORN, NIGHT, NOON |  |
 | [MedicationRequest-Example-MR-Dosage-1220](./MedicationRequest-Example-MR-Dosage-1220.html) | 1-2-2-0 Stück | 1 Stück |  |  |  |  |  | MORN |  |
 |  |  | 2 Stück |  |  |  |  |  | NOON, EVE |  |

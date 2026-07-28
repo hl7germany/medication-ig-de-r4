@@ -1,4 +1,4 @@
-Instance: INV-C-DosageStructuredRequiresGeneratedText-Request-01-of-01
+Instance: INV-C-DosageStructuredRequiresGeneratedText-MR-01-of-03
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid (Request): structured dosage without GeneratedDosageInstructionsMeta"
@@ -12,7 +12,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * when[+] = #MORN
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-C-DosageStructuredRequiresGeneratedText-Dispense-01-of-01
+Instance: INV-C-DosageStructuredRequiresGeneratedText-MD-02-of-03
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
 Title: "Invalid (Dispense): structured dosage without GeneratedDosageInstructionsMeta"
@@ -25,7 +25,7 @@ Description: "CAVE: This MedicationDispense is for validation purposes and does 
     * when[+] = #MORN
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-C-DosageStructuredRequiresGeneratedText-Statement-01-of-01
+Instance: INV-C-DosageStructuredRequiresGeneratedText-MS-03-of-03
 InstanceOf: MedicationStatementDgMP
 Usage: #example
 Title: "Invalid (Statement): structured dosage without GeneratedDosageInstructionsMeta"

@@ -446,6 +446,18 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-AsNeededForRequiresAsNeeded-examples.md%}
 
+#### AsNeededSingleDosageOnly
+
+**Beschreibung:**
+Eine reine Bedarfsdosierung (`asNeededBoolean = true` ohne `timing`) darf nur als einziges `Dosage`-Element der Ressource angegeben werden.
+
+**Warum?**
+Ohne zeitliche Zuordnung lassen sich mehrere Bedarfsdosen nicht eindeutig zu einer gemeinsamen Dosierungsanweisung aggregieren. Die Beschränkung verhindert, dass die Textgenerierung nur das erste Element ausgibt und weitere Dosen unbemerkt entfallen.
+
+Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
+
+{% include dosage-constraint-AsNeededSingleDosageOnly-examples.md%}
+
 #### dos-1
 
 **Beschreibung:**  

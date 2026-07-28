@@ -377,14 +377,28 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 #### DosageWarnungViererschemaInText
 
 **Beschreibung:**  
-Warnung, wenn ein klassisches 4-Schema (z. B. Darstellung wie "1-0-1-0") im Freitext angegeben wird, obwohl eine strukturierte Abbildung möglich wäre.
+Warnung, wenn ein klassisches 4-Schema (z. B. Darstellung wie "1-0-1-0") irgendwo im Freitext vorkommt, obwohl eine strukturierte Abbildung möglich wäre.
 
 **Warum?**  
 Ermutigt zur strukturierten Modellierung der Einnahmezeiten anstelle rein schematischer Textdarstellungen, verbessert maschinelle Auswertbarkeit und Textgenerierung.
 
+Der Constraint ist auf `DosageDE` als Warnung definiert, weil das 4-Schema in einem längeren Freitext auch als erläuternder Bestandteil auftreten kann. Besteht der Freitext **ausschließlich** aus einem 4-Schema, greift in den dgMP-Profilen zusätzlich der Fehler [DosageViererschemaInText](#dosageviererschemaintext).
+
 Gültige Beispiele (Warnungskontext – Freitext enthält 4-Schema):
 
 {% include dosage-constraint-DosageWarnungViererschemaInText-examples.md%}
+
+#### DosageViererschemaInText
+
+**Beschreibung:**  
+`Dosage.text` darf nicht ausschließlich aus einem 4-Schema bestehen. Erfasst wird der reine Fall – vier durch `-` oder `–` getrennte Werte, optional mit Nachkommastellen, Bruchangabe und nachgestellter Einheit (z. B. `1-0-1-0`, `0,5-0-0,5-0`, `1-0-1-0 Stück`). Ein 4-Schema, das in einen Text eingebettet ist, löst weiterhin nur die Warnung `DosageWarnungViererschemaInText` aus.
+
+**Warum?**  
+Ein Freitext, der nur ein 4-Schema enthält, trägt keine Information, die nicht strukturiert über `timing.repeat.when` und `doseAndRate` abbildbar wäre. Er entzieht die Dosierung der maschinellen Auswertung und der Textgenerierung, die genau diese Darstellung aus strukturierten Angaben selbst erzeugt (siehe [4‑Schema](./dosierung-textgenerierung.html#schema-mit-tageszeiten-bezug-4-schema)).
+
+Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
+
+{% include dosage-constraint-DosageViererschemaInText-examples.md%}
 
 #### PatientInstructionIdentical
 

@@ -8,6 +8,7 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
 * obeys FreeTextSingleDosageOnly
 * obeys FreeTextMatchesRenderedText
 * obeys DosageDoseQuantityAllowedFractions
+* obeys DosageViererschemaInText
 * obeys PatientInstructionIdentical
 * obeys MaxDoseSameUnitAsDose
 * obeys MaxDosePerPeriodOnly24hOr1d
@@ -115,6 +116,11 @@ implies
   ).exists()
 )
 )"
+Severity: #error
+
+Invariant: DosageViererschemaInText
+Description: "Ein reines Viererschema (z. B. 1-0-1-0 oder 1-0-1-0 Stück) darf nicht als Freitext in Dosage.text angegeben werden, sondern ist strukturiert abzubilden."
+Expression: "text.exists() implies text.matches('^\\\\s*\\\\d+([.,]\\\\d+)?(\\\\s*/\\\\s*\\\\d+)?(\\\\s*[-–]\\\\s*\\\\d+([.,]\\\\d+)?(\\\\s*/\\\\s*\\\\d+)?){3}(\\\\s*[A-Za-zÄÖÜäöüß().]+)?\\\\s*$').not()"
 Severity: #error
 
 Invariant: FreeTextSingleDosageOnly

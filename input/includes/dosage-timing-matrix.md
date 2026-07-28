@@ -41,7 +41,7 @@
 | [MedicationStatement-Warning-Dosage-Viererschema-Text-MS-01](./MedicationStatement-Warning-Dosage-Viererschema-Text-MS-01.html) | 1-1-1-1 |  |  |  |  |  |  |  |  |  |  |
 | [MedicationRequest-Example-MR-Dosage-comb-dayofweek-2](./MedicationRequest-Example-MR-Dosage-comb-dayofweek-2.html) | montags 1-2-1-0 Stück; freitags 1-2-1-0 Stück | 1 Stück<br>2 Stück |  |  |  |  |  | mon, fri |  | MORN, EVE<br>NOON |  |
 | [MedicationRequest-Example-MR-Dosage-interval-1mo](./MedicationRequest-Example-MR-Dosage-interval-1mo.html) | alle 1 Monat: je 1 Stück | 1 Stück |  |  | 1 | 1 | mo |  |  |  |  |
-| [MedicationRequest-Example-MR-Dosage-1010-PatientInstruction](./MedicationRequest-Example-MR-Dosage-1010-PatientInstruction.html) | 1-0-1-0 Stück | 1 Stück |  |  | 2 | 1 | d |  |  | MORN, EVE |  |
+| [MedicationRequest-Example-MR-Dosage-1010-PatientInstruction](./MedicationRequest-Example-MR-Dosage-1010-PatientInstruction.html) | 1-0-1-0 Stück. Hinweis: Tablette nicht zerkauen. Bei Fieber über 39 Grad Arzt kontaktieren. | 1 Stück |  |  | 2 | 1 | d |  |  | MORN, EVE |  |
 | [MedicationRequest-MR-Dosage-interval-when-3d](./MedicationRequest-MR-Dosage-interval-when-3d.html) | 1-0-2-0 Stück | 1 Stück<br>2 Stück |  |  | 1 | 3 | d |  |  | MORN<br>EVE |  |
 | [MedicationDispense-MD-Dosage-single-day-time](./MedicationDispense-MD-Dosage-single-day-time.html) | montags 08:00 Uhr — je 1 Stück | 1 Stück |  |  |  |  |  | mon | 08:00:00 |  |  |
 | [MedicationStatement-MS-Dosage-4schema-noon-only](./MedicationStatement-MS-Dosage-4schema-noon-only.html) | 0-1-0-0 Stück | 1 Stück |  |  |  |  |  |  |  | NOON |  |
@@ -82,7 +82,7 @@
 | [MedicationRequest-Example-MR-Dosage-interval-8d](./MedicationRequest-Example-MR-Dosage-interval-8d.html) | alle 8 Tage: je 1 Stück | 1 Stück |  |  | 1 | 8 | d |  |  |  |  |
 | [MedicationStatement-MS-Dosage-1010](./MedicationStatement-MS-Dosage-1010.html) | 1-0-1-0 Stück | 1 Stück |  |  |  |  |  |  |  | MORN, EVE |  |
 | [MedicationRequest-Dosage-W-DosageStructuredOrFreeTextWarning-01-of-03](./MedicationRequest-Dosage-W-DosageStructuredOrFreeTextWarning-01-of-03.html) | täglich: je 1 Stück | 1 Stück |  |  | 1 | 1 | d |  |  |  |  |
-| [MedicationRequest-Example-MR-Dosage-1000-enddate](./MedicationRequest-Example-MR-Dosage-1000-enddate.html) | 1-0-0-0 Stück | 1 Stück |  |  | 1 | 1 | d |  |  | MORN | Period =  - 2026-07-05 |
+| [MedicationRequest-Example-MR-Dosage-1000-enddate](./MedicationRequest-Example-MR-Dosage-1000-enddate.html) | Bis zum 05.07.2026: 1-0-0-0 Stück | 1 Stück |  |  | 1 | 1 | d |  |  | MORN | Period =  - 2026-07-05 |
 | [MedicationRequest-Example-MR-Dosage-comb-dayofweek-1](./MedicationRequest-Example-MR-Dosage-comb-dayofweek-1.html) | montags 1-0-1-0 Stück; freitags 1-0-1-0 Stück | 1 Stück |  |  |  |  |  | mon, fri |  | MORN, EVE |  |
 | [MedicationDispense-MD-Dosage-Freetext](./MedicationDispense-MD-Dosage-Freetext.html) | Morgens und abends je 1 Kapsel nach dem Essen |  |  |  |  |  |  |  |  |  |  |
 | [MedicationStatement-Dosage-W-DosageStructuredOrFreeTextWarning-03-of-03](./MedicationStatement-Dosage-W-DosageStructuredOrFreeTextWarning-03-of-03.html) | täglich: je 1 Stück | 1 Stück |  |  | 1 | 1 | d |  |  |  |  |

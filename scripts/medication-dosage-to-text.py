@@ -93,6 +93,10 @@ class MedicationDosageTextGenerator:
         'a': 'Jahre'
     }
 
+    # Kanonische Extension-URLs (exakter Vergleich, kein Teilstring-Match)
+    URL_AS_NEEDED_FOR = 'http://hl7.org/fhir/5.0/StructureDefinition/extension-Dosage.asNeededFor'
+    URL_MINDESTABSTAND = 'http://ig.fhir.de/igs/medication/StructureDefinition/MindestabstandZwischenGaben'
+
     def __init__(self):
         """Initialize the dosage text generator with German language settings."""
         pass
@@ -1140,7 +1144,7 @@ class MedicationDosageTextGenerator:
 
     def _extract_as_needed_for_text(self, dosage):
         for extension in dosage.get('extension', []):
-            if 'asNeededFor' not in extension.get('url', ''):
+            if extension.get('url') != self.URL_AS_NEEDED_FOR:
                 continue
             value = extension.get('valueCodeableConcept', {})
             if value.get('text'):
@@ -1149,7 +1153,7 @@ class MedicationDosageTextGenerator:
 
     def _extract_minimum_interval_text(self, dosage):
         for extension in dosage.get('modifierExtension', []):
-            if 'MindestabstandZwischenGaben' not in extension.get('url', ''):
+            if extension.get('url') != self.URL_MINDESTABSTAND:
                 continue
             duration = extension.get('valueDuration')
             if duration:

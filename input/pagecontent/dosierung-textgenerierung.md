@@ -139,6 +139,50 @@ Es werden keine Zeilenumbrüche erzeugt; der Text einer Ressource steht in einer
 
 ---
 
+## Schema-Erkennung
+
+Bevor die Bausteine zusammengesetzt werden, wird genau **ein** Darstellungsschema bestimmt. Grundlage der Erkennung ist das **erste `Dosage`-Element** der Ressource; der profilkonforme Input stellt sicher, dass alle weiteren Elemente strukturell dazu passen und nur zusätzliche Segmente beisteuern.
+
+### Ausgewertete Merkmale (auf `timing.repeat` des ersten Elements)
+
+| Merkmal | Bedingung |
+|---------|-----------|
+| `hatText` | `Dosage.text` ist belegt |
+| `hatTiming` | `Dosage.timing` ist vorhanden |
+| `istBedarf` | `Dosage.asNeededBoolean = true` |
+| `hatFrequenz` | `repeat.frequency` ist vorhanden |
+| `hatPeriode` | `repeat.period` ist vorhanden |
+| `hatPeriodeneinheit` | `repeat.periodUnit` ist vorhanden |
+| `hatWochentag` | `repeat.dayOfWeek` ist vorhanden **und** nicht leer |
+| `hatWhenCodes` | `repeat.when` ist vorhanden **und** nicht leer |
+| `hatUhrzeit` | `repeat.timeOfDay` ist vorhanden **und** nicht leer |
+
+Abgeleitete Hilfsbedingungen:
+
+* `istTagesmuster` = `repeat.period = 1` **und** `repeat.periodUnit = 'd'`
+* `istNichtTagesmuster` = `hatPeriode` **und** `hatPeriodeneinheit` **und nicht** `istTagesmuster`
+* `istReinesIntervall` = `hatFrequenz` **und** `hatPeriode` **und** `hatPeriodeneinheit` **und nicht** (`hatWhenCodes` oder `hatUhrzeit` oder `hatWochentag`)
+
+### Prioritätsreihenfolge
+
+Die Regeln werden **von oben nach unten** geprüft; die **erste** zutreffende Regel bestimmt das Schema:
+
+| # | Schema | Bedingung |
+|---|--------|-----------|
+| 1 | **Freitext-Dosierung** | `hatText` **und nicht** `hatTiming` |
+| 2 | **Bedarfsmedikation (rein)** | `istBedarf` **und nicht** `hatTiming` |
+| 3 | **4-Schema** (Tageszeiten) | `hatWhenCodes` **und nicht** `hatUhrzeit` **und nicht** `hatWochentag` |
+| 4 | **Wochentags-Bezug** | `hatWochentag` **und nicht** `hatWhenCodes` **und nicht** `hatUhrzeit` |
+| 5 | **Kombination von Wochentagen** | `hatWochentag` **und** (`hatUhrzeit` **oder** `hatWhenCodes`) |
+| 6 | **Uhrzeiten-Bezug** | `hatUhrzeit` **und nicht** `hatWochentag` **und nicht** `hatWhenCodes` **und** (`istTagesmuster` **oder** es fehlen `hatFrequenz`, `hatPeriode` und `hatPeriodeneinheit` vollständig) |
+| 7 | **Kombination von Zeitintervallen** | `istNichtTagesmuster` **und** (`hatUhrzeit` **oder** `hatWhenCodes`) |
+| 8 | **Wiederkehrende Intervalle** | `istReinesIntervall` |
+| – | **Fehlertext** | trifft keine Regel zu (Ergebnis „Unknown") |
+
+> **Bedarf als Querschnittsmerkmal:** Nur der **reine** Bedarf (ohne `timing`, Regel 2) ist ein eigenes Schema. Ist zusätzlich ein `timing` vorhanden, wird über die Regeln 3–8 das strukturierte Schema bestimmt; die Bedarfskennzeichnung (`asNeededBoolean`, Einnahmeanlass, Mindestabstand, Maximalmenge) wird dann beim Zusammensetzen als Präfix/Suffix ergänzt (siehe [Schema für Bedarfsmedikation](#schema-für-bedarfsmedikation)).
+
+---
+
 ## Teil B: Aufbau je Schema
 
 Ein generierter Dosierungstext folgt grundsätzlich dem Aufbau:
@@ -244,6 +288,48 @@ Eine Bedarfsmedikation liegt vor, wenn auf Ebene der `Dosage` `asNeededBoolean =
 Enthält die `Dosage` ausschließlich freien Text (`text` vorhanden, `timing` und `doseAndRate` leer), wird dieser **unverändert** übernommen. Bei reinem Freitext darf die Ressource **genau ein** `Dosage`-Element enthalten (Invariante `FreeTextSingleDosageOnly`), und `Dosage.text` ist `0..1`; es gibt also genau **ein** Textfeld – eine Verkettung mehrerer Freitexte findet nicht statt. Bei einer Freitext-Dosierung werden **keine** weiteren Bausteine (Hinweis, Maximalmenge, Normalisierung …) angehängt; der Freitext muss alle Angaben selbst enthalten.
 
 *Beispiel:* `Nach Bedarf bei Schmerzen`
+
+---
+
+## Feldreferenz und Mehrfach-Dosage
+
+### Feldreferenz
+
+Die folgende Tabelle nennt für jeden dynamischen Baustein den genauen Lese-Pfad relativ zum `Dosage`-Element. Maßgeblich für Kardinalität und Definition sind die Profil- und Extension-Seiten dieses IG; diese Tabelle beschreibt, welchen Unterpfad der Algorithmus tatsächlich ausliest.
+
+| Baustein | Lese-Pfad (relativ zu `Dosage`) | Ausgelesene Werte |
+|----------|--------------------------------|-------------------|
+| Dosis (fest) | `doseAndRate[0].doseQuantity` | `.value`, `.unit` |
+| Dosis (Bereich) | `doseAndRate[0].doseRange` | `.low.value`, `.high.value`, `.unit` (für `low` und `high` identisch — erzwungen durch Invariante `DoseRangeLowAndHighSameUnit`) |
+| Dauer | `timing.repeat.boundsDuration` | `.value`, Einheit aus `.code` |
+| Start-/Endzeitpunkt | `timing.repeat.boundsPeriod` | `.start`, `.end` |
+| Intervall | `timing.repeat.frequency` / `.period` / `.periodUnit` | Werte bzw. Bereich |
+| Wochentage | `timing.repeat.dayOfWeek` | Code-Liste |
+| Uhrzeiten | `timing.repeat.timeOfDay` | Zeit-Liste |
+| Tagesabschnitt | `timing.repeat.when` | Code-Liste |
+| Bedarfskennzeichen | `asNeededBoolean` | `true` |
+| Einnahmeanlass | `extension` mit URL `…/extension-Dosage.asNeededFor` → `valueCodeableConcept.text` | Freitext |
+| Mindestabstand | `modifierExtension` mit URL `…/MindestabstandZwischenGaben` → `valueDuration` | `.value`, Einheit aus `.code` |
+| Maximalmenge | `maxDosePerPeriod` | `numerator.value`, `numerator.unit`; `denominator.value` + `denominator.code` (nur `1 d` oder `24 h`) |
+| Hinweis | `patientInstruction` | einzelner String (`0..1`) |
+| Freitext | `text` | String |
+
+**Extension-URLs (kanonisch):**
+
+* Einnahmeanlass: `http://hl7.org/fhir/5.0/StructureDefinition/extension-Dosage.asNeededFor`
+* Mindestabstand: `http://ig.fhir.de/igs/medication/StructureDefinition/MindestabstandZwischenGaben`
+
+> Beide Extensions werden über ihre **exakte kanonische `url`** identifiziert.
+
+### Aggregation mehrerer Dosage-Elemente
+
+Für **unterschiedliche** Dosierungen, die sich nicht in einem einzelnen `Dosage`-Element abbilden lassen (z. B. unterschiedliche Dosis je Wochentag oder je Uhrzeit), werden **mehrere** `Dosage`-Elemente verwendet. Invarianten (z. B. `TimingSingleDosageForTimeOfDay`, `TimingSingleDosageForWhen`) verhindern dabei eine **unnötige** Aufteilung: Mehrere Elemente sind nur zulässig, wenn sich die Dosis (Wert) unterscheidet. Für die Textgenerierung gilt:
+
+* **Segmente** (Uhrzeit-, Tagesabschnitts- und Wochentagssegmente) werden über **alle** `Dosage`-Elemente eingesammelt und gemeinsam sortiert. Ein Segment kann daher aus demselben oder aus verschiedenen `Dosage`-Einträgen stammen; im erzeugten Text erscheinen sie zusammengeführt (siehe Trennzeichen-Regeln). Dies betrifft die Schemata 4‑Schema, Uhrzeiten, Wochentage, Wochentag-Kombinationen und Intervall-Kombinationen.
+* Die **Rahmen-Angaben** – Zeitrahmen (Dauer/Start-Ende), Bedarfskennzeichen inkl. Einnahmeanlass, Mindestabstand und Maximalmenge sowie der abschließende Hinweis – werden **ausschließlich aus dem ersten** `Dosage`-Element gelesen. Es wird angenommen, dass diese Angaben über alle Elemente konsistent sind.
+* Bei den Schemata **wiederkehrende Intervalle** und **reine Bedarfsmedikation** wird ausschließlich das **erste** `Dosage`-Element verarbeitet (keine Segment-Aggregation).
+
+Die resultierende Reihenfolge der Segmente ist **deterministisch** und hängt nicht von der Reihenfolge der `Dosage`-Elemente ab (Uhrzeiten aufsteigend, Tagesabschnitte in fester Reihenfolge, Wochentage kanonisch).
 
 ---
 

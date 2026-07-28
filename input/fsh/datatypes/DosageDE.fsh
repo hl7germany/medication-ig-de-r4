@@ -7,7 +7,7 @@ Id: DosageDE
 Title: "Dosage DE"
 Description: "Gibt an, wie das Medikament eingenommen oder verabreicht wurde bzw. eingenommen oder verabreicht werden soll - entweder selbst vom Patienten eingenommen oder bei Fremdverabreichung von Dritten (z. B. Leistungserbringer, Angehörige) verabreicht."
 * obeys DosageStructuredOrFreeTextWarning
-* obeys DosageStructuredRequiresBoth
+* obeys DosageStructuredRequiresBothWarning
 * obeys DosageDoseUnitSameCode
 * obeys DosageWarnungViererschemaInText
 * obeys FreeTextSingleDosageOnlyWarning
@@ -102,8 +102,8 @@ implies
 )"
 Severity: #warning
 
-Invariant: DosageStructuredRequiresBoth
-Description: "Wenn eine strukturierte Dosierungsangabe erfolgt, müssen sowohl timing als auch doseAndRate angegeben werden. Für reine Bedarfsdosierungen darf doseAndRate auch ohne timing angegeben werden."
+Invariant: DosageStructuredRequiresBothWarning
+Description: "Wenn eine strukturierte Dosierungsangabe erfolgt, sollten sowohl timing als auch doseAndRate angegeben werden. Für reine Bedarfsdosierungen darf doseAndRate auch ohne timing angegeben werden."
 Expression: "(%resource.ofType(MedicationRequest).dosageInstruction | 
  %resource.ofType(MedicationDispense).dosageInstruction | 
  %resource.ofType(MedicationStatement).dosage).all(
@@ -114,7 +114,7 @@ Expression: "(%resource.ofType(MedicationRequest).dosageInstruction |
     extension.where(url='http://hl7.org/fhir/5.0/StructureDefinition/extension-Dosage.asNeededFor').exists()
   ))
 )"
-Severity: #error
+Severity: #warning
 
 Invariant: DosageDoseUnitSameCode
 Description: "Die Dosiereinheit muss über alle Dosierungen gleich sein."

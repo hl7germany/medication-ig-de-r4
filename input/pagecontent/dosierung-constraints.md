@@ -231,13 +231,25 @@ Gültige Varianten (Warnungskontext – nur Text oder nur Struktur):
 
 {% include dosage-constraint-DosageStructuredOrFreeTextWarning-examples.md%}
 
+#### DosageStructuredRequiresBothWarning
+
+**Beschreibung:**  
+Warnung in `DosageDE`, wenn bei einer strukturierten Dosierung nur zeitliche Angaben (`timing`) oder nur die Dosis (`doseAndRate`) vorhanden sind. Für reine Bedarfsdosierungen ist `doseAndRate` ohne `timing` zulässig und löst keine Warnung aus.
+
+**Warum?**  
+Eine strukturierte Dosierung sollte Zeit und Menge enthalten, um automatisiert interpretierbar zu sein. Als Warnung – und nicht als Fehler – ist der Constraint modelliert, weil es Fälle mit festen Einnahmezeiten, aber nicht vorab festgelegter Dosis gibt, etwa Insulin nach Plan zu definierten Zeiten. In den dgMP-Profilen gilt für denselben Sachverhalt der Fehler [DosageStructuredRequiresBoth](#dosagestructuredrequiresboth).
+
+Folgende Beispiele lösen eine Warnung aus:
+
+{% include dosage-constraint-DosageStructuredRequiresBothWarning-examples.md%}
+
 #### DosageStructuredRequiresBoth
 
 **Beschreibung:**  
-Wenn eine strukturierte Dosierung angegeben wird, müssen sowohl zeitliche Angaben (`timing`) als auch die Dosis (`doseAndRate`) vorhanden sein.
+Wenn in den dgMP-Profilen eine strukturierte Dosierung angegeben wird, müssen sowohl zeitliche Angaben (`timing`) als auch die Dosis (`doseAndRate`) vorhanden sein. Für reine Bedarfsdosierungen darf `doseAndRate` auch ohne `timing` angegeben werden.
 
 **Warum?**  
-Stellt sicher, dass eine strukturierte Dosierung hinreichend vollständig ist, um automatisiert interpretiert werden zu können (Zeit + Menge).
+Der dgMP setzt auf durchgängig maschinell auswertbare Dosierungen; die Textgenerierung benötigt Zeit und Menge gemeinsam. Eine Dosierung, deren Menge erst außerhalb der Ressource festgelegt wird, ist im dgMP als Freitext-Dosierung abzubilden.
 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 

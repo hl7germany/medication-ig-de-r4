@@ -21,8 +21,12 @@ def is_negative_example_filename(file_name):
     )
 
 def is_warning_example_filename(file_name):
-    """Return True for warning examples that should not appear in supported examples table."""
-    return "warning" in file_name.lower()
+    """Return True for warning examples that should not appear in supported examples table.
+
+    Covers both naming variants in use: '...Warning...' and the '-W-<ConstraintKey>-' prefix form.
+    """
+    lower_name = file_name.lower()
+    return "warning" in lower_name or "-w-" in lower_name
 
 def find_medication_resources(resources_dir):
     """Find all MedicationRequest, MedicationDispense, and MedicationStatement JSON files."""

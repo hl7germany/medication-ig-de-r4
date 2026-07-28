@@ -148,22 +148,46 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-TimingOnlyOneTimeForInterval-examples.md%}
 
+#### TimingBoundsUnitMatchesCodeWarning
+
+**Beschreibung:**  
+Warnung in `TimingDE`, wenn die Einheit (`boundsDuration.unit`) nicht zum UCUM‑Code (`boundsDuration.code`) passt.
+
+**Warum?**  
+Widersprüchliche Angaben wie `code='wk'` mit `unit='Tag(e)'` sind fast immer ein Fehler, die Einheit ist im generischen Profil aber nicht auf die deutschen Bezeichnungen festgelegt. In den dgMP-Profilen gilt für denselben Sachverhalt der Fehler [TimingBoundsUnitMatchesCode](#timingboundsunitmatchescode).
+
+Folgende Beispiele lösen eine Warnung aus:
+
+{% include dosage-constraint-TimingBoundsUnitMatchesCodeWarning-examples.md%}
+
 #### TimingBoundsUnitMatchesCode
 
 **Beschreibung:**  
-Die Einheit (`boundsDuration.unit`) muss zum UCUM‑Code (`boundsDuration.code`) passen; z. B. `wk` nur mit „Woche(n)“, `d` nur mit „Tag(e)“, `mo` nur mit „Monat(e)“, `a` nur mit „Jahr(e)“.
+In den dgMP-Profilen muss die Einheit (`boundsDuration.unit`) zum UCUM‑Code (`boundsDuration.code`) passen; z. B. `wk` nur mit „Woche(n)“, `d` nur mit „Tag(e)“, `mo` nur mit „Monat(e)“, `a` nur mit „Jahr(e)“.
 
 **Warum?**  
-Verhindert widersprüchliche Angaben wie `code='wk'` mit `unit='Tag(e)'`.
+Die Textgenerierung leitet die Zeiteinheit aus dem Code ab; eine abweichende `unit` würde eine Dauer anzeigen, die nicht der übermittelten entspricht.
 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-TimingBoundsUnitMatchesCode-examples.md%}
 
+#### TimingSingleDosageForTimeOfDayWarning
+
+**Beschreibung:**  
+Warnung in `TimingDE`, wenn bei täglicher Dosierung mit ausschließlich `timeOfDay` mehrere `Dosage`‑Elemente mit identischer Dosis verwendet werden.
+
+**Warum?**  
+Mehrere gleichartige Elemente sind unnötig aufgesplittert und erschweren die Auswertung. Im generischen Profil bleibt es bei einer Warnung, weil die Aufteilung dort nicht schadet. In den dgMP-Profilen gilt für denselben Sachverhalt der Fehler [TimingSingleDosageForTimeOfDay](#timingsingledosagefortimeofday).
+
+Folgende Beispiele lösen eine Warnung aus:
+
+{% include dosage-constraint-TimingSingleDosageForTimeOfDayWarning-examples.md%}
+
 #### TimingSingleDosageForTimeOfDay
 
 **Beschreibung:**  
-Wenn nur `timeOfDay` verwendet wird und täglich dosiert wird, sind mehrere Tageszeiten in einem einzigen `Dosage`‑Element zu modellieren. Mehrere `Dosage`‑Elemente sind nur zulässig, wenn sich die Dosis (Wert) unterscheidet.
+In den dgMP-Profilen sind bei täglicher Dosierung mit ausschließlich `timeOfDay` mehrere Tageszeiten in einem einzigen `Dosage`‑Element zu modellieren. Mehrere `Dosage`‑Elemente sind nur zulässig, wenn sich die Dosis (Wert) unterscheidet.
 
 **Warum?**  
 Verhindert unnötige Aufsplitterung gleichartiger Dosierungen und sorgt für eine klare, eindeutige Modellierung der Tageszeiten.
@@ -172,10 +196,22 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-TimingSingleDosageForTimeOfDay-examples.md%}
 
+#### TimingSingleDosageForWhenWarning
+
+**Beschreibung:**  
+Warnung in `TimingDE`, wenn bei täglicher Dosierung mit ausschließlich `when` mehrere `Dosage`‑Elemente mit identischer Dosis verwendet werden.
+
+**Warum?**  
+Mehrere gleichartige Elemente sind unnötig aufgesplittert und erschweren die Auswertung. Im generischen Profil bleibt es bei einer Warnung, weil die Aufteilung dort nicht schadet. In den dgMP-Profilen gilt für denselben Sachverhalt der Fehler [TimingSingleDosageForWhen](#timingsingledosageforwhen).
+
+Folgende Beispiele lösen eine Warnung aus:
+
+{% include dosage-constraint-TimingSingleDosageForWhenWarning-examples.md%}
+
 #### TimingSingleDosageForWhen
 
 **Beschreibung:**  
-Wenn nur `when` verwendet wird und täglich dosiert wird, sind mehrere Zeitabschnitte des Tages in einem einzigen `Dosage`‑Element zu modellieren. Mehrere `Dosage`‑Elemente sind nur zulässig, wenn sich die Dosis (Wert) unterscheidet.
+In den dgMP-Profilen sind bei täglicher Dosierung mit ausschließlich `when` mehrere Zeitabschnitte des Tages in einem einzigen `Dosage`‑Element zu modellieren. Mehrere `Dosage`‑Elemente sind nur zulässig, wenn sich die Dosis (Wert) unterscheidet.
 
 **Warum?**  
 Verhindert unnötige Aufsplitterung gleichartiger Dosierungen und sorgt für eine klare, eindeutige Modellierung der Tagesabschnitte.
@@ -326,13 +362,25 @@ Beispiele (Warnungskontext – mehrere Freitext‑Dosierungen):
 
 {% include dosage-constraint-FreeTextSingleDosageOnlyWarning-examples.md%}
 
+#### DosageDoseUnitSameCodeWarning
+
+**Beschreibung:**  
+Warnung in `DosageDE`, wenn die Dosierungsinstanzen innerhalb derselben Ressource unterschiedliche Dosiereinheiten (Codes) verwenden.
+
+**Warum?**  
+Gemischte Einheiten (z. B. Stück und mg) erschweren Vergleich, Summierung und Darstellung. Im generischen Profil bleibt es bei einer Warnung, weil sich fachlich begründete Mischformen nicht generell ausschließen lassen. In den dgMP-Profilen gilt für denselben Sachverhalt der Fehler [DosageDoseUnitSameCode](#dosagedoseunitsamecode).
+
+Folgende Beispiele lösen eine Warnung aus:
+
+{% include dosage-constraint-DosageDoseUnitSameCodeWarning-examples.md%}
+
 #### DosageDoseUnitSameCode
 
 **Beschreibung:**  
-Alle Dosierungsinstanzen innerhalb derselben Ressource müssen dieselbe Dosiereinheit (Code) verwenden.
+In den dgMP-Profilen müssen alle Dosierungsinstanzen innerhalb derselben Ressource dieselbe Dosiereinheit (Code) verwenden.
 
 **Warum?**  
-Verhindert inkonsistente oder schwer vergleichbare Einträge (z. B. Mischung von Einheiten wie Stück vs. mg) und reduziert Interpretationsfehler bei Summierung oder Darstellung.
+Die Textgenerierung übernimmt die gemeinsame Dosis-Einheit aus der ersten auswertbaren Dosis; unterschiedliche Einheiten würden im erzeugten Text stillschweigend verlorengehen. Zudem setzt der dgMP auf durchgängig maschinell vergleichbare Dosierungen.
 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 

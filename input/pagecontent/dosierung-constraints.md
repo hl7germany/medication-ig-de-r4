@@ -148,6 +148,20 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-TimingBoundsUnitMatchesCode-examples.md%}
 
+#### TimingBoundsPeriodDateOnly
+
+**Beschreibung:**
+
+`boundsPeriod.start` und `boundsPeriod.end` dürfen ausschließlich vollständige Kalenderdaten im Format `JJJJ-MM-TT` enthalten. Uhrzeiten und Zeitzonen sind nicht zulässig.
+
+**Warum?**
+
+Die Dosierungsgrenzen werden im dgMP ausschließlich mit Tagespräzision verarbeitet. Dadurch sind keine Zeitzonenumrechnung und keine davon abhängige Verschiebung des Kalendertags erforderlich.
+
+Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
+
+{% include dosage-constraint-TimingBoundsPeriodDateOnly-examples.md%}
+
 #### TimingSingleDosageForTimeOfDay
 
 **Beschreibung:**  

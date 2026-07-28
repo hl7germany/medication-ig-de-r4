@@ -10,6 +10,7 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
 * obeys PatientInstructionIdentical
 * obeys MaxDoseSameUnitAsDose
 * obeys MaxDosePerPeriodOnly24hOr1d
+* obeys MaxDoseOnlyWhenAsNeeded
 * obeys DoseRangeHighRequiredWhenLowPresent
 * obeys DoseRangeLowAndHighSameUnit
 * obeys DoseRangeNoVarPeriod
@@ -274,6 +275,11 @@ Severity: #error
 Expression: "timing.repeat.periodMax.empty() or modifierExtension.where(url='http://ig.fhir.de/igs/medication/StructureDefinition/MindestabstandZwischenGaben').empty()"
 
 Invariant: AsNeededForRequiresAsNeeded
-Description: "Ein Einnahmeanlass (asNeededFor) darf nur bei einer Bedarfsdosierung (asNeededBoolean=true) angegeben werden. Eine Bedarfsdosierung selbst benötigt keinen Einnahmeanlass."
+Description: "Ein Einnahmeanlass (asNeededFor) darf nur bei einer Bedarfsdosierung (asNeededBoolean=true) angegeben werden."
 Severity: #error
 Expression: "extension.where(url='http://hl7.org/fhir/5.0/StructureDefinition/extension-Dosage.asNeededFor').exists() implies asNeeded.ofType(boolean) = true"
+
+Invariant: MaxDoseOnlyWhenAsNeeded
+Description: "Eine Maximalmenge (maxDosePerPeriod) darf nur bei einer Bedarfsdosierung (asNeededBoolean=true) angegeben werden."
+Severity: #error
+Expression: "maxDosePerPeriod.empty() or asNeeded.ofType(boolean) = true"

@@ -100,6 +100,18 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-TimingOnlyOneBounds-examples.md%}
 
+#### TimingBoundsDurationOnlyWholeNumber
+
+**Beschreibung:**  
+Der Wert der Gesamtdauer (`boundsDuration.value`) darf nur Ganzzahlen enthalten, Nachkommastellen sind nicht zulässig.
+
+**Warum?**  
+Verhindert unklare oder technisch nicht sinnvolle Angaben einer Behandlungsdauer mit Bruchteilen von Zeiteinheiten (z. B. „1,5 Tage“) und sorgt für konsistente, eindeutig interpretierbare Zeiträume.
+
+Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
+
+{% include dosage-constraint-TimingBoundsDurationOnlyWholeNumber-examples.md%}
+
 #### TimingIntervalOnlyOneFrequency
 
 **Beschreibung:**  

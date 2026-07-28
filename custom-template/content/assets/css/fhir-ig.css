@@ -15,3 +15,17 @@ th, td {
   border: 1px solid black;
   text-align: left !important; /* Align table content left */
 }
+
+/* Notice on intentionally non-conformant examples (ids containing INV- or Unsupported) */
+.invalid-example-note {
+  border-left: 5px solid #ad1f2f;
+  background-color: #f7e7e9;
+  color: #5c1119;
+  padding: 10px 15px;
+  margin: 10px 0 15px 0;
+}
+
+.invalid-example-note a {
+  color: #5c1119;
+  text-decoration: underline;
+}

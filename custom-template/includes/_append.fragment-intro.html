@@ -1,0 +1,13 @@
+{% if include.id contains 'Unsupported' %}
+<div class="invalid-example-note">
+  <strong>Hinweis: Dieses Beispiel ist absichtlich nicht konform.</strong>
+  Es zeigt eine Angabe, die in der aktuellen Ausbaustufe des dgMP nicht unterstützt wird, und ist keine Vorlage für eine gültige Dosierungsangabe.
+  Eine Übersicht dieser Beispiele findet sich unter <a href="dosierung-beispiele.html">Beispiele für Dosierungen</a>.
+</div>
+{% elsif include.id contains 'INV-' or include.id contains 'Invalid' %}
+<div class="invalid-example-note">
+  <strong>Hinweis: Dieses Beispiel ist absichtlich nicht valide.</strong>
+  Es dient ausschließlich dazu, die Invarianten dieses Implementation Guides zu prüfen, und ist keine Vorlage für eine gültige Dosierungsangabe.
+  Eine Übersicht der Invarianten mit den zugehörigen Negativbeispielen findet sich unter <a href="dosierung-constraints.html">Übersicht der Timing &amp; Dosierungs-Invarianten</a>.
+</div>
+{% endif %}

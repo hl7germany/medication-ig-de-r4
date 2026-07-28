@@ -8,7 +8,7 @@ Title: "Dosage DE"
 Description: "Gibt an, wie das Medikament eingenommen oder verabreicht wurde bzw. eingenommen oder verabreicht werden soll - entweder selbst vom Patienten eingenommen oder bei Fremdverabreichung von Dritten (z. B. Leistungserbringer, Angehörige) verabreicht."
 * obeys DosageStructuredOrFreeTextWarning
 * obeys DosageStructuredRequiresBothWarning
-* obeys DosageDoseUnitSameCode
+* obeys DosageDoseUnitSameCodeWarning
 * obeys DosageWarnungViererschemaInText
 * obeys FreeTextSingleDosageOnlyWarning
 * obeys dos-1
@@ -116,8 +116,8 @@ Expression: "(%resource.ofType(MedicationRequest).dosageInstruction |
 )"
 Severity: #warning
 
-Invariant: DosageDoseUnitSameCode
-Description: "Die Dosiereinheit muss über alle Dosierungen gleich sein."
+Invariant: DosageDoseUnitSameCodeWarning
+Description: "Die Dosiereinheit sollte über alle Dosierungen gleich sein."
 Expression: "(%resource.ofType(MedicationRequest).dosageInstruction | %resource.ofType(MedicationDispense).dosageInstruction | %resource.ofType(MedicationStatement).dosage).all(
 doseAndRate.exists() implies
   (
@@ -126,7 +126,7 @@ doseAndRate.exists() implies
     (%resource.ofType(MedicationRequest).dosageInstruction | %resource.ofType(MedicationDispense).dosageInstruction | %resource.ofType(MedicationStatement).dosage).doseAndRate.dose.ofType(Range).high.code
   ).distinct().count() = 1
 )"
-Severity: #error
+Severity: #warning
 
 Invariant: DosageWarnungViererschemaInText
 Description: "Hinweis: In Dosage.text wurde ein Viererschema (z. B. 1-1-1-1) erkannt. Bitte prüfen, ob dies strukturiert abgebildet werden kann."

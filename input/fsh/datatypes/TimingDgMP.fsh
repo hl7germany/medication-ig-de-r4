@@ -24,6 +24,9 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * obeys TimingVarFreqOrPeriod
   * obeys TimingVarFreqGtMin
   * obeys TimingVarPeriodGtMin
+  * obeys TimingSingleDosageForTimeOfDay
+  * obeys TimingSingleDosageForWhen
+  * obeys TimingBoundsUnitMatchesCode
   * bounds[x] MS
   * bounds[x] only Duration or Period
     * ^comment = "Begründung Einschränkung Datentyp: Nur eine Angabe zur Dauer und Start- bzw. Enddatum sind in der aktuellen Ausbaustufe des dgMP vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
@@ -67,6 +70,119 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * offset 0..0
     * ^short = "Zeitversatz"
     * ^comment = "Begründung Einschränkung Kardinalität: Ein Zeitversatz ist in der ersten Ausbaustufe desdgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
+
+Invariant: TimingSingleDosageForTimeOfDay
+Description: "Wenn nur timeOfDay verwendet wird und täglich dosiert wird, ist die Angabe in einem einzigen Dosage-Element zu modellieren. Mehrere Dosage-Elemente sind nur zulässig, wenn sich die Dosis (Wert) unterscheidet."
+Expression: "(
+  %resource.ofType(MedicationRequest).dosageInstruction
+  | %resource.ofType(MedicationDispense).dosageInstruction
+  | %resource.ofType(MedicationStatement).dosage
+).all(
+  (
+    timing.repeat.dayOfWeek.empty() and
+    timing.repeat.timeOfDay.exists() and
+    timing.repeat.when.empty()
+  )
+  implies
+  (
+    (
+      (
+        %resource.ofType(MedicationRequest).dosageInstruction
+        | %resource.ofType(MedicationDispense).dosageInstruction
+        | %resource.ofType(MedicationStatement).dosage
+      ).where(
+        timing.repeat.dayOfWeek.empty() and timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()
+      ).count() = 1
+    )
+    or
+    (
+      (
+        %resource.ofType(MedicationRequest).dosageInstruction
+        | %resource.ofType(MedicationDispense).dosageInstruction
+        | %resource.ofType(MedicationStatement).dosage
+      ).where(
+        timing.repeat.dayOfWeek.empty() and timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()
+      ).doseAndRate.dose.ofType(Quantity).value.distinct().count() > 1
+    )
+  )
+)"
+Severity: #error
+
+Invariant: TimingSingleDosageForWhen
+Description: "Wenn nur when verwendet wird und täglich dosiert wird, ist die Angabe in einem einzigen Dosage-Element zu modellieren. Mehrere Dosage-Elemente sind nur zulässig, wenn sich die Dosis (Wert) unterscheidet."
+Expression: "(
+  %resource.ofType(MedicationRequest).dosageInstruction
+  | %resource.ofType(MedicationDispense).dosageInstruction
+  | %resource.ofType(MedicationStatement).dosage
+).all(
+  (
+    timing.repeat.dayOfWeek.empty() and
+    timing.repeat.when.exists() and
+    timing.repeat.timeOfDay.empty()
+  )
+  implies
+  (
+    (
+      (
+        %resource.ofType(MedicationRequest).dosageInstruction
+        | %resource.ofType(MedicationDispense).dosageInstruction
+        | %resource.ofType(MedicationStatement).dosage
+      ).where(
+        timing.repeat.dayOfWeek.empty() and timing.repeat.when.exists() and timing.repeat.timeOfDay.empty()
+      ).count() = 1
+    )
+    or
+    (
+      (
+        %resource.ofType(MedicationRequest).dosageInstruction
+        | %resource.ofType(MedicationDispense).dosageInstruction
+        | %resource.ofType(MedicationStatement).dosage
+      ).where(
+        timing.repeat.dayOfWeek.empty() and timing.repeat.when.exists() and timing.repeat.timeOfDay.empty()
+      ).doseAndRate.dose.ofType(Quantity).value.distinct().count() > 1
+    )
+  )
+)"
+Severity: #error
+
+Invariant: TimingBoundsUnitMatchesCode
+Description: "boundsDuration.unit muss zur UCUM boundsDuration.code passen (z. B. 'Woche(n)' nur mit code='wk')."
+Expression: "bounds.ofType(Duration).exists().not() or (
+  (
+    bounds.ofType(Duration).code = 'd'
+    implies 
+    (
+      bounds.ofType(Duration).unit = 'Tag(e)' or
+      bounds.ofType(Duration).unit = 'Tag' or
+      bounds.ofType(Duration).unit = 'Tage'
+    )
+  ) and (
+    bounds.ofType(Duration).code = 'wk'
+    implies 
+    (
+      bounds.ofType(Duration).unit = 'Woche(n)' or
+      bounds.ofType(Duration).unit = 'Woche' or
+      bounds.ofType(Duration).unit = 'Wochen'
+    )
+  ) and (
+    bounds.ofType(Duration).code = 'mo'
+    implies 
+    (
+      bounds.ofType(Duration).unit = 'Monat(e)' or
+      bounds.ofType(Duration).unit = 'Monat' or
+      bounds.ofType(Duration).unit = 'Monate'
+    )
+  ) and (
+    bounds.ofType(Duration).code = 'a'
+    implies 
+    (
+      bounds.ofType(Duration).unit = 'Jahr(e)' or
+      bounds.ofType(Duration).unit = 'Jahr' or
+      bounds.ofType(Duration).unit = 'Jahre'
+    )
+  )
+)"
+Severity: #error
 
 Invariant: TimingVarFreqOrPeriod
 Description: "Bei gleichzeitiger Angabe von Frequenz und Periode sollte entweder nur die Frequenz einschließlich frequencyMax oder nur die Periode einschließlich periodMax größer als 1 sein."

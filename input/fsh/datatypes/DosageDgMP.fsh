@@ -9,6 +9,7 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
 * obeys FreeTextSingleDosageOnly
 * obeys FreeTextMatchesRenderedText
 * obeys DosageDoseQuantityAllowedFractions
+* obeys DosageDoseUnitSameCode
 * obeys DosageDoseValueDecimalNotation
 * obeys DosageViererschemaInText
 * obeys PatientInstructionIdentical
@@ -244,6 +245,18 @@ doseAndRate.all(
 )
 """
 
+Severity: #error
+
+Invariant: DosageDoseUnitSameCode
+Description: "Die Dosiereinheit muss über alle Dosierungen gleich sein."
+Expression: "(%resource.ofType(MedicationRequest).dosageInstruction | %resource.ofType(MedicationDispense).dosageInstruction | %resource.ofType(MedicationStatement).dosage).all(
+doseAndRate.exists() implies
+  (
+    (%resource.ofType(MedicationRequest).dosageInstruction | %resource.ofType(MedicationDispense).dosageInstruction | %resource.ofType(MedicationStatement).dosage).doseAndRate.dose.ofType(Quantity).code |
+    (%resource.ofType(MedicationRequest).dosageInstruction | %resource.ofType(MedicationDispense).dosageInstruction | %resource.ofType(MedicationStatement).dosage).doseAndRate.dose.ofType(Range).low.code |
+    (%resource.ofType(MedicationRequest).dosageInstruction | %resource.ofType(MedicationDispense).dosageInstruction | %resource.ofType(MedicationStatement).dosage).doseAndRate.dose.ofType(Range).high.code
+  ).distinct().count() = 1
+)"
 Severity: #error
 
 Invariant: DosageDoseValueDecimalNotation

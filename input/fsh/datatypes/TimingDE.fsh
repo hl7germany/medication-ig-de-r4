@@ -7,9 +7,9 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
 * repeat MS
   * ^short = "Wann das Ereignis stattfinden soll"
   * ^definition = "Eine Menge von Regeln, die beschreiben, wann das Ereignis geplant ist."
-  * obeys TimingSingleDosageForTimeOfDay
-  * obeys TimingSingleDosageForWhen
-  * obeys TimingBoundsUnitMatchesCode
+  * obeys TimingSingleDosageForTimeOfDayWarning
+  * obeys TimingSingleDosageForWhenWarning
+  * obeys TimingBoundsUnitMatchesCodeWarning
 * repeat.bounds[x] MS
   * ^short = "Länge/Bereich der Längen oder (Start- und/oder End-)Grenzen"
   * ^definition = "Entweder eine Dauer für die Länge des Zeitplans, ein Bereich möglicher Längen oder äußere Begrenzungen für Start- und/oder Endgrenzen des Zeitplans."
@@ -53,7 +53,7 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * ^definition = "Ein ungefährer Zeitraum während des Tages, der möglicherweise mit einem Ereignis des täglichen Lebens verknüpft ist und angibt, wann die Aktion stattfinden soll."
   * ^comment = "Wenn mehr als ein Ereignis angegeben ist, bezieht sich das Ereignis auf die Vereinigung der angegebenen Ereignisse."
 
-Invariant: TimingSingleDosageForTimeOfDay
+Invariant: TimingSingleDosageForTimeOfDayWarning
 Description: "Wenn nur timeOfDay verwendet wird und täglich dosiert wird, ist die Angabe in einem einzigen Dosage-Element zu modellieren. Mehrere Dosage-Elemente sind nur zulässig, wenn sich die Dosis (Wert) unterscheidet."
 Expression: "(
   %resource.ofType(MedicationRequest).dosageInstruction
@@ -88,9 +88,9 @@ Expression: "(
     )
   )
 )"
-Severity: #error
+Severity: #warning
 
-Invariant: TimingSingleDosageForWhen
+Invariant: TimingSingleDosageForWhenWarning
 Description: "Wenn nur when verwendet wird und täglich dosiert wird, ist die Angabe in einem einzigen Dosage-Element zu modellieren. Mehrere Dosage-Elemente sind nur zulässig, wenn sich die Dosis (Wert) unterscheidet."
 Expression: "(
   %resource.ofType(MedicationRequest).dosageInstruction
@@ -125,9 +125,9 @@ Expression: "(
     )
   )
 )"
-Severity: #error
+Severity: #warning
 
-Invariant: TimingBoundsUnitMatchesCode
+Invariant: TimingBoundsUnitMatchesCodeWarning
 Description: "boundsDuration.unit muss zur UCUM boundsDuration.code passen (z. B. 'Woche(n)' nur mit code='wk')."
 Expression: "bounds.ofType(Duration).exists().not() or (
   (
@@ -164,4 +164,4 @@ Expression: "bounds.ofType(Duration).exists().not() or (
     )
   )
 )"
-Severity: #error
+Severity: #warning

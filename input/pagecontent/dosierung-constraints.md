@@ -314,6 +314,18 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-DosageDoseUnitSameCode-examples.md%}
 
+#### DosageDoseValueDecimalNotation
+
+**Beschreibung:**  
+Dosiswerte in `doseQuantity.value` sowie `doseRange.low.value` und `doseRange.high.value` müssen in einfacher Dezimalschreibweise mit maximal zwei Nachkommastellen angegeben werden (z. B. `0.5`, `1`, `2.25`). Die vom Datentyp `decimal` erlaubte Exponentialschreibweise ist unzulässig; `0.5` darf also nicht als `50e-2` übermittelt werden.
+
+**Warum?**  
+Der Constraint `DosageDoseQuantityAllowedFractions` schränkt den Wertebereich ein, arbeitet dafür aber auf dem geparsten Zahlenwert und ist gegenüber der Notation blind. Da Dosiswerte in der Praxis auch textnah weiterverarbeitet und angezeigt werden, legt dieser Constraint zusätzlich die Schreibweise fest und hält sie an der BMP-Spezifikation ausgerichtet.
+
+Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
+
+{% include dosage-constraint-DosageDoseValueDecimalNotation-examples.md%}
+
 #### DoseRangeHighRequiredWhenLowPresent
 
 **Beschreibung:**  

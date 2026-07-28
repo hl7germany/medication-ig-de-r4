@@ -8,6 +8,7 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
 * obeys FreeTextSingleDosageOnly
 * obeys FreeTextMatchesRenderedText
 * obeys DosageDoseQuantityAllowedFractions
+* obeys DosageDoseValueDecimalNotation
 * obeys DosageViererschemaInText
 * obeys PatientInstructionIdentical
 * obeys MaxDoseSameUnitAsDose
@@ -229,6 +230,29 @@ doseAndRate.all(
 """
 
 Severity: #error
+
+Invariant: DosageDoseValueDecimalNotation
+Description: "Dosiswerte in doseQuantity oder doseRange müssen in einfacher Dezimalschreibweise mit maximal zwei Nachkommastellen angegeben werden. Die Exponentialschreibweise (z. B. 50e-2 statt 0.5) ist nicht zulässig."
+Expression: """
+doseAndRate.all(
+  (
+    dose.ofType(Quantity).value.empty() or
+    dose.ofType(Quantity).value.toString().matches('^[0-9]+([.][0-9]{1,2})?$')
+  )
+  and
+  (
+    dose.ofType(Range).low.value.empty() or
+    dose.ofType(Range).low.value.toString().matches('^[0-9]+([.][0-9]{1,2})?$')
+  )
+  and
+  (
+    dose.ofType(Range).high.value.empty() or
+    dose.ofType(Range).high.value.toString().matches('^[0-9]+([.][0-9]{1,2})?$')
+  )
+)
+"""
+Severity: #error
+
 Invariant: PatientInstructionIdentical
 Description: "Wenn patientInstruction in einer Ressource mit mehreren Dosierungen verwendet wird, muss das Feld in allen Dosage-Elementen identisch befüllt sein."
 Expression: "(

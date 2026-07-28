@@ -180,7 +180,7 @@ implies
 )"
 Severity: #error
 
-Invariant: DosageDoseAllowedFractions
+Invariant: DosageDoseQuantityAllowedFractions
 Description: "Dosiswerte in doseQuantity oder doseRange dürfen nur ganzzahlig sein oder einen der folgenden Dezimalanteile verwenden: .25, .33, .5, .66 oder .75."
 Expression: """
 doseAndRate.all(
@@ -221,6 +221,7 @@ doseAndRate.all(
   )
 )
 """
+
 Severity: #error
 Invariant: PatientInstructionIdentical
 Description: "Wenn patientInstruction in einer Ressource mit mehreren Dosierungen verwendet wird, muss das Feld in allen Dosage-Elementen identisch befüllt sein."

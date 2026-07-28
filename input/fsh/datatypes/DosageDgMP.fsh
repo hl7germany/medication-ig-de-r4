@@ -25,6 +25,7 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
   * dose[x] MS
   * doseQuantity
   * doseQuantity from $kbv-dosiereinheit-vs
+    * value 1..1 MS
     * system 1..1 MS
     * code 1..1 MS
     * unit 1..1 MS

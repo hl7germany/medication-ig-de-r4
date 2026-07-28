@@ -93,6 +93,6 @@ Um die syntaktische Korrektheit von Dosierungen sicherzustellen, wurden folgende
 
 Der Constraint `DosageStructuredOrFreeTextWarning` im Profil [DosageDE](./StructureDefinition-DosageDE.html) gibt eine Warnung aus, sobald das Element `.text` zusammen mit einer strukturierten Dosieranweisung verwendet wird.
 
-Der Constraint `DosageStructuredRequiresBoth`im im Profil [DosageDE](./StructureDefinition-DosageDE.html) stellt sicher, dass falls eine strukturierte Dosierungsangabe erfolgt, sowohl timing als auch doseAndRate angegeben werden.
+Der Constraint `DosageStructuredRequiresBothWarning` im Profil [DosageDE](./StructureDefinition-DosageDE.html) gibt eine Warnung aus, wenn bei einer strukturierten Dosierungsangabe nur timing oder nur doseAndRate angegeben wird. Als Warnung ist er modelliert, weil Fälle mit festen Einnahmezeiten und nicht vorab festgelegter Dosis vorkommen, etwa Insulin nach Plan. Im Profil [DosageDgMP](./StructureDefinition-DosageDgMP.html) gilt derselbe Sachverhalt über `DosageStructuredRequiresBoth` als Fehler.
 
 Der Constraint `DosageDoseUnitSameCode`im im Profil [DosageDE](./StructureDefinition-DosageDE.html) stellt sicher, dass die Dosiereinheit über alle Dosierungen gleich ist.

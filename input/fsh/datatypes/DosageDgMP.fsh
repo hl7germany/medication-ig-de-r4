@@ -4,6 +4,7 @@ Id: DosageDgMP
 Title: "Dosage dgMP"
 Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenommen wird/wurde oder eingenommen werden soll."
 * obeys DosageStructuredOrFreeText
+* obeys DosageStructuredRequiresBoth
 * obeys DosageStructuredRequiresGeneratedText
 * obeys FreeTextSingleDosageOnly
 * obeys FreeTextMatchesRenderedText
@@ -89,6 +90,20 @@ Expression: "(%resource.ofType(MedicationRequest).dosageInstruction |
  %resource.ofType(MedicationStatement).dosage).all(
   (text.exists() and timing.empty() and doseAndRate.empty()) or
   (text.empty() and (timing.exists() or doseAndRate.exists()))
+)"
+Severity: #error
+
+Invariant: DosageStructuredRequiresBoth
+Description: "Wenn eine strukturierte Dosierungsangabe erfolgt, müssen sowohl timing als auch doseAndRate angegeben werden. Für reine Bedarfsdosierungen darf doseAndRate auch ohne timing angegeben werden."
+Expression: "(%resource.ofType(MedicationRequest).dosageInstruction |
+ %resource.ofType(MedicationDispense).dosageInstruction |
+ %resource.ofType(MedicationStatement).dosage).all(
+  (timing.exists() implies doseAndRate.exists()) and
+  (doseAndRate.exists() implies (
+    timing.exists() or
+    asNeeded.ofType(boolean) = true or
+    extension.where(url='http://hl7.org/fhir/5.0/StructureDefinition/extension-Dosage.asNeededFor').exists()
+  ))
 )"
 Severity: #error
 

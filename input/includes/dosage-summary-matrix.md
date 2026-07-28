@@ -30,7 +30,7 @@
 | [MedicationDispense-MD-Dosage-weekday-mixed-doses](./MedicationDispense-MD-Dosage-weekday-mixed-doses.html) | montags — je 1 Stück; dienstags — je 3 Stück | 1 Stück |  |  |  | mon |  |  |  |
 |  |  | 3 Stück |  |  |  | tue |  |  |  |
 | [MedicationDispense-W-DoseRangeNoVarPeriod-Dispense-02-of-03](./MedicationDispense-W-DoseRangeNoVarPeriod-Dispense-02-of-03.html) | alle 4 bis 6 Stunden: je 2 bis 3 Stück | 2-3 Stück | 1 | 4-6 | h |  |  |  |  |
-| [MedicationDispense-W-TimingVarFreqOrPeriod-Dispense-02-of-03](./MedicationDispense-W-TimingVarFreqOrPeriod-Dispense-02-of-03.html) | alle 4 bis 6 Stunden: je 1 Stück | 1 Stück | 1-2 | 4-6 | h |  |  |  |  |
+| [MedicationDispense-W-TimingVarFreqOrPeriod-Dispense-02-of-03](./MedicationDispense-W-TimingVarFreqOrPeriod-Dispense-02-of-03.html) | 1 bis 2 x alle 4 bis 6 Stunden: je 1 Stück | 1 Stück | 1-2 | 4-6 | h |  |  |  |  |
 | [MedicationRequest-Example-MR-Bug-EmptyLists](./MedicationRequest-Example-MR-Bug-EmptyLists.html) | täglich: je 1 Stück | 1 Stück | 1 | 1 | d |  |  |  |  |
 | [MedicationRequest-Example-MR-Bug-MultipleTimeOfDay-Daily](./MedicationRequest-Example-MR-Bug-MultipleTimeOfDay-Daily.html) | täglich: 08:00 Uhr, 14:00 Uhr, 22:00 Uhr — je 1 Stück | 1 Stück |  |  |  |  | 08:00:00, 14:00:00, 22:00:00 |  |  |
 | [MedicationRequest-Example-MR-Bug-MultipleTimeOfDay-DayOfWeek](./MedicationRequest-Example-MR-Bug-MultipleTimeOfDay-DayOfWeek.html) | montags 09:00 Uhr, 21:00 Uhr — je 1 Stück; mittwochs 09:00 Uhr, 21:00 Uhr — je 1 Stück; freitags 09:00 Uhr, 21:00 Uhr — je 1 Stück | 1 Stück |  |  |  | mon, wed, fri | 09:00:00, 21:00:00 |  |  |
@@ -40,6 +40,7 @@
 | [MedicationRequest-Example-MR-Dosage-1000-enddate](./MedicationRequest-Example-MR-Dosage-1000-enddate.html) | Bis zum 05.07.2026: 1-0-0-0 Stück | 1 Stück | 1 | 1 | d |  |  | MORN | Period =  - 2026-07-05 |
 | [MedicationRequest-Example-MR-Dosage-1000-startandenddate](./MedicationRequest-Example-MR-Dosage-1000-startandenddate.html) | Vom 05.06.2026 bis zum 05.07.2026: 1-0-0-0 Stück | 1 Stück | 1 | 1 | d |  |  | MORN | Period = 2026-06-05 - 2026-07-05 |
 | [MedicationRequest-Example-MR-Dosage-1000-startdate](./MedicationRequest-Example-MR-Dosage-1000-startdate.html) | Ab dem 05.06.2026: 1-0-0-0 Stück | 1 Stück | 1 | 1 | d |  |  | MORN | Period = 2026-06-05 - |
+| [MedicationRequest-Example-MR-Dosage-1000-startdatetime](./MedicationRequest-Example-MR-Dosage-1000-startdatetime.html) | Ab dem 06.06.2026 um 01:30 Uhr: 1-0-0-0 Stück | 1 Stück | 1 | 1 | d |  |  | MORN | Period = 2026-06-05T23:30:45Z - |
 | [MedicationRequest-Example-MR-Dosage-1000](./MedicationRequest-Example-MR-Dosage-1000.html) | 1-0-0-0 Stück | 1 Stück |  |  |  |  |  | MORN |  |
 | [MedicationRequest-Example-MR-Dosage-1010-10-Days](./MedicationRequest-Example-MR-Dosage-1010-10-Days.html) | für 10 Wochen: 1-0-1-0 Stück | 1 Stück |  |  |  |  |  | MORN, EVE | {'system': 'http://unitsofmeasure.org', 'value': 10, 'code': 'wk', 'unit': 'Woche(n)'} |
 | [MedicationRequest-Example-MR-Dosage-1010-PatientInstruction](./MedicationRequest-Example-MR-Dosage-1010-PatientInstruction.html) | 1-0-1-0 Stück. Hinweis: Tablette nicht zerkauen. Bei Fieber über 39 Grad Arzt kontaktieren. | 1 Stück | 2 | 1 | d |  |  | MORN, EVE |  |
@@ -55,6 +56,7 @@
 | [MedicationRequest-Example-MR-Dosage-1220](./MedicationRequest-Example-MR-Dosage-1220.html) | 1-2-2-0 Stück | 1 Stück |  |  |  |  |  | MORN |  |
 |  |  | 2 Stück |  |  |  |  |  | NOON, EVE |  |
 | [MedicationRequest-Example-MR-Dosage-Bedarfsmedikation-Kopfschmerzen](./MedicationRequest-Example-MR-Dosage-Bedarfsmedikation-Kopfschmerzen.html) | Bei Kopfschmerzen: im Abstand von mindestens 4 Stunden je 1 Stück — nicht mehr als 6 Stück in 24 Stunden | 1 Stück |  |  |  |  |  |  |  |
+| [MedicationRequest-Example-MR-Dosage-Bedarfsmedikation-MehrereAnlaesse](./MedicationRequest-Example-MR-Dosage-Bedarfsmedikation-MehrereAnlaesse.html) | Bei Kopfschmerzen, Fieber oder Gliederschmerzen: im Abstand von mindestens 6 Stunden je 1 Stück — nicht mehr als 4 Stück in 24 Stunden | 1 Stück |  |  |  |  |  |  |  |
 | [MedicationRequest-Example-MR-Dosage-Bedarfsmedikation-Struktur-Intervall](./MedicationRequest-Example-MR-Dosage-Bedarfsmedikation-Struktur-Intervall.html) | Bei Kopfschmerzen: im Abstand von mindestens 6 Stunden alle 8 Stunden je 1 Stück — nicht mehr als 4 Stück in 24 Stunden | 1 Stück | 1 | 8 | h |  |  |  |  |
 | [MedicationRequest-Example-MR-Dosage-Freetext](./MedicationRequest-Example-MR-Dosage-Freetext.html) | 2 Stück morgens zum Frühstück |  |  |  |  |  |  |  |  |
 | [MedicationRequest-Example-MR-Dosage-UnitStueck-1020](./MedicationRequest-Example-MR-Dosage-UnitStueck-1020.html) | 1-0-2-0 Stück | 1 Stück |  |  |  |  |  | MORN |  |
@@ -115,7 +117,7 @@
 | [MedicationRequest-MR-Dosage-weekday-mixed-doses](./MedicationRequest-MR-Dosage-weekday-mixed-doses.html) | montags — je 1 Stück; dienstags — je 3 Stück | 1 Stück |  |  |  | mon |  |  |  |
 |  |  | 3 Stück |  |  |  | tue |  |  |  |
 | [MedicationRequest-W-DoseRangeNoVarPeriod-Request-01-of-03](./MedicationRequest-W-DoseRangeNoVarPeriod-Request-01-of-03.html) | alle 4 bis 6 Stunden: je 2 bis 3 Stück | 2-3 Stück | 1 | 4-6 | h |  |  |  |  |
-| [MedicationRequest-W-TimingVarFreqOrPeriod-Request-01-of-03](./MedicationRequest-W-TimingVarFreqOrPeriod-Request-01-of-03.html) | alle 4 bis 6 Stunden: je 1 Stück | 1 Stück | 1-2 | 4-6 | h |  |  |  |  |
+| [MedicationRequest-W-TimingVarFreqOrPeriod-Request-01-of-03](./MedicationRequest-W-TimingVarFreqOrPeriod-Request-01-of-03.html) | 1 bis 2 x alle 4 bis 6 Stunden: je 1 Stück | 1 Stück | 1-2 | 4-6 | h |  |  |  |  |
 | [MedicationStatement-Example-MS-Dosage-UnitStueck-1020](./MedicationStatement-Example-MS-Dosage-UnitStueck-1020.html) | 1-0-2-0 Stück | 1 Stück |  |  |  |  |  | MORN |  |
 |  |  | 2 Stück |  |  |  |  |  | EVE |  |
 | [MedicationStatement-Example-MS-Dosage-UnitTasse-1000](./MedicationStatement-Example-MS-Dosage-UnitTasse-1000.html) | 2-0-0-0 Teelöffel | 2 Teelöffel |  |  |  |  |  | MORN |  |
@@ -146,4 +148,4 @@
 | [MedicationStatement-MS-Dosage-weekday-mixed-doses](./MedicationStatement-MS-Dosage-weekday-mixed-doses.html) | montags — je 1 Stück; dienstags — je 3 Stück | 1 Stück |  |  |  | mon |  |  |  |
 |  |  | 3 Stück |  |  |  | tue |  |  |  |
 | [MedicationStatement-W-DoseRangeNoVarPeriod-Statement-03-of-03](./MedicationStatement-W-DoseRangeNoVarPeriod-Statement-03-of-03.html) | alle 4 bis 6 Stunden: je 2 bis 3 Stück | 2-3 Stück | 1 | 4-6 | h |  |  |  |  |
-| [MedicationStatement-W-TimingVarFreqOrPeriod-Statement-03-of-03](./MedicationStatement-W-TimingVarFreqOrPeriod-Statement-03-of-03.html) | alle 4 bis 6 Stunden: je 1 Stück | 1 Stück | 1-2 | 4-6 | h |  |  |  |  |
+| [MedicationStatement-W-TimingVarFreqOrPeriod-Statement-03-of-03](./MedicationStatement-W-TimingVarFreqOrPeriod-Statement-03-of-03.html) | 1 bis 2 x alle 4 bis 6 Stunden: je 1 Stück | 1 Stück | 1-2 | 4-6 | h |  |  |  |  |

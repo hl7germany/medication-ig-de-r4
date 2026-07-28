@@ -65,6 +65,53 @@ def get_dosage_text(file_path, script_path):
     except Exception as e:
         return f"Fehler: {str(e)}"
 
+def format_value_range(value, max_value):
+    """Format FHIR min/max pairs for compact matrix display."""
+    if value in ('', None):
+        return ''
+    if max_value not in ('', None):
+        return f"{value}-{max_value}"
+    return value
+
+def format_dose(dose_and_rate):
+    """Format doseQuantity or doseRange for the table."""
+    if not dose_and_rate:
+        return ""
+
+    dose = dose_and_rate[0]
+    if dose.get('doseQuantity'):
+        dose_qty = dose['doseQuantity']
+        value = dose_qty.get('value', '')
+        unit = dose_qty.get('unit', '')
+        return f"{value} {unit}".strip()
+
+    if dose.get('doseRange'):
+        dose_range = dose['doseRange']
+        low = dose_range.get('low', {})
+        high = dose_range.get('high', {})
+        low_value = low.get('value', '')
+        high_value = high.get('value', '')
+        unit = high.get('unit') or low.get('unit', '')
+        if low_value != '' and high_value != '':
+            return f"{low_value}-{high_value} {unit}".strip()
+        if high_value != '':
+            return f"bis {high_value} {unit}".strip()
+
+    return ""
+
+def format_bounds(repeat):
+    """Format supported Timing.repeat.bounds[x] variants."""
+    bounds = repeat.get('boundsDuration') or repeat.get('boundsPeriod') or repeat.get('boundsRange')
+    if not bounds:
+        return ""
+    if 'duration' in bounds:
+        return f"Duration = {bounds['duration']} {bounds.get('unit', '')}".strip()
+    if 'start' in bounds or 'end' in bounds:
+        start = bounds.get('start', '')
+        end = bounds.get('end', '')
+        return f"Period = {start} - {end}".strip()
+    return str(bounds)
+
 def extract_dosage_details(resource):
     """Extract dosage details for the table."""
     dosages = []
@@ -82,33 +129,19 @@ def extract_dosage_details(resource):
     for dosage in dosage_instructions:
         details = {}
         
-        # Dose quantity
-        dose_and_rate = dosage.get('doseAndRate', [])
-        if dose_and_rate and dose_and_rate[0].get('doseQuantity'):
-            dose_qty = dose_and_rate[0]['doseQuantity']
-            value = dose_qty.get('value', '')
-            unit = dose_qty.get('unit', '')
-            details['doseQuantity'] = f"{value} {unit}".strip()
-        else:
-            details['doseQuantity'] = ""
+        details['doseQuantity'] = format_dose(dosage.get('doseAndRate', []))
         
         # Timing details
         timing = dosage.get('timing', {})
         repeat = timing.get('repeat', {})
         
-        details['frequency'] = repeat.get('frequency', '')
-        details['period'] = repeat.get('period', '')
+        details['frequency'] = format_value_range(repeat.get('frequency', ''), repeat.get('frequencyMax', ''))
+        details['period'] = format_value_range(repeat.get('period', ''), repeat.get('periodMax', ''))
         details['periodUnit'] = repeat.get('periodUnit', '')
         details['dayOfWeek'] = ', '.join(repeat.get('dayOfWeek', []))
         details['timeOfDay'] = ', '.join(repeat.get('timeOfDay', []))
         details['when'] = ', '.join(repeat.get('when', []))
-        
-        # Bounds
-        bounds = repeat.get('boundsDuration')
-        if bounds:
-            details['bounds'] = str(bounds)
-        else:
-            details['bounds'] = ""
+        details['bounds'] = format_bounds(repeat)
         
         dosages.append(details)
     

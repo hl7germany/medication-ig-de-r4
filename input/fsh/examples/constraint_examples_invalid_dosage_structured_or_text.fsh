@@ -14,9 +14,6 @@ Description: "CAVE: Validation example - contains both text and timing (should b
   * text = "1-0-1-0"
   * timing.repeat
     * when[+] = #MORN
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 Instance: INV-C-DosageStructuredOrFreeText-Request-02-of-02
@@ -44,9 +41,6 @@ Description: "CAVE: Validation example - contains both text and timing (should b
   * text = "1-0-1-0"
   * timing.repeat
     * when[+] = #MORN
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 Instance: INV-C-DosageStructuredOrFreeText-Statement-01-of-02
@@ -61,9 +55,6 @@ Description: "CAVE: Validation example - contains both text and timing (should b
   * text = "1-0-1-0"
   * timing.repeat
     * when[+] = #MORN
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 Instance: INV-C-DosageStructuredOrFreeText-Dispense-02-of-02
@@ -78,9 +69,6 @@ Description: "CAVE: Validation example - contains both text and doseAndRate (sho
   * text = "2 Stück morgens"
   * timing.repeat
     * when[+] = #MORN
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
 Instance: INV-C-DosageStructuredOrFreeText-Statement-02-of-02

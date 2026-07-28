@@ -20,9 +20,12 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * obeys TimingFrequencyCount
   * obeys TimingPeriodUnit
   * obeys TimingPeriodOnlyWholeNumber
+  * obeys TimingVarFreqOrPeriod
+  * obeys TimingVarFreqGtMin
+  * obeys TimingVarPeriodGtMin
   * bounds[x] MS
-  * bounds[x] only Duration
-    * ^comment = "Begründung Einschränkung Datentyp: Nur eine Angabe zur Dauer ist in der ersten Ausbaustufe des dgMP vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
+  * bounds[x] only Duration or Period
+    * ^comment = "Begründung Einschränkung Datentyp: Nur eine Angabe zur Dauer und Start- bzw. Enddatum sind in der aktuellen Ausbaustufe des dgMP vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
   * boundsDuration MS
     * code 1..1 MS
     * code from DurationUnitsOfTimeDgMPVS (required)
@@ -30,10 +33,20 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
     * unit 1..1 MS
     * value 1..1 MS
     * comparator 0..0
-  * frequency 1..1 MS
-  * period 1..1 MS
-  * periodUnit 1..1 MS
+  * boundsPeriod MS
+    * ^short = "Start- und Endzeitpunkt der Dosieranweisung."
+    * ^definition = "Beschreibt die Gültigkeit einer Dosieranweisung mit einem konkreten Start- und/oder Endzeitpunkt. Neben einem Datum kann eine Uhrzeit mit Zeitzone angegeben werden."
+    * start MS
+      * ^short = "Startdatum mit optionaler Uhrzeit und Zeitzone"
+    * end MS
+      * ^short = "Enddatum mit optionaler Uhrzeit und Zeitzone"
+  * frequency 0..1 MS
+  * frequencyMax MS
+  * period 0..1 MS
+  * periodUnit 0..1 MS
+    * ^short = "min | h | d | wk | mo - Zeiteinheit (UCUM)"
   * periodUnit from PeriodUnitsOfTimeDgMPVS (required)
+  * periodMax MS
   * dayOfWeek MS
   * timeOfDay MS
   * when MS
@@ -50,32 +63,62 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
     * ^comment = "Begründung Einschränkung Kardinalität: Angaben zur maximalen Dauer einer Einzelgabe sind in der ersten Ausbaustufe desdgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
   * durationUnit 0..0
     * ^comment = "Begründung Einschränkung Kardinalität: Angaben zur Einheit der Dauer einer Einzelgabe sind in der ersten Ausbaustufe desdgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
-  * frequencyMax 0..0
-    * ^comment = "Begründung Einschränkung Kardinalität: Eine maximale Frequenz ist in der ersten Ausbaustufe des dgMP nicht vorgesehen - es wird immer eine Frequenz explizit gesetzt, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
-  * periodMax 0..0
-    * ^comment = "Begründung Einschränkung Kardinalität: Eine maximale Periodendauer ist in der ersten Ausbaustufe des dgMP nicht vorgesehen - es wird immer eine Dauer explizit gesetzt, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
   * offset 0..0
     * ^short = "Zeitversatz"
     * ^comment = "Begründung Einschränkung Kardinalität: Ein Zeitversatz ist in der ersten Ausbaustufe desdgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
 
+Invariant: TimingVarFreqOrPeriod
+Description: "Bei gleichzeitiger Angabe von Frequenz und Periode sollte entweder nur die Frequenz einschließlich frequencyMax oder nur die Periode einschließlich periodMax größer als 1 sein."
+Expression: "frequency.exists() and period.exists() implies
+(
+  (
+    ((frequency.exists() and frequency > 1) or (frequencyMax.exists() and frequencyMax > 1))
+    implies
+    (
+      period = 1 and
+      (periodMax.empty() or periodMax = 1)
+    )
+  )
+  and
+  (
+    ((period.exists() and period > 1) or (periodMax.exists() and periodMax > 1))
+    implies
+    (
+      frequency = 1 and
+      (frequencyMax.empty() or frequencyMax = 1)
+    )
+  )
+)"
+Severity: #warning
+
+Invariant: TimingVarFreqGtMin
+Description: "Bei variabler Frequenz muss die maximale Frequenz größer als die minimale Frequenz sein."
+Expression: "frequencyMax.empty() or frequency.empty() or frequency.value < frequencyMax.value"
+Severity: #error
+
+Invariant: TimingVarPeriodGtMin
+Description: "Bei variabler Periode muss die maximale Periode größer als die minimale Periode sein."
+Expression: "periodMax.empty() or period.empty() or period < periodMax"
+Severity: #error
+
 Invariant: TimingFrequencyCount
 Description: "The frequency of the timing needs to reflect the count of timeOfDay or when"
-Expression: "(when.exists() and dayOfWeek.empty() implies when.count() = frequency)
+Expression: "(when.exists() and dayOfWeek.empty() and frequency.exists() implies when.count() = frequency)
 and
-(when.exists() and dayOfWeek.exists() implies (when.count() * dayOfWeek.count()) = frequency)
+(when.exists() and dayOfWeek.exists() and frequency.exists() implies (when.count() * dayOfWeek.count()) = frequency)
 and
-(timeOfDay.exists() and dayOfWeek.empty() implies timeOfDay.count() = frequency)
+(timeOfDay.exists() and dayOfWeek.empty() and frequency.exists() implies timeOfDay.count() = frequency)
 and
-(timeOfDay.exists() and dayOfWeek.exists() implies (timeOfDay.count() * dayOfWeek.count()) = frequency)
+(timeOfDay.exists() and dayOfWeek.exists() and frequency.exists() implies (timeOfDay.count() * dayOfWeek.count()) = frequency)
 and
-(dayOfWeek.exists() and timeOfDay.empty() and when.empty() implies dayOfWeek.count() = frequency)"
+(dayOfWeek.exists() and timeOfDay.empty() and when.empty() and frequency.exists() implies dayOfWeek.count() = frequency)"
 Severity: #error
 
 Invariant: TimingPeriodUnit
 Description: "If weekdays are given the periodUnit must be week, otherwise day"
-Expression: "(dayOfWeek.exists() implies periodUnit = 'wk')
+Expression: "(dayOfWeek.exists() and periodUnit.exists() implies periodUnit = 'wk')
 and
-((dayOfWeek.empty() and (when.exists() or timeOfDay.exists())) implies periodUnit = 'd')"
+((dayOfWeek.empty() and (when.exists() or timeOfDay.exists()) and periodUnit.exists()) implies periodUnit = 'd')"
 Severity: #error
 
 Invariant: TimingPeriodOnlyWholeNumber
@@ -84,22 +127,19 @@ Expression: "(period.exists() implies period mod 1 = 0) and (periodMax.exists() 
 Severity: #error
 
 Invariant: TimingOnlyOneType
-Description: "Only one kind of Timing is allowed. Current allowed timings: 4-Scheme, TimeOfDay, DayOfWeek, Interval, DayOfWeek and Time/4-Schema, Interval and Time/4-Schema"
-Expression: "/* DayOfWeek */
+Description: "Only one kind of Timing is allowed. Current allowed timings: 4-Scheme/TimeOfDay (with optional Interval), DayOfWeek (with optional Time/4-Schema), Interval only"
+Expression: "/* DayOfWeek only (without when/timeOfDay) */
 (
   %resource.ofType(MedicationRequest).dosageInstruction | 
   %resource.ofType(MedicationDispense).dosageInstruction | 
   %resource.ofType(MedicationStatement).dosage
 ).all(
   timing.repeat.dayOfWeek.exists() and
-  timing.repeat.frequency.exists() and
-  (timing.repeat.period.exists() and timing.repeat.period = 1) and
-  (timing.repeat.periodUnit.exists()) and
   timing.repeat.when.empty() and
   timing.repeat.timeOfDay.empty()
 ) or
 
-/* Interval */
+/* Interval only (frequency + period + periodUnit, no when/timeOfDay/dayOfWeek) */
 (
   %resource.ofType(MedicationRequest).dosageInstruction | 
   %resource.ofType(MedicationDispense).dosageInstruction | 
@@ -113,31 +153,25 @@ Expression: "/* DayOfWeek */
   timing.repeat.dayOfWeek.empty()
 ) or
 
-/* DayOfWeek and Time/4-Schema */
+/* DayOfWeek and Time/4-Schema (with optional frequency/period/periodUnit) */
 (
   %resource.ofType(MedicationRequest).dosageInstruction | 
   %resource.ofType(MedicationDispense).dosageInstruction | 
   %resource.ofType(MedicationStatement).dosage
 ).all(
   timing.repeat.dayOfWeek.exists() and
-  timing.repeat.frequency.exists() and
-  (timing.repeat.period.exists() and timing.repeat.period = 1) and
-  (timing.repeat.periodUnit.exists()) and
   (
     (timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()) or
     (timing.repeat.when.exists() and timing.repeat.timeOfDay.empty())
   )
 ) or
 
-/* Interval and Time/4-Schema */
+/* When or TimeOfDay only (no dayOfWeek; frequency/period/periodUnit optional) */
 (
   %resource.ofType(MedicationRequest).dosageInstruction | 
   %resource.ofType(MedicationDispense).dosageInstruction | 
   %resource.ofType(MedicationStatement).dosage
 ).all(
-  timing.repeat.frequency.exists() and
-  timing.repeat.period.exists() and
-  timing.repeat.periodUnit.exists() and
   timing.repeat.dayOfWeek.empty() and
   (
     (timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()) or
@@ -148,16 +182,13 @@ Severity: #error
 
 Invariant: TimingOnlyOneWhen
 Description: "Dosages Timings must not state the same period of day across multiple dosage instances"
-Expression: "( /* Detect 4-Schema */
+Expression: "( /* Detect when-based schema */
   %resource.ofType(MedicationRequest).dosageInstruction
   | %resource.ofType(MedicationDispense).dosageInstruction
   | %resource.ofType(MedicationStatement).dosage
 ).all(
-    timing.repeat.frequency.exists() and
-    timing.repeat.period.exists() and
-    timing.repeat.periodUnit.exists() and
     timing.repeat.dayOfWeek.empty() and
-    timing.repeat.when.exists() and 
+    timing.repeat.when.exists() and
     timing.repeat.timeOfDay.empty()
   implies
   (
@@ -183,9 +214,6 @@ Expression: "(
   | %resource.ofType(MedicationDispense).dosageInstruction
   | %resource.ofType(MedicationStatement).dosage
 ).all(
-    timing.repeat.frequency.exists() and
-    timing.repeat.period.exists() and
-    timing.repeat.periodUnit.exists() and
     (timing.repeat.when.exists() or 
     timing.repeat.timeOfDay.exists())
   implies
@@ -213,9 +241,6 @@ Expression: "( /* Detect TimeOfDay */
   | %resource.ofType(MedicationStatement).dosage
 ).all(
   (
-    timing.repeat.frequency.exists() and
-    timing.repeat.period.exists() and
-    timing.repeat.periodUnit.exists() and
     timing.repeat.dayOfWeek.empty() and
     timing.repeat.timeOfDay.exists() and
     timing.repeat.when.empty() 
@@ -245,9 +270,6 @@ Expression: "( /* Detect DayOfWeek */
   | %resource.ofType(MedicationStatement).dosage
 ).all(
   (
-    timing.repeat.frequency.exists() and
-    timing.repeat.period.exists() and
-    timing.repeat.periodUnit.exists() and
     timing.repeat.dayOfWeek.exists() and
     timing.repeat.when.empty() and 
     timing.repeat.timeOfDay.empty()
@@ -350,9 +372,6 @@ Expression: "( /* Detect DayOfWeek and Time/4-Schema */
 ).all(
   (
     timing.repeat.dayOfWeek.exists() and
-    timing.repeat.frequency.exists() and
-    timing.repeat.period.exists() and
-    timing.repeat.periodUnit.exists() and
       (
         (timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()) or
         (timing.repeat.when.exists() and timing.repeat.timeOfDay.empty())

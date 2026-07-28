@@ -16,23 +16,32 @@ COLUMN_KEYS = [
 def extract_timing_matrix_fields(timing):
     def get(val, default=""):
         return val if val is not None else default
+    def format_range(value, max_value):
+        value = get(value, "")
+        max_value = get(max_value, "")
+        if value == "":
+            return ""
+        if max_value != "":
+            return f"{value}-{max_value}"
+        return str(value)
     fields = {}
-    fields["duration"] = str(get(timing.get("repeat", {}).get("duration", "")))
-    fields["durationUnit"] = get(timing.get("repeat", {}).get("durationUnit", ""))
-    fields["frequency"] = str(get(timing.get("repeat", {}).get("frequency", "")))
-    fields["period"] = str(get(timing.get("repeat", {}).get("period", "")))
-    fields["periodUnit"] = get(timing.get("repeat", {}).get("periodUnit", ""))
-    fields["Day of Week"] = ", ".join(timing.get("repeat", {}).get("dayOfWeek", []))
-    fields["Time Of Day"] = ", ".join(timing.get("repeat", {}).get("timeOfDay", []))
-    fields["when"] = ", ".join(timing.get("repeat", {}).get("when", []))
-    bounds = timing.get("repeat", {}).get("boundsDuration") \
-        or timing.get("repeat", {}).get("boundsPeriod") \
-        or timing.get("repeat", {}).get("boundsRange")
+    repeat = timing.get("repeat", {})
+    fields["duration"] = str(get(repeat.get("duration", "")))
+    fields["durationUnit"] = get(repeat.get("durationUnit", ""))
+    fields["frequency"] = format_range(repeat.get("frequency", ""), repeat.get("frequencyMax", ""))
+    fields["period"] = format_range(repeat.get("period", ""), repeat.get("periodMax", ""))
+    fields["periodUnit"] = get(repeat.get("periodUnit", ""))
+    fields["Day of Week"] = ", ".join(repeat.get("dayOfWeek", []))
+    fields["Time Of Day"] = ", ".join(repeat.get("timeOfDay", []))
+    fields["when"] = ", ".join(repeat.get("when", []))
+    bounds = repeat.get("boundsDuration") or repeat.get("boundsPeriod") or repeat.get("boundsRange")
     if bounds:
         if "duration" in bounds:
             fields["bounds[x]"] = f"Duration = {bounds['duration']} {bounds.get('unit', '')}"
-        elif "start" in bounds:
-            fields["bounds[x]"] = f"Period.start = {bounds['start']}"
+        elif "start" in bounds or "end" in bounds:
+            start = bounds.get("start", "")
+            end = bounds.get("end", "")
+            fields["bounds[x]"] = f"Period = {start} - {end}".strip()
         else:
             fields["bounds[x]"] = str(bounds)
     else:
@@ -40,11 +49,23 @@ def extract_timing_matrix_fields(timing):
     return fields
 
 def extract_dose_quantity(dosage):
-    dq = dosage.get("doseAndRate", [{}])[0].get("doseQuantity")
+    dose = dosage.get("doseAndRate", [{}])[0]
+    dq = dose.get("doseQuantity")
     if dq:
         value = dq.get("value", "")
         unit = dq.get("unit", "")
         return f"{value} {unit}".strip()
+    dr = dose.get("doseRange")
+    if dr:
+        low = dr.get("low", {})
+        high = dr.get("high", {})
+        low_value = low.get("value", "")
+        high_value = high.get("value", "")
+        unit = high.get("unit") or low.get("unit", "")
+        if low_value != "" and high_value != "":
+            return f"{low_value}-{high_value} {unit}".strip()
+        if high_value != "":
+            return f"bis {high_value} {unit}".strip()
     return ""
 
 def extract_dosages(resource):

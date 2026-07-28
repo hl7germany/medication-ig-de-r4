@@ -1,4 +1,4 @@
-Dieses Schema basiert auf definierten Zeitintervallen, anhand derer sich die Anwendung des Arzneimittels wiederholt. Das Intervall kann in verschiedenen Zeiteinheiten angegeben werden, also z.B. in Tagen, Wochen oder Monaten. Für jedes Intervall wird angegeben, in welcher Frequenz die Anwendung innerhalb des Intervalls erfolgen soll. Es trifft  keine Aussage darüber, zu welchem spezifischen Zeitpunkt das Arzneimittel anzuwenden ist (bspw. als Uhrzeit, Tageszeit oder Wochentag). 
+Dieses Schema basiert auf definierten Zeitintervallen, anhand derer sich die Anwendung des Arzneimittels wiederholt. Das Intervall kann in verschiedenen Zeiteinheiten angegeben werden, also z.B. in Minuten, Stunden, Tagen, Wochen oder Monaten. Für jedes Intervall wird angegeben, in welcher Frequenz die Anwendung innerhalb des Intervalls erfolgen soll. Es trifft  keine Aussage darüber, zu welchem spezifischen Zeitpunkt das Arzneimittel anzuwenden ist (bspw. als Uhrzeit, Tageszeit oder Wochentag). 
 
 In diesem Anwendungsfall wird davon ausgegangen, dass sich das Schema ohne Variation der Länge eines Intervalls oder der Frequenz der Anwendung wiederholt. Es wird zudem ermöglicht:
 
@@ -17,6 +17,9 @@ Folgende weitere Beispiele sind in diesem IG dargestellt:
 | 4 x 1 Stück pro Tag  | [Example-MR-Dosage-interval-4times-d](./MedicationRequest-Example-MR-Dosage-interval-4times-d.html)    |
 | Alle 3 Tage 1 Stück  | [Example-MR-Dosage-interval-3d](./MedicationRequest-Example-MR-Dosage-interval-3d.html)    |
 | Alle 2 Tage 2 Stück für 6 Wochen  | [Example-MR-Dosage-interval-2d-bound](./MedicationRequest-Example-MR-Dosage-interval-2d-bound.html)    |
+| 1 Stück alle 30 Minuten  | [Example-MR-Dosage-interval-30min](./MedicationRequest-Example-MR-Dosage-interval-30min.html)    |
+| 1 Stück alle 6 Stunden  | [Example-MR-Dosage-interval-6h](./MedicationRequest-Example-MR-Dosage-interval-6h.html)    |
+| 1 Stück monatlich  | [Example-MR-Dosage-interval-1mo](./MedicationRequest-Example-MR-Dosage-interval-1mo.html)    |
 
 ### Angabe und Erkennung der Dosierart
 

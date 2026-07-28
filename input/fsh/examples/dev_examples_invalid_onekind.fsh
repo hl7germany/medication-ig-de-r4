@@ -12,16 +12,10 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
   * timing.repeat
     * when[+] = #MORN
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
 * dosageInstruction[+]
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
   * timing.repeat
     * timeOfDay[+] = "08:00:00"
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
 
 Instance: INV-C-TimingOnlyWhenOrTimeOfDay-Request-02-of-02
 InstanceOf: MedicationRequestDgMP
@@ -37,17 +31,11 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
   * timing.repeat
     * dayOfWeek[+] = #mon
     * timeOfDay[+] = "08:00:00"
-    * frequency = 1
-    * period = 1
-    * periodUnit = #wk
 * dosageInstruction[+]
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
   * timing.repeat
     * dayOfWeek[+] = #mon
     * when[+] = #MORN
-    * frequency = 1
-    * period = 1
-    * periodUnit = #wk
 
 // when + dayOfWeek
 Instance: INV-C-TimingOnlyOneType-Request-01-of-13
@@ -391,16 +379,10 @@ Description: "CAVE: This MedicationDispense is for validation purposes and does 
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
   * timing.repeat
     * when[+] = #MORN
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
 * dosageInstruction[+]
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
   * timing.repeat
     * timeOfDay[+] = "08:00:00"
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
 
 Instance: INV-C-TimingOnlyWhenOrTimeOfDay-Dispense-02-of-02
 InstanceOf: MedicationDispenseDgMP
@@ -415,17 +397,11 @@ Description: "CAVE: This MedicationDispense is for validation purposes and does 
   * timing.repeat
     * dayOfWeek[+] = #mon
     * timeOfDay[+] = "08:00:00"
-    * frequency = 1
-    * period = 1
-    * periodUnit = #wk
 * dosageInstruction[+]
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
   * timing.repeat
     * dayOfWeek[+] = #mon
     * when[+] = #MORN
-    * frequency = 1
-    * period = 1
-    * periodUnit = #wk
 
 // when + timeOfDay - Statement
 Instance: INV-C-TimingOnlyWhenOrTimeOfDay-Statement-01-of-02
@@ -440,16 +416,10 @@ Description: "CAVE: This MedicationStatement is for validation purposes and does
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
   * timing.repeat
     * when[+] = #MORN
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
 * dosage[+]
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
   * timing.repeat
     * timeOfDay[+] = "08:00:00"
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
 
 Instance: INV-C-TimingOnlyWhenOrTimeOfDay-Statement-02-of-02
 InstanceOf: MedicationStatementDgMP
@@ -464,17 +434,11 @@ Description: "CAVE: This MedicationStatement is for validation purposes and does
   * timing.repeat
     * dayOfWeek[+] = #mon
     * timeOfDay[+] = "08:00:00"
-    * frequency = 1
-    * period = 1
-    * periodUnit = #wk
 * dosage[+]
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
   * timing.repeat
     * dayOfWeek[+] = #mon
     * when[+] = #MORN
-    * frequency = 1
-    * period = 1
-    * periodUnit = #wk
 
 // ============================================================
 // TimingOnlyOneType — Dispense examples (01–05 of 05)

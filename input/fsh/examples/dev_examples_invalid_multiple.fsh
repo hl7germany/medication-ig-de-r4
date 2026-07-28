@@ -215,17 +215,11 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
 * dosageInstruction[+]
   * timing.repeat
     * timeOfDay[+] = "08:00:00"
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
     * boundsDuration = 2 $ucum#wk "Woche(n)"
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 * dosageInstruction[+]
   * timing.repeat
     * timeOfDay[+] = "20:00:00"
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
     * boundsDuration = 3 $ucum#wk "Woche(n)"
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 

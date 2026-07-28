@@ -22,6 +22,9 @@ Für die Abbildung der Dosierung sollen die in diesem IG beschriebenen Dosiersch
 - [Schema für wiederkehrende Intervalle](./schema-intervall.html)
 - [Schema für Kombinationen von Zeitintervallen](./schema-intervall-kombination.html)
 - [Schema für Kombinationen von Wochentagen](./schema-wochentag-kombination.html)
+- [Schema für Bedarfsmedikation](./schema-bedarfsmedikation.html)
+- [Variable Angaben](./schema-variable-angaben.html)
+- [Angabe von Start- und Enddatum](./schema-start-end-datum.html)
 
 Auf der Seite [Beispiele für Dosierungen](./dosierung-beispiele.html) sind Beispiele der Dosierschemata aufgeführt.
 

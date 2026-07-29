@@ -230,7 +230,24 @@ Auch `route` wird vom Algorithmus nicht gelesen oder ausgegeben; das Element ist
 * **Semikolon mit Leerzeichen** (`; `) trennt aufeinanderfolgende **Wochentagssegmente**, unabhängig davon, ob sie aus derselben oder aus verschiedenen `Dosage`-Einträgen stammen.
 * **Bindestrich** (`-`) trennt die vier Positionen des 4‑Schemas.
 
-Beim Gedankenstrich handelt es sich exakt um den Unicode-**Em-Dash** `—` (U+2014); die vier Positionen des 4‑Schemas werden mit dem ASCII-Bindestrich-Minus `-` (U+002D) getrennt.
+#### Zeichenrepertoire
+
+Die folgenden Zeichen sind für den erzeugten Text **verbindlich festgelegt**. Maßgeblich ist jeweils der Codepoint, nicht die optische Ähnlichkeit — mehrere der Zeichen haben verwechselbare Varianten, die **nicht** verwendet werden dürfen.
+
+| Zeichen | Codepoint | Name | Verwendung | Nicht verwenden |
+|---------|-----------|------|------------|-----------------|
+| `—` | U+2014 | EM DASH | Zeit-/Abschnittsangabe ↔ Dosis; Dosis ↔ Maximalmenge | `–` U+2013, `―` U+2015, `-` U+002D |
+| `-` | U+002D | HYPHEN-MINUS | die vier Positionen des 4‑Schemas | `‐` U+2010, `−` U+2212, `–` U+2013 |
+| `,` | U+002C | COMMA | Segmenttrennung **und** deutsches Dezimalkomma | `،` U+060C |
+| `;` | U+003B | SEMICOLON | Trennung von Wochentagssegmenten | `;` U+037E |
+| `:` | U+003A | COLON | Abschnittstrennung sowie Stunde:Minute | `∶` U+2236 |
+| `.` | U+002E | FULL STOP | Satzende vor `Hinweis:` sowie Tag.Monat.Jahr | `․` U+2024 |
+| `x` | U+0078 | LATIN SMALL LETTER X | Frequenzmarker in `3 x täglich` | `×` U+00D7, `✕` U+2715 |
+| ` ` | U+0020 | SPACE | einziges Trennzeichen zwischen Wörtern | `&nbsp;` U+00A0, U+2009, U+202F |
+
+Für die Umlaute in den festen Wortbestandteilen (`täglich`, `wöchentlich`, `für`) gilt die **vorkomponierte NFC-Form**: `ä` U+00E4, `ö` U+00F6, `ü` U+00FC — **nicht** die zerlegte Form aus Grundbuchstabe und kombinierendem Trema (`a` + U+0308). Der gesamte erzeugte Text ist NFC-normalisiert. Ein `ß` kommt in keinem vom Algorithmus erzeugten Wortbestandteil vor.
+
+> Nicht Teil dieses Repertoires sind Zeichen, die **unverändert aus dem Input übernommen** werden: die Dosiereinheit (`doseQuantity.unit`), der Einnahmeanlass (`asNeededFor`), der Hinweis (`patientInstruction`) und der Freitext (`Dosage.text`). Sie werden weder ersetzt noch normalisiert.
 
 Strukturierte Schemata erzeugen keine Zeilenumbrüche; ihr Text steht in einer Zeile. Die Freitext-Dosierung durchläuft die nachfolgende Normalisierung nicht und kann daher im Feld enthaltene Zeilenumbrüche beibehalten; lediglich der unter [Freitext-Dosierung](#freitext-dosierung) beschriebene `trim` wird angewendet. Diese Ausnahme ist notwendig, weil die Invariante `FreeTextMatchesRenderedText` exakte Gleichheit zwischen `renderedDosageInstruction` und `Dosage.text` verlangt.
 

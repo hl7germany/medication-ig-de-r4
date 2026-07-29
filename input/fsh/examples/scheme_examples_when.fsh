@@ -121,8 +121,8 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
 Instance: Example-MR-Dosage-1010-10-Days
 InstanceOf: MedicationRequestDgMP
 Usage: #example
-Title: "Example-MR-Dosage-1010"
-Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung 1-0-1-0 für 10 Wochen dar"
+Title: "Example-MR-Dosage-1010-10-Days"
+Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung 1-0-1-0 für 10 Tage dar"
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -131,7 +131,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
   * timing.repeat
     * when[+] = #MORN
     * when[+] = #EVE
-    * boundsDuration = 10 $ucum#wk "Woche(n)"
+    * boundsDuration = 10 $ucum#d "Tag(e)"
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 Instance: Example-MR-Dosage-1010-Unsorted

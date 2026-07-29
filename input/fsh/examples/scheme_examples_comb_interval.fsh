@@ -35,7 +35,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
   * timing.repeat
     * frequency = 1
     * period = 1
-    * periodUnit = #d
+    * periodUnit = #wk
     * when[+] = #MORN
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
@@ -67,7 +67,32 @@ Instance: Example-MR-Dosage-comb-interval-4
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-comb-interval-4"
-Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von Jeden 2. Tag 1 Stück um 08:00 & 20:00 Uhr und jeden 2. Tag 2 Stück um 08:00, 14:00 und 22:00 Uhr dar"
+Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von jeden 2. Tag 1 Stück um 08:00 und 20:00 Uhr sowie 2 Stück um 10:00, 14:00 und 22:00 Uhr dar"
+* subject.display = "Patient"
+* status = #active
+* intent = #order
+* medicationCodeableConcept.text = "Ibuprofen 400mg"
+* dosageInstruction[+]
+  * timing.repeat
+    * period = 2
+    * periodUnit = #d
+    * timeOfDay[+] = "08:00:00"
+    * timeOfDay[+] = "20:00:00"
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
+* dosageInstruction[+]
+  * timing.repeat
+    * period = 2
+    * periodUnit = #d
+    * timeOfDay[+] = "10:00:00"
+    * timeOfDay[+] = "14:00:00"
+    * timeOfDay[+] = "22:00:00"
+  * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
+
+Instance: Example-MR-Dosage-comb-interval-5
+InstanceOf: MedicationRequestDgMP
+Usage: #example
+Title: "Example-MR-Dosage-comb-interval-5"
+Description: "Dieses Beispiel entspricht inhaltlich Example-MR-Dosage-comb-interval-4, gibt die redundante frequency jedoch zusätzlich an: jeden 2. Tag 1 Stück um 08:00 und 20:00 Uhr sowie 2 Stück um 10:00, 14:00 und 22:00 Uhr"
 * subject.display = "Patient"
 * status = #active
 * intent = #order

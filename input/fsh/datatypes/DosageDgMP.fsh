@@ -23,6 +23,11 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
 * obeys VarPeriodNoMindestabstand
 * obeys AsNeededForRequiresAsNeeded
 * obeys AsNeededSingleDosageOnly
+* obeys AsNeededIdentical
+* obeys AsNeededForIdentical
+* obeys MindestabstandIdentical
+* obeys MindestabstandUnitMatchesCode
+* obeys MaxDosePerPeriodIdentical
 * timing only TimingDgMP
 * doseAndRate 0..1 // Nur eine Dosierung für eine Medikation erlauben
   * ^comment = "Begründung Einschränkung Kardinalität: Nur eine Dosierung pro Medikation ist in der ersten Ausbaustufe des dgMP vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
@@ -69,9 +74,14 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
       * ^comment = "Indikation für die Bedarfsdosierung."
 * modifierExtension[mindestabstandZwischenGaben]
   * valueDuration 1..1 MS
+    * value 1..1 MS
     * system 1..1 MS
+    * system = $ucum (exactly)
     * code 1..1 MS
+    * code from MindestabstandUnitsOfTimeDgMPVS (required)
     * unit 1..1 MS
+    * comparator 0..0
+      * ^comment = "Begründung Einschränkung Kardinalität: Ein Komparator würde den Mindestabstand unbestimmt machen (z. B. '> 4 Stunden'); die Textgenerierung stellt ausschließlich den exakten Wert dar."
 * site 0..0
   * ^comment = "Begründung Einschränkung Kardinalität: Eine Verabreichungsstelle ist in der aktuellen Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
 * route 0..0
@@ -109,12 +119,15 @@ Expression: "(%resource.ofType(MedicationRequest).dosageInstruction |
 Severity: #error
 
 Invariant: DosageStructuredRequiresGeneratedText
-Description: "Liegt eine strukturierte Dosierungsangabe vor (timing und doseAndRate belegt, text leer), muss die Extension GeneratedDosageInstructionsMeta vorhanden sein."
+Description: "Liegt eine strukturierte Dosierungsangabe vor (doseAndRate belegt, text leer, dazu timing oder eine reine Bedarfsdosierung), muss die Extension GeneratedDosageInstructionsMeta vorhanden sein."
 Expression: "(
   (%resource.ofType(MedicationRequest).dosageInstruction |
    %resource.ofType(MedicationDispense).dosageInstruction |
    %resource.ofType(MedicationStatement).dosage
-  ).exists(timing.exists() and doseAndRate.exists() and text.empty())
+  ).exists(
+    text.empty() and doseAndRate.exists() and
+    (timing.exists() or asNeeded.ofType(boolean) = true)
+  )
 )
 implies
 (
@@ -404,3 +417,234 @@ Invariant: MaxDoseOnlyWhenAsNeeded
 Description: "Eine Maximalmenge (maxDosePerPeriod) darf nur bei einer Bedarfsdosierung (asNeededBoolean=true) angegeben werden."
 Severity: #error
 Expression: "maxDosePerPeriod.empty() or asNeeded.ofType(boolean) = true"
+
+// --- Konsistenz der Rahmen-Angaben über mehrere Dosage-Elemente ---
+// Die Textgenerierung liest Bedarfskennzeichen, Einnahmeanlass, Mindestabstand und
+// Maximalmenge ausschließlich aus dem ersten Dosage-Element. Ohne die folgenden
+// Invarianten könnten abweichende Angaben in weiteren Elementen unbemerkt entfallen.
+
+Invariant: AsNeededIdentical
+Description: "Das Bedarfskennzeichen (asNeededBoolean) muss über alle Dosage-Elemente einer Ressource identisch befüllt sein."
+Severity: #error
+Expression: "(
+  (
+    %resource.ofType(MedicationRequest).dosageInstruction |
+    %resource.ofType(MedicationDispense).dosageInstruction |
+    %resource.ofType(MedicationStatement).dosage
+  ).asNeeded.ofType(boolean).distinct().count() <= 1
+)
+and
+(
+  (
+    (
+      %resource.ofType(MedicationRequest).dosageInstruction |
+      %resource.ofType(MedicationDispense).dosageInstruction |
+      %resource.ofType(MedicationStatement).dosage
+    ).asNeeded.ofType(boolean).exists()
+  )
+  implies
+  (
+    (
+      %resource.ofType(MedicationRequest).dosageInstruction |
+      %resource.ofType(MedicationDispense).dosageInstruction |
+      %resource.ofType(MedicationStatement).dosage
+    ).all(asNeeded.ofType(boolean).exists())
+  )
+)"
+
+Invariant: AsNeededForIdentical
+Description: "Der Einnahmeanlass (asNeededFor) muss über alle Dosage-Elemente einer Ressource identisch befüllt sein. Mehrere Anlässe je Element sind zulässig, müssen dann aber in allen Elementen übereinstimmen."
+Severity: #error
+/* Jedes Dosage-Element muss genauso viele verschiedene Anlässe tragen wie die
+   Ressource insgesamt. Zwei Mengen gleicher Mächtigkeit, deren Vereinigung
+   dieselbe Mächtigkeit hat, sind identisch — unabhängig von der Reihenfolge. */
+Expression: "(
+  %resource.ofType(MedicationRequest).dosageInstruction |
+  %resource.ofType(MedicationDispense).dosageInstruction |
+  %resource.ofType(MedicationStatement).dosage
+).all(
+  extension.where(
+    url='http://hl7.org/fhir/5.0/StructureDefinition/extension-Dosage.asNeededFor'
+  ).value.ofType(CodeableConcept).text.distinct().count()
+  =
+  (
+    %resource.ofType(MedicationRequest).dosageInstruction |
+    %resource.ofType(MedicationDispense).dosageInstruction |
+    %resource.ofType(MedicationStatement).dosage
+  ).extension.where(
+    url='http://hl7.org/fhir/5.0/StructureDefinition/extension-Dosage.asNeededFor'
+  ).value.ofType(CodeableConcept).text.distinct().count()
+)"
+
+Invariant: MindestabstandIdentical
+Description: "Der Mindestabstand zwischen Gaben muss über alle Dosage-Elemente einer Ressource identisch befüllt sein."
+Severity: #error
+/* Die distinct()-Prüfungen allein genügen nicht: Ein Element, das value oder code
+   nicht mit einem tatsächlichen primitiven Wert belegt, steuert keinen vergleichbaren
+   Wert zur Menge bei und könnte unbemerkt bleiben. Deshalb muss jede vorhandene
+   Extension genau einen tatsächlichen Wert und einen tatsächlichen Code beitragen.
+   hasValue() ist nötig, weil ein FHIR-Primitive auch ohne eigenen Wert existieren
+   kann, wenn es lediglich eine Extension trägt. */
+Expression: "(
+  (
+    %resource.ofType(MedicationRequest).dosageInstruction |
+    %resource.ofType(MedicationDispense).dosageInstruction |
+    %resource.ofType(MedicationStatement).dosage
+  ).modifierExtension.where(
+    url='http://ig.fhir.de/igs/medication/StructureDefinition/MindestabstandZwischenGaben'
+  ).value.ofType(Duration).value.where($this.hasValue()).count()
+  =
+  (
+    %resource.ofType(MedicationRequest).dosageInstruction |
+    %resource.ofType(MedicationDispense).dosageInstruction |
+    %resource.ofType(MedicationStatement).dosage
+  ).modifierExtension.where(
+    url='http://ig.fhir.de/igs/medication/StructureDefinition/MindestabstandZwischenGaben'
+  ).count()
+)
+and
+(
+  (
+    %resource.ofType(MedicationRequest).dosageInstruction |
+    %resource.ofType(MedicationDispense).dosageInstruction |
+    %resource.ofType(MedicationStatement).dosage
+  ).modifierExtension.where(
+    url='http://ig.fhir.de/igs/medication/StructureDefinition/MindestabstandZwischenGaben'
+  ).value.ofType(Duration).code.where($this.hasValue()).count()
+  =
+  (
+    %resource.ofType(MedicationRequest).dosageInstruction |
+    %resource.ofType(MedicationDispense).dosageInstruction |
+    %resource.ofType(MedicationStatement).dosage
+  ).modifierExtension.where(
+    url='http://ig.fhir.de/igs/medication/StructureDefinition/MindestabstandZwischenGaben'
+  ).count()
+)
+and
+(
+  (
+    %resource.ofType(MedicationRequest).dosageInstruction |
+    %resource.ofType(MedicationDispense).dosageInstruction |
+    %resource.ofType(MedicationStatement).dosage
+  ).modifierExtension.where(
+    url='http://ig.fhir.de/igs/medication/StructureDefinition/MindestabstandZwischenGaben'
+  ).value.ofType(Duration).value.distinct().count() <= 1
+)
+and
+(
+  (
+    %resource.ofType(MedicationRequest).dosageInstruction |
+    %resource.ofType(MedicationDispense).dosageInstruction |
+    %resource.ofType(MedicationStatement).dosage
+  ).modifierExtension.where(
+    url='http://ig.fhir.de/igs/medication/StructureDefinition/MindestabstandZwischenGaben'
+  ).value.ofType(Duration).code.distinct().count() <= 1
+)
+and
+(
+  (
+    (
+      %resource.ofType(MedicationRequest).dosageInstruction |
+      %resource.ofType(MedicationDispense).dosageInstruction |
+      %resource.ofType(MedicationStatement).dosage
+    ).modifierExtension.where(
+      url='http://ig.fhir.de/igs/medication/StructureDefinition/MindestabstandZwischenGaben'
+    ).exists()
+  )
+  implies
+  (
+    (
+      %resource.ofType(MedicationRequest).dosageInstruction |
+      %resource.ofType(MedicationDispense).dosageInstruction |
+      %resource.ofType(MedicationStatement).dosage
+    ).all(
+      modifierExtension.where(
+        url='http://ig.fhir.de/igs/medication/StructureDefinition/MindestabstandZwischenGaben'
+      ).exists()
+    )
+  )
+)"
+
+Invariant: MindestabstandUnitMatchesCode
+Description: "Die Anzeigeeinheit des Mindestabstands (valueDuration.unit) muss zum UCUM-Code passen (z. B. 'Stunde(n)' nur mit code='h')."
+Severity: #error
+Expression: "modifierExtension.where(
+  url='http://ig.fhir.de/igs/medication/StructureDefinition/MindestabstandZwischenGaben'
+).value.ofType(Duration).all(
+  (
+    code = 'min'
+    implies
+    (unit = 'Minute(n)' or unit = 'Minute' or unit = 'Minuten')
+  ) and (
+    code = 'h'
+    implies
+    (unit = 'Stunde(n)' or unit = 'Stunde' or unit = 'Stunden')
+  )
+)"
+
+Invariant: MaxDosePerPeriodIdentical
+Description: "Die Maximalmenge (maxDosePerPeriod) gilt für die Gesamtmenge im Bezugszeitraum und muss über alle Dosage-Elemente einer Ressource identisch befüllt sein."
+Severity: #error
+/* Wie bei MindestabstandIdentical genügen die distinct()-Prüfungen allein nicht:
+   Ein Element, das ein Teilfeld gar nicht belegt, steuert nichts zur Menge bei.
+   Deshalb muss jede vorhandene Maximalmenge alle vier Teilfelder führen. */
+Expression: "(
+  (
+    %resource.ofType(MedicationRequest).dosageInstruction |
+    %resource.ofType(MedicationDispense).dosageInstruction |
+    %resource.ofType(MedicationStatement).dosage
+  ).maxDosePerPeriod.all(
+    numerator.value.hasValue() and numerator.unit.hasValue() and
+    denominator.value.hasValue() and denominator.code.hasValue()
+  )
+)
+and
+(
+  (
+    %resource.ofType(MedicationRequest).dosageInstruction |
+    %resource.ofType(MedicationDispense).dosageInstruction |
+    %resource.ofType(MedicationStatement).dosage
+  ).maxDosePerPeriod.numerator.value.distinct().count() <= 1
+)
+and
+(
+  (
+    %resource.ofType(MedicationRequest).dosageInstruction |
+    %resource.ofType(MedicationDispense).dosageInstruction |
+    %resource.ofType(MedicationStatement).dosage
+  ).maxDosePerPeriod.numerator.unit.distinct().count() <= 1
+)
+and
+(
+  (
+    %resource.ofType(MedicationRequest).dosageInstruction |
+    %resource.ofType(MedicationDispense).dosageInstruction |
+    %resource.ofType(MedicationStatement).dosage
+  ).maxDosePerPeriod.denominator.value.distinct().count() <= 1
+)
+and
+(
+  (
+    %resource.ofType(MedicationRequest).dosageInstruction |
+    %resource.ofType(MedicationDispense).dosageInstruction |
+    %resource.ofType(MedicationStatement).dosage
+  ).maxDosePerPeriod.denominator.code.distinct().count() <= 1
+)
+and
+(
+  (
+    (
+      %resource.ofType(MedicationRequest).dosageInstruction |
+      %resource.ofType(MedicationDispense).dosageInstruction |
+      %resource.ofType(MedicationStatement).dosage
+    ).maxDosePerPeriod.exists()
+  )
+  implies
+  (
+    (
+      %resource.ofType(MedicationRequest).dosageInstruction |
+      %resource.ofType(MedicationDispense).dosageInstruction |
+      %resource.ofType(MedicationStatement).dosage
+    ).all(maxDosePerPeriod.exists())
+  )
+)"

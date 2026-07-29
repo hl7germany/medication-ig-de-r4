@@ -3,25 +3,34 @@
 FHIR Medication Dosage Text Generator
 
 This script converts FHIR medication dosage instructions into human-readable German text.
-It serves as a reference implementation for the dosage text generation algorithm defined 
-in the German FHIR medication dosage implementation guide.
+
+It is an EXAMPLE implementation of the dosage text generation algorithm. The normative
+definition is the "Dosierung: Textgenerierung" page of the German FHIR medication dosage
+implementation guide — if this script and that page disagree, the page prevails.
+`__version__` therefore names the version of the algorithm being implemented, not of the
+script itself.
 
 The script supports various dosage schemas:
 - FreeText: User-provided text instructions
-- 4-Schema: Morning-noon-evening-night pattern (e.g., "1-0-2-0 Stück")  
-- TimeOfDay: Specific times (e.g., "08:00 Uhr, 20:00 Uhr — je 1 Stück")
-- DayOfWeek: Specific weekdays (e.g., "montags, mittwochs — je 2 Stück")
+- AsNeeded: Pure as-needed dosage (e.g., "Bei Kopfschmerzen: je 1 Stück")
+- 4-Schema: Morning-noon-evening-night pattern (e.g., "1-0-2-0 Stück")
+- TimeOfDay: Specific times (e.g., "täglich: 08:00 Uhr, 20:00 Uhr — je 1 Stück")
+- DayOfWeek: Specific weekdays (e.g., "montags — je 1 Stück; mittwochs — je 2 Stück")
 - Interval: Regular intervals (e.g., "alle 8 Stunden: je 1 Stück")
 - Combined schemas: DayOfWeek + Time/4-Schema, Interval + Time/4-Schema
 
 Algorithm Priority (TimingOnlyOneType constraint):
-1. FreeText (has text, no timing)
-2. 4-Schema (daily frequency with 'when' codes, no timeOfDay/dayOfWeek)
-3. DayOfWeek (has dayOfWeek, daily period, no when/timeOfDay)
-4. DayOfWeek + Time/4-Schema (has dayOfWeek + timeOfDay OR when)
-5. TimeOfDay (daily period with timeOfDay, no dayOfWeek/when)
-6. Interval + Time/4-Schema (non-daily period with timeOfDay OR when)
-7. Interval (pure interval without when/timeOfDay/dayOfWeek)
+1. FreeText (has text, no timing, no doseAndRate)
+2. AsNeeded (asNeededBoolean=true, no timing)
+3. 4-Schema ('when' codes, no timeOfDay/dayOfWeek)
+4. DayOfWeek (has dayOfWeek, no when/timeOfDay)
+5. DayOfWeek + Time/4-Schema (has dayOfWeek + timeOfDay OR when)
+6. TimeOfDay (daily period with timeOfDay, no dayOfWeek/when)
+7. Interval + Time/4-Schema (non-daily period with timeOfDay OR when)
+8. Interval (pure interval without when/timeOfDay/dayOfWeek)
+
+Eine nicht klassifizierbare Merkmalskombination führt zum Abbruch; es wird kein
+Ersatztext erzeugt.
 """
 
 import json
@@ -31,7 +40,7 @@ import os
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
-__version__ = "1.1.0-beta-7"
+__version__ = "2.0.0"
 __language__ = "de-DE"
 
 class MedicationDosageTextGenerator:
@@ -123,14 +132,24 @@ class MedicationDosageTextGenerator:
 
         Examples:
             4-Schema: "1-0-2-0 Stück"
-            TimeOfDay: "täglich: 08:00 Uhr — je 1 Stück; 20:00 Uhr — je 2 Stück"
-            DayOfWeek: "montags — je 1 Stück, mittwochs — je 2 Stück"
+            TimeOfDay: "täglich: 08:00 Uhr — je 1 Stück, 20:00 Uhr — je 2 Stück"
+            DayOfWeek: "montags — je 1 Stück; mittwochs — je 2 Stück"
             Interval: "alle 8 Stunden: je 1 Stück"
         """
         # Step 1: Extract dosage instructions based on resource type
         dosage_instructions = self._extract_dosage_instructions(resource)
         if not dosage_instructions:
             return ""
+
+        # timeOfDay und when schließen sich bereits auf Ebene des FHIR-Basisdatentyps
+        # Timing aus (tim-10). Ohne diese Prüfung würde je nach Schema stillschweigend
+        # eine der beiden Angaben verworfen.
+        for dosage in dosage_instructions:
+            repeat = (dosage.get("timing") or {}).get("repeat") or {}
+            if repeat.get("timeOfDay") and repeat.get("when"):
+                raise ValueError(
+                    "timeOfDay und when dürfen nicht gemeinsam angegeben werden (tim-10)."
+                )
 
         # Eine reine Bedarfsdosierung (asNeededBoolean=true ohne timing) ist
         # nicht aggregierbar und muss das einzige Dosage-Element sein. Diese
@@ -162,9 +181,14 @@ class MedicationDosageTextGenerator:
             self.SCHEMA_AS_NEEDED: self._generate_as_needed_text,
         }
 
+        # Eine nicht klassifizierbare Merkmalskombination ist nicht darstellbar. Ein
+        # Ersatztext würde als generierte Dosieranweisung publiziert werden und dort
+        # eine Aussage vortäuschen, die der Algorithmus gar nicht treffen kann.
         generator_method = text_generators.get(schema_type)
         if not generator_method:
-            return f"Unbekanntes Dosierungsschema: {schema_type}"
+            raise ValueError(
+                "Die Dosierung entspricht keinem unterstützten Dosierungsschema."
+            )
 
         result = generator_method(dosage_instructions)
 
@@ -213,13 +237,14 @@ class MedicationDosageTextGenerator:
         Determine the dosage schema type based on TimingOnlyOneType constraint logic.
 
         This method implements the priority order defined in the constraint:
-        1. FreeText: Has text but no timing structure
-        2. 4-Schema: Daily frequency with 'when' codes only
-        3. DayOfWeek: Has dayOfWeek with daily period, no timing details
-        4. DayOfWeek + Time/4-Schema: DayOfWeek plus timeOfDay OR when
-        5. TimeOfDay: Daily period with specific times only
-        6. Interval + Time/4-Schema: Non-daily period with timeOfDay OR when
-        7. Interval: Pure interval pattern without timing details
+        1. FreeText: Text without timing and without doseAndRate
+        2. AsNeeded: asNeededBoolean=true without timing
+        3. 4-Schema: 'when' codes only
+        4. DayOfWeek: Has dayOfWeek, no when/timeOfDay
+        5. DayOfWeek + Time/4-Schema: DayOfWeek plus timeOfDay OR when
+        6. TimeOfDay: Daily period with specific times only
+        7. Interval + Time/4-Schema: Non-daily period with timeOfDay OR when
+        8. Interval: Pure interval pattern without timing details
 
         Args:
             dosage_instructions (list): List of dosage instruction objects
@@ -233,8 +258,12 @@ class MedicationDosageTextGenerator:
         # Analyze the first dosage instruction (constraint ensures consistency)
         first_dosage = dosage_instructions[0]
 
-        # Schema 1: FreeText - has text but no structured timing
-        if first_dosage.get('text') and not first_dosage.get('timing'):
+        # Schema 1: FreeText - Text ohne jede strukturierte Dosierungsangabe.
+        # doseAndRate wird mitgeprüft: andernfalls würde bei widersprüchlichen Angaben
+        # der Freitext gewinnen und die strukturierte Dosis kommentarlos entfallen.
+        if (first_dosage.get('text')
+                and not first_dosage.get('timing')
+                and not first_dosage.get('doseAndRate')):
             return self.SCHEMA_FREE_TEXT
 
         # Extract timing information for further analysis
@@ -262,29 +291,29 @@ class MedicationDosageTextGenerator:
         is_pure_interval = (has_frequency and has_period and has_period_unit and
                             not has_when_codes and not has_time_of_day and not has_day_of_week)
 
-        # Schema 2: 4-Schema - 'when' codes only (frequency/period optional)
+        # Schema 3: 4-Schema - 'when' codes only (frequency/period optional)
         if (has_when_codes and not has_time_of_day and not has_day_of_week):
             return self.SCHEMA_4_PATTERN
 
-        # Schema 3: DayOfWeek - specific weekdays, no timing details
+        # Schema 4: DayOfWeek - specific weekdays, no timing details
         if (has_day_of_week and not has_when_codes and not has_time_of_day):
             return self.SCHEMA_DAY_OF_WEEK
 
-        # Schema 4: DayOfWeek + Time/4-Schema - weekdays plus timing
+        # Schema 5: DayOfWeek + Time/4-Schema - weekdays plus timing
         if (has_day_of_week and (has_time_of_day or has_when_codes)):
             return self.SCHEMA_DAY_TIME_COMBO
 
-        # Schema 5: TimeOfDay - specific times only. If no period is specified,
+        # Schema 6: TimeOfDay - specific times only. If no period is specified,
         # the time-of-day pattern is still interpreted as a daily schedule.
         if (has_time_of_day and not has_day_of_week and not has_when_codes and
                 (is_daily_pattern or (not has_frequency and not has_period and not has_period_unit))):
             return self.SCHEMA_TIME_OF_DAY
 
-        # Schema 6: Interval + Time/4-Schema - non-daily period with timing
+        # Schema 7: Interval + Time/4-Schema - non-daily period with timing
         if (is_non_daily_pattern and (has_time_of_day or has_when_codes)):
             return self.SCHEMA_INTERVAL_TIME_COMBO
 
-        # Schema 7: Interval - pure interval without timing details
+        # Schema 8: Interval - pure interval without timing details
         if is_pure_interval:
             return self.SCHEMA_INTERVAL
 
@@ -325,22 +354,20 @@ class MedicationDosageTextGenerator:
             when_codes = repeat_element.get('when', [])
 
             # Extract dose quantity information
-            dose_info = self._extract_dose_quantity(dosage)
-            if when_codes and not dose_info:
-                raise ValueError("Tagesabschnitt (when) ohne Dosisangabe ist nicht zulässig.")
-            if dose_info:
-                dose_value, dose_unit = dose_info
-                if not unit_text:
-                    unit_text = dose_unit
+            dose_value, dose_unit = self._extract_dose_quantity(dosage)
+            if not unit_text:
+                unit_text = dose_unit
 
-                # Assign dose value to each specified time period
-                for when_code in when_codes:
-                    if when_code in dose_amounts:
-                        if when_code in assigned_slots:
-                            raise ValueError(
-                                f"Doppelte Belegung des Tagesabschnitts '{when_code}' im 4-Schema.")
-                        assigned_slots.add(when_code)
-                        dose_amounts[when_code] = dose_value
+            # Assign dose value to each specified time period
+            for when_code in when_codes:
+                if when_code not in dose_amounts:
+                    raise ValueError(
+                        f"Nicht unterstützter Tagesabschnitt (when): '{when_code}'.")
+                if when_code in assigned_slots:
+                    raise ValueError(
+                        f"Doppelte Belegung des Tagesabschnitts '{when_code}' im 4-Schema.")
+                assigned_slots.add(when_code)
+                dose_amounts[when_code] = dose_value
 
         # Feste Dosen -> kompakt "1-0-2-0"; sobald eine Position variabel ist,
         # wird gemäß Option 2 die ausgeschriebene Segmentform verwendet
@@ -349,7 +376,7 @@ class MedicationDosageTextGenerator:
         text = self._assemble(dosage_instructions[0], "", dose_pattern)
         return self._append_trailing_instructions(text, dosage_instructions[0])
 
-    def _render_when_doses(self, dose_amounts, unit_text):
+    def _render_when_doses(self, dose_amounts, unit_text, force_written=False):
         """
         Render eine MORN/NOON/EVE/NIGHT-Dosisbelegung.
 
@@ -357,9 +384,15 @@ class MedicationDosageTextGenerator:
         "1-0-2-0 [Einheit]". Sobald eine Position variabel ist (Bereich, z. B.
         "1 bis 2"), wird das Schema gemäß Option 2 in die ausgeschriebene
         Segmentform überführt: nur belegte (nicht-null) Positionen erscheinen als
-        "morgens — je 1 bis 2 Stück; abends — je 2 Stück".
+        "morgens — je 1 bis 2 Stück, abends — je 2 Stück".
+
+        `force_written` erzwingt die ausgeschriebene Form auch für eine für sich
+        genommen feste Belegung. Die Wochentags-Kombination nutzt das, damit die
+        Notation über alle Tage hinweg einheitlich bleibt, sobald irgendein Tag
+        einen variablen Wert enthält.
         """
-        has_variable = any(isinstance(value, str) for value in dose_amounts.values())
+        has_variable = force_written or any(
+            isinstance(value, str) for value in dose_amounts.values())
 
         if not has_variable:
             pattern = "-".join(self._format_decimal_value(dose_amounts[code])
@@ -418,53 +451,83 @@ class MedicationDosageTextGenerator:
             dosage_instructions (list): List with timeOfDay specifications
 
         Returns:
-            str: Formatted text like "täglich: 08:00 Uhr — je 1 Stück; 20:00 Uhr — je 2 Stück"
+            str: Formatted text like "täglich: 08:00 Uhr — je 1 Stück, 20:00 Uhr — je 2 Stück"
 
         Example FHIR input:
             - timing.repeat.timeOfDay = ["08:00", "20:00"]
             - doseQuantity = {value: 1, unit: "Stück"}
 
-        Example output: "täglich: 08:00 Uhr — je 1 Stück; 20:00 Uhr — je 2 Stück"
+        Example output: "täglich: 08:00 Uhr — je 1 Stück, 20:00 Uhr — je 2 Stück"
         """
         if not dosage_instructions:
             return ""
 
-        time_dose_parts = []
-
-        # Process each dosage instruction
-        for dosage in dosage_instructions:
-            timing = dosage.get('timing', {})
-            repeat_element = timing.get('repeat', {})
-            time_of_day_list = repeat_element.get('timeOfDay', [])
-
-            if not time_of_day_list:
-                continue
-
-            # Format times as German time expressions (sort chronologically)
-            sorted_times = sorted(time_of_day_list)
-            formatted_times = [self._format_time_german(t) for t in sorted_times]
-
-            # Extract dose information
-            dose_text = self._extract_dose_text_with_prefix(dosage)
-
-            # Combine times and dose for this instruction; sort key = früheste Uhrzeit,
-            # damit die Segmentreihenfolge deterministisch (nicht eingabeabhängig) ist.
-            if formatted_times and dose_text:
-                times_combined = ", ".join(formatted_times)
-                time_dose_parts.append((sorted_times[0], f"{times_combined} — {dose_text}"))
-
-        if not time_dose_parts:
+        combined_instructions = self._build_time_dose_segments(dosage_instructions)
+        if not combined_instructions:
             return ""
 
-        # Segmente aufsteigend nach Uhrzeit sortieren; Trennung mit Komma (Trennzeichen).
-        time_dose_parts.sort(key=lambda item: item[0])
-        combined_instructions = ", ".join(text for _, text in time_dose_parts)
         text = self._assemble(dosage_instructions[0], "täglich", combined_instructions)
         return self._append_trailing_instructions(text, dosage_instructions[0])
 
     # ============================================================================
     # UTILITY METHODS - Reusable functions for data extraction and formatting
     # ============================================================================
+
+    def _build_time_dose_segments(self, dosages):
+        """
+        Build the comma-separated time segments shared by the TimeOfDay schemas.
+
+        Sammelt alle Uhrzeit-Dosis-Paare über *alle* übergebenen Dosage-Elemente
+        hinweg und sortiert sie global aufsteigend anhand des unveränderten
+        timeOfDay-Eingabestrings. Die Reihenfolge der Dosage-Elemente in der
+        Ressource beeinflusst die Ausgabe damit nicht.
+
+        Unmittelbar benachbarte Uhrzeiten mit identischer Dosis werden
+        anschließend wieder zu einer Zeitgruppe vor einem gemeinsamen
+        Gedankenstrich zusammengefasst, damit die kompakte Schreibweise
+        "08:00 Uhr, 20:00 Uhr — je 1 Stück" erhalten bleibt. Trennt eine
+        abweichende Dosis zwei Uhrzeiten desselben Dosage-Elements, zerfällt
+        die Gruppe zugunsten der aufsteigenden Sortierung.
+
+        Args:
+            dosages (list): Dosage-Elemente mit timeOfDay-Angaben
+
+        Returns:
+            str: z. B. "01:00 Uhr — je 1 Stück, 18:00 Uhr — je 3 Stück,
+                 23:00 Uhr — je 1 Stück" oder "" wenn keine Uhrzeit vorliegt
+        """
+        time_dose_pairs = []
+
+        for dosage in dosages:
+            repeat_element = dosage.get('timing', {}).get('repeat', {})
+            time_of_day_list = repeat_element.get('timeOfDay', [])
+
+            if not time_of_day_list:
+                continue
+
+            dose_text = self._extract_dose_text_with_prefix(dosage)
+            for time_value in time_of_day_list:
+                # Sortierschlüssel ist der unveränderte Eingabestring: Sekunden und
+                # Sekundenbruchteile bleiben so sortierwirksam, auch wenn sie in der
+                # Ausgabe (HH:MM Uhr) entfallen. Da timeOfDay nullaufgefüllt sein
+                # muss, entspricht die lexikographische der chronologischen Ordnung.
+                time_dose_pairs.append(
+                    (time_value, self._format_time_german(time_value), dose_text))
+
+        if not time_dose_pairs:
+            return ""
+
+        time_dose_pairs.sort(key=lambda pair: pair[0])
+
+        segments = []
+        for _, formatted_time, dose_text in time_dose_pairs:
+            if segments and segments[-1][1] == dose_text:
+                segments[-1][0].append(formatted_time)
+            else:
+                segments.append(([formatted_time], dose_text))
+
+        return ", ".join(
+            f"{', '.join(times)} — {dose_text}" for times, dose_text in segments)
 
     def _extract_dose_quantity(self, dosage):
         """
@@ -474,7 +537,13 @@ class MedicationDosageTextGenerator:
             dosage (dict): Single dosage instruction
 
         Returns:
-            tuple: (dose_value, unit) or None if no dose found
+            tuple: (dose_value, unit)
+
+        Raises:
+            ValueError: Wenn keine auswertbare Dosis vorhanden ist. Profilkonformer
+                Input enthält immer eine: DosageStructuredRequiresBoth erzwingt
+                "timing implies doseAndRate", und für die reine Bedarfsdosierung
+                verlangt DosageStructuredOrFreeText ebenfalls doseAndRate.
 
         Example:
             Input: {"doseAndRate": [{"doseQuantity": {"value": 2, "unit": "Stück"}}]}
@@ -482,7 +551,7 @@ class MedicationDosageTextGenerator:
         """
         dose_and_rate = dosage.get('doseAndRate', [])
         if not dose_and_rate:
-            return None
+            raise ValueError("doseAndRate ist für die Textgenerierung erforderlich.")
 
         first_dose = dose_and_rate[0]
 
@@ -531,13 +600,9 @@ class MedicationDosageTextGenerator:
             dosage (dict): Single dosage instruction
 
         Returns:
-            str: Formatted dose like "je 1 Stück" or "" if no dose
+            str: Formatted dose like "je 1 Stück"
         """
-        dose_info = self._extract_dose_quantity(dosage)
-        if not dose_info:
-            return ""
-
-        dose_value, unit = dose_info
+        dose_value, unit = self._extract_dose_quantity(dosage)
         formatted_dose = dose_value if isinstance(dose_value, str) else self._format_decimal_value(dose_value)
 
         if unit:
@@ -646,12 +711,18 @@ class MedicationDosageTextGenerator:
 
     def _normalize_whitespace(self, text):
         """
-        Reduziert Mehrfach-Leerzeichen zu einem Leerzeichen und entfernt
-        Leerzeichen vor Satzzeichen (: ; , .). Gedankenstrich und Klammern
+        Reduziert jede Folge von Leerraum – einschließlich Zeilenumbrüchen aus
+        übernommenen Freitextfeldern – zu einem einzelnen Leerzeichen und entfernt
+        Leerzeichen vor Satzzeichen (: ; , .). Damit steht ein strukturiert
+        erzeugter Text garantiert in einer Zeile. Gedankenstrich und Klammern
         bleiben unangetastet.
+
+        Die Freitext-Dosierung durchläuft diese Normalisierung bewusst nicht:
+        FreeTextMatchesRenderedText verlangt exakte Gleichheit von
+        renderedDosageInstruction und Dosage.text.
         """
-        text = re.sub(r'[ \t]{2,}', ' ', text)
-        text = re.sub(r'[ \t]+([;:.,])', r'\1', text)
+        text = re.sub(r'\s+', ' ', text)
+        text = re.sub(r' ([;:.,])', r'\1', text)
         return text.strip()
 
     def _format_duration_text(self, duration, prefix="", field_name="Duration"):
@@ -780,10 +851,16 @@ class MedicationDosageTextGenerator:
 
         Returns:
             str: German unit name (e.g., "Tag" vs "Tage")
+
+        Raises:
+            ValueError: Bei einem Code außerhalb der Tabelle. Ein roher UCUM-Code
+                im erzeugten Text wäre für Patientinnen und Patienten nicht lesbar.
         """
         # Choose singular or plural based on value
         unit_dict = self.TIME_UNITS_SINGULAR if value == 1 else self.TIME_UNITS_PLURAL
-        return unit_dict.get(unit, unit)  # Fallback to original unit if not found
+        if unit not in unit_dict:
+            raise ValueError(f"Nicht unterstützte Zeiteinheit: '{unit}'.")
+        return unit_dict[unit]
 
     def _generate_day_of_week_text(self, dosage_instructions):
         """
@@ -796,13 +873,13 @@ class MedicationDosageTextGenerator:
             dosage_instructions (list): List with dayOfWeek specifications
 
         Returns:
-            str: Formatted text like "montags — je 1 Stück, mittwochs — je 2 Stück"
+            str: Formatted text like "montags — je 1 Stück; mittwochs — je 2 Stück"
 
         Example FHIR input:
             - timing.repeat.dayOfWeek = ["mon", "wed"]
             - doseQuantity = {value: 1, unit: "Stück"}
 
-        Example output: "montags — je 1 Stück, mittwochs — je 2 Stück"
+        Example output: "montags — je 1 Stück; mittwochs — je 2 Stück"
         """
         if not dosage_instructions:
             return ""
@@ -817,15 +894,13 @@ class MedicationDosageTextGenerator:
             day_codes = repeat_element.get('dayOfWeek', [])
 
             # Extract dose information
-            dose_info = self._extract_dose_quantity(dosage)
-            if dose_info:
-                dose_value, dose_unit = dose_info
-                if not unit_text:
-                    unit_text = dose_unit
+            dose_value, dose_unit = self._extract_dose_quantity(dosage)
+            if not unit_text:
+                unit_text = dose_unit
 
-                # Associate this dose with each specified day
-                for day_code in day_codes:
-                    day_to_dose[day_code] = dose_value
+            # Associate this dose with each specified day
+            for day_code in day_codes:
+                day_to_dose[day_code] = dose_value
 
         if not day_to_dose:
             return ""
@@ -978,8 +1053,8 @@ class MedicationDosageTextGenerator:
             str: Formatted combination text
 
         Sub-types:
-        - DayOfWeek + TimeOfDay: "montags 08:00 Uhr — je 1 Stück, mittwochs 20:00 Uhr — je 2 Stück"
-        - DayOfWeek + When: "montags 1-0-1-0, mittwochs 2-1-2-0 Stück"
+        - DayOfWeek + TimeOfDay: "montags 08:00 Uhr — je 1 Stück; mittwochs 20:00 Uhr — je 2 Stück"
+        - DayOfWeek + When: "montags 1-0-1-0 Stück; mittwochs 2-1-2-0 Stück"
         """
         if not dosage_instructions:
             return ""
@@ -1005,7 +1080,7 @@ class MedicationDosageTextGenerator:
         """
         Generate text for DayOfWeek + TimeOfDay combination.
 
-        Example output: "montags 08:00 Uhr — je 1 Stück, mittwochs 20:00 Uhr — je 2 Stück"
+        Example output: "montags 08:00 Uhr — je 1 Stück; mittwochs 20:00 Uhr — je 2 Stück"
         """
         if not dosage_instructions:
             return ""
@@ -1033,32 +1108,10 @@ class MedicationDosageTextGenerator:
             day_dosages = day_to_dosages[day_code]
             day_name = self.DAY_TRANSLATIONS.get(day_code, day_code)
 
-            # Generate time-dose combinations for this day
-            time_dose_parts = []
-            for dosage in day_dosages:
-                timing = dosage.get('timing', {})
-                repeat_element = timing.get('repeat', {})
-                time_list = repeat_element.get('timeOfDay', [])
-
-                if not time_list:
-                    continue
-
-                # Format times (sort chronologically)
-                sorted_times = sorted(time_list)
-                formatted_times = [self._format_time_german(t) for t in sorted_times]
-
-                # Extract dose information
-                dose_text = self._extract_dose_text_with_prefix(dosage)
-
-                # Sort key = früheste Uhrzeit -> deterministische Segmentreihenfolge.
-                if formatted_times and dose_text:
-                    times_combined = ", ".join(formatted_times)
-                    time_dose_parts.append((sorted_times[0], f"{times_combined} — {dose_text}"))
-
-            # Uhrzeiten innerhalb eines Tages: aufsteigend sortiert, mit Komma getrennt.
-            if time_dose_parts:
-                time_dose_parts.sort(key=lambda item: item[0])
-                combined_times = ", ".join(text for _, text in time_dose_parts)
+            # Uhrzeiten innerhalb eines Tages: über alle Dosage-Elemente dieses
+            # Tages global aufsteigend sortiert, mit Komma getrennt.
+            combined_times = self._build_time_dose_segments(day_dosages)
+            if combined_times:
                 day_text_parts.append(f"{day_name} {combined_times}")
 
         combined_days = "; ".join(day_text_parts)
@@ -1069,7 +1122,7 @@ class MedicationDosageTextGenerator:
         """
         Generate text for DayOfWeek + When combination (4-Schema pattern per day).
 
-        Example output: "montags 1-0-1-0, mittwochs 2-1-2-0 Stück"
+        Example output: "montags 1-0-1-0 Stück; mittwochs 2-1-2-0 Stück"
         """
         if not dosage_instructions:
             return ""
@@ -1086,22 +1139,20 @@ class MedicationDosageTextGenerator:
             when_codes = repeat_element.get('when', [])
 
             # Extract dose information
-            dose_info = self._extract_dose_quantity(dosage)
-            if when_codes and not dose_info:
-                raise ValueError("Tagesabschnitt (when) ohne Dosisangabe ist nicht zulässig.")
-            if dose_info:
-                dose_value, dose_unit = dose_info
-                if not unit_text:
-                    unit_text = dose_unit
+            dose_value, dose_unit = self._extract_dose_quantity(dosage)
+            if not unit_text:
+                unit_text = dose_unit
 
-                # For each day and each when code, set the dose
-                for day_code in day_codes:
-                    if day_code not in day_to_patterns:
-                        day_to_patterns[day_code] = {code: 0 for code in self.WHEN_CODES_ORDER}
+            # For each day and each when code, set the dose
+            for day_code in day_codes:
+                if day_code not in day_to_patterns:
+                    day_to_patterns[day_code] = {code: 0 for code in self.WHEN_CODES_ORDER}
 
-                    for when_code in when_codes:
-                        if when_code in day_to_patterns[day_code]:
-                            day_to_patterns[day_code][when_code] = dose_value
+                for when_code in when_codes:
+                    if when_code not in day_to_patterns[day_code]:
+                        raise ValueError(
+                            f"Nicht unterstützter Tagesabschnitt (when): '{when_code}'.")
+                    day_to_patterns[day_code][when_code] = dose_value
 
         if not day_to_patterns:
             return ""
@@ -1110,13 +1161,22 @@ class MedicationDosageTextGenerator:
         sorted_days = sorted(day_to_patterns.keys(),
                              key=lambda day: self.DAY_ORDER.index(day) if day in self.DAY_ORDER else 99)
 
+        # Die Entscheidung kompakt/ausgeschrieben fällt einmal über alle Tage, damit
+        # ein einzelner variabler Wert nicht zu zwei Notationen in einem Text führt.
+        has_variable = any(
+            isinstance(value, str)
+            for pattern in day_to_patterns.values()
+            for value in pattern.values()
+        )
+
         day_text_parts = []
         for day_code in sorted_days:
             dose_pattern = day_to_patterns[day_code]
             day_name = self.DAY_TRANSLATIONS.get(day_code, day_code)
 
             # Feste Dosen -> kompakt "1-0-1-0"; variable -> ausgeschrieben (Option 2).
-            day_content = self._render_when_doses(dose_pattern, unit_text)
+            day_content = self._render_when_doses(
+                dose_pattern, unit_text, force_written=has_variable)
             day_text_parts.append(f"{day_name} {day_content}")
 
         combined_days = "; ".join(day_text_parts)
@@ -1133,14 +1193,14 @@ class MedicationDosageTextGenerator:
             dosage_instructions (list): List with interval and timing information
 
         Returns:
-            str: Formatted text like "alle 2 Tage: 08:00 Uhr — je 1 Stück; 18:00 Uhr — je 2 Stück"
+            str: Formatted text like "alle 2 Tage: 08:00 Uhr — je 1 Stück, 18:00 Uhr — je 2 Stück"
 
         Example FHIR input:
             - timing.repeat.frequency = 1, period = 2, periodUnit = "d"
             - timing.repeat.timeOfDay = ["08:00", "18:00"]
             - doseQuantity = {value: 1, unit: "Stück"}
 
-        Example output: "alle 2 Tage: 08:00 Uhr — je 1 Stück; 18:00 Uhr — je 2 Stück"
+        Example output: "alle 2 Tage: 08:00 Uhr — je 1 Stück, 18:00 Uhr — je 2 Stück"
         """
         if not dosage_instructions:
             return ""
@@ -1168,13 +1228,14 @@ class MedicationDosageTextGenerator:
 
             # Process when code entries
             elif 'when' in repeat_element and repeat_element['when']:
-                if not self._extract_dose_quantity(dosage):
-                    raise ValueError("Tagesabschnitt (when) ohne Dosisangabe ist nicht zulässig.")
+                self._extract_dose_quantity(dosage)
                 for when_code in repeat_element['when']:
-                    if when_code in self.WHEN_CODE_TRANSLATIONS:
-                        if when_code not in time_to_dosages:
-                            time_to_dosages[when_code] = []
-                        time_to_dosages[when_code].append(dosage)
+                    if when_code not in self.WHEN_CODE_TRANSLATIONS:
+                        raise ValueError(
+                            f"Nicht unterstützter Tagesabschnitt (when): '{when_code}'.")
+                    if when_code not in time_to_dosages:
+                        time_to_dosages[when_code] = []
+                    time_to_dosages[when_code].append(dosage)
 
         # Generate time-dose text parts
         time_dose_parts = []

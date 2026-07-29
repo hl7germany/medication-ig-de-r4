@@ -462,41 +462,72 @@ class MedicationDosageTextGenerator:
         if not dosage_instructions:
             return ""
 
-        time_dose_parts = []
-
-        # Process each dosage instruction
-        for dosage in dosage_instructions:
-            timing = dosage.get('timing', {})
-            repeat_element = timing.get('repeat', {})
-            time_of_day_list = repeat_element.get('timeOfDay', [])
-
-            if not time_of_day_list:
-                continue
-
-            # Format times as German time expressions (sort chronologically)
-            sorted_times = sorted(time_of_day_list)
-            formatted_times = [self._format_time_german(t) for t in sorted_times]
-
-            # Extract dose information
-            dose_text = self._extract_dose_text_with_prefix(dosage)
-
-            # Combine times and dose for this instruction; sort key = früheste Uhrzeit,
-            # damit die Segmentreihenfolge deterministisch (nicht eingabeabhängig) ist.
-            times_combined = ", ".join(formatted_times)
-            time_dose_parts.append((sorted_times[0], f"{times_combined} — {dose_text}"))
-
-        if not time_dose_parts:
+        combined_instructions = self._build_time_dose_segments(dosage_instructions)
+        if not combined_instructions:
             return ""
 
-        # Segmente aufsteigend nach Uhrzeit sortieren; Trennung mit Komma (Trennzeichen).
-        time_dose_parts.sort(key=lambda item: item[0])
-        combined_instructions = ", ".join(text for _, text in time_dose_parts)
         text = self._assemble(dosage_instructions[0], "täglich", combined_instructions)
         return self._append_trailing_instructions(text, dosage_instructions[0])
 
     # ============================================================================
     # UTILITY METHODS - Reusable functions for data extraction and formatting
     # ============================================================================
+
+    def _build_time_dose_segments(self, dosages):
+        """
+        Build the comma-separated time segments shared by the TimeOfDay schemas.
+
+        Sammelt alle Uhrzeit-Dosis-Paare über *alle* übergebenen Dosage-Elemente
+        hinweg und sortiert sie global aufsteigend anhand des unveränderten
+        timeOfDay-Eingabestrings. Die Reihenfolge der Dosage-Elemente in der
+        Ressource beeinflusst die Ausgabe damit nicht.
+
+        Unmittelbar benachbarte Uhrzeiten mit identischer Dosis werden
+        anschließend wieder zu einer Zeitgruppe vor einem gemeinsamen
+        Gedankenstrich zusammengefasst, damit die kompakte Schreibweise
+        "08:00 Uhr, 20:00 Uhr — je 1 Stück" erhalten bleibt. Trennt eine
+        abweichende Dosis zwei Uhrzeiten desselben Dosage-Elements, zerfällt
+        die Gruppe zugunsten der aufsteigenden Sortierung.
+
+        Args:
+            dosages (list): Dosage-Elemente mit timeOfDay-Angaben
+
+        Returns:
+            str: z. B. "01:00 Uhr — je 1 Stück, 18:00 Uhr — je 3 Stück,
+                 23:00 Uhr — je 1 Stück" oder "" wenn keine Uhrzeit vorliegt
+        """
+        time_dose_pairs = []
+
+        for dosage in dosages:
+            repeat_element = dosage.get('timing', {}).get('repeat', {})
+            time_of_day_list = repeat_element.get('timeOfDay', [])
+
+            if not time_of_day_list:
+                continue
+
+            dose_text = self._extract_dose_text_with_prefix(dosage)
+            for time_value in time_of_day_list:
+                # Sortierschlüssel ist der unveränderte Eingabestring: Sekunden und
+                # Sekundenbruchteile bleiben so sortierwirksam, auch wenn sie in der
+                # Ausgabe (HH:MM Uhr) entfallen. Da timeOfDay nullaufgefüllt sein
+                # muss, entspricht die lexikographische der chronologischen Ordnung.
+                time_dose_pairs.append(
+                    (time_value, self._format_time_german(time_value), dose_text))
+
+        if not time_dose_pairs:
+            return ""
+
+        time_dose_pairs.sort(key=lambda pair: pair[0])
+
+        segments = []
+        for _, formatted_time, dose_text in time_dose_pairs:
+            if segments and segments[-1][1] == dose_text:
+                segments[-1][0].append(formatted_time)
+            else:
+                segments.append(([formatted_time], dose_text))
+
+        return ", ".join(
+            f"{', '.join(times)} — {dose_text}" for times, dose_text in segments)
 
     def _extract_dose_quantity(self, dosage):
         """
@@ -1077,31 +1108,10 @@ class MedicationDosageTextGenerator:
             day_dosages = day_to_dosages[day_code]
             day_name = self.DAY_TRANSLATIONS.get(day_code, day_code)
 
-            # Generate time-dose combinations for this day
-            time_dose_parts = []
-            for dosage in day_dosages:
-                timing = dosage.get('timing', {})
-                repeat_element = timing.get('repeat', {})
-                time_list = repeat_element.get('timeOfDay', [])
-
-                if not time_list:
-                    continue
-
-                # Format times (sort chronologically)
-                sorted_times = sorted(time_list)
-                formatted_times = [self._format_time_german(t) for t in sorted_times]
-
-                # Extract dose information
-                dose_text = self._extract_dose_text_with_prefix(dosage)
-
-                # Sort key = früheste Uhrzeit -> deterministische Segmentreihenfolge.
-                times_combined = ", ".join(formatted_times)
-                time_dose_parts.append((sorted_times[0], f"{times_combined} — {dose_text}"))
-
-            # Uhrzeiten innerhalb eines Tages: aufsteigend sortiert, mit Komma getrennt.
-            if time_dose_parts:
-                time_dose_parts.sort(key=lambda item: item[0])
-                combined_times = ", ".join(text for _, text in time_dose_parts)
+            # Uhrzeiten innerhalb eines Tages: über alle Dosage-Elemente dieses
+            # Tages global aufsteigend sortiert, mit Komma getrennt.
+            combined_times = self._build_time_dose_segments(day_dosages)
+            if combined_times:
                 day_text_parts.append(f"{day_name} {combined_times}")
 
         combined_days = "; ".join(day_text_parts)

@@ -141,10 +141,10 @@ Beispiele (Warnungskontext – variable Einzeldosis und variable Periode):
 ##### TimingVarFreqOrPeriod
 
 **Beschreibung:**  
-Bei gleichzeitiger Angabe von Frequenz und Periode sollte entweder nur die Frequenz einschließlich `frequencyMax` oder nur die Periode einschließlich `periodMax` größer als 1 sein.
+Bei einer reinen Intervallangabe ohne Zeitpunkte sollte bei gleichzeitiger Angabe von Frequenz und Periode entweder nur die Frequenz einschließlich `frequencyMax` oder nur die Periode einschließlich `periodMax` größer als 1 sein.
 
 **Warum?**  
-Die gleichzeitige Variation beider Achsen führt zu einem nur schwer eindeutig interpretierbaren Einnahmeschema.
+Die gleichzeitige Variation beider Achsen führt zu einem nur schwer eindeutig interpretierbaren Einnahmeschema. Sind zusätzlich Zeitpunkte (`timeOfDay`, `when`) oder Wochentage (`dayOfWeek`) angegeben, greift die Regel nicht: Dort entspricht `frequency` gemäß `TimingFrequencyCount` der Anzahl der Zeitpunkte und ist kein Faktor des Einnahmerhythmus.
 
 Folgende Beispiele lösen eine Warnung aus:
 

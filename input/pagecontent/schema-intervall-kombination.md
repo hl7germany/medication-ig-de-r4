@@ -13,21 +13,22 @@ Folgende weitere Beispiele sind in diesem IG dargestellt:
 | Jeden 2. Tag 1 Stück um 08:00 Uhr und 2 Stück um 18:00 Uhr  | [Example-MR-Dosage-comb-interval-1](./MedicationRequest-Example-MR-Dosage-comb-interval-1.html)    |  |
 | 1 x pro Woche 1 Stück morgens  | [Example-MR-Dosage-comb-interval-2](./MedicationRequest-Example-MR-Dosage-comb-interval-2.html)    |
 | Jeden 2. Tag 1 Stück um 08:00 Uhr und jeden 2. Tag 1 Stück um 08:00 Uhr  | [Example-MR-Dosage-comb-interval-3](./MedicationRequest-Example-MR-Dosage-comb-interval-3.html)    |
+| Jeden 2. Tag 1 Stück um 08:00 und 20:00 Uhr sowie 2 Stück um 10:00, 14:00 und 22:00 Uhr (ohne `frequency`)  | [Example-MR-Dosage-comb-interval-4](./MedicationRequest-Example-MR-Dosage-comb-interval-4.html)    |
+| Dasselbe Schema mit zusätzlich angegebener, redundanter `frequency`  | [Example-MR-Dosage-comb-interval-5](./MedicationRequest-Example-MR-Dosage-comb-interval-5.html)    |
 
 ### Angabe und Erkennung der Dosierart 
 
 Diese Dosierungsart wird daran erkannt, dass folgende Felder unter `Dosage.timing.repeat` angegeben sind:
 
-- `frequency`
 - `period`
 - `periodUnit`
 - `timeOfDay` ODER `when`
+- opt. Angabe von `frequency`
 - opt. Angabe von `bounds[x]`
 
 Folgende FHIR-Path Expression auf Ebene von `Dosage.timing.repeat` liefert die Angabe, ob es sich um das Schema handelt:
 
 ```
-timing.repeat.frequency.exists() and
 timing.repeat.period.exists() and
 timing.repeat.periodUnit.exists() and
 timing.repeat.dayOfWeek.empty() and
@@ -37,9 +38,26 @@ timing.repeat.dayOfWeek.empty() and
   )
 ```
 
-Der Wert von frequency entspricht dabei der Anzahl an Elementen in `when`, bzw. `timeOfDay`.
+Wird `frequency` zusätzlich angegeben, entspricht der Wert der Anzahl an Elementen
+in `when` beziehungsweise `timeOfDay`. Die Angabe ist redundant und wird im
+generierten Dosierungstext nicht ausgegeben, weil sich die Häufigkeit bereits aus
+den konkreten Zeitpunkten ergibt.
+[Example-MR-Dosage-comb-interval-4](./MedicationRequest-Example-MR-Dosage-comb-interval-4.html)
+und [Example-MR-Dosage-comb-interval-5](./MedicationRequest-Example-MR-Dosage-comb-interval-5.html)
+bilden dasselbe Schema einmal ohne und einmal mit `frequency` ab und erzeugen
+denselben Dosierungstext.
 
-und entweder `when` oder `timeOfDay`. Damit kann diese Dosierangabe verwendet werden um eine Interval angabe auf Tageszeit oder Uhrzeit zu kombinieren.
+Die Warnung `TimingVarFreqOrPeriod`, die eine gleichzeitige Erhöhung von
+`frequency` und `period` beanstandet, gilt ausschließlich für reine
+Intervallangaben ohne Zeitpunkte. Im Kombinationsschema ist `frequency` die
+Anzahl der Zeitpunkte und kein Faktor des Einnahmerhythmus, deshalb greift die
+Warnung hier nicht.
+
+Mit `period` und `periodUnit` wird der Einnahmerhythmus festgelegt. `when` oder
+`timeOfDay` ordnet diesem Rhythmus konkrete Tagesabschnitte beziehungsweise
+Uhrzeiten zu.
 
 Lesende Systeme werten entsprechend auch `Dosage.timing.repeat` aus. 
-Wenn die oben genannten Felder angegeben sind, ist dem Nutzer anzuzeigen, dass die Dosierung nach einem Interval mit Tageszeit oder Uhrzeitbezug definiert ist.
+Wenn die oben genannten Felder angegeben sind, ist dem Nutzer anzuzeigen, dass die
+Dosierung nach einem Einnahmerhythmus mit Tageszeit- oder Uhrzeitbezug definiert
+ist.

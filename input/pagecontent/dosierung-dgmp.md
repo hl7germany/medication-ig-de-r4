@@ -50,6 +50,24 @@ Die Constraints im Profil [TimingDgMP](./StructureDefinition-TimingDgMP.html) st
 
 Es ist somit bspw. nicht möglich, in einer `MedicationRequest`-Ressource, im dgMP Kontext, gleichzeitig Dosierungen mit Uhrzeiten- und Tageszeiten-Schema zu kombinieren.
 
+### Hinweise für Implementierende
+
+Wer Dosierungen im dgMP-Kontext in eigenen Profilen abbildet, muss die folgenden Punkte beachten:
+
+#### dgMP-Dosage-Profil verwenden
+
+Dosierungen sind über das Profil [DosageDgMP](./StructureDefinition-DosageDgMP.html) (inklusive [TimingDgMP](./StructureDefinition-TimingDgMP.html)) abzubilden. Im eigenen Profil ist das jeweilige Element entsprechend einzuschränken - `MedicationRequest.dosageInstruction`, `MedicationDispense.dosageInstruction` bzw. `MedicationStatement.dosage`. Nur so greifen die auf dem Dosage- und Timing-Profil definierten Invarianten (siehe [Übersicht der Timing & Dosierungs-Invarianten](./dosierung-constraints.html)).
+
+#### Von den abstrakten dgMP-Ressourcenprofilen ableiten oder `ExtRequiresDosage*` übernehmen
+
+Ein Constraint lässt sich nicht auf dem Dosage-Profil abbilden: Liegt eine Dosierungs-Extension vor, aber gar kein `Dosage`-Element, gibt es kein Objekt, an dem die Prüfung ansetzen könnte. Diese Prüfung ist deshalb an den abstrakten Profilen [MedicationRequestDgMP](./StructureDefinition-MedicationRequestDgMP.html), [MedicationDispenseDgMP](./StructureDefinition-MedicationDispenseDgMP.html) und [MedicationStatementDgMP](./StructureDefinition-MedicationStatementDgMP.html) modelliert - mit den Constraint-Keys `ExtRequiresDosage-MR`, `ExtRequiresDosage-MD` und `ExtRequiresDosage-MS` (siehe [DosageExtensionsRequireDosage](./dosierung-constraints.html#dosageextensionsrequiredosage)).
+
+Eigene Profile leiten daher entweder von dem jeweils passenden abstrakten dgMP-Profil ab oder übernehmen den zugehörigen Constraint unverändert in das eigene Profil.
+
+#### Generierten Dosierungstext ergänzen
+
+Zu jeder strukturierten Dosierung ist der Dosierungstext lokal nach der [Spezifikation der Dosis-Textgenerierung](./dosierung-textgenerierung.html) zu erzeugen und in der Extension `renderedDosageInstruction` der Ressource zu hinterlegen. Sprache und verwendete Algorithmus-Version sind in der Extension [GeneratedDosageInstructionsMeta](./StructureDefinition-GeneratedDosageInstructionsMeta.html) anzugeben. Der Constraint `DosageStructuredRequiresGeneratedText` prüft, dass diese Angaben zu einer strukturierten Dosierung vorliegen; der Gesamtablauf ist unter [Bereitstellung des Dosierungstextes](./dosierung-text-hinzufuegen.html) beschrieben.
+
 ### Ausbaustufen
 
 Der digital gestützte Medikationsprozess unterstützt aktuell die folgenden Dosierschemata, gegliedert nach Ausbaustufen. Die jeweiligen Seiten enthalten eine fachliche Beschreibung, Beispiele und technische Hinweise zur Instanziierung.

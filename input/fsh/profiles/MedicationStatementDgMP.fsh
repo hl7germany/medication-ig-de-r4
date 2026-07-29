@@ -7,12 +7,12 @@ Description: "Dieses Profil dient ausschließlich der Validierung des Implementa
 * extension contains $medicationStatement-renderedDosageInstruction-r5 named renderedDosageInstruction 0..1 MS
   and GeneratedDosageInstructionsMeta named generatedDosageInstructionsMeta 0..1 MS
 * insert MedicationCommonRuleset
-* obeys ExtRequiresDosage-MS-01
+* obeys ExtRequiresDosage-MS
 
 * dosage only DosageDgMP
   * ^short = "Angabe der Dosierinformationen strukturiert oder als Freitext"
 
-Invariant: ExtRequiresDosage-MS-01
+Invariant: ExtRequiresDosage-MS
 Description: "Wenn eine Dosierungs-Extension (GeneratedDosageInstructionsMeta oder renderedDosageInstruction) vorhanden ist, muss mindestens eine dosage vorhanden sein."
 Expression: "(
   extension.where(

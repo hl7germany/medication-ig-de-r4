@@ -668,7 +668,7 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 #### Fehler: Auf Ressourcen-Ebene
 
-Die folgende Invariante ist an den Elternressourcen modelliert, weil sie einen Fall abdeckt, in dem gar kein `Dosage`-Objekt vorliegt. Sie existiert je einmal für `MedicationRequest`, `MedicationDispense` und `MedicationStatement` (Constraint-Keys `ExtRequiresDosage-MR-01`, `-MD-01` und `-MS-01`).
+Die folgende Invariante ist an den Elternressourcen modelliert, weil sie einen Fall abdeckt, in dem gar kein `Dosage`-Objekt vorliegt. Sie existiert je einmal für `MedicationRequest`, `MedicationDispense` und `MedicationStatement` (Constraint-Keys `ExtRequiresDosage-MR`, `ExtRequiresDosage-MD` und `ExtRequiresDosage-MS`).
 
 ##### DosageExtensionsRequireDosage
 

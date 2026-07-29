@@ -1,8 +1,10 @@
 Diese Seite beschreibt die Erzeugung eines menschenlesbaren Dosierungstextes aus einer gesamten Arzneimittel‑Ressource (`MedicationRequest`, `MedicationDispense` oder `MedicationStatement`).
 
-Referenz-Implementierung: [Python Skript](https://github.com/hl7germany/dgMP-DosageTextgenerierung-Skript/blob/main/medication-dosage-to-text.py). Die nachfolgende Beschreibung bildet den Algorithmus des im IG verwendeten Skripts `scripts/medication-dosage-to-text.py` vollständig ab. Das verlinkte Skript kann außerhalb dieses Implementation Guides eigenständig versioniert sein. In den Beispielen ist ersichtlich, welche Version der Referenzimplementierung zum Zeitpunkt der Erstellung genutzt wurde (siehe [Versionierung](#versionierung)).
+**Verbindlich ist der auf dieser Seite beschriebene Algorithmus.** Er ist die normative Festlegung der Textgenerierung; Implementierungen müssen ihn nachbilden, unabhängig von der gewählten Programmiersprache. Die aktuelle Version des Algorithmus ist **2.0.0** (siehe [Versionierung](#versionierung)).
 
-Voraussetzung für eine erfolgreiche Texterzeugung ist stets ein **profilkonformer Input**; im Profil gestrichene Elemente sind nicht Teil der Verarbeitung. Das Skript ist kein Ersatz für die FHIR-Profilvalidierung: Es prüft einige nicht zulässige Konstellationen defensiv, führt aber keine vollständige Invariantenprüfung durch.
+Zur Veranschaulichung steht eine **Beispielimplementierung** als [Python-Skript](https://github.com/hl7germany/dgMP-DosageTextgenerierung-Skript/blob/main/medication-dosage-to-text.py) bereit, mit der auch die Beispieltexte dieses Implementation Guides erzeugt werden. Sie ist weder verbindlich noch vollständig maßgeblich: Weicht sie von dieser Seite ab, gilt diese Seite. Das Skript führt die umgesetzte Algorithmus-Version in `__version__`; sie entspricht der hier angegebenen.
+
+Voraussetzung für eine erfolgreiche Texterzeugung ist stets ein **profilkonformer Input**; im Profil gestrichene Elemente sind nicht Teil der Verarbeitung. Der Algorithmus ist kein Ersatz für die FHIR-Profilvalidierung: Er prüft einige nicht zulässige Konstellationen defensiv, führt aber keine vollständige Invariantenprüfung durch.
 
 Diese Seite stellt zwei Aspekte dar: **Teil A** beschreibt, wie jede einzelne Angabe einer `Dosage` in Text überführt wird. **Teil B** beschreibt, wie diese Bausteine je zulässigem Schema zu einem vollständigen Dosierungstext zusammengesetzt werden.
 
@@ -187,11 +189,11 @@ Es können **mehrere** Einnahmeanlässe angegeben sein (`asNeededFor 0..*`, fach
 
 Details zur Zusammensetzung siehe [Schema für Bedarfsmedikation](#schema-für-bedarfsmedikation).
 
-Ausgewertet werden nur Extensions mit der exakten kanonischen URL aus der [Feldreferenz](#feldreferenz). Von jeder passenden Extension wird ausschließlich `valueCodeableConcept.text` übernommen. Im Profil `DosageDgMP` ist `coding` auf `0..0` eingeschränkt und `.text` verpflichtend. Fehlt dennoch ein nicht leerer Text, bricht die Referenzimplementierung mit einem Fehler ab; die Extension wird nicht stillschweigend ignoriert. Führender und abschließender Leerraum des Textes wird entfernt.
+Ausgewertet werden nur Extensions mit der exakten kanonischen URL aus der [Feldreferenz](#feldreferenz). Von jeder passenden Extension wird ausschließlich `valueCodeableConcept.text` übernommen. Im Profil `DosageDgMP` ist `coding` auf `0..0` eingeschränkt und `.text` verpflichtend. Fehlt dennoch ein nicht leerer Text, bricht der Algorithmus mit einem Fehler ab; die Extension wird nicht stillschweigend ignoriert. Führender und abschließender Leerraum des Textes wird entfernt.
 
 ### Mindestabstand zwischen Gaben
 
-Der Mindestabstand wird nur im Bedarfsfall ausgegeben und lautet `im Abstand von mindestens {Wert} {Zeiteinheit}`. Das Skript durchsucht `modifierExtension` nach der exakten kanonischen URL `MindestabstandZwischenGaben` und verwendet die erste passende Extension. `valueDuration`, `valueDuration.value` und `valueDuration.code` sind verpflichtend — im Profil auf `1..1` gesetzt und zusätzlich vom Algorithmus geprüft; der Wert muss numerisch und größer als `0` sein. Andernfalls bricht der Algorithmus mit einem Fehler ab. Die Formatierung entspricht `boundsDuration`, jedoch ohne das Wort `für`.
+Der Mindestabstand wird nur im Bedarfsfall ausgegeben und lautet `im Abstand von mindestens {Wert} {Zeiteinheit}`. Der Algorithmus durchsucht `modifierExtension` nach der exakten kanonischen URL `MindestabstandZwischenGaben` und verwendet die erste passende Extension. `valueDuration`, `valueDuration.value` und `valueDuration.code` sind verpflichtend — im Profil auf `1..1` gesetzt und zusätzlich vom Algorithmus geprüft; der Wert muss numerisch und größer als `0` sein. Andernfalls bricht der Algorithmus mit einem Fehler ab. Die Formatierung entspricht `boundsDuration`, jedoch ohne das Wort `für`.
 
 Als Zeiteinheit sind **ausschließlich Minuten (`min`) und Stunden (`h`)** zulässig; `valueDuration.code` ist required an `MindestabstandUnitsOfTimeDgMPVS` gebunden, `valueDuration.system` ist auf UCUM festgelegt. Die Anzeigeeinheit `valueDuration.unit` muss zum Code passen (Invariante `MindestabstandUnitMatchesCode`) — der erzeugte Text leitet die Einheit aus `.code` ab, sodass ein abweichendes `.unit` sonst der Ressource widerspräche.
 
@@ -355,7 +357,7 @@ Die Dosis-Einheit stammt aus dem ersten Element mit auswertbarer Dosis. Wird bei
 [{Zeitrahmen} ]{Intervall}: {Zeit oder Abschnitt} — je {Dosis}[, … ][. Hinweis: {Instruktionen}]
 ```
 
-Jede Uhrzeit oder jeder Tagesabschnitt bildet gemeinsam mit seiner Dosis ein Segment. Das gilt auch, wenn die Dosis zwischen mehreren oder allen Segmenten übereinstimmt. Segmente mit Tagesabschnitten werden in der festen Reihenfolge morgens, mittags, abends, zur Nacht sortiert; Segmente mit Uhrzeiten anhand des Eingabestrings aufsteigend. Treten – bei nicht profilkonformem Input über mehrere `Dosage`-Elemente hinweg – beide Arten gemeinsam auf, stehen **alle** Tagesabschnitte vor **allen** Uhrzeiten. Die Segmente werden mit Komma getrennt. Bei mehrfacher Belegung desselben Zeit-Schlüssels verwendet die Referenzimplementierung die Dosis des zuerst durchlaufenen zugehörigen `Dosage`-Elements; profilkonformer Input verhindert diesen Mehrdeutigkeitsfall.
+Jede Uhrzeit oder jeder Tagesabschnitt bildet gemeinsam mit seiner Dosis ein Segment. Das gilt auch, wenn die Dosis zwischen mehreren oder allen Segmenten übereinstimmt. Segmente mit Tagesabschnitten werden in der festen Reihenfolge morgens, mittags, abends, zur Nacht sortiert; Segmente mit Uhrzeiten anhand des Eingabestrings aufsteigend. Treten – bei nicht profilkonformem Input über mehrere `Dosage`-Elemente hinweg – beide Arten gemeinsam auf, stehen **alle** Tagesabschnitte vor **allen** Uhrzeiten. Die Segmente werden mit Komma getrennt. Bei mehrfacher Belegung desselben Zeit-Schlüssels verwendet der Algorithmus die Dosis des zuerst durchlaufenen zugehörigen `Dosage`-Elements; profilkonformer Input verhindert diesen Mehrdeutigkeitsfall.
 
 *Beispiel:* `alle 2 Tage: 08:00 Uhr — je 1 Stück, 18:00 Uhr — je 2 Stück`
 
@@ -381,7 +383,7 @@ Bei der Kombination mit Tagesabschnitten stammt die gemeinsame Einheit aus dem e
 
 Eine Bedarfsmedikation liegt vor, wenn auf Ebene der `Dosage` `asNeededBoolean = true` gesetzt ist. Sie kann als **reine Bedarfsdosierung** (ohne `timing`) oder als **Kennzeichnung eines strukturierten Dosierschemas** auftreten (siehe [Bedarfsmedikation](./schema-bedarfsmedikation.html)).
 
-Bei einer **reinen Bedarfsdosierung** muss die Ressource genau ein `Dosage`-Element enthalten (Invariante `AsNeededSingleDosageOnly`). Mehrere Dosen ohne zeitliche Zuordnung wären nicht eindeutig zu einem gemeinsamen Text zusammenführbar. Das Skript bricht deshalb auch bei nicht vorab validiertem Input mit mehreren `Dosage`-Elementen ab.
+Bei einer **reinen Bedarfsdosierung** muss die Ressource genau ein `Dosage`-Element enthalten (Invariante `AsNeededSingleDosageOnly`). Mehrere Dosen ohne zeitliche Zuordnung wären nicht eindeutig zu einem gemeinsamen Text zusammenführbar. Der Algorithmus bricht deshalb auch bei nicht vorab validiertem Input mit mehreren `Dosage`-Elementen ab.
 
 ```
 [{Zeitrahmen} ]bei {Einnahmeanlass}: [im Abstand von mindestens {Mindestabstand} ]je {Dosis}[ — nicht mehr als {Maximalmenge}][. Hinweis: {Instruktionen}]
@@ -408,7 +410,7 @@ Bei einer **reinen Bedarfsdosierung** muss die Ressource genau ein `Dosage`-Elem
 
 Enthält die `Dosage` ausschließlich freien Text (`text` vorhanden, `timing` **und** `doseAndRate` leer), wird dieser übernommen. Alle drei Bedingungen gehören zur Erkennungsregel: Stünde neben dem Text eine strukturierte Dosis, müsste der Algorithmus raten, welche der beiden Angaben gilt — deshalb greift dann nicht die Freitext-Regel, sondern die reguläre Schema-Erkennung.
 
-Bei reinem Freitext darf die Ressource **genau ein** `Dosage`-Element enthalten (Invariante `FreeTextSingleDosageOnly`), und `Dosage.text` ist `0..1`; bei profilkonformem Input gibt es also genau **ein** Textfeld. Das Skript entfernt an dessen Anfang und Ende Leerraum. Der verbleibende Inhalt wird ansonsten unverändert ausgegeben.
+Bei reinem Freitext darf die Ressource **genau ein** `Dosage`-Element enthalten (Invariante `FreeTextSingleDosageOnly`), und `Dosage.text` ist `0..1`; bei profilkonformem Input gibt es also genau **ein** Textfeld. Der Algorithmus entfernt an dessen Anfang und Ende Leerraum. Der verbleibende Inhalt wird ansonsten unverändert ausgegeben.
 
 *Beispiel:* `Nach Bedarf bei Schmerzen`
 
@@ -469,7 +471,7 @@ Für eine Übersicht der in diesem IG bereitgestellten Beispiele siehe [Beispiel
 
 ## Fehler und Validierung
 
-Die formale Definition zulässiger Felder und Kombinationen liegt in den Timing- und Dosierungs-Invarianten dieses IG (siehe [Constraints](./dosierung-constraints.html)). Die Referenzimplementierung führt **keine vollständige Validierung** und keine Auflistung unzulässiger Felder durch. Ihr konkretes Fehlerverhalten lautet:
+Die formale Definition zulässiger Felder und Kombinationen liegt in den Timing- und Dosierungs-Invarianten dieses IG (siehe [Constraints](./dosierung-constraints.html)). Der Algorithmus führt **keine vollständige Validierung** und keine Auflistung unzulässiger Felder durch. Sein konkretes Fehlerverhalten lautet:
 
 * nicht unterstützter `resourceType`: Abbruch mit `ValueError("Unsupported resource type: {resourceType}")`
 * nicht klassifizierbare Merkmalskombination: Abbruch mit `ValueError("Die Dosierung entspricht keinem unterstützten Dosierungsschema.")`. Es wird **kein** Ersatztext zurückgegeben — ein solcher würde als generierte Dosieranweisung publiziert und dort eine Aussage vortäuschen, die der Algorithmus nicht treffen kann.
@@ -501,9 +503,9 @@ Andere Profilverletzungen können je nach fehlendem Feld dennoch zu einem unvoll
 
 ## Versionierung
 
-Die Version des Algorithmus ist im Skript hinterlegt (`__version__`) und wird über die Extension [GeneratedDosageInstructionsMeta](./StructureDefinition-GeneratedDosageInstructionsMeta.html) an validierenden Instanzen geführt. So lassen sich Textinhalt und verwendete Algorithmus-Version nachvollziehbar prüfen.
+Die Version des verwendeten Algorithmus MUSS über die Extension [GeneratedDosageInstructionsMeta](./StructureDefinition-GeneratedDosageInstructionsMeta.html) gesetzt werden. So lassen sich Textinhalt und verwendete Algorithmus-Version nachvollziehbar prüfen.
 
-Diese Seite beschreibt den Stand **`1.1.0-beta-8`**.
+Diese Seite beschreibt die Algorithmus-Version **2.0.0**. Die Nummer bezeichnet den hier festgelegten Algorithmus, nicht ein einzelnes Programm: Die Beispielimplementierung führt sie in `__version__` und gibt sie beim Erzeugen der Beispiele in `algorithmVersion` weiter. Eine eigene Implementierung trägt dieselbe Nummer ein, sobald sie diesen Algorithmus umsetzt.
 
 ## Quellen / weiterführende Hinweise
 

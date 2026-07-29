@@ -100,18 +100,34 @@ Das Datum wird im Format `TT.MM.JJJJ`, eine vorhandene Uhrzeit im Format `HH:MM 
 
 *Beispiel:* `2026-06-05T23:30:45Z` wird in `Europe/Berlin` zu `06.06.2026 um 01:30 Uhr`.
 
-### Intervall (`frequency` / `period` / `periodUnit`)
+### Einnahmerhythmus (`frequency` / `period` / `periodUnit`)
 
 Aus `frequency`, `frequencyMax`, `period`, `periodMax` und `periodUnit` entsteht der einleitende Rhythmus:
 
 * tägliches Muster (`periodUnit='d'`, `period=1`): `täglich` bei `frequency=1` und fehlendem `frequencyMax`, sonst `{Frequenzwert} x täglich`
 * wöchentliches Muster (`periodUnit='wk'`, `period=1`): `wöchentlich` bei `frequency=1` und fehlendem `frequencyMax`, sonst `{Frequenzwert} x wöchentlich`
+* monatliches Muster (`periodUnit='mo'`, `period=1`): `monatlich` bei `frequency=1` und fehlendem `frequencyMax`, sonst `{Frequenzwert} x monatlich`
 * sonstige Perioden bei einer **festen Frequenz von genau 1** (`frequency=1`, `frequencyMax` fehlt): `alle {Periodenwert} {Einheit}` (z. B. `alle 8 Stunden`)
 * sonstige Perioden bei einem **Frequenzbereich** (`frequencyMax` vorhanden, auch bei `frequency=1`) oder einer festen Frequenz größer als 1: `{Frequenzwert} x alle {Periodenwert} {Einheit}` (z. B. `1 bis 2 x alle 8 Stunden` beziehungsweise `2 x alle 8 Stunden`)
 
 `{Frequenzwert}` bezeichnet entweder `frequency` allein oder `frequency bis frequencyMax`; `{Periodenwert}` entsprechend `period` allein oder `period bis periodMax`. Die Perioden-Einheit wird nach den Regeln unter [Einheiten und Pluralisierung](#einheiten-und-pluralisierung) ausgegeben. Beispiele für Bereiche sind `2 bis 3 x täglich` und `alle 2 bis 3 Tage`.
 
-Fehlen `frequency`, `period` und `periodUnit` vollständig, wird kein Intervallbaustein erzeugt. Dies ist nur bei Schemata zulässig, deren zeitlicher Bezug bereits durch `when`, `timeOfDay` oder `dayOfWeek` bestimmt wird. Für ein Intervallschema müssen die dafür erforderlichen Angaben vollständig vorhanden sein; sind sie unvollständig, greift keine der Schema-Regeln und die Verarbeitung bricht ab (siehe [Fehler und Validierung](#fehler-und-validierung)).
+Diese allgemeine Frequenzdarstellung gilt für das reine Intervallschema ohne
+`timeOfDay` oder `when`. Bei einer Intervall-Kombination geben die konkreten
+Zeitpunkte die Anwendungshäufigkeit bereits vollständig an. Deshalb wird dort eine
+vorhandene `frequency` nicht ausgegeben; der gemeinsame Einnahmerhythmus wird
+ausschließlich aus `period`, `periodMax` und `periodUnit` gebildet. Dabei gelten
+für `1 d`, `1 wk` und `1 mo` ebenfalls die Kurzformen `täglich`, `wöchentlich`
+und `monatlich`.
+
+Fehlen `frequency`, `period` und `periodUnit` vollständig, wird kein Baustein für
+den Einnahmerhythmus erzeugt. Dies ist nur bei Schemata zulässig, deren zeitlicher
+Bezug bereits durch `when`, `timeOfDay` oder `dayOfWeek` bestimmt wird. Das reine
+Intervallschema erfordert `frequency`, `period` und `periodUnit`; die
+Intervall-Kombination erfordert `period` und `periodUnit`, während `frequency`
+optional ist. Sind die jeweils erforderlichen Angaben unvollständig, greift keine
+der Schema-Regeln und die Verarbeitung bricht ab (siehe
+[Fehler und Validierung](#fehler-und-validierung)).
 
 ### Einheiten und Pluralisierung
 
@@ -195,7 +211,7 @@ Ausgewertet werden nur Extensions mit der exakten kanonischen URL aus der [Feldr
 
 ### Mindestabstand zwischen Gaben
 
-Der Mindestabstand wird nur im Bedarfsfall ausgegeben und lautet `im Abstand von mindestens {Wert} {Zeiteinheit}`. Der Algorithmus durchsucht `modifierExtension` nach der exakten kanonischen URL `MindestabstandZwischenGaben` und verwendet die erste passende Extension. `valueDuration`, `valueDuration.value` und `valueDuration.code` sind verpflichtend — im Profil auf `1..1` gesetzt und zusätzlich vom Algorithmus geprüft; der Wert muss numerisch und größer als `0` sein. Andernfalls bricht der Algorithmus mit einem Fehler ab. Die Formatierung entspricht `boundsDuration`, jedoch ohne das Wort `für`.
+Der Mindestabstand wird nur im Bedarfsfall ausgegeben. Bei einer reinen Bedarfsdosierung lautet der Baustein `im Abstand von mindestens {Wert} {Zeiteinheit}` und steht vor der Dosis. Ist zusätzlich ein strukturierter Einnahmerhythmus vorhanden, wird der Mindestabstand zur klaren Abgrenzung vom Rhythmus nach dem Schemakern als `, mit mindestens {Wert} {Zeiteinheit} Abstand` ausgegeben. Der Algorithmus durchsucht `modifierExtension` nach der exakten kanonischen URL `MindestabstandZwischenGaben` und verwendet die erste passende Extension. `valueDuration`, `valueDuration.value` und `valueDuration.code` sind verpflichtend — im Profil auf `1..1` gesetzt und zusätzlich vom Algorithmus geprüft; der Wert muss numerisch und größer als `0` sein. Andernfalls bricht der Algorithmus mit einem Fehler ab. Die Formatierung des Wertes und der Einheit entspricht `boundsDuration`, jedoch ohne das Wort `für`.
 
 Als Zeiteinheit sind **ausschließlich Minuten (`min`) und Stunden (`h`)** zulässig; `valueDuration.code` ist required an `MindestabstandUnitsOfTimeDgMPVS` gebunden, `valueDuration.system` ist auf UCUM festgelegt. Die Anzeigeeinheit `valueDuration.unit` muss zum Code passen (Invariante `MindestabstandUnitMatchesCode`) — der erzeugte Text leitet die Einheit aus `.code` ab, sodass ein abweichendes `.unit` sonst der Ressource widerspräche.
 
@@ -298,10 +314,10 @@ Die Regeln werden **von oben nach unten** geprüft; die **erste** zutreffende Re
 |---|--------|-----------|
 | 1 | **Freitext-Dosierung** | `hatText` **und nicht** `hatTiming` **und nicht** `hatDosis` |
 | 2 | **Bedarfsmedikation (rein)** | `istBedarf` **und nicht** `hatTiming` |
-| 3 | **4-Schema** (Tageszeiten) | `hatWhenCodes` **und nicht** `hatUhrzeit` **und nicht** `hatWochentag` |
+| 3 | **4-Schema** (Tageszeiten) | `hatWhenCodes` **und nicht** `hatUhrzeit` **und nicht** `hatWochentag` **und** (`istTagesmuster` **oder** `hatPeriode` und `hatPeriodeneinheit` fehlen vollständig) |
 | 4 | **Wochentags-Bezug** | `hatWochentag` **und nicht** `hatWhenCodes` **und nicht** `hatUhrzeit` |
 | 5 | **Kombination von Wochentagen** | `hatWochentag` **und** (`hatUhrzeit` **oder** `hatWhenCodes`) |
-| 6 | **Uhrzeiten-Bezug** | `hatUhrzeit` **und nicht** `hatWochentag` **und nicht** `hatWhenCodes` **und** (`istTagesmuster` **oder** es fehlen `hatFrequenz`, `hatPeriode` und `hatPeriodeneinheit` vollständig) |
+| 6 | **Uhrzeiten-Bezug** | `hatUhrzeit` **und nicht** `hatWochentag` **und nicht** `hatWhenCodes` **und** (`istTagesmuster` **oder** `hatPeriode` und `hatPeriodeneinheit` fehlen vollständig) |
 | 7 | **Kombination von Zeitintervallen** | `istNichtTagesmuster` **und** (`hatUhrzeit` **oder** `hatWhenCodes`) |
 | 8 | **Wiederkehrende Intervalle** | `istReinesIntervall` |
 | – | **Abbruch** | trifft keine Regel zu |
@@ -373,10 +389,15 @@ Die Dosis-Einheit stammt aus dem ersten Element mit auswertbarer Dosis. Wird bei
 ### Schema für Kombinationen von Zeitintervallen
 
 ```
-[{Zeitrahmen} ]{Intervall}: {Zeit oder Abschnitt} — je {Dosis}[, … ][. Hinweis: {Instruktionen}]
+[{Zeitrahmen} ]{Einnahmerhythmus}: {Zeit oder Abschnitt} — je {Dosis}[, … ][. Hinweis: {Instruktionen}]
 ```
 
 Jede Uhrzeit oder jeder Tagesabschnitt bildet gemeinsam mit seiner Dosis ein Segment. Das gilt auch, wenn die Dosis zwischen mehreren oder allen Segmenten übereinstimmt. Segmente mit Tagesabschnitten werden in der festen Reihenfolge morgens, mittags, abends, zur Nacht sortiert; Segmente mit Uhrzeiten anhand des Eingabestrings aufsteigend. Treten – bei nicht profilkonformem Input über mehrere `Dosage`-Elemente hinweg – beide Arten gemeinsam auf, stehen **alle** Tagesabschnitte vor **allen** Uhrzeiten. Die Segmente werden mit Komma getrennt. Bei mehrfacher Belegung desselben Zeit-Schlüssels verwendet der Algorithmus die Dosis des zuerst durchlaufenen zugehörigen `Dosage`-Elements; profilkonformer Input verhindert diesen Mehrdeutigkeitsfall.
+
+Der gemeinsame Einnahmerhythmus wird aus `period`, `periodMax` und `periodUnit`
+gebildet. Eine vorhandene `frequency` wird nicht ausgegeben, weil die Anzahl der
+Anwendungen bereits aus den aufgeführten `timeOfDay`- beziehungsweise
+`when`-Segmenten hervorgeht.
 
 *Beispiel:* `alle 2 Tage: 08:00 Uhr — je 1 Stück, 18:00 Uhr — je 2 Stück`
 
@@ -411,14 +432,14 @@ Bei einer **reinen Bedarfsdosierung** muss die Ressource genau ein `Dosage`-Elem
 * Sofern vorhanden, steht der **Zeitrahmen** am Anfang, gefolgt vom **Einnahmeanlass** und einem **Doppelpunkt**. Der Doppelpunkt steht damit direkt hinter dem Einnahmeanlass.
 * Ist kein Einnahmeanlass angegeben, wird generisch `bei Bedarf` gesetzt.
 * Das **erste Zeichen der Zeile** wird großgeschrieben (`Bei Kopfschmerzen: …`, `Bei Bedarf: …`).
-* Ein optionaler **Mindestabstand** (`modifierExtension[MindestabstandZwischenGaben]`) und – bei strukturiertem Bedarf – das jeweilige Schema (Intervall, 4‑Schema …) folgen rechts des Doppelpunkts.
+* Ein optionaler **Mindestabstand** (`modifierExtension[MindestabstandZwischenGaben]`) und – bei strukturiertem Bedarf – das jeweilige Schema (Intervall, 4‑Schema …) folgen rechts des Doppelpunkts. Bei einer reinen Bedarfsdosierung steht der Mindestabstand vor der Dosis. Bei strukturiertem Bedarf steht er nach dem Schemakern als `, mit mindestens … Abstand`, damit beispielsweise `alle 8 Stunden` und `mindestens 6 Stunden Abstand` nicht unmittelbar und missverständlich aufeinanderfolgen.
   Die **Maximalmenge** wird genau einmal am Ende der Dosierungsanweisung angefügt. Enthält die Anweisung mehrere Uhrzeit-, Tagesabschnitts- oder Wochentagssegmente, steht die Maximalmenge nach dem letzten Segment. Sie gilt für die Gesamtmenge im angegebenen Zeitraum. Ein anschließender `Hinweis: ` folgt erst danach.
 
 *Beispiele:*
 
 * `Bei Kopfschmerzen: im Abstand von mindestens 4 Stunden je 1 Stück — nicht mehr als 6 Stück in 24 Stunden`
 * `Bei Bedarf: täglich 08:00 Uhr — je 1 Stück, 20:00 Uhr — je 2 Stück — nicht mehr als 6 Stück pro Tag`
-* `Bei Kopfschmerzen: alle 8 Stunden je 1 Stück`
+* `Bei Kopfschmerzen: alle 8 Stunden je 1 Stück, mit mindestens 6 Stunden Abstand — nicht mehr als 4 Stück in 24 Stunden`
 * `Bei Bedarf: 1-0-2-0 Stück`
 
 ### Freitext-Dosierung

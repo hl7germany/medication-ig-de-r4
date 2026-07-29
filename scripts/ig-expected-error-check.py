@@ -47,23 +47,25 @@ def extract_constraint_key(issue):
     return None
 
 
-def extract_expected_constraint_key(filename, marker="-C-"):
+def extract_expected_constraint_keys(filename, marker="-C-"):
     """
-    Extract expected key from a constraint filename.
+    Extract the candidate keys from a constraint filename, most specific first.
     Supported naming patterns include both:
     - ...<marker><Key>.json
     - ...<marker><Key>-MD.json / -MS.json
     - ...<marker><Key>-Request-01-of-05.json (and Dispense/Statement variants)
+    A key may itself end in a resource marker (e.g. ExtRequiresDosage-MD), therefore
+    both the unstripped and the stripped variant are returned as candidates.
     """
     if not filename.endswith(".json") or marker not in filename:
-        return None
+        return []
 
     # Extract everything after the marker and strip known trailing resource markers.
-    key = filename[:-5].split(marker, 1)[1]
-    key = re.sub(r"-(?:Request|Dispense|Statement|MR|MD|MS)-\d+-of-\d+$", "", key)
+    raw = filename[:-5].split(marker, 1)[1]
+    key = re.sub(r"-(?:Request|Dispense|Statement|MR|MD|MS)-\d+-of-\d+$", "", raw)
     key = re.sub(r"-(?:Request|Dispense|Statement|MR|MD|MS)$", "", key)
     key = re.sub(r"-\d+-of-\d+$", "", key)
-    return key or None
+    return [k for k in dict.fromkeys([raw, key]) if k]
 
 
 def get_resource_type_from_filename(filename):
@@ -185,15 +187,15 @@ if os.path.isdir(resources_dir):
     for filename in os.listdir(resources_dir):
         if not filename.endswith(".json"):
             continue
-        expected_key = extract_expected_constraint_key(filename, "-C-")
-        if not expected_key:
+        expected_keys = extract_expected_constraint_keys(filename, "-C-")
+        if not expected_keys:
             continue
         constraint_files_checked += 1
         observed = error_constraint_keys_by_file.get(filename, set())
-        if expected_key in observed:
+        if any(key in observed for key in expected_keys):
             constraint_files_expected_found += 1
         else:
-            constraint_missing_expected.append((filename, expected_key, sorted(observed)))
+            constraint_missing_expected.append((filename, " or ".join(expected_keys), sorted(observed)))
 
 # Check whether -W- files actually trigger the expected warning constraint key
 warning_files_checked = 0
@@ -203,15 +205,15 @@ if os.path.isdir(resources_dir):
     for filename in os.listdir(resources_dir):
         if not filename.endswith(".json"):
             continue
-        expected_key = extract_expected_constraint_key(filename, "-W-")
-        if not expected_key:
+        expected_keys = extract_expected_constraint_keys(filename, "-W-")
+        if not expected_keys:
             continue
         warning_files_checked += 1
         observed = warning_constraint_keys_by_file.get(filename, set())
-        if expected_key in observed:
+        if any(key in observed for key in expected_keys):
             warning_files_expected_found += 1
         else:
-            warning_missing_expected.append((filename, expected_key, sorted(observed)))
+            warning_missing_expected.append((filename, " or ".join(expected_keys), sorted(observed)))
 
 print("==Error Check==")
 print(f"{total_errors} Errors")

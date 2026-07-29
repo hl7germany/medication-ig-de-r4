@@ -1,4 +1,4 @@
-Instance: INV-C-ExtRequiresDosage-MR-01
+Instance: INV-C-ExtRequiresDosage-MR
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid (Request): dosage extension without dosageInstruction"
@@ -11,7 +11,7 @@ Description: "Invalid: Eine Dosierungs-Extension ist vorhanden, aber keine dosag
   * url = "http://hl7.org/fhir/5.0/StructureDefinition/extension-MedicationRequest.renderedDosageInstruction"
   * valueMarkdown = "Morgens 1 Tablette"
 
-Instance: INV-C-ExtRequiresDosage-MD-01
+Instance: INV-C-ExtRequiresDosage-MD
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
 Title: "Invalid (Dispense): dosage extension without dosageInstruction"
@@ -23,7 +23,7 @@ Description: "Invalid: Eine Dosierungs-Extension ist vorhanden, aber keine dosag
   * url = "http://hl7.org/fhir/5.0/StructureDefinition/extension-MedicationDispense.renderedDosageInstruction"
   * valueMarkdown = "Morgens 1 Tablette"
 
-Instance: INV-C-ExtRequiresDosage-MS-01
+Instance: INV-C-ExtRequiresDosage-MS
 InstanceOf: MedicationStatementDgMP
 Usage: #example
 Title: "Invalid (Statement): dosage extension without dosage"

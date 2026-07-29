@@ -3,8 +3,12 @@
 FHIR Medication Dosage Text Generator
 
 This script converts FHIR medication dosage instructions into human-readable German text.
-It serves as a reference implementation for the dosage text generation algorithm defined 
-in the German FHIR medication dosage implementation guide.
+
+It is an EXAMPLE implementation of the dosage text generation algorithm. The normative
+definition is the "Dosierung: Textgenerierung" page of the German FHIR medication dosage
+implementation guide — if this script and that page disagree, the page prevails.
+`__version__` therefore names the version of the algorithm being implemented, not of the
+script itself.
 
 The script supports various dosage schemas:
 - FreeText: User-provided text instructions
@@ -36,7 +40,7 @@ import os
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
-__version__ = "1.1.0-beta-8"
+__version__ = "2.0.0"
 __language__ = "de-DE"
 
 class MedicationDosageTextGenerator:

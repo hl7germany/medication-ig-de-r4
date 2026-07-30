@@ -40,7 +40,7 @@ import os
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
-__version__ = "2.0.0"
+__version__ = "2.0.1"
 __language__ = "de-DE"
 
 class MedicationDosageTextGenerator:
@@ -566,6 +566,8 @@ class MedicationDosageTextGenerator:
                 raise ValueError("doseQuantity.value ist für die Textgenerierung erforderlich.")
             if not unit:
                 raise ValueError("doseQuantity.unit ist für die Textgenerierung erforderlich.")
+            if not isinstance(dose_value, str) and dose_value <= 0:
+                raise ValueError("doseQuantity.value muss größer als 0 sein.")
             return (dose_value, unit)
 
         if 'doseRange' in first_dose:
@@ -577,12 +579,16 @@ class MedicationDosageTextGenerator:
                 raise ValueError("doseRange.high.value ist für die Textgenerierung erforderlich.")
             if not high.get('unit'):
                 raise ValueError("doseRange.high.unit ist für die Textgenerierung erforderlich.")
+            if not isinstance(high.get('value'), str) and high.get('value') <= 0:
+                raise ValueError("doseRange.high.value muss größer als 0 sein.")
 
             if low:
                 if low.get('value') is None:
                     raise ValueError("doseRange.low.value ist für die Textgenerierung erforderlich.")
                 if not low.get('unit'):
                     raise ValueError("doseRange.low.unit ist für die Textgenerierung erforderlich.")
+                if not isinstance(low.get('value'), str) and low.get('value') <= 0:
+                    raise ValueError("doseRange.low.value muss größer als 0 sein.")
                 if low.get('unit') != high.get('unit'):
                     raise ValueError("doseRange.low.unit und doseRange.high.unit müssen übereinstimmen.")
                 value = (
@@ -910,6 +916,9 @@ class MedicationDosageTextGenerator:
 
             # Associate this dose with each specified day
             for day_code in day_codes:
+                if day_code in day_to_dose and day_to_dose[day_code] != dose_value:
+                    raise ValueError(
+                        f"Doppelte Belegung des Wochentags '{day_code}' mit unterschiedlicher Dosis.")
                 day_to_dose[day_code] = dose_value
 
         if not day_to_dose:
@@ -1180,6 +1189,11 @@ class MedicationDosageTextGenerator:
                     if when_code not in day_to_patterns[day_code]:
                         raise ValueError(
                             f"Nicht unterstützter Tagesabschnitt (when): '{when_code}'.")
+                    existing = day_to_patterns[day_code][when_code]
+                    if existing != 0 and existing != dose_value:
+                        raise ValueError(
+                            f"Doppelte Belegung der Kombination aus Wochentag '{day_code}' "
+                            f"und Zeit-/Tagesabschnitt '{when_code}' mit unterschiedlicher Dosis.")
                     day_to_patterns[day_code][when_code] = dose_value
 
         if not day_to_patterns:
@@ -1262,7 +1276,11 @@ class MedicationDosageTextGenerator:
             # Process timeOfDay entries
             if 'timeOfDay' in repeat_element and repeat_element['timeOfDay']:
                 for time_of_day in repeat_element['timeOfDay']:
-                    if time_of_day not in time_to_dosages:
+                    if time_of_day in time_to_dosages:
+                        if self._extract_dose_quantity(time_to_dosages[time_of_day][0]) != self._extract_dose_quantity(dosage):
+                            raise ValueError(
+                                f"Doppelte Belegung des Zeit-Schlüssels '{time_of_day}' mit unterschiedlicher Dosis.")
+                    else:
                         time_to_dosages[time_of_day] = []
                     time_to_dosages[time_of_day].append(dosage)
 
@@ -1273,7 +1291,11 @@ class MedicationDosageTextGenerator:
                     if when_code not in self.WHEN_CODE_TRANSLATIONS:
                         raise ValueError(
                             f"Nicht unterstützter Tagesabschnitt (when): '{when_code}'.")
-                    if when_code not in time_to_dosages:
+                    if when_code in time_to_dosages:
+                        if self._extract_dose_quantity(time_to_dosages[when_code][0]) != self._extract_dose_quantity(dosage):
+                            raise ValueError(
+                                f"Doppelte Belegung des Zeit-Schlüssels '{when_code}' mit unterschiedlicher Dosis.")
+                    else:
                         time_to_dosages[when_code] = []
                     time_to_dosages[when_code].append(dosage)
 

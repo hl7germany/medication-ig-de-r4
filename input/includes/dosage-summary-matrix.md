@@ -62,11 +62,18 @@
 | [MedicationRequest-Example-MR-Dosage-UnitStueck-1020](./MedicationRequest-Example-MR-Dosage-UnitStueck-1020.html) | 1-0-2-0 Stück | 1 Stück |  |  |  |  |  | MORN |  |
 |  |  | 2 Stück |  |  |  |  |  | EVE |  |
 | [MedicationRequest-Example-MR-Dosage-UnitTasse-1000](./MedicationRequest-Example-MR-Dosage-UnitTasse-1000.html) | 2-0-0-0 Teelöffel | 2 Teelöffel |  |  |  |  |  | MORN |  |
+| [MedicationRequest-Example-MR-Dosage-asneeded-b4-4schema](./MedicationRequest-Example-MR-Dosage-asneeded-b4-4schema.html) | Bei Bedarf: 1-0-2-0 Stück | 1 Stück |  |  |  |  |  | MORN |  |
+|  |  | 2 Stück |  |  |  |  |  | EVE |  |
+| [MedicationRequest-Example-MR-Dosage-asneeded-b5-timeofday-maxdose-1d](./MedicationRequest-Example-MR-Dosage-asneeded-b5-timeofday-maxdose-1d.html) | Bei Bedarf: täglich 08:00 Uhr — je 1 Stück, 20:00 Uhr — je 2 Stück — nicht mehr als 6 Stück pro Tag | 1 Stück |  |  |  |  | 08:00:00 |  |  |
+|  |  | 2 Stück |  |  |  |  | 20:00:00 |  |  |
+| [MedicationRequest-Example-MR-Dosage-asneeded-b7-maxdose-1d](./MedicationRequest-Example-MR-Dosage-asneeded-b7-maxdose-1d.html) | Bei Bedarf: je 1 Stück — nicht mehr als 6 Stück pro Tag | 1 Stück |  |  |  |  |  |  |  |
 | [MedicationRequest-Example-MR-Dosage-comb-dayofweek-1](./MedicationRequest-Example-MR-Dosage-comb-dayofweek-1.html) | montags 1-0-1-0 Stück; freitags 1-0-1-0 Stück | 1 Stück |  |  |  | mon, fri |  | MORN, EVE |  |
 | [MedicationRequest-Example-MR-Dosage-comb-dayofweek-2](./MedicationRequest-Example-MR-Dosage-comb-dayofweek-2.html) | montags 1-2-1-0 Stück; freitags 1-2-1-0 Stück | 1 Stück |  |  |  | mon, fri |  | MORN, EVE |  |
 |  |  | 2 Stück |  |  |  | mon, fri |  | NOON |  |
 | [MedicationRequest-Example-MR-Dosage-comb-dayofweek-3](./MedicationRequest-Example-MR-Dosage-comb-dayofweek-3.html) | für 3 Wochen: montags 1-2-0-0 Stück; freitags 1-2-0-0 Stück | 1 Stück |  |  |  | mon, fri |  | MORN | {'system': 'http://unitsofmeasure.org', 'value': 3, 'code': 'wk', 'unit': 'Woche(n)'} |
 |  |  | 2 Stück |  |  |  | mon, fri |  | NOON | {'system': 'http://unitsofmeasure.org', 'value': 3, 'code': 'wk', 'unit': 'Woche(n)'} |
+| [MedicationRequest-Example-MR-Dosage-comb-dayofweek-b3-doserange-mixed](./MedicationRequest-Example-MR-Dosage-comb-dayofweek-b3-doserange-mixed.html) | montags morgens — je 1 bis 2 Stück; mittwochs abends — je 2 Stück | 1-2 Stück |  |  |  | mon |  | MORN |  |
+|  |  | 2 Stück |  |  |  | wed |  | EVE |  |
 | [MedicationRequest-Example-MR-Dosage-comb-dayofweek-unsorted](./MedicationRequest-Example-MR-Dosage-comb-dayofweek-unsorted.html) | montags 1-0-1-0 Stück; donnerstags 1-0-1-0 Stück; samstags 1-0-1-0 Stück | 1 Stück |  |  |  | sat, mon, thu |  | EVE, MORN |  |
 | [MedicationRequest-Example-MR-Dosage-comb-interval-1](./MedicationRequest-Example-MR-Dosage-comb-interval-1.html) | alle 2 Tage: 08:00 Uhr — je 1 Stück, 18:00 Uhr — je 2 Stück | 1 Stück | 1 | 2 | d |  | 08:00:00 |  |  |
 |  |  | 2 Stück | 1 | 2 | d |  | 18:00:00 |  |  |
@@ -85,6 +92,9 @@
 | [MedicationRequest-Example-MR-Dosage-interval-4times-d](./MedicationRequest-Example-MR-Dosage-interval-4times-d.html) | 4 x täglich: je 1 Stück | 1 Stück | 4 | 1 | d |  |  |  |  |
 | [MedicationRequest-Example-MR-Dosage-interval-6h](./MedicationRequest-Example-MR-Dosage-interval-6h.html) | alle 6 Stunden: je 1 Stück | 1 Stück | 1 | 6 | h |  |  |  |  |
 | [MedicationRequest-Example-MR-Dosage-interval-8d](./MedicationRequest-Example-MR-Dosage-interval-8d.html) | alle 8 Tage: je 1 Stück | 1 Stück | 1 | 8 | d |  |  |  |  |
+| [MedicationRequest-Example-MR-Dosage-interval-b6-doserange-highonly](./MedicationRequest-Example-MR-Dosage-interval-b6-doserange-highonly.html) | täglich: je bis zu 2 Stück | bis 2 Stück | 1 | 1 | d |  |  |  |  |
+| [MedicationRequest-Example-MR-Dosage-interval-b8-weekly](./MedicationRequest-Example-MR-Dosage-interval-b8-weekly.html) | wöchentlich: je 1 Stück | 1 Stück | 1 | 1 | wk |  |  |  |  |
+| [MedicationRequest-Example-MR-Dosage-interval-b9-freq2-8h](./MedicationRequest-Example-MR-Dosage-interval-b9-freq2-8h.html) | 2 x alle 8 Stunden: je 1 Stück | 1 Stück | 2 | 8 | h |  |  |  |  |
 | [MedicationRequest-Example-MR-Dosage-tod-1t-8am](./MedicationRequest-Example-MR-Dosage-tod-1t-8am.html) | täglich: 08:00 Uhr — je 1 Stück | 1 Stück |  |  |  |  | 08:00:00 |  |  |
 | [MedicationRequest-Example-MR-Dosage-tod-2-12am](./MedicationRequest-Example-MR-Dosage-tod-2-12am.html) | täglich: 12:00 Uhr — je 2 Stück | 2 Stück |  |  |  |  | 12:00:00 |  |  |
 | [MedicationRequest-Example-MR-Dosage-tod-multi-bound](./MedicationRequest-Example-MR-Dosage-tod-multi-bound.html) | für 10 Tage täglich: 08:00 Uhr — je 2 Stück, 11:00 Uhr, 14:00 Uhr, 17:00 Uhr, 20:00 Uhr, 23:00 Uhr — je 1 Stück | 2 Stück |  |  |  |  | 08:00:00 |  | {'system': 'http://unitsofmeasure.org', 'value': 10, 'code': 'd', 'unit': 'Tag(e)'} |
@@ -101,6 +111,8 @@
 | [MedicationRequest-Example-MR-Dosage-weekday-2t](./MedicationRequest-Example-MR-Dosage-weekday-2t.html) | dienstags — je 2 Stück; donnerstags — je 2 Stück | 2 Stück |  |  |  | tue, thu |  |  |  |
 | [MedicationRequest-Example-MR-Dosage-weekday-3t](./MedicationRequest-Example-MR-Dosage-weekday-3t.html) | dienstags — je 2 Stück; donnerstags — je 2 Stück; samstags — je 2 Stück | 2 Stück |  |  |  | tue, thu, sat |  |  |  |
 | [MedicationRequest-Example-MR-Dosage-weekday-unsorted](./MedicationRequest-Example-MR-Dosage-weekday-unsorted.html) | montags — je 2 Stück; dienstags — je 2 Stück; donnerstags — je 2 Stück; freitags — je 2 Stück | 2 Stück |  |  |  | fri, tue, thu, mon |  |  |  |
+| [MedicationRequest-Example-MR-Dosage-when-b2-doserange-mixed](./MedicationRequest-Example-MR-Dosage-when-b2-doserange-mixed.html) | morgens — je 1 bis 2 Stück, abends — je 2 Stück | 1-2 Stück |  |  |  |  |  | MORN |  |
+|  |  | 2 Stück |  |  |  |  |  | EVE |  |
 | [MedicationRequest-Example-MR-DosageTr-1000](./MedicationRequest-Example-MR-DosageTr-1000.html) | 20-0-0-0 Tropfen | 20 Tropfen |  |  |  |  |  | MORN |  |
 | [MedicationRequest-MR-Dosage-4schema-evening-only](./MedicationRequest-MR-Dosage-4schema-evening-only.html) | 0-0-1-0 Stück | 1 Stück |  |  |  |  |  | EVE |  |
 | [MedicationRequest-MR-Dosage-4schema-ml-units](./MedicationRequest-MR-Dosage-4schema-ml-units.html) | 2-0-1-0 ml | 2 ml |  |  |  |  |  | MORN |  |

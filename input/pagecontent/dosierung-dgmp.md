@@ -66,7 +66,7 @@ Eigene Profile leiten daher entweder von dem jeweils passenden abstrakten dgMP-P
 
 #### Generierten Dosierungstext ergänzen
 
-Zu jeder strukturierten Dosierung ist der Dosierungstext lokal nach der [Spezifikation der Dosis-Textgenerierung](./dosierung-textgenerierung.html) zu erzeugen und in der Extension `renderedDosageInstruction` der Ressource zu hinterlegen. Sprache und verwendete Algorithmus-Version sind in der Extension [GeneratedDosageInstructionsMeta](./StructureDefinition-GeneratedDosageInstructionsMeta.html) anzugeben. Der Constraint `DosageStructuredRequiresGeneratedText` prüft, dass diese Angaben zu einer strukturierten Dosierung vorliegen; der Gesamtablauf ist unter [Bereitstellung des Dosierungstextes](./dosierung-text-hinzufuegen.html) beschrieben.
+Zu jeder strukturierten Dosierung ist der Dosierungstext lokal nach der [Spezifikation der Dosis-Textgenerierung](https://github.com/hl7germany/dgMP-DosageTextgenerierung-Skript) zu erzeugen und in der Extension `renderedDosageInstruction` der Ressource zu hinterlegen. Sprache und verwendete Algorithmus-Version sind in der Extension [GeneratedDosageInstructionsMeta](./StructureDefinition-GeneratedDosageInstructionsMeta.html) anzugeben. Der Constraint `DosageStructuredRequiresGeneratedText` prüft, dass diese Angaben zu einer strukturierten Dosierung vorliegen; der Gesamtablauf ist unter [Bereitstellung des Dosierungstextes](./dosierung-text-hinzufuegen.html) beschrieben.
 
 ### Ausbaustufen
 

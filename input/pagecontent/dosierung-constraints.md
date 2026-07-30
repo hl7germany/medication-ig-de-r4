@@ -528,7 +528,7 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 `Dosage.text` darf nicht ausschließlich aus einem 4-Schema bestehen. Erfasst wird der reine Fall – vier durch `-` oder `–` getrennte Werte, optional mit Nachkommastellen, Bruchangabe und nachgestellter Einheit (z. B. `1-0-1-0`, `0,5-0-0,5-0`, `1-0-1-0 Stück`). Ein 4-Schema, das in einen Text eingebettet ist, löst weiterhin nur die Warnung `DosageWarnungViererschemaInText` aus.
 
 **Warum?**  
-Ein Freitext, der nur ein 4-Schema enthält, trägt keine Information, die nicht strukturiert über `timing.repeat.when` und `doseAndRate` abbildbar wäre. Er entzieht die Dosierung der maschinellen Auswertung und der Textgenerierung, die genau diese Darstellung aus strukturierten Angaben selbst erzeugt (siehe [4‑Schema](./dosierung-textgenerierung.html#schema-mit-tageszeiten-bezug-4-schema)).
+Ein Freitext, der nur ein 4-Schema enthält, trägt keine Information, die nicht strukturiert über `timing.repeat.when` und `doseAndRate` abbildbar wäre. Er entzieht die Dosierung der maschinellen Auswertung und der Textgenerierung, die genau diese Darstellung aus strukturierten Angaben selbst erzeugt (siehe [Dosis Textgenerierung](./dosierung-textgenerierung.html)).
 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
@@ -588,7 +588,7 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 Enthält eine Ressource mehrere `Dosage`-Elemente, muss `maxDosePerPeriod` in allen Elementen identisch befüllt sein — in Zähler (Wert und Einheit) wie in Nenner (Wert und Code). Entweder tragen alle Elemente die Angabe oder keines, und jede vorhandene Angabe muss alle vier Teilfelder führen.
 
 **Warum?**  
-Die Maximalmenge gilt für die Gesamtmenge im Bezugszeitraum, nicht je Einzelsegment. Die Textgenerierung liest sie ausschließlich aus dem ersten `Dosage`-Element und stellt sie einmal am Ende der Anweisung dar (siehe [Maximalmenge](./dosierung-textgenerierung.html#maximalmenge-maxdoseperperiod)). Ohne diesen Constraint könnte ein zweites Element eine abweichende Obergrenze führen, die im erzeugten Text unbemerkt entfiele — mit unmittelbarer Auswirkung auf die Arzneimittelsicherheit.
+Die Maximalmenge gilt für die Gesamtmenge im Bezugszeitraum, nicht je Einzelsegment. Die Textgenerierung liest sie ausschließlich aus dem ersten `Dosage`-Element und stellt sie einmal am Ende der Anweisung dar (siehe [Dosis Textgenerierung](./dosierung-textgenerierung.html)). Ohne diesen Constraint könnte ein zweites Element eine abweichende Obergrenze führen, die im erzeugten Text unbemerkt entfiele — mit unmittelbarer Auswirkung auf die Arzneimittelsicherheit.
 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
@@ -636,7 +636,7 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 Enthält eine Ressource mehrere `Dosage`-Elemente, muss der Einnahmeanlass (`extension[asNeededFor]`) in allen Elementen übereinstimmen. Mehrere Anlässe je Element sind zulässig, müssen dann aber in jedem Element dieselben sein; auf die Reihenfolge kommt es nicht an.
 
 **Warum?**
-Der Einnahmeanlass wird ausschließlich aus dem ersten `Dosage`-Element gelesen und dem Text vorangestellt (siehe [Einnahmeanlass](./dosierung-textgenerierung.html#einnahmeanlass-asneededfor)). Ein nur in einem späteren Element angegebener oder dort abweichender Anlass würde im erzeugten Text ersatzlos entfallen und die Dosierung auf ein generisches „Bei Bedarf“ reduzieren.
+Der Einnahmeanlass wird ausschließlich aus dem ersten `Dosage`-Element gelesen und dem Text vorangestellt (siehe [Dosis Textgenerierung](./dosierung-textgenerierung.html)). Ein nur in einem späteren Element angegebener oder dort abweichender Anlass würde im erzeugten Text ersatzlos entfallen und die Dosierung auf ein generisches „Bei Bedarf“ reduzieren.
 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 

@@ -18,7 +18,7 @@ mit Tageszeiten-Bezug oder dem Schema mit Uhrzeiten-Bezug.
 * insert Hinweis
 * insert Dosis
 * insert Wiederholung
-* dosierungsdetails.wiederholung.haeufigkeit 1..1 BackboneElement "Häufigkeit der Anwendung: wie oft je Zeitraum eine Dosis angewendet wird (z.B. „jeden zweiten Tag“)."
+* dosierungsdetails.wiederholung.haeufigkeit 1..1 Base "Häufigkeit der Anwendung: wie oft je Zeitraum eine Dosis angewendet wird (z.B. „jeden zweiten Tag“)."
   * anzahl[x] 1..1 positiveInt or Range "Wie oft je Periode eine Dosis angewendet wird. Möglich sind ein fester Wert (z.B. „1“), ein Bereich (z.B. „1 bis 2“) oder eine Obergrenze (z.B. „bis zu 2“). Nur ganze Zahlen sind zulässig."
   * periode[x] 1..1 Duration or Range "Zeitraum, auf den sich die Anzahl bezieht. Möglich sind ein fester Wert (z.B. „1 Woche“), ein Bereich (z.B. „1 bis 2 Wochen“) oder eine Obergrenze (z.B. „bis zu 2 Wochen“). Mögliche Einheiten: Tag, Woche und Monat. Nur ganze Zahlen sind zulässig."
 * dosierungsdetails.wiederholung.uhrzeiten 0..* time "Uhrzeit(en) der Anwendung an den vom Intervall betroffenen Tagen. Alternativ zur Tageszeit anzugeben."

@@ -13,8 +13,8 @@ Die Häufigkeit ergibt sich aus zwei Angaben: der Frequenz (wie oft) und der Per
 * insert Kopf
 * insert Hinweis
 * insert Dosis
-* insert Wiederholung
-* dosierungsdetails.wiederholung.haeufigkeit 1..1 Base "Häufigkeit der Anwendung: wie oft je Zeitraum eine Dosis angewendet wird (z.B. „dreimal täglich“)."
+* insert Zeitangaben
+* dosierungsdetails.zeitangaben.haeufigkeit 1..1 Base "Häufigkeit der Anwendung: wie oft je Zeitraum eine Dosis angewendet wird (z.B. „dreimal täglich“)."
   * frequenz 1..1 Base "Wie oft je Periode eine Dosis angewendet wird."
     * wert 1..1 positiveInt "Anzahl; bei einer Bereichsangabe die untere Grenze (z.B. 1). Nur ganze Zahlen."
     * wertBis 0..1 positiveInt "Obere Grenze bei einer Bereichs- oder Obergrenzenangabe (z.B. 2 für „1 bis 2“ oder „bis zu 2“). Nur ganze Zahlen."

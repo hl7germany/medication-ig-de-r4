@@ -18,7 +18,7 @@ eine Tablette morgens, keine mittags, zwei abends und keine zur Nacht).
 * insert Kopf
 * insert Hinweis
 * insert Dosis
-* insert Wiederholung
-* dosierungsdetails.wiederholung.tageszeiten 1..* Coding "Tageszeit(en) der Anwendung, ausgedrückt als morgens | mittags | abends | zur Nacht"
-* dosierungsdetails.wiederholung.tageszeiten from http://ig.fhir.de/igs/medication/ValueSet/TimingWhenDgMP (required)
+* insert Zeitangaben
+* dosierungsdetails.zeitangaben.tageszeiten 1..* Coding "Tageszeit(en) der Anwendung, ausgedrückt als morgens | mittags | abends | zur Nacht"
+* dosierungsdetails.zeitangaben.tageszeiten from http://ig.fhir.de/igs/medication/ValueSet/TimingWhenDgMP (required)
 * insert Bedarf

@@ -14,7 +14,7 @@ von Wochentagen zu verwenden.
 * insert Kopf
 * insert Hinweis
 * insert Dosis
-* insert Wiederholung
-* dosierungsdetails.wiederholung.wochentage 1..* Coding "Wochentag(e) der Anwendung, ausgedrückt als montags | dienstags | mittwochs | donnerstags | freitags | samstags | sonntags."
-* dosierungsdetails.wiederholung.wochentage from http://hl7.org/fhir/ValueSet/days-of-week (required)
+* insert Zeitangaben
+* dosierungsdetails.zeitangaben.wochentage 1..* Coding "Wochentag(e) der Anwendung, ausgedrückt als montags | dienstags | mittwochs | donnerstags | freitags | samstags | sonntags."
+* dosierungsdetails.zeitangaben.wochentage from http://hl7.org/fhir/ValueSet/days-of-week (required)
 * insert Bedarf

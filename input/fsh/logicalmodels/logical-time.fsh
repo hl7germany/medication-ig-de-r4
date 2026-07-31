@@ -14,6 +14,6 @@ möglichst gleichmäßigen Wirkspiegel im Körper zu erreichen.
 * insert Kopf
 * insert Hinweis
 * insert Dosis
-* insert Wiederholung
-* dosierungsdetails.wiederholung.uhrzeiten 1..* time "Uhrzeit(en) der Anwendung"
+* insert Zeitangaben
+* dosierungsdetails.zeitangaben.uhrzeiten 1..* time "Uhrzeit(en) der Anwendung"
 * insert Bedarf

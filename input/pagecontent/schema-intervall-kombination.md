@@ -42,9 +42,9 @@ aus den konkreten Werten in `when` beziehungsweise `timeOfDay`; eine vorhandene
 Angabe muss deren Anzahl entsprechen und wird im generierten Text nicht
 ausgegeben.
 
-Die Warnung `TimingVarFreqOrPeriod`, die eine gleichzeitige Erhöhung von
-`frequency` und `period` beanstandet, gilt ausschließlich für reine
-Intervallangaben ohne Zeitpunkte.
+Die Warnung `TimingVarFreqOrPeriod`, die eine gleichzeitig variable Frequenz
+(`frequencyMax`) und Periode (`periodMax`) beanstandet, gilt ausschließlich für
+reine Intervallangaben ohne Zeitpunkte.
 
 Mit `period` und `periodUnit` wird der Einnahmerhythmus festgelegt. `when` oder
 `timeOfDay` ordnet diesem Rhythmus konkrete Tagesabschnitte beziehungsweise

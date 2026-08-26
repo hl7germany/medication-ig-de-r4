@@ -201,7 +201,7 @@ Expression: "bounds.ofType(Duration).exists().not() or (
 Severity: #error
 
 Invariant: TimingVarFreqOrPeriod
-Description: "Bei einer reinen Intervallangabe ohne Zeitpunkte sollte bei gleichzeitiger Angabe von Frequenz und Periode entweder nur die Frequenz einschließlich frequencyMax oder nur die Periode einschließlich periodMax größer als 1 sein."
+Description: "Bei einer reinen Intervallangabe ohne Zeitpunkte sollte nicht gleichzeitig die Frequenz (frequencyMax) und die Periode (periodMax) variabel angegeben werden. Eine feste Frequenz größer als 1 zusammen mit einer Periode, etwa '2 x alle 8 Stunden', bleibt zulässig."
 Expression: "/* Detect Interval only */
 (
   timeOfDay.empty() and
@@ -211,23 +211,7 @@ Expression: "/* Detect Interval only */
   period.exists()
 ) implies
 (
-  (
-    ((frequency.exists() and frequency > 1) or (frequencyMax.exists() and frequencyMax > 1))
-    implies
-    (
-      period = 1 and
-      (periodMax.empty() or periodMax = 1)
-    )
-  )
-  and
-  (
-    ((period.exists() and period > 1) or (periodMax.exists() and periodMax > 1))
-    implies
-    (
-      frequency = 1 and
-      (frequencyMax.empty() or frequencyMax = 1)
-    )
-  )
+  frequencyMax.empty() or periodMax.empty()
 )"
 Severity: #warning
 

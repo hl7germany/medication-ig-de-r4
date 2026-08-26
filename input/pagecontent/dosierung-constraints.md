@@ -59,10 +59,10 @@ Folgende Beispiele lösen eine Warnung aus:
 ##### DosageDoseValuePositiveWarning
 
 **Beschreibung:**
-Warnung in `DosageDE`, wenn `doseQuantity.value`, `doseRange.low.value` oder `doseRange.high.value` negativ ist. Der Wert `0` ist zulässig.
+Warnung in `DosageDE`, wenn `doseQuantity.value` oder `doseRange.high.value` nicht größer als `0` ist oder wenn `doseRange.low.value` negativ ist. Der Wert `0` ist ausschließlich als Untergrenze eines Bereichs zulässig.
 
 **Warum?**
-Negative Dosiswerte sind fachlich nicht als verabreichbare Arzneimittelmenge interpretierbar. Im generischen DE-Profil bleibt die Regel eine Warnung; in den dgMP-Profilen gilt für denselben Sachverhalt der Fehler [DosageDoseValuePositive](#dosagedosevaluepositive). `0` bleibt insbesondere als Untergrenze eines Bereichs wie „0 bis 2 Tabletten“ erlaubt.
+Negative Dosiswerte sind fachlich nicht als verabreichbare Arzneimittelmenge interpretierbar, und eine Einzeldosis oder Obergrenze von `0` beschreibt keine Anwendung. Im generischen DE-Profil bleibt die Regel eine Warnung; in den dgMP-Profilen gilt für denselben Sachverhalt der Fehler [DosageDoseValuePositive](#dosagedosevaluepositive). Als Untergrenze eines Bereichs wie „0 bis 2 Tabletten“ bleibt `0` erlaubt.
 
 Folgende Beispiele lösen eine Warnung aus:
 
@@ -153,10 +153,12 @@ Beispiele (Warnungskontext – variable Einzeldosis und variable Periode):
 ##### TimingVarFreqOrPeriod
 
 **Beschreibung:**  
-Bei einer reinen Intervallangabe ohne Zeitpunkte sollte bei gleichzeitiger Angabe von Frequenz und Periode entweder nur die Frequenz einschließlich `frequencyMax` oder nur die Periode einschließlich `periodMax` größer als 1 sein.
+Bei einer reinen Intervallangabe ohne Zeitpunkte sollten nicht gleichzeitig die Frequenz über `frequencyMax` und die Periode über `periodMax` variabel angegeben werden.
 
 **Warum?**  
-Die gleichzeitige Variation beider Achsen führt zu einem nur schwer eindeutig interpretierbaren Einnahmeschema. Bei `when`, `timeOfDay` oder `dayOfWeek` ist `frequency` optional und redundant, weil die konkreten Zeitpunkte beziehungsweise Anwendungstage die Zahl der Gaben bereits festlegen. Die optionale Angabe dient ausschließlich der Rückwärtskompatibilität und begründet kein zusätzliches Intervallschema.
+Die gleichzeitige Variation beider Achsen führt zu einem nur schwer eindeutig interpretierbaren Einnahmeschema — „1 bis 2 x alle 4 bis 6 Stunden“ lässt weder die Zahl der Gaben noch den Abstand eindeutig erkennen. Die Variation nur einer Achse bleibt zulässig, ebenso eine feste Frequenz größer als 1 zusammen mit einer Periode (`2 x alle 8 Stunden`): Dort sind Zahl der Gaben und Bezugszeitraum eindeutig bestimmt.
+
+Bei `when`, `timeOfDay` oder `dayOfWeek` greift die Regel nicht. Dort ist `frequency` optional und redundant, weil die konkreten Zeitpunkte beziehungsweise Anwendungstage die Zahl der Gaben bereits festlegen; die Angabe dient ausschließlich der Rückwärtskompatibilität und begründet kein zusätzliches Intervallschema.
 
 Folgende Beispiele lösen eine Warnung aus:
 
@@ -489,10 +491,10 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 ##### DosageDoseValuePositive
 
 **Beschreibung:**
-Dosiswerte dürfen nicht negativ sein. Der Wert `0` ist zulässig. Die Regel prüft alle im dgMP zulässigen Varianten der Einzeldosis: `doseQuantity.value`, `doseRange.low.value` und `doseRange.high.value`.
+`doseQuantity.value` und `doseRange.high.value` müssen größer als `0` sein. Für `doseRange.low.value` ist zusätzlich der Wert `0` zulässig. Die Regel prüft damit alle im dgMP zulässigen Varianten der Einzeldosis.
 
 **Warum?**
-Eine negative Dosis beschreibt keine verabreichbare Arzneimittelmenge und kann nicht sinnvoll in eine Dosierungsanweisung überführt werden. `0` wird dagegen insbesondere als Untergrenze einer variablen Dosis benötigt, zum Beispiel für „0 bis 2 Tabletten“. Der Constraint hält die Profilvalidierung konsistent mit der defensiven Prüfung der Textgenerierung.
+Eine negative Dosis beschreibt keine verabreichbare Arzneimittelmenge und kann nicht sinnvoll in eine Dosierungsanweisung überführt werden. Dasselbe gilt für den Wert `0` als Einzeldosis oder als Obergrenze eines Bereichs: Beides ergäbe eine Anweisung, nach der nichts anzuwenden ist („0-0-0-0 Stück“ beziehungsweise „je bis zu 0 Stück“). Benötigt wird `0` ausschließlich als Untergrenze einer variablen Dosis, zum Beispiel für „0 bis 2 Tabletten“. Der Constraint hält die Profilvalidierung konsistent mit der defensiven Prüfung der Textgenerierung.
 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 

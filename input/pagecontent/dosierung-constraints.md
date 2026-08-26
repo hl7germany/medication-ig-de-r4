@@ -123,10 +123,10 @@ Folgende Beispiele lösen eine Warnung aus:
 ##### dos-1
 
 **Beschreibung:**  
-Basisregel aus dem generischen Profil `DosageDE`: Ein Einnahmeanlass (`asNeededFor`) darf nur gesetzt sein, wenn `asNeeded` leer oder `true` ist. Das dgMP‑Profil verschärft dies über `AsNeededForRequiresAsNeeded` auf `asNeeded = true`.
+Basisregel aus dem generischen Profil `DosageDE`: Ein Anlass (`asNeededFor`) darf nur gesetzt sein, wenn `asNeeded` leer oder `true` ist. Das dgMP‑Profil verschärft dies über `AsNeededForRequiresAsNeeded` auf `asNeeded = true`.
 
 **Warum?**  
-Stellt sicher, dass ein Einnahmeanlass nicht einer Nicht‑Bedarfsdosierung zugeordnet wird.
+Stellt sicher, dass ein Anlass nicht einer Nicht‑Bedarfsdosierung zugeordnet wird.
 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
@@ -623,10 +623,10 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 ##### AsNeededForRequiresAsNeeded
 
 **Beschreibung:**  
-Ein Einnahmeanlass (`extension[asNeededFor]`) darf nur bei einer Bedarfsdosierung (`asNeededBoolean = true`) angegeben werden. Eine Bedarfsdosierung selbst benötigt keinen Einnahmeanlass.
+Ein Anlass (`extension[asNeededFor]`) darf nur bei einer Bedarfsdosierung (`asNeededBoolean = true`) angegeben werden. Eine Bedarfsdosierung selbst benötigt keinen Anlass.
 
 **Warum?**  
-Ein Einnahmeanlass ohne Bedarfskennzeichnung wäre fachlich unstimmig. Umgekehrt ist der Anlass optional, da eine Bedarfsdosierung auch ohne konkrete Indikation zulässig ist.
+Ein Anlass ohne Bedarfskennzeichnung wäre fachlich unstimmig. Umgekehrt ist der Anlass optional, da eine Bedarfsdosierung auch ohne konkrete Indikation zulässig ist.
 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
@@ -659,10 +659,10 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 ##### AsNeededForIdentical
 
 **Beschreibung:**
-Enthält eine Ressource mehrere `Dosage`-Elemente, muss der Einnahmeanlass (`extension[asNeededFor]`) in allen Elementen übereinstimmen. Mehrere Anlässe je Element sind zulässig, müssen dann aber in jedem Element dieselben sein; auf die Reihenfolge kommt es nicht an.
+Enthält eine Ressource mehrere `Dosage`-Elemente, muss der Anlass (`extension[asNeededFor]`) in allen Elementen übereinstimmen. Mehrere Anlässe je Element sind zulässig, müssen dann aber in jedem Element dieselben sein; auf die Reihenfolge kommt es nicht an.
 
 **Warum?**
-Der Einnahmeanlass wird ausschließlich aus dem ersten `Dosage`-Element gelesen und dem Text vorangestellt (siehe [Dosis Textgenerierung](./dosierung-textgenerierung.html)). Ein nur in einem späteren Element angegebener oder dort abweichender Anlass würde im erzeugten Text ersatzlos entfallen und die Dosierung auf ein generisches „Bei Bedarf“ reduzieren.
+Der Anlass wird ausschließlich aus dem ersten `Dosage`-Element gelesen und dem Text vorangestellt (siehe [Dosis Textgenerierung](./dosierung-textgenerierung.html)). Ein nur in einem späteren Element angegebener oder dort abweichender Anlass würde im erzeugten Text ersatzlos entfallen und die Dosierung auf ein generisches „Bei Bedarf“ reduzieren.
 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 

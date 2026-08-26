@@ -1,10 +1,10 @@
-Bedarfsmedikation beschreibt eine Dosierung, die nicht ausschließlich nach einem festen Einnahmeplan, sondern bei auftretendem Bedarf angewendet wird. Der Bedarf kann optional mit einem Einnahmeanlass näher beschrieben werden, z. B. "bei Kopfschmerzen"; zwingend erforderlich ist der Einnahmeanlass nicht.
+Bedarfsmedikation beschreibt eine Dosierung, die nicht ausschließlich nach einem festen Einnahmeplan, sondern bei auftretendem Bedarf angewendet wird. Der Bedarf kann optional mit einem Anlass näher beschrieben werden, z. B. "bei Kopfschmerzen"; zwingend erforderlich ist der Anlass nicht.
 
 In diesem Anwendungsfall wird davon ausgegangen, dass die Bedarfsangabe in einer eigenen `Dosage`-Instanz abgebildet wird. Die Angaben zu Menge, Mindestabstand oder Maximalgabe beziehen sich dann auf diese Bedarfsdosierung.
 
 Es wird zudem ermöglicht:
 
-- einen oder mehrere Einnahmeanlässe als Freitext anzugeben
+- einen oder mehrere Anlässe als Freitext anzugeben
   - Bei der Angabe mehrere Bedingungen gelten diese als *oder* verknüpft. Es muss also nur eine der Bedingungen zutreffen.
 - einen Mindestabstand zwischen zwei Gaben explizit über die Modifier Extension `MindestabstandZwischenGaben` anzugeben
 - eine maximale Menge je Zeitraum anzugeben
@@ -30,7 +30,7 @@ Eine Bedarfsangabe wird daran erkannt, dass auf Ebene von `Dosage`
 
 - `asNeededBoolean = true`
 
-angegeben ist. Der Einnahmeanlass `extension[asNeededFor]` ist optional und beschreibt den Bedarf lediglich näher.
+angegeben ist. Der Anlass `extension[asNeededFor]` ist optional und beschreibt den Bedarf lediglich näher.
 
 Folgende FHIRPath Expression auf Ebene von `Dosage` liefert die Angabe, ob es sich grundsätzlich um eine Bedarfsangabe handelt:
 
@@ -48,9 +48,9 @@ Folgende FHIRPath Expression auf Ebene von `Dosage` liefert die Angabe, ob es si
 asNeeded.ofType(boolean) = true and timing.empty()
 ```
 
-Für eine Bedarfsmedikation ist `asNeededBoolean = true` verpflichtend. Der Einnahmeanlass `asNeededFor` ist optional; umgekehrt darf `asNeededFor` nur bei `asNeededBoolean = true` angegeben werden.
+Für eine Bedarfsmedikation ist `asNeededBoolean = true` verpflichtend. Der Anlass `asNeededFor` ist optional; umgekehrt darf `asNeededFor` nur bei `asNeededBoolean = true` angegeben werden.
 
-Der Einnahmeanlass wird als Freitext in `extension[asNeededFor].valueCodeableConcept.text` angegeben. Mehrere `asNeededFor`-Extensions können verwendet werden; sie sind fachlich als ODER-Verknüpfung zu interpretieren.
+Der Anlass wird als Freitext in `extension[asNeededFor].valueCodeableConcept.text` angegeben. Mehrere `asNeededFor`-Extensions können verwendet werden; sie sind fachlich als ODER-Verknüpfung zu interpretieren.
 
 Bei Verwendung von `asNeededFor` muss `valueCodeableConcept.text` befüllt sein.
 
@@ -70,4 +70,4 @@ Der Mindestabstand zwischen zwei Gaben wird über die Modifier Extension `modifi
 
 `maxDosePerPeriod` kann optional verwendet werden, um eine maximale Menge je Zeitraum anzugeben. Dabei muss die Einheit im `numerator` der Einheit von `doseAndRate.doseQuantity` entsprechen. Als Bezugszeitraum (`denominator`) ist ausschließlich **24 Stunden** (`24 h`) oder **1 Tag** (`1 d`) zulässig; andere Perioden sind nicht erlaubt. Die Auswahl wird eingabetreu wiedergegeben: `24 h` ergibt „in 24 Stunden", `1 d` ergibt „pro Tag".
 
-Lesende Systeme werten `asNeededBoolean`, `extension[asNeededFor]`, `modifierExtension[MindestabstandZwischenGaben]` und `maxDosePerPeriod` aus. Sie müssen dem Nutzer insbesondere Einnahmeanlass, Mindestabstand und Maximalgabe verständlich darstellen.
+Lesende Systeme werten `asNeededBoolean`, `extension[asNeededFor]`, `modifierExtension[MindestabstandZwischenGaben]` und `maxDosePerPeriod` aus. Sie müssen dem Nutzer insbesondere Anlass, Mindestabstand und Maximalgabe verständlich darstellen.

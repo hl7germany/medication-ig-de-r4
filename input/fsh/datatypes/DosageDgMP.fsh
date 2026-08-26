@@ -21,7 +21,7 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
 * obeys DoseRangeLowAndHighSameUnit
 * obeys DoseRangeNoVarPeriod
 * obeys VarFreqNoMaxDose
-* obeys VarPeriodNoMindestabstand
+* obeys MindestabstandOnlyPureAsNeeded
 * obeys AsNeededForRequiresAsNeeded
 * obeys AsNeededSingleDosageOnly
 * obeys AsNeededIdentical
@@ -73,7 +73,7 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
       * ^comment = "Begründung Einschränkung Kardinalität: Eine Codierung der Indikation für die Bedarfsdosierung ist in der aktuellen Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
     * text 1.. MS
       * ^comment = "Indikation für die Bedarfsdosierung."
-* modifierExtension[mindestabstandZwischenGaben]
+* modifierExtension[minimumIntervalBetweenAdministrations]
   * valueDuration 1..1 MS
     * value 1..1 MS
     * system 1..1 MS
@@ -398,10 +398,10 @@ Description: "A variable frequency and a maximum dose per period must not be use
 Severity: #error
 Expression: "timing.repeat.frequencyMax.empty() or maxDosePerPeriod.empty()"
 
-Invariant: VarPeriodNoMindestabstand
-Description: "A variable period and a minimum interval between two single administrations (Mindestabstand) must not be used together."
+Invariant: MindestabstandOnlyPureAsNeeded
+Description: "A minimum interval between two single administrations (Mindestabstand) may only be given for a pure as-needed dosage: asNeededBoolean = true and no timing. A structured rhythm already determines the spacing between administrations; a second, weaker lower bound next to it is contradictory."
 Severity: #error
-Expression: "timing.repeat.periodMax.empty() or modifierExtension.where(url='http://ig.fhir.de/igs/medication/StructureDefinition/MindestabstandZwischenGaben').empty()"
+Expression: "modifierExtension.where(url='http://ig.fhir.de/igs/medication/StructureDefinition/MinimumIntervalBetweenAdministrations').exists() implies (asNeeded.ofType(boolean) = true and timing.empty())"
 
 Invariant: AsNeededForRequiresAsNeeded
 Description: "A reason for use (asNeededFor) may only be given for an as-needed dosage (asNeededBoolean = true)."
@@ -503,7 +503,7 @@ Expression: "(
     %resource.ofType(MedicationDispense).dosageInstruction |
     %resource.ofType(MedicationStatement).dosage
   ).modifierExtension.where(
-    url='http://ig.fhir.de/igs/medication/StructureDefinition/MindestabstandZwischenGaben'
+    url='http://ig.fhir.de/igs/medication/StructureDefinition/MinimumIntervalBetweenAdministrations'
   ).value.ofType(Duration).value.where($this.hasValue()).count()
   =
   (
@@ -511,7 +511,7 @@ Expression: "(
     %resource.ofType(MedicationDispense).dosageInstruction |
     %resource.ofType(MedicationStatement).dosage
   ).modifierExtension.where(
-    url='http://ig.fhir.de/igs/medication/StructureDefinition/MindestabstandZwischenGaben'
+    url='http://ig.fhir.de/igs/medication/StructureDefinition/MinimumIntervalBetweenAdministrations'
   ).count()
 )
 and
@@ -521,7 +521,7 @@ and
     %resource.ofType(MedicationDispense).dosageInstruction |
     %resource.ofType(MedicationStatement).dosage
   ).modifierExtension.where(
-    url='http://ig.fhir.de/igs/medication/StructureDefinition/MindestabstandZwischenGaben'
+    url='http://ig.fhir.de/igs/medication/StructureDefinition/MinimumIntervalBetweenAdministrations'
   ).value.ofType(Duration).code.where($this.hasValue()).count()
   =
   (
@@ -529,7 +529,7 @@ and
     %resource.ofType(MedicationDispense).dosageInstruction |
     %resource.ofType(MedicationStatement).dosage
   ).modifierExtension.where(
-    url='http://ig.fhir.de/igs/medication/StructureDefinition/MindestabstandZwischenGaben'
+    url='http://ig.fhir.de/igs/medication/StructureDefinition/MinimumIntervalBetweenAdministrations'
   ).count()
 )
 and
@@ -539,7 +539,7 @@ and
     %resource.ofType(MedicationDispense).dosageInstruction |
     %resource.ofType(MedicationStatement).dosage
   ).modifierExtension.where(
-    url='http://ig.fhir.de/igs/medication/StructureDefinition/MindestabstandZwischenGaben'
+    url='http://ig.fhir.de/igs/medication/StructureDefinition/MinimumIntervalBetweenAdministrations'
   ).value.ofType(Duration).value.distinct().count() <= 1
 )
 and
@@ -549,7 +549,7 @@ and
     %resource.ofType(MedicationDispense).dosageInstruction |
     %resource.ofType(MedicationStatement).dosage
   ).modifierExtension.where(
-    url='http://ig.fhir.de/igs/medication/StructureDefinition/MindestabstandZwischenGaben'
+    url='http://ig.fhir.de/igs/medication/StructureDefinition/MinimumIntervalBetweenAdministrations'
   ).value.ofType(Duration).code.distinct().count() <= 1
 )
 and
@@ -560,7 +560,7 @@ and
       %resource.ofType(MedicationDispense).dosageInstruction |
       %resource.ofType(MedicationStatement).dosage
     ).modifierExtension.where(
-      url='http://ig.fhir.de/igs/medication/StructureDefinition/MindestabstandZwischenGaben'
+      url='http://ig.fhir.de/igs/medication/StructureDefinition/MinimumIntervalBetweenAdministrations'
     ).exists()
   )
   implies
@@ -571,7 +571,7 @@ and
       %resource.ofType(MedicationStatement).dosage
     ).all(
       modifierExtension.where(
-        url='http://ig.fhir.de/igs/medication/StructureDefinition/MindestabstandZwischenGaben'
+        url='http://ig.fhir.de/igs/medication/StructureDefinition/MinimumIntervalBetweenAdministrations'
       ).exists()
     )
   )
@@ -581,7 +581,7 @@ Invariant: MindestabstandUnitMatchesCode
 Description: "The display unit of the minimum interval (valueDuration.unit) must match the UCUM code (e.g. 'Stunde(n)' only with code='h')."
 Severity: #error
 Expression: "modifierExtension.where(
-  url='http://ig.fhir.de/igs/medication/StructureDefinition/MindestabstandZwischenGaben'
+  url='http://ig.fhir.de/igs/medication/StructureDefinition/MinimumIntervalBetweenAdministrations'
 ).value.ofType(Duration).all(
   (
     code = 'min'

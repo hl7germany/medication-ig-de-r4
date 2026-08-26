@@ -214,11 +214,11 @@ Description: "CAVE: Validation example - periodMax is equal to period."
   * timing.repeat.periodUnit = #h
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-C-VarPeriodNoMindestabstand-Request-01-of-03
+Instance: INV-C-MindestabstandOnlyPureAsNeeded-Request-01-of-03
 InstanceOf: MedicationRequestDgMP
 Usage: #example
-Title: "Invalid: variable period with MindestabstandZwischenGaben"
-Description: "CAVE: Validation example - periodMax and modifierExtension[MindestabstandZwischenGaben] are populated together."
+Title: "Invalid: Mindestabstand together with a structured timing"
+Description: "CAVE: Validation example - modifierExtension[MinimumIntervalBetweenAdministrations] is only allowed for a pure as-needed dosage, i.e. with asNeededBoolean = true and without timing."
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -228,14 +228,14 @@ Description: "CAVE: Validation example - periodMax and modifierExtension[Mindest
   * timing.repeat.period = 4
   * timing.repeat.periodMax = 6
   * timing.repeat.periodUnit = #h
-  * modifierExtension[mindestabstandZwischenGaben].valueDuration = 4 $ucum#h "Stunde(n)"
+  * modifierExtension[minimumIntervalBetweenAdministrations].valueDuration = 4 $ucum#h "Stunde(n)"
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-C-VarPeriodNoMindestabstand-Dispense-02-of-03
+Instance: INV-C-MindestabstandOnlyPureAsNeeded-Dispense-02-of-03
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
-Title: "Invalid: variable period with MindestabstandZwischenGaben"
-Description: "CAVE: Validation example - periodMax and modifierExtension[MindestabstandZwischenGaben] are populated together."
+Title: "Invalid: Mindestabstand together with a structured timing"
+Description: "CAVE: Validation example - modifierExtension[MinimumIntervalBetweenAdministrations] is only allowed for a pure as-needed dosage, i.e. with asNeededBoolean = true and without timing."
 * subject.display = "Patient"
 * status = #completed
 * medicationCodeableConcept.text = "Ibuprofen 400mg"
@@ -244,14 +244,14 @@ Description: "CAVE: Validation example - periodMax and modifierExtension[Mindest
   * timing.repeat.period = 4
   * timing.repeat.periodMax = 6
   * timing.repeat.periodUnit = #h
-  * modifierExtension[mindestabstandZwischenGaben].valueDuration = 4 $ucum#h "Stunde(n)"
+  * modifierExtension[minimumIntervalBetweenAdministrations].valueDuration = 4 $ucum#h "Stunde(n)"
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-C-VarPeriodNoMindestabstand-Statement-03-of-03
+Instance: INV-C-MindestabstandOnlyPureAsNeeded-Statement-03-of-03
 InstanceOf: MedicationStatementDgMP
 Usage: #example
-Title: "Invalid: variable period with MindestabstandZwischenGaben"
-Description: "CAVE: Validation example - periodMax and modifierExtension[MindestabstandZwischenGaben] are populated together."
+Title: "Invalid: Mindestabstand together with a structured timing"
+Description: "CAVE: Validation example - modifierExtension[MinimumIntervalBetweenAdministrations] is only allowed for a pure as-needed dosage, i.e. with asNeededBoolean = true and without timing."
 * subject.display = "Patient"
 * status = #active
 * medicationCodeableConcept.text = "Ibuprofen 400mg"
@@ -260,5 +260,5 @@ Description: "CAVE: Validation example - periodMax and modifierExtension[Mindest
   * timing.repeat.period = 4
   * timing.repeat.periodMax = 6
   * timing.repeat.periodUnit = #h
-  * modifierExtension[mindestabstandZwischenGaben].valueDuration = 4 $ucum#h "Stunde(n)"
+  * modifierExtension[minimumIntervalBetweenAdministrations].valueDuration = 4 $ucum#h "Stunde(n)"
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"

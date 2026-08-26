@@ -70,7 +70,7 @@ Diese Profile nutzen folgende Extensions:
 
 {% capture extensionsdgmp %}
 StructureDefinition/GeneratedDosageInstructionsMeta,
-StructureDefinition/MindestabstandZwischenGaben,
+StructureDefinition/MinimumIntervalBetweenAdministrations,
 StructureDefinition/extension-Dosage.asNeededFor,
 {% endcapture %}  
 {% include artifacts-table-generator.html render=extensionsdgmp %}

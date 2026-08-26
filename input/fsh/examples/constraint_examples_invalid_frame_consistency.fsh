@@ -131,7 +131,7 @@ Description: "CAVE: Validation example - der Mindestabstand zwischen Gaben ist n
 * medicationCodeableConcept.text = "Ibuprofen 400mg"
 * dosageInstruction[+]
   * asNeededBoolean = true
-  * modifierExtension[mindestabstandZwischenGaben].valueDuration = 4 $ucum#h "Stunde(n)"
+  * modifierExtension[minimumIntervalBetweenAdministrations].valueDuration = 4 $ucum#h "Stunde(n)"
   * timing.repeat.when = #MORN
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 * dosageInstruction[+]
@@ -149,7 +149,7 @@ Description: "CAVE: Validation example - der Mindestabstand zwischen Gaben ist n
 * medicationCodeableConcept.text = "Ibuprofen 400mg"
 * dosageInstruction[+]
   * asNeededBoolean = true
-  * modifierExtension[mindestabstandZwischenGaben].valueDuration = 4 $ucum#h "Stunde(n)"
+  * modifierExtension[minimumIntervalBetweenAdministrations].valueDuration = 4 $ucum#h "Stunde(n)"
   * timing.repeat.when = #MORN
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 * dosageInstruction[+]
@@ -167,7 +167,7 @@ Description: "CAVE: Validation example - der Mindestabstand zwischen Gaben ist n
 * medicationCodeableConcept.text = "Ibuprofen 400mg"
 * dosage[+]
   * asNeededBoolean = true
-  * modifierExtension[mindestabstandZwischenGaben].valueDuration = 4 $ucum#h "Stunde(n)"
+  * modifierExtension[minimumIntervalBetweenAdministrations].valueDuration = 4 $ucum#h "Stunde(n)"
   * timing.repeat.when = #MORN
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 * dosage[+]
@@ -190,7 +190,7 @@ Description: "CAVE: Validation example - valueDuration.code ist 'h', die Anzeige
 * medicationCodeableConcept.text = "Ibuprofen 400mg"
 * dosageInstruction[+]
   * asNeededBoolean = true
-  * modifierExtension[mindestabstandZwischenGaben].valueDuration = 4 $ucum#h "Tag(e)"
+  * modifierExtension[minimumIntervalBetweenAdministrations].valueDuration = 4 $ucum#h "Tag(e)"
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 Instance: INV-C-MindestabstandUnitMatchesCode-Dispense-02-of-03
@@ -203,7 +203,7 @@ Description: "CAVE: Validation example - valueDuration.code ist 'h', die Anzeige
 * medicationCodeableConcept.text = "Ibuprofen 400mg"
 * dosageInstruction[+]
   * asNeededBoolean = true
-  * modifierExtension[mindestabstandZwischenGaben].valueDuration = 4 $ucum#h "Tag(e)"
+  * modifierExtension[minimumIntervalBetweenAdministrations].valueDuration = 4 $ucum#h "Tag(e)"
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 Instance: INV-C-MindestabstandUnitMatchesCode-Statement-03-of-03
@@ -216,7 +216,7 @@ Description: "CAVE: Validation example - valueDuration.code ist 'h', die Anzeige
 * medicationCodeableConcept.text = "Ibuprofen 400mg"
 * dosage[+]
   * asNeededBoolean = true
-  * modifierExtension[mindestabstandZwischenGaben].valueDuration = 4 $ucum#h "Tag(e)"
+  * modifierExtension[minimumIntervalBetweenAdministrations].valueDuration = 4 $ucum#h "Tag(e)"
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 // ---------------------------------------------------------------------------

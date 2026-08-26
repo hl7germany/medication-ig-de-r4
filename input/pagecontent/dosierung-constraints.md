@@ -536,17 +536,17 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-VarFreqNoMaxDose-examples.md%}
 
-##### VarPeriodNoMindestabstand
+##### MindestabstandOnlyPureAsNeeded
 
 **Beschreibung:**  
-Variable Periode (`periodMax`) und `modifierExtension[MindestabstandZwischenGaben]` dürfen nicht gemeinsam verwendet werden.
+`modifierExtension[MinimumIntervalBetweenAdministrations]` ist ausschließlich bei einer reinen Bedarfsmedikation zulässig, also zusammen mit `asNeededBoolean = true` und ohne `timing`.
 
 **Warum?**  
-Beide Angaben beschreiben Abstände zwischen Gaben. Ihre gleichzeitige Verwendung erzeugt konkurrierende Zeitlogiken.
+Ein strukturierter Rhythmus legt den Abstand zwischen zwei Gaben bereits fest. Ein zusätzlicher, schwächerer Mindestabstand daneben ergibt eine widersprüchliche Anweisung — etwa „alle 8 Stunden, mindestens 6 Stunden Abstand", bei der offenbleibt, welche Angabe gilt. Beim Bedarfsfall ohne Rhythmus ist der Mindestabstand dagegen die einzige zeitliche Schranke und damit sinnvoll.
 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
-{% include dosage-constraint-VarPeriodNoMindestabstand-examples.md%}
+{% include dosage-constraint-MindestabstandOnlyPureAsNeeded-examples.md%}
 
 ##### DosageViererschemaInText
 
@@ -671,7 +671,7 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 ##### MindestabstandIdentical
 
 **Beschreibung:**
-Enthält eine Ressource mehrere `Dosage`-Elemente, muss der Mindestabstand zwischen Gaben (`modifierExtension[mindestabstandZwischenGaben]`) in allen Elementen identisch befüllt sein — in Wert wie in Zeiteinheit. Entweder tragen alle Elemente die Angabe oder keines, und jede vorhandene Angabe muss vollständig sein (`valueDuration.value` **und** `valueDuration.code`).
+Enthält eine Ressource mehrere `Dosage`-Elemente, muss der Mindestabstand zwischen Gaben (`modifierExtension[minimumIntervalBetweenAdministrations]`) in allen Elementen identisch befüllt sein — in Wert wie in Zeiteinheit. Entweder tragen alle Elemente die Angabe oder keines, und jede vorhandene Angabe muss vollständig sein (`valueDuration.value` **und** `valueDuration.code`).
 
 **Warum?**
 Der Mindestabstand wird ausschließlich aus dem ersten `Dosage`-Element gelesen. Da es sich um eine `modifierExtension` handelt, verändert er die zulässige Anwendung der Dosierung; ein nur in einem späteren Element hinterlegter Abstand entfiele im erzeugten Text unbemerkt.

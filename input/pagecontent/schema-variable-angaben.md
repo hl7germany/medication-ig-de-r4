@@ -111,11 +111,11 @@ repeat.periodMax.empty() or repeat.period.empty() or repeat.period < repeat.peri
 
 ```fhirpath
 timing.repeat.periodMax.empty()
-or modifierExtension.where(url='http://ig.fhir.de/igs/medication/StructureDefinition/MindestabstandZwischenGaben').empty()
+or modifierExtension.where(url='http://ig.fhir.de/igs/medication/StructureDefinition/MinimumIntervalBetweenAdministrations').empty()
 ```
 
 Folgende Beispiele sind nicht valide, da sie diese Constraints brechen:
 
 {% include dosage-constraint-TimingVarPeriodGtMin-examples.md%}
 
-{% include dosage-constraint-VarPeriodNoMindestabstand-examples.md%}
+{% include dosage-constraint-MindestabstandOnlyPureAsNeeded-examples.md%}

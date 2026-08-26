@@ -23,7 +23,7 @@ Damit entfallen 20 Beispiele aus der Liste nicht unterstützter Dosierkonfigurat
 
 **Neue Artefakte**
 
-- Extensions: `MindestabstandZwischenGaben`, Backport von `asNeededFor` aus R5
+- Extensions: `MinimumIntervalBetweenAdministrations`, Backport von `asNeededFor` aus R5
 - ValueSet: `MindestabstandUnitsOfTimeDgMP`
 - Seiten: Bedarfsmedikation, Variable Angaben, Start- und Enddatum, Zusätzliche Instruktionen
 

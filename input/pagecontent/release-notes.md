@@ -15,6 +15,9 @@
 - **Nicht tägliche Perioden im [Schema für Kombinationen von Zeitintervallen](./schema-intervall-kombination.html)**
 - **Geändertes Ausgabeverhalten der Textgenerierung:** jeder erzeugte Text ist durchgehend kleingeschrieben; nicht numerische Dosiswerte werden abgewiesen
 - **Erweiterte Beispielabdeckung** für Legacy-Angaben, Kombinationsschemata, Bedarfsdosierungen und `doseRange`-Varianten
+- **Entfallene und umbenannte Beispiele:** 31 Instanzen, dadurch entfallen deren Seiten-URLs
+- **Überarbeitete Seiten der Dosierschemata** zu Wochentagen, Tageszeiten, Uhrzeiten und Kombinationen
+- **Der Textgenerierungs-Algorithmus wird als gepinnte Version aus dem externen Repository bezogen**
 
 **Details**
 
@@ -65,6 +68,20 @@
 - **`TimingOnlyOnePeriodForDayOfWeek` (`TimingDgMP`)**
   - Betroffene Ressourcentypen: `MedicationRequest`, `MedicationDispense`, `MedicationStatement`
   - Änderung: Die Invariante ist von `Timing.repeat` auf das `Timing`-Element verschoben, um einen Überlauf im IG Publisher bei der Erzeugung der Excel-Tabellen zu umgehen. Der Ausdruck wertet ohnehin über `%resource` die gesamte Ressource aus; inhaltlich ändert sich nichts.
+
+- **Entfallene und umbenannte Beispiele**
+  - `Example-MR-Dosage-comb-interval-5` ist entfallen. Das Beispiel zeigte dasselbe Schema wie `Example-MR-Dosage-comb-interval-4`, einmal mit und einmal ohne redundante `frequency`; die Aussage steht jetzt im Fließtext von [Schema für Kombinationen von Zeitintervallen](./schema-intervall-kombination.html).
+  - Die Negativbeispiele zu `TimingFrequencyCount` und `TimingPeriodUnit` sind neu gefasst. An die Stelle der durchnummerierten Reihen `…-01-of-05` bis `…-05-of-05` treten wenige Beispiele, die je einen Auslöser des Constraints isolieren — bei `TimingFrequencyCount` etwa je einen für `when`, `timeOfDay` und `dayOfWeek`. Damit entfallen 30 bisherige Instanz-URLs.
+  - Die Negativbeispiele zu `TimingOnlyOneType` für eine variable Frequenz heißen jetzt `INV-VarFreq-C-TimingOnlyOneType-*`.
+  - Alle betroffenen Instanzen sind Beispiele; Profile, Extensions und ValueSets behalten ihre kanonischen URLs. Verweise auf die genannten Beispielseiten laufen nach dem Release ins Leere.
+
+- **Überarbeitete Seiten der Dosierschemata**
+  - Die Seiten zu Tageszeiten, Uhrzeiten, Wochentagen und beiden Kombinationsschemata beschreiben jetzt, welche `frequency`-, `period`- und `periodUnit`-Angaben optional zulässig sind und dass sie den erzeugten Text nicht verändern.
+  - Der Begriff „äußeres Intervall" ist durchgängig ersetzt. Das Schema heißt so, wie es im Menü steht: Kombination aus Zeitintervall und Tageszeiten- beziehungsweise Uhrzeiten-Bezug. „Äußer-" bleibt `bounds[x]` vorbehalten, wo FHIR es für die äußeren Grenzen des Zeitplans verwendet.
+
+- **Bezug des Textgenerierungs-Algorithmus**
+  - Der Algorithmus liegt nicht mehr im IG-Repository, sondern wird beim Build aus [hl7germany/dgMP-DosageTextgenerierung-Skript](https://github.com/hl7germany/dgMP-DosageTextgenerierung-Skript) geladen. `scripts/dosage-algorithm.lock` nennt Tag und SHA-256; weicht die geladene Datei ab, bricht der Build ab.
+  - Damit ist die in `algorithmVersion` protokollierte Version nachweislich diejenige, mit der die Texte erzeugt wurden. Für die Nutzung des IG ändert sich nichts; die Angabe betrifft, wie der IG selbst gebaut wird.
 
 - **Erweiterte Beispielabdeckung**
   - Wochentagsschemata mit und ohne redundante Legacy-Angaben, die denselben Dosierungstext erzeugen

@@ -584,8 +584,8 @@ class MedicationDosageTextGenerator:
                 raise ValueError("doseQuantity.value ist für die Textgenerierung erforderlich.")
             if not unit:
                 raise ValueError("doseQuantity.unit ist für die Textgenerierung erforderlich.")
-            if float(dose_value) < 0:
-                raise ValueError("doseQuantity.value darf nicht negativ sein.")
+            if float(dose_value) <= 0:
+                raise ValueError("doseQuantity.value muss größer als 0 sein.")
             return (dose_value, unit)
 
         if 'doseRange' in first_dose:
@@ -597,8 +597,8 @@ class MedicationDosageTextGenerator:
                 raise ValueError("doseRange.high.value ist für die Textgenerierung erforderlich.")
             if not high.get('unit'):
                 raise ValueError("doseRange.high.unit ist für die Textgenerierung erforderlich.")
-            if float(high.get('value')) < 0:
-                raise ValueError("doseRange.high.value darf nicht negativ sein.")
+            if float(high.get('value')) <= 0:
+                raise ValueError("doseRange.high.value muss größer als 0 sein.")
 
             if low:
                 if low.get('value') is None:

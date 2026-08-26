@@ -296,12 +296,12 @@ doseAndRate.all(
 Severity: #error
 
 Invariant: DosageDoseValuePositive
-Description: "Dosiswerte in doseQuantity sowie in der unteren und oberen Grenze von doseRange dürfen nicht negativ sein. Der Wert 0 ist zulässig."
+Description: "doseQuantity.value und doseRange.high.value müssen größer als 0 sein. Ausschließlich für doseRange.low.value ist zusätzlich der Wert 0 zulässig."
 Expression: """
 doseAndRate.all(
-  dose.ofType(Quantity).value.all($this >= 0) and
+  dose.ofType(Quantity).value.all($this > 0) and
   dose.ofType(Range).low.value.all($this >= 0) and
-  dose.ofType(Range).high.value.all($this >= 0)
+  dose.ofType(Range).high.value.all($this > 0)
 )
 """
 Severity: #error

@@ -202,7 +202,7 @@ Expression: "bounds.ofType(Duration).exists().not() or (
 Severity: #error
 
 Invariant: TimingVarFreqOrPeriod
-Description: "For a pure interval without concrete times, frequency (frequencyMax) and period (periodMax) should not both be given as variable. A fixed frequency greater than 1 together with a period, such as twice every 8 hours, remains allowed."
+Description: "For a pure interval without concrete times, frequency (frequencyMax) and period (periodMax) must not both be given as variable. A fixed frequency greater than 1 together with a period, such as twice every 8 hours, remains allowed."
 Expression: "/* Detect Interval only */
 (
   timeOfDay.empty() and
@@ -214,7 +214,7 @@ Expression: "/* Detect Interval only */
 (
   frequencyMax.empty() or periodMax.empty()
 )"
-Severity: #warning
+Severity: #error
 
 Invariant: TimingVarFreqGtMin
 Description: "For a variable frequency, the maximum frequency must be greater than the minimum frequency."

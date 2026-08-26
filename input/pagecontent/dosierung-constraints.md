@@ -150,21 +150,22 @@ Beispiele (Warnungskontext – variable Einzeldosis und variable Periode):
 
 {% include dosage-constraint-DoseRangeNoVarPeriod-examples.md%}
 
+
+#### Fehler: Timing-bezogen
+
 ##### TimingVarFreqOrPeriod
 
 **Beschreibung:**  
-Bei einer reinen Intervallangabe ohne Zeitpunkte sollten nicht gleichzeitig die Frequenz über `frequencyMax` und die Periode über `periodMax` variabel angegeben werden.
+Bei einer reinen Intervallangabe ohne Zeitpunkte dürfen nicht gleichzeitig die Frequenz über `frequencyMax` und die Periode über `periodMax` variabel angegeben werden.
 
 **Warum?**  
 Die gleichzeitige Variation beider Achsen führt zu einem nur schwer eindeutig interpretierbaren Einnahmeschema — „1 bis 2 x alle 4 bis 6 Stunden“ lässt weder die Zahl der Gaben noch den Abstand eindeutig erkennen. Die Variation nur einer Achse bleibt zulässig, ebenso eine feste Frequenz größer als 1 zusammen mit einer Periode (`2 x alle 8 Stunden`): Dort sind Zahl der Gaben und Bezugszeitraum eindeutig bestimmt.
 
 Bei `when`, `timeOfDay` oder `dayOfWeek` greift die Regel nicht. Dort ist `frequency` optional und redundant, weil die konkreten Zeitpunkte beziehungsweise Anwendungstage die Zahl der Gaben bereits festlegen; die Angabe dient ausschließlich der Rückwärtskompatibilität und begründet kein zusätzliches Intervallschema.
 
-Folgende Beispiele lösen eine Warnung aus:
+Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-TimingVarFreqOrPeriod-examples.md%}
-
-#### Fehler: Timing-bezogen
 
 Die folgenden Invarianten beziehen sich auf `Timing` — überwiegend auf `Timing.repeat` — und wirken über alle Dosierungsinstanzen einer Ressource.
 

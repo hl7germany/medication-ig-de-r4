@@ -161,14 +161,8 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
 * dosageInstruction[+]
   * timing.repeat
     * when[+] = #MORN
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 * dosageInstruction[+]
   * timing.repeat
     * when[+] = #EVE
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
   * doseAndRate.doseQuantity = 0.75 $kbv-dosiereinheit#1 "Stück"

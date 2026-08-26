@@ -12,9 +12,6 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einem Start
     * boundsPeriod
       * start = "2026-06-05"
     * when[+] = #MORN
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 Instance: Example-MR-Dosage-1000-enddate
@@ -31,9 +28,6 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einem Endda
     * boundsPeriod
       * end = "2026-07-05"
     * when[+] = #MORN
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 Instance: Example-MR-Dosage-1000-startandenddate
@@ -51,9 +45,6 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einem Start
       * start = "2026-06-05"
       * end = "2026-07-05"
     * when[+] = #MORN
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 Instance: Example-MR-Dosage-1000-startdatetime
@@ -70,7 +61,4 @@ Description: "Dieses Beispiel stellt einen Startzeitpunkt mit Zeitzone dar, der 
     * boundsPeriod
       * start = "2026-06-05T23:30:45Z"
     * when[+] = #MORN
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"

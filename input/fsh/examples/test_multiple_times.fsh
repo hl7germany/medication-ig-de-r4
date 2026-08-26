@@ -14,7 +14,6 @@ Description: "Test case showing the bug where only first timeOfDay is processed 
   * timing.repeat
     * timeOfDay[+] = "08:00:00"
     * timeOfDay[+] = "20:00:00"
-    * frequency = 2
     * period = 2
     * periodUnit = #d
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
@@ -32,7 +31,6 @@ Description: "Test case showing the bug where only first when code is processed 
   * timing.repeat
     * when[+] = #MORN
     * when[+] = #EVE
-    * frequency = 2
     * period = 3
     * periodUnit = #d
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"

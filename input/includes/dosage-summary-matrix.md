@@ -62,7 +62,7 @@
 |  |  | 2 Stück |  |  |  |  |  | NOON, EVE |  |
 | [MedicationRequest-Example-MR-Dosage-Bedarfsmedikation-Kopfschmerzen](./MedicationRequest-Example-MR-Dosage-Bedarfsmedikation-Kopfschmerzen.html) | bei Kopfschmerzen: im Abstand von mindestens 4 Stunden je 1 Stück — nicht mehr als 6 Stück in 24 Stunden | 1 Stück |  |  |  |  |  |  |  |
 | [MedicationRequest-Example-MR-Dosage-Bedarfsmedikation-MehrereAnlaesse](./MedicationRequest-Example-MR-Dosage-Bedarfsmedikation-MehrereAnlaesse.html) | bei Kopfschmerzen, Fieber oder Gliederschmerzen: im Abstand von mindestens 6 Stunden je 1 Stück — nicht mehr als 4 Stück in 24 Stunden | 1 Stück |  |  |  |  |  |  |  |
-| [MedicationRequest-Example-MR-Dosage-Bedarfsmedikation-Struktur-Intervall](./MedicationRequest-Example-MR-Dosage-Bedarfsmedikation-Struktur-Intervall.html) | bei Kopfschmerzen: alle 8 Stunden je 1 Stück, mit mindestens 6 Stunden Abstand — nicht mehr als 4 Stück in 24 Stunden | 1 Stück | 1 | 8 | h |  |  |  |  |
+| [MedicationRequest-Example-MR-Dosage-Bedarfsmedikation-Struktur-Intervall](./MedicationRequest-Example-MR-Dosage-Bedarfsmedikation-Struktur-Intervall.html) | bei Kopfschmerzen: alle 8 Stunden je 1 Stück — nicht mehr als 4 Stück in 24 Stunden | 1 Stück | 1 | 8 | h |  |  |  |  |
 | [MedicationRequest-Example-MR-Dosage-Freetext](./MedicationRequest-Example-MR-Dosage-Freetext.html) | 2 Stück morgens zum Frühstück |  |  |  |  |  |  |  |  |
 | [MedicationRequest-Example-MR-Dosage-UnitStueck-1020](./MedicationRequest-Example-MR-Dosage-UnitStueck-1020.html) | 1-0-2-0 Stück | 1 Stück |  |  |  |  |  | MORN |  |
 |  |  | 2 Stück |  |  |  |  |  | EVE |  |

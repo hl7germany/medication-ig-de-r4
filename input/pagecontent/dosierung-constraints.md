@@ -166,7 +166,7 @@ Folgende Beispiele lösen eine Warnung aus:
 
 #### Fehler: Timing-bezogen
 
-Die folgenden Invarianten beziehen sich auf `timing.repeat` und wirken über alle Dosierungsinstanzen einer Ressource.
+Die folgenden Invarianten beziehen sich auf `Timing` — überwiegend auf `Timing.repeat` — und wirken über alle Dosierungsinstanzen einer Ressource.
 
 ##### TimingFrequencyCount
 
@@ -207,10 +207,10 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 ##### TimingOnlyOneType
 
 **Beschreibung:**  
-Es darf pro Ressource nur eines der unterstützten Timing-Schemata verwendet werden: Tagesabschnitt/Uhrzeit, Wochentag, reines Intervall, Wochentag mit Tagesabschnitt/Uhrzeit oder ein äußeres Intervall mit Tagesabschnitt/Uhrzeit. Redundante `frequency`-, `period`- und `periodUnit`-Angaben bleiben bei Wochentagsschemata sowie in den dafür vorgesehenen zeitbezogenen Schemata optional zulässig; sie machen aus einem Wochentagsschema kein Intervallschema.
+Es darf pro Ressource nur eines der unterstützten Timing-Schemata verwendet werden: Tagesabschnitt/Uhrzeit, Wochentag, reines Intervall, Wochentag mit Tagesabschnitt/Uhrzeit oder ein äußeres Intervall mit Tagesabschnitt/Uhrzeit. Redundante `frequency`-, `period`- und `periodUnit`-Angaben bleiben bei Wochentagsschemata sowie in den dafür vorgesehenen zeitbezogenen Schemata optional zulässig; sie machen aus einem Wochentagsschema kein Intervallschema. Eine variable Frequenz über `frequencyMax` ist ausschließlich in der reinen Intervallangabe zulässig.
 
 **Warum?**  
-Diese Einschränkung verhindert Mehrdeutigkeiten und sorgt dafür, dass die Dosierungszeitpunkte eindeutig interpretierbar bleiben.
+Diese Einschränkung verhindert Mehrdeutigkeiten und sorgt dafür, dass die Dosierungszeitpunkte eindeutig interpretierbar bleiben. Konkrete Zeitpunkte in `when` oder `timeOfDay` sowie Wochentage in `dayOfWeek` legen die Zahl der Gaben bereits abschließend fest. Ein zusätzliches `frequencyMax` würde dieser Aufzählung widersprechen und in der Textgenerierung ersatzlos entfallen — aus `morgens, frequency 1, frequencyMax 3` entstünde `1-0-0-0 Stück`, ohne dass die Obergrenze im Text erschiene.
 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 

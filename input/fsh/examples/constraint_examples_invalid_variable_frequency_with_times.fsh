@@ -38,8 +38,8 @@ Description: "CAVE: frequencyMax cannot be combined with concrete timeOfDay valu
 Instance: INV-C-TimingOnlyOneType-VarFreq-MS
 InstanceOf: MedicationStatementDgMP
 Usage: #example
-Title: "Invalid MedicationStatement: variable frequency together with an outer interval"
-Description: "CAVE: frequencyMax cannot be combined with concrete when values, not even within a non-daily outer interval."
+Title: "Invalid MedicationStatement: variable frequency together with an interval combination"
+Description: "CAVE: frequencyMax cannot be combined with concrete when values, not even within a non-daily interval combination."
 * subject.display = "Patient"
 * status = #active
 * medicationCodeableConcept.text = "Test Medication"

@@ -12,7 +12,7 @@
   - **TimingDgMP**: `TimingOnlyOneType`, `TimingPeriodUnit`, `TimingFrequencyCount`, `TimingVarFreqOrPeriod`, `TimingSingleDosageForTimeOfDay`, `TimingSingleDosageForWhen`, `TimingOnlyOnePeriodForDayOfWeek`
   - **TimingDE**: `TimingSingleDosageForTimeOfDayWarning`, `TimingSingleDosageForWhenWarning`
 - **Rückwärtskompatibilität für redundante Legacy-Angaben** bei Wochentags- und Zeitpunktschemata
-- **Neues Schema „äußeres Intervall mit Tagesabschnitt oder Uhrzeit“**
+- **Nicht tägliche Perioden im [Schema für Kombinationen von Zeitintervallen](./schema-intervall-kombination.html)**
 - **Erweiterte Beispielabdeckung** für Legacy-Angaben, Kombinationsschemata, Bedarfsdosierungen und `doseRange`-Varianten
 
 **Details**
@@ -29,12 +29,12 @@
 - **`TimingOnlyOneType` (`TimingDgMP`)**
   - Betroffene Ressourcentypen: `MedicationRequest`, `MedicationDispense`, `MedicationStatement`
   - Änderung 1: Bei `dayOfWeek` sind `frequency` sowie das Paar `period = 1` und `periodUnit = wk` als redundante Legacy-Angaben zulässig. Sie begründen kein Intervallschema und werden im generierten Text nicht ausgegeben. Zuvor führten sie zu einem Fehler.
-  - Änderung 2: Neues Schema „äußeres Intervall mit Tagesabschnitt oder Uhrzeit“. Eine nicht tägliche Periode (`d`, `wk` oder `mo`) zusammen mit `when` oder `timeOfDay` ist damit ausdrücklich zulässig; die Abgrenzung zum täglichen Schema erfolgt über `period`, `periodUnit` und `periodMax`.
+  - Änderung 2: Die [Kombination aus Zeitintervall und Tageszeiten- beziehungsweise Uhrzeiten-Bezug](./schema-intervall-kombination.html) ist als eigenes Schema erfasst. Eine nicht tägliche Periode (`d`, `wk` oder `mo`) zusammen mit `when` oder `timeOfDay` ist damit ausdrücklich zulässig; die Abgrenzung zum täglichen Schema erfolgt über `period`, `periodUnit` und `periodMax`.
   - Änderung 3: Eine variable Frequenz (`frequencyMax`) bleibt der reinen Intervallangabe vorbehalten. Konkrete Zeitpunkte in `when` oder `timeOfDay` sowie Wochentage in `dayOfWeek` legen die Zahl der Gaben bereits abschließend fest; ein zusätzliches `frequencyMax` widerspräche dieser Aufzählung und entfiele in der Textgenerierung ersatzlos.
 
 - **`TimingPeriodUnit` (`TimingDgMP`)**
   - Betroffene Ressourcentypen: `MedicationRequest`, `MedicationDispense`, `MedicationStatement`
-  - Änderung: `periodUnit` darf nur zusammen mit `period` angegeben werden. Bei `dayOfWeek` ist ausschließlich die redundante Wochenangabe zulässig, bei `when` oder `timeOfDay` ohne `dayOfWeek` sind Tage, Wochen oder Monate zulässig. Reine Intervalle verwenden weiterhin die vollständige gebundene Wertemenge. Zuvor war bei `when` oder `timeOfDay` ohne `dayOfWeek` ausschließlich `d` erlaubt, wodurch das neue äußere Intervallschema nicht abbildbar war; außerdem konnte `periodUnit` ohne `period` stehen.
+  - Änderung: `periodUnit` darf nur zusammen mit `period` angegeben werden. Bei `dayOfWeek` ist ausschließlich die redundante Wochenangabe zulässig, bei `when` oder `timeOfDay` ohne `dayOfWeek` sind Tage, Wochen oder Monate zulässig. Reine Intervalle verwenden weiterhin die vollständige gebundene Wertemenge. Zuvor war bei `when` oder `timeOfDay` ohne `dayOfWeek` ausschließlich `d` erlaubt, wodurch wöchentliche und monatliche Kombinationen mit Zeitintervall nicht abbildbar waren; außerdem konnte `periodUnit` ohne `period` stehen.
 
 - **`TimingFrequencyCount` (`TimingDgMP`)**
   - Betroffene Ressourcentypen: `MedicationRequest`, `MedicationDispense`, `MedicationStatement`

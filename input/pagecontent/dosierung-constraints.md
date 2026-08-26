@@ -183,10 +183,10 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 ##### TimingPeriodUnit
 
 **Beschreibung:**  
-`periodUnit` darf nur zusammen mit `period` angegeben werden. Bei `dayOfWeek` ist als redundante Angabe ausschließlich das Paar `period = 1` und `periodUnit = wk` zulässig. Ein äußeres Intervall zusammen mit `when` oder `timeOfDay` darf Tage (`d`), Wochen (`wk`) oder Monate (`mo`) verwenden. Reine Intervalle verwenden weiterhin die vollständige gebundene Wertemenge.
+`periodUnit` darf nur zusammen mit `period` angegeben werden. Bei `dayOfWeek` ist als redundante Angabe ausschließlich das Paar `period = 1` und `periodUnit = wk` zulässig. Eine [Kombination aus Zeitintervall und Tageszeiten- beziehungsweise Uhrzeiten-Bezug](./schema-intervall-kombination.html) darf Tage (`d`), Wochen (`wk`) oder Monate (`mo`) verwenden. Reine Intervalle verwenden weiterhin die vollständige gebundene Wertemenge.
 
 **Warum?**  
-So bleibt unterscheidbar, ob die Periode nur die bereits implizite wöchentliche Wiederholung eines Wochentagsschemas redundant ausdrückt oder den äußeren Rhythmus ausgewählter Tagesabschnitte beziehungsweise Uhrzeiten beschreibt. Minuten- oder Stundenintervalle werden nicht mit Wochentagen kombiniert.
+So bleibt unterscheidbar, ob die Periode nur die bereits implizite wöchentliche Wiederholung eines Wochentagsschemas redundant ausdrückt oder den Einnahmerhythmus ausgewählter Tagesabschnitte beziehungsweise Uhrzeiten beschreibt. Minuten- oder Stundenintervalle werden nicht mit Wochentagen kombiniert.
 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
@@ -207,7 +207,7 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 ##### TimingOnlyOneType
 
 **Beschreibung:**  
-Es darf pro Ressource nur eines der unterstützten Timing-Schemata verwendet werden: Tagesabschnitt/Uhrzeit, Wochentag, reines Intervall, Wochentag mit Tagesabschnitt/Uhrzeit oder ein äußeres Intervall mit Tagesabschnitt/Uhrzeit. Redundante `frequency`-, `period`- und `periodUnit`-Angaben bleiben bei Wochentagsschemata sowie in den dafür vorgesehenen zeitbezogenen Schemata optional zulässig; sie machen aus einem Wochentagsschema kein Intervallschema. Eine variable Frequenz über `frequencyMax` ist ausschließlich in der reinen Intervallangabe zulässig.
+Es darf pro Ressource nur eines der unterstützten Timing-Schemata verwendet werden: Tagesabschnitt/Uhrzeit, Wochentag, reines Intervall, Wochentag mit Tagesabschnitt/Uhrzeit oder eine [Kombination aus Zeitintervall und Tagesabschnitt/Uhrzeit](./schema-intervall-kombination.html). Redundante `frequency`-, `period`- und `periodUnit`-Angaben bleiben bei Wochentagsschemata sowie in den dafür vorgesehenen zeitbezogenen Schemata optional zulässig; sie machen aus einem Wochentagsschema kein Intervallschema. Eine variable Frequenz über `frequencyMax` ist ausschließlich in der reinen Intervallangabe zulässig.
 
 **Warum?**  
 Diese Einschränkung verhindert Mehrdeutigkeiten und sorgt dafür, dass die Dosierungszeitpunkte eindeutig interpretierbar bleiben. Konkrete Zeitpunkte in `when` oder `timeOfDay` sowie Wochentage in `dayOfWeek` legen die Zahl der Gaben bereits abschließend fest. Ein zusätzliches `frequencyMax` würde dieser Aufzählung widersprechen und in der Textgenerierung ersatzlos entfallen — aus `morgens, frequency 1, frequencyMax 3` entstünde `1-0-0-0 Stück`, ohne dass die Obergrenze im Text erschiene.

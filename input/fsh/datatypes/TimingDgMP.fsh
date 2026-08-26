@@ -7,7 +7,7 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * ^comment = "Begründung Einschränkung Kardinalität: Der Zeitpunkt des Ereignisses ist in der ersten Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
 * code 0..0
   * ^comment = "Begründung Einschränkung Kardinalität: Ein Timing-Code ist in der ersten Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen. Stattdessen muss das Zeitmuster explizit strukturiert angegeben werden."
-//moved out of repeat to fix an overflow of IG Publisher while creating Excel sheets. Invariant uses %Resource,
+// TimingOnlyOnePeriodForDayOfWeek moved out of repeat to fix an overflow of IG Publisher while creating Excel sheets. Invariant uses %resource move didn't change any semantics
 * obeys TimingOnlyOnePeriodForDayOfWeek
 * repeat 1..1 MS
   * obeys TimingOnlyOneType
@@ -264,7 +264,7 @@ Expression: "(period.exists() implies period mod 1 = 0) and (periodMax.exists() 
 Severity: #error
 
 Invariant: TimingOnlyOneType
-Description: "Es ist genau eines der unterstützten Timing-Schemata zulässig. Bei dayOfWeek sind frequency sowie das Paar period = 1 und periodUnit = wk als redundante Legacy-Angaben optional; sie begründen kein Intervallschema. Bei when oder timeOfDay ist frequency optional; eine Periode unterscheidet das tägliche vom äußeren Intervallschema. Eine variable Frequenz (frequencyMax) bleibt der reinen Intervallangabe vorbehalten, weil konkrete Zeitpunkte oder Wochentage die Zahl der Gaben bereits festlegen."
+Description: "Es ist genau eines der unterstützten Timing-Schemata zulässig. Bei dayOfWeek sind frequency sowie das Paar period = 1 und periodUnit = wk als redundante Legacy-Angaben optional; sie begründen kein Intervallschema. Bei when oder timeOfDay ist frequency optional; eine nicht tägliche Periode unterscheidet das tägliche Schema von der Kombination aus Zeitintervall und Tageszeiten- beziehungsweise Uhrzeiten-Bezug. Eine variable Frequenz (frequencyMax) bleibt der reinen Intervallangabe vorbehalten, weil konkrete Zeitpunkte oder Wochentage die Zahl der Gaben bereits festlegen."
 Expression: "/* DayOfWeek only; legacy frequency and the exact 1 wk pair are optional */
 (
   %resource.ofType(MedicationRequest).dosageInstruction |
@@ -334,7 +334,7 @@ Expression: "/* DayOfWeek only; legacy frequency and the exact 1 wk pair are opt
   )
 ) or
 
-/* Non-daily outer interval with When or TimeOfDay; frequency is optional, a
+/* Non-daily interval combined with When or TimeOfDay; frequency is optional, a
    variable frequency is not */
 (
   %resource.ofType(MedicationRequest).dosageInstruction |

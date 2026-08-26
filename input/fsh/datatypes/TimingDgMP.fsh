@@ -259,7 +259,7 @@ Expression: "periodUnit.empty() or (
 Severity: #error
 
 Invariant: TimingPeriodOnlyWholeNumber
-Description: "The period should only describe whole numbers, decimals are not allowed"
+Description: "period and periodMax must be whole numbers; decimal values are not allowed."
 Expression: "(period.exists() implies period mod 1 = 0) and (periodMax.exists() implies periodMax mod 1 = 0)"
 Severity: #error
 
@@ -359,7 +359,7 @@ Expression: "/* DayOfWeek only; legacy frequency and the exact 1 wk pair are opt
 Severity: #error
 
 Invariant: TimingOnlyOneWhen
-Description: "Dosages Timings must not state the same period of day across multiple dosage instances"
+Description: "In a schema that uses only when, no part of the day may occur in more than one Dosage element of a resource."
 Expression: "( /* Detect when-based schema */
   %resource.ofType(MedicationRequest).dosageInstruction
   | %resource.ofType(MedicationDispense).dosageInstruction
@@ -386,7 +386,7 @@ Expression: "( /* Detect when-based schema */
 Severity: #error
 
 Invariant: TimingOnlyWhenOrTimeOfDay
-Description: "Dosages Timings must not state a time of day and period of day across multiple dosage instances"
+Description: "The Dosage elements of a resource must not mix a time of day (timeOfDay) and a part of the day (when)."
 Expression: "(
   %resource.ofType(MedicationRequest).dosageInstruction
   | %resource.ofType(MedicationDispense).dosageInstruction
@@ -412,7 +412,7 @@ Expression: "(
 Severity: #error
 
 Invariant: TimingOnlyOneTimeOfDay
-Description: "Dosages Timings must not state the same time of day across multiple dosage instances"
+Description: "In a schema that uses only timeOfDay, no time of day may occur in more than one Dosage element of a resource."
 Expression: "( /* Detect TimeOfDay */
   %resource.ofType(MedicationRequest).dosageInstruction
   | %resource.ofType(MedicationDispense).dosageInstruction
@@ -441,7 +441,7 @@ Expression: "( /* Detect TimeOfDay */
 Severity: #error
 
 Invariant: TimingOnlyOneDayOfWeek
-Description: "Dosages Timings must not state the same day across multiple dosage instances"
+Description: "In a schema that uses only dayOfWeek, no weekday may occur in more than one Dosage element of a resource."
 Expression: "( /* Detect DayOfWeek */
   %resource.ofType(MedicationRequest).dosageInstruction
   | %resource.ofType(MedicationDispense).dosageInstruction
@@ -470,7 +470,7 @@ Expression: "( /* Detect DayOfWeek */
 Severity: #error
 
 Invariant: TimingOnlyOneBounds
-Description: "Dosages Timings must state the same bounds (Duration or Period) across multiple dosage instances"
+Description: "All Dosage elements of a resource must state the same bounds (Duration or Period)."
 Expression: "(
   %resource.ofType(MedicationRequest).dosageInstruction
   | %resource.ofType(MedicationDispense).dosageInstruction
@@ -526,7 +526,7 @@ Expression: "(
 Severity: #error
 
 Invariant: TimingIntervalOnlyOneFrequency
-Description: "If a dosage is defined by a pure interval, then only one dosage is allowed in the resource."
+Description: "If a dosage is defined by a pure interval, only one Dosage element is allowed in the resource."
 Expression: "( /* Detect Interval */
   %resource.ofType(MedicationRequest).dosageInstruction
   | %resource.ofType(MedicationDispense).dosageInstruction
@@ -565,7 +565,7 @@ Severity: #error
 
 
 Invariant: TimingOnlyOnePeriodForDayOfWeek
-Description: "For schedules using only dayOfWeek with either timeOfDay or when, each (day + period of day/time) combination must be unique across all dosage instructions."
+Description: "In a schema that combines dayOfWeek with either timeOfDay or when, each combination of weekday and time must be unique across all Dosage elements of a resource."
 Expression: "( /* Detect DayOfWeek and Time/4-Schema */
   %resource.ofType(MedicationRequest).dosageInstruction
   | %resource.ofType(MedicationDispense).dosageInstruction
@@ -689,7 +689,7 @@ Expression: "( /* Detect DayOfWeek and Time/4-Schema */
 Severity: #error
 
 Invariant: TimingOnlyOneTimeForInterval
-Description: "Dosage Interval Timings must use the same period and periodUnit across all dosage instances, and each timeOfDay or when value must be unique across dosage instances"
+Description: "In a schema that combines an interval with timeOfDay or when, all Dosage elements of a resource must use the same period and periodUnit, and each timeOfDay or when value must be unique across them."
 Expression: "/* Detect Interval and Time/4-Schema */
 (
   %resource.ofType(MedicationRequest).dosageInstruction
@@ -745,6 +745,6 @@ Expression: "/* Detect Interval and Time/4-Schema */
 Severity: #error
 
 Invariant: TimingBoundsDurationOnlyWholeNumber
-Description: "The boundsDuration.value should only describe whole numbers, decimals are not allowed"
+Description: "boundsDuration.value must be a whole number; decimal values are not allowed."
 Expression: "bounds.ofType(Duration).value.empty() or bounds.ofType(Duration).value mod 1 = 0"
 Severity: #error

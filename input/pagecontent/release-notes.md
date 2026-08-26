@@ -1,4 +1,4 @@
-### Release: 2.0.0
+### Release: 2.0.0-ballot
 
 Diese Version erweitert das dgMP-Dosiermodell erheblich: Dosierungen, die bisher
 als „nicht unterstützt" geführt waren, sind jetzt strukturiert abbildbar. Der

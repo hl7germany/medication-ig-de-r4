@@ -12,7 +12,7 @@ gepflegt; seine Änderungen stehen im dortigen `CHANGELOG.md`.
 
 - **Variable Einzeldosis** über `doseRange` — „1 bis 2 Stück" statt eines festen Werts. Untergrenze `0` ist zulässig, Obergrenze ist Pflicht. Siehe [Variable Angaben](./schema-variable-angaben.html).
 - **Variable Frequenz und Periode** über `frequencyMax` und `periodMax` — „1 bis 2 x täglich", „alle 2 bis 3 Tage". Beide Achsen gleichzeitig zu variieren ist unzulässig.
-- **Bedarfsmedikation** über `asNeededBoolean`, mit **Anlass** (`asNeededFor`), **Mindestabstand zwischen zwei Gaben** und **Maximalmenge** (`maxDosePerPeriod`). Der Mindestabstand ist dabei der reinen Bedarfsdosierung vorbehalten. Siehe [Schema für Bedarfsmedikation](./schema-bedarfsmedikation.html).
+- **Bedarfsmedikation** über `asNeededBoolean`, mit **Anlass** (`asNeededFor`), **Mindestabstand zwischen zwei Gaben** und **Maximalmenge** (`maxDosePerPeriod`). Mehrere Anlässe sind zulässig und werden als Aufzählung wiedergegeben; der Mindestabstand ist der reinen Bedarfsdosierung vorbehalten. Siehe [Schema für Bedarfsmedikation](./schema-bedarfsmedikation.html).
 - **Anwendungszeitraum** über `boundsPeriod` — Start- und/oder Enddatum, optional mit Uhrzeit und Zeitzone. Siehe [Angabe von Start- und Enddatum](./schema-start-end-datum.html).
 - **Zusätzliche Instruktionen** über `patientInstruction` für Hinweise, die sich nicht strukturiert abbilden lassen. Siehe [Zusätzliche Instruktionen](./schema-zusaetzliche-instruktionen.html).
 - **Kombination aus Zeitintervall und Tageszeiten- beziehungsweise Uhrzeiten-Bezug** — nicht tägliche Perioden (`d`, `wk`, `mo`) zusammen mit `when` oder `timeOfDay`. Siehe [Schema für Kombinationen von Zeitintervallen](./schema-intervall-kombination.html).
@@ -26,14 +26,6 @@ Damit entfallen 20 Beispiele aus der Liste nicht unterstützter Dosierkonfigurat
 - Extensions: `MinimumIntervalBetweenAdministrations`, Backport von `asNeededFor` aus R5
 - ValueSet: `MindestabstandUnitsOfTimeDgMP`
 - Seiten: Bedarfsmedikation, Variable Angaben, Start- und Enddatum, Zusätzliche Instruktionen
-
-**Rückmeldungen aus dem Kommentierungsverfahren**
-
-- **Mindestabstand nur bei reiner Bedarfsmedikation** (DAV). Beanstandet wurde der Text „alle 8 Stunden je 1 Stück, mit mindestens 6 Stunden Abstand" als widersprüchlich. Ein Rhythmus legt den Abstand zwischen zwei Gaben bereits fest; eine zweite, schwächere Untergrenze daneben lässt offen, welche Angabe gilt. Die neue Invariante `MindestabstandOnlyPureAsNeeded` lässt `modifierExtension[MinimumIntervalBetweenAdministrations]` nur noch zusammen mit `asNeededBoolean = true` und ohne `timing` zu. `VarPeriodNoMindestabstand` geht darin auf und entfällt.
-- **Extension umbenannt** (KBV). Die modifierExtension trug als einzige eine deutsche Bezeichnung. Ihre kanonische URL lautet jetzt `…/StructureDefinition/MinimumIntervalBetweenAdministrations` statt `…/MindestabstandZwischenGaben`.
-- **„Einnahmeanlass" durch „Anlass" ersetzt** (KBV). Der Begriff unterstellte eine orale Anwendung und passte nicht, wenn das Arzneimittel etwa auf die Haut aufgetragen wird.
-- **Extensions in „Relevante Ressourcen" ergänzt** (KBV). Die Übersicht listete nur `GeneratedDosageInstructionsMeta`.
-- **Mehrere Anlässe** (KBV): Es wurde nur der letzte ausgegeben. Der Fehler ist behoben, alle Anlässe erscheinen als Aufzählung. Die Verknüpfung bleibt „oder", entsprechend der ODER-Semantik von `asNeededFor`.
 
 **Invarianten**
 
@@ -60,6 +52,10 @@ Die folgenden bestehenden Regeln haben sich in ihrer Aussage geändert:
 
 - **`TimingOnlyOnePeriodForDayOfWeek` (`TimingDgMP`)**
   - Von `Timing.repeat` auf `Timing` verschoben, um einen Überlauf im IG Publisher bei der Erzeugung der Excel-Tabellen zu umgehen. Der Ausdruck wertet ohnehin die gesamte Ressource aus; inhaltlich ändert sich nichts.
+
+- **`MindestabstandOnlyPureAsNeeded` (`DosageDgMP`) — neu, ersetzt `VarPeriodNoMindestabstand`**
+  - `modifierExtension[MinimumIntervalBetweenAdministrations]` ist nur zusammen mit `asNeededBoolean = true` und ohne `timing` zulässig.
+  - Ein strukturierter Rhythmus legt den Abstand zwischen zwei Gaben bereits fest. Eine zweite, schwächere Untergrenze daneben lässt offen, welche Angabe gilt — „alle 8 Stunden, mit mindestens 6 Stunden Abstand" ist als Anweisung widersprüchlich. `VarPeriodNoMindestabstand` geht in der neuen Regel auf, da eine variable Periode ein `timing` voraussetzt.
 
 - **`MindestabstandIdentical` (`DosageDgMP`) — entfallen**
   - Die Invariante forderte, dass der Mindestabstand über alle `Dosage`-Elemente gleich belegt ist. Sie ist nicht mehr erreichbar: Ein Mindestabstand setzt eine reine Bedarfsdosierung voraus, und dafür erlaubt `AsNeededSingleDosageOnly` genau ein `Dosage`-Element. `MaxDosePerPeriodIdentical` bleibt bestehen — eine Maximalmenge setzt kein leeres `timing` voraus.

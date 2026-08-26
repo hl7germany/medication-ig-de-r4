@@ -11,7 +11,7 @@ gepflegt; seine Änderungen stehen im dortigen `CHANGELOG.md`.
 **Neu unterstützte Dosierangaben**
 
 - **Variable Einzeldosis** über `doseRange` — „1 bis 2 Stück" statt eines festen Werts. Untergrenze `0` ist zulässig, Obergrenze ist Pflicht. Siehe [Variable Angaben](./schema-variable-angaben.html).
-- **Variable Frequenz und Periode** über `frequencyMax` und `periodMax` — „1 bis 2 x täglich", „alle 2 bis 3 Tage". Beide Achsen gleichzeitig zu variieren ist unzulässig.
+- **Variable Frequenz und Periode** über `frequencyMax` und `periodMax` — „1 bis 2 x täglich", „alle 2 bis 3 Tage". Beide Achsen gleichzeitig zu variieren ist unzulässig (`TimingVarFreqOrPeriod`); im generischen DE-Profil löst es eine Warnung aus.
 - **Bedarfsmedikation** über `asNeededBoolean`, mit **Anlass** (`asNeededFor`), **Mindestabstand zwischen zwei Gaben** und **Maximalmenge** (`maxDosePerPeriod`). Mehrere Anlässe sind zulässig und werden als Aufzählung wiedergegeben; der Mindestabstand ist der reinen Bedarfsdosierung vorbehalten. Siehe [Schema für Bedarfsmedikation](./schema-bedarfsmedikation.html).
 - **Anwendungszeitraum** über `boundsPeriod` — Start- und/oder Enddatum, optional mit Uhrzeit und Zeitzone. Siehe [Angabe von Start- und Enddatum](./schema-start-end-datum.html).
 - **Zusätzliche Instruktionen** über `patientInstruction` für Hinweise, die sich nicht strukturiert abbilden lassen. Siehe [Zusätzliche Instruktionen](./schema-zusaetzliche-instruktionen.html).
@@ -41,11 +41,8 @@ Die folgenden bestehenden Regeln haben sich in ihrer Aussage geändert:
 - **`TimingPeriodUnit` (`TimingDgMP`)**
   - `periodUnit` darf nur zusammen mit `period` angegeben werden. Bei `dayOfWeek` ist ausschließlich die redundante Wochenangabe zulässig; bei `when` oder `timeOfDay` ohne `dayOfWeek` sind Tage, Wochen oder Monate zulässig. Zuvor war dort ausschließlich `d` erlaubt, wodurch wöchentliche und monatliche Kombinationen nicht abbildbar waren.
 
-- **`TimingSingleDosageForTimeOfDay` und `TimingSingleDosageForWhen` (`TimingDgMP`), `TimingSingleDosageForTimeOfDayWarning` und `TimingSingleDosageForWhenWarning` (`TimingDE`)**
+- **`TimingSingleDosageForTimeOfDay` und `TimingSingleDosageForWhen` (`TimingDgMP`)**
   - Geprüft wird jetzt, ob jedes `Dosage`-Element eine eindeutige vollständige Dosis einschließlich Datentyp trägt. Zuvor genügte es, dass überhaupt zwei unterschiedliche Werte vorkamen — Ressourcen mit den Dosen 1, 1 und 2 wurden dadurch fälschlich akzeptiert.
-
-- **`TimingVarFreqOrPeriod` (`TimingDgMP`)**
-  - Die Warnung greift nur noch, wenn `frequencyMax` und `periodMax` gemeinsam belegt sind. Zuvor beanstandete sie auch eindeutige Angaben wie „2 x alle 8 Stunden".
 
 - **`TimingFrequencyCount` (`TimingDgMP`)**
   - Beschreibung präzisiert, Ausdruck unverändert: `frequency` ist bei `when`, `timeOfDay` und `dayOfWeek` optional, muss bei Angabe aber der Anzahl der konkreten Anwendungen entsprechen.

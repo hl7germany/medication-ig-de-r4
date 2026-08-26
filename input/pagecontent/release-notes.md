@@ -1,3 +1,70 @@
+### Release: 2.0.0
+
+**Version des Textgenerierungs-Algorithmus:** `2.0.0`
+
+**What's Changed**
+
+- **Spezifikation der Dosis-Textgenerierung ausgelagert:** Algorithmenbeschreibung, Referenzimplementierung und Versionsverlauf liegen jetzt in [hl7germany/dgMP-DosageTextgenerierung-Skript](https://github.com/hl7germany/dgMP-DosageTextgenerierung-Skript). Die Seite [Dosis Textgenerierung](./dosierung-textgenerierung.html) verweist nur noch dorthin.
+- **Neue Invarianten:**
+  - **DosageDgMP**: `DosageDoseValuePositive`
+  - **DosageDE**: `DosageDoseValuePositiveWarning`
+- **Geänderte Invarianten:**
+  - **TimingDgMP**: `TimingOnlyOneType`, `TimingPeriodUnit`, `TimingFrequencyCount`, `TimingVarFreqOrPeriod`, `TimingSingleDosageForTimeOfDay`, `TimingSingleDosageForWhen`, `TimingOnlyOnePeriodForDayOfWeek`
+  - **TimingDE**: `TimingSingleDosageForTimeOfDayWarning`, `TimingSingleDosageForWhenWarning`
+- **Rückwärtskompatibilität für redundante Legacy-Angaben** bei Wochentags- und Zeitpunktschemata
+- **Neues Schema „äußeres Intervall mit Tagesabschnitt oder Uhrzeit“**
+- **Erweiterte Beispielabdeckung** für Legacy-Angaben, Kombinationsschemata, Bedarfsdosierungen und `doseRange`-Varianten
+
+**Details**
+
+- **`DosageDoseValuePositive` (`DosageDgMP`) — neu**
+  - Betroffene Ressourcentypen: `MedicationRequest`, `MedicationDispense`, `MedicationStatement`
+  - Regel: `doseQuantity.value` und `doseRange.high.value` müssen größer als `0` sein. Ausschließlich für `doseRange.low.value` ist zusätzlich der Wert `0` zulässig.
+  - Begründung: Eine negative Dosis beschreibt keine verabreichbare Arzneimittelmenge. Dasselbe gilt für `0` als Einzeldosis oder als Obergrenze — daraus entstünde eine Anweisung, nach der nichts anzuwenden ist. Benötigt wird `0` nur als Untergrenze einer variablen Dosis („0 bis 2 Tabletten“).
+
+- **`DosageDoseValuePositiveWarning` (`DosageDE`) — neu**
+  - Betroffene Ressourcentypen: `MedicationRequest`, `MedicationDispense`, `MedicationStatement`
+  - Regel: Identisch zu `DosageDoseValuePositive`, im generischen DE-Profil jedoch als Warnung.
+
+- **`TimingOnlyOneType` (`TimingDgMP`)**
+  - Betroffene Ressourcentypen: `MedicationRequest`, `MedicationDispense`, `MedicationStatement`
+  - Änderung 1: Bei `dayOfWeek` sind `frequency` sowie das Paar `period = 1` und `periodUnit = wk` als redundante Legacy-Angaben zulässig. Sie begründen kein Intervallschema und werden im generierten Text nicht ausgegeben. Zuvor führten sie zu einem Fehler.
+  - Änderung 2: Neues Schema „äußeres Intervall mit Tagesabschnitt oder Uhrzeit“. Eine nicht tägliche Periode (`d`, `wk` oder `mo`) zusammen mit `when` oder `timeOfDay` ist damit ausdrücklich zulässig; die Abgrenzung zum täglichen Schema erfolgt über `period`, `periodUnit` und `periodMax`.
+  - Änderung 3: Eine variable Frequenz (`frequencyMax`) bleibt der reinen Intervallangabe vorbehalten. Konkrete Zeitpunkte in `when` oder `timeOfDay` sowie Wochentage in `dayOfWeek` legen die Zahl der Gaben bereits abschließend fest; ein zusätzliches `frequencyMax` widerspräche dieser Aufzählung und entfiele in der Textgenerierung ersatzlos.
+
+- **`TimingPeriodUnit` (`TimingDgMP`)**
+  - Betroffene Ressourcentypen: `MedicationRequest`, `MedicationDispense`, `MedicationStatement`
+  - Änderung: `periodUnit` darf nur zusammen mit `period` angegeben werden. Bei `dayOfWeek` ist ausschließlich die redundante Wochenangabe zulässig, bei `when` oder `timeOfDay` ohne `dayOfWeek` sind Tage, Wochen oder Monate zulässig. Reine Intervalle verwenden weiterhin die vollständige gebundene Wertemenge. Zuvor war bei `when` oder `timeOfDay` ohne `dayOfWeek` ausschließlich `d` erlaubt, wodurch das neue äußere Intervallschema nicht abbildbar war; außerdem konnte `periodUnit` ohne `period` stehen.
+
+- **`TimingFrequencyCount` (`TimingDgMP`)**
+  - Betroffene Ressourcentypen: `MedicationRequest`, `MedicationDispense`, `MedicationStatement`
+  - Änderung: Nur die Beschreibung wurde präzisiert; der Ausdruck ist unverändert. `frequency` ist bei `when`, `timeOfDay` und `dayOfWeek` optional, muss bei Angabe aber der Anzahl der konkreten Anwendungen entsprechen — bei einer Kombination aus Wochentagen und Zeitpunkten dem Produkt beider Anzahlen.
+
+- **`TimingVarFreqOrPeriod` (`TimingDgMP`)**
+  - Betroffene Ressourcentypen: `MedicationRequest`, `MedicationDispense`, `MedicationStatement`
+  - Fix: Die Warnung greift nur noch, wenn `frequencyMax` und `periodMax` gemeinsam belegt sind. Zuvor verlangte der Ausdruck bei `frequency > 1` zwingend `period = 1` und beanstandete damit auch eindeutige Angaben wie „2 x alle 8 Stunden“. Der Ausdruck entspricht jetzt der bereits unter [Variable Angaben](./schema-variable-angaben.html) dokumentierten Regel.
+
+- **`TimingSingleDosageForTimeOfDay` und `TimingSingleDosageForWhen` (`TimingDgMP`)**
+  - Betroffene Ressourcentypen: `MedicationRequest`, `MedicationDispense`, `MedicationStatement`
+  - Fix: Statt zu prüfen, ob es überhaupt mehr als einen Dosiswert gibt, wird jetzt verglichen, ob die Anzahl unterschiedlicher Dosen der Anzahl der Dosage-Elemente entspricht. Zuvor wurden Ressourcen mit den Dosen 1, 1 und 2 fälschlich akzeptiert, weil bereits zwei unterschiedliche Werte vorlagen. Zusätzlich wird die vollständige Dosis einschließlich ihres Datentyps verglichen, nicht mehr nur der numerische Wert einer `Quantity`.
+
+- **`TimingSingleDosageForTimeOfDayWarning` und `TimingSingleDosageForWhenWarning` (`TimingDE`)**
+  - Betroffene Ressourcentypen: `MedicationRequest`, `MedicationDispense`, `MedicationStatement`
+  - Fix: Analog zu den dgMP-Invarianten, im generischen DE-Profil als Warnung.
+
+- **`TimingOnlyOnePeriodForDayOfWeek` (`TimingDgMP`)**
+  - Betroffene Ressourcentypen: `MedicationRequest`, `MedicationDispense`, `MedicationStatement`
+  - Änderung: Die Invariante ist von `Timing.repeat` auf das `Timing`-Element verschoben, um einen Überlauf im IG Publisher bei der Erzeugung der Excel-Tabellen zu umgehen. Der Ausdruck wertet ohnehin über `%resource` die gesamte Ressource aus; inhaltlich ändert sich nichts.
+
+- **Erweiterte Beispielabdeckung**
+  - Wochentagsschemata mit und ohne redundante Legacy-Angaben, die denselben Dosierungstext erzeugen
+  - Kombination aus Wochentag und `doseRange`, Tagesabschnitt mit variabler Dosis
+  - Bedarfsdosierungen mit Viererschema, Uhrzeit und Maximaldosis
+  - Intervallangaben mit `doseRange` ohne Untergrenze, wöchentlichem Rhythmus und fester Frequenz größer als 1
+  - Negativbeispiele für teilweise identische Dosen, für Wochentage mit echtem Intervall und für variable Frequenz zusammen mit konkreten Zeitpunkten
+
+---
+
 ### Release: 1.0.5
 
 **What's Changed**

@@ -550,6 +550,20 @@ class MedicationDosageTextGenerator:
         return ", ".join(
             f"{', '.join(times)} — {dose_text}" for times, dose_text in segments)
 
+    def _dose_value_as_number(self, value, field_name):
+        """Dosiswert als Zahl lesen.
+
+        FHIR führt Dosiswerte als decimal; einzelne Serialisierer liefern sie als
+        String. Beides wird akzeptiert, alles andere abgewiesen — ein nicht
+        auswertbarer Wert darf nicht ungeprüft in den Dosierungstext gelangen.
+        """
+        if isinstance(value, bool):
+            raise ValueError(f"{field_name} muss numerisch sein.")
+        try:
+            return float(value)
+        except (TypeError, ValueError):
+            raise ValueError(f"{field_name} muss numerisch sein.")
+
     def _extract_dose_quantity(self, dosage):
         """
         Extract dose quantity and unit from a dosage instruction.
@@ -584,7 +598,7 @@ class MedicationDosageTextGenerator:
                 raise ValueError("doseQuantity.value ist für die Textgenerierung erforderlich.")
             if not unit:
                 raise ValueError("doseQuantity.unit ist für die Textgenerierung erforderlich.")
-            if float(dose_value) <= 0:
+            if self._dose_value_as_number(dose_value, 'doseQuantity.value') <= 0:
                 raise ValueError("doseQuantity.value muss größer als 0 sein.")
             return (dose_value, unit)
 
@@ -597,7 +611,7 @@ class MedicationDosageTextGenerator:
                 raise ValueError("doseRange.high.value ist für die Textgenerierung erforderlich.")
             if not high.get('unit'):
                 raise ValueError("doseRange.high.unit ist für die Textgenerierung erforderlich.")
-            if float(high.get('value')) <= 0:
+            if self._dose_value_as_number(high.get('value'), 'doseRange.high.value') <= 0:
                 raise ValueError("doseRange.high.value muss größer als 0 sein.")
 
             if low:
@@ -605,7 +619,7 @@ class MedicationDosageTextGenerator:
                     raise ValueError("doseRange.low.value ist für die Textgenerierung erforderlich.")
                 if not low.get('unit'):
                     raise ValueError("doseRange.low.unit ist für die Textgenerierung erforderlich.")
-                if float(low.get('value')) < 0:
+                if self._dose_value_as_number(low.get('value'), 'doseRange.low.value') < 0:
                     raise ValueError("doseRange.low.value darf nicht negativ sein.")
                 if low.get('unit') != high.get('unit'):
                     raise ValueError("doseRange.low.unit und doseRange.high.unit müssen übereinstimmen.")

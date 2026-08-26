@@ -7,6 +7,7 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * ^comment = "Begründung Einschränkung Kardinalität: Der Zeitpunkt des Ereignisses ist in der ersten Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
 * code 0..0
   * ^comment = "Begründung Einschränkung Kardinalität: Ein Timing-Code ist in der ersten Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen. Stattdessen muss das Zeitmuster explizit strukturiert angegeben werden."
+* obeys TimingOnlyOnePeriodForDayOfWeek
 * repeat 1..1 MS
   * obeys TimingOnlyOneType
   * obeys TimingIntervalOnlyOneFrequency
@@ -14,7 +15,6 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * obeys TimingOnlyWhenOrTimeOfDay
   * obeys TimingOnlyOneTimeOfDay
   * obeys TimingOnlyOneDayOfWeek
-  * obeys TimingOnlyOnePeriodForDayOfWeek
   * obeys TimingOnlyOneTimeForInterval
   * obeys TimingOnlyOneBounds
   * obeys TimingFrequencyCount
@@ -72,7 +72,7 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
     * ^comment = "Begründung Einschränkung Kardinalität: Ein Zeitversatz ist in der ersten Ausbaustufe desdgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
 
 Invariant: TimingSingleDosageForTimeOfDay
-Description: "Wenn nur timeOfDay verwendet wird und täglich dosiert wird, ist die Angabe in einem einzigen Dosage-Element zu modellieren. Mehrere Dosage-Elemente sind nur zulässig, wenn sich die Dosis (Wert) unterscheidet."
+Description: "Wenn nur timeOfDay verwendet wird und täglich dosiert wird, ist die Angabe in einem einzigen Dosage-Element zu modellieren. Mehrere Dosage-Elemente sind nur zulässig, wenn sich die Dosis einschließlich ihres Datentyps unterscheidet."
 Expression: "(
   %resource.ofType(MedicationRequest).dosageInstruction
   | %resource.ofType(MedicationDispense).dosageInstruction
@@ -102,14 +102,22 @@ Expression: "(
         | %resource.ofType(MedicationStatement).dosage
       ).where(
         timing.repeat.dayOfWeek.empty() and timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()
-      ).doseAndRate.dose.ofType(Quantity).value.distinct().count() > 1
+      ).doseAndRate.dose.distinct().count()
+      =
+      (
+        %resource.ofType(MedicationRequest).dosageInstruction
+        | %resource.ofType(MedicationDispense).dosageInstruction
+        | %resource.ofType(MedicationStatement).dosage
+      ).where(
+        timing.repeat.dayOfWeek.empty() and timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()
+      ).count()
     )
   )
 )"
 Severity: #error
 
 Invariant: TimingSingleDosageForWhen
-Description: "Wenn nur when verwendet wird und täglich dosiert wird, ist die Angabe in einem einzigen Dosage-Element zu modellieren. Mehrere Dosage-Elemente sind nur zulässig, wenn sich die Dosis (Wert) unterscheidet."
+Description: "Wenn nur when verwendet wird und täglich dosiert wird, ist die Angabe in einem einzigen Dosage-Element zu modellieren. Mehrere Dosage-Elemente sind nur zulässig, wenn sich die Dosis einschließlich ihres Datentyps unterscheidet."
 Expression: "(
   %resource.ofType(MedicationRequest).dosageInstruction
   | %resource.ofType(MedicationDispense).dosageInstruction
@@ -139,7 +147,15 @@ Expression: "(
         | %resource.ofType(MedicationStatement).dosage
       ).where(
         timing.repeat.dayOfWeek.empty() and timing.repeat.when.exists() and timing.repeat.timeOfDay.empty()
-      ).doseAndRate.dose.ofType(Quantity).value.distinct().count() > 1
+      ).doseAndRate.dose.distinct().count()
+      =
+      (
+        %resource.ofType(MedicationRequest).dosageInstruction
+        | %resource.ofType(MedicationDispense).dosageInstruction
+        | %resource.ofType(MedicationStatement).dosage
+      ).where(
+        timing.repeat.dayOfWeek.empty() and timing.repeat.when.exists() and timing.repeat.timeOfDay.empty()
+      ).count()
     )
   )
 )"
@@ -226,7 +242,7 @@ Expression: "periodMax.empty() or period.empty() or period < periodMax"
 Severity: #error
 
 Invariant: TimingFrequencyCount
-Description: "The frequency of the timing needs to reflect the count of timeOfDay or when"
+Description: "Wenn frequency bei when, timeOfDay oder dayOfWeek angegeben ist, muss der Wert der Anzahl der konkreten Anwendungen entsprechen."
 Expression: "(when.exists() and dayOfWeek.empty() and frequency.exists() implies when.count() = frequency)
 and
 (when.exists() and dayOfWeek.exists() and frequency.exists() implies (when.count() * dayOfWeek.count()) = frequency)
@@ -239,10 +255,22 @@ and
 Severity: #error
 
 Invariant: TimingPeriodUnit
-Description: "If weekdays are given the periodUnit must be week, otherwise day"
-Expression: "(dayOfWeek.exists() and periodUnit.exists() implies periodUnit = 'wk')
-and
-((dayOfWeek.empty() and (when.exists() or timeOfDay.exists()) and periodUnit.exists()) implies periodUnit = 'd')"
+Description: "periodUnit darf nur zusammen mit period angegeben werden. Bei dayOfWeek ist ausschließlich die redundante Wochenangabe zulässig; bei when oder timeOfDay ohne dayOfWeek sind Tage, Wochen oder Monate zulässig."
+Expression: "periodUnit.empty() or (
+  period.exists() and
+  (
+    (dayOfWeek.exists() and periodUnit = 'wk') or
+    (
+      dayOfWeek.empty() and
+      (
+        (when.empty() and timeOfDay.empty()) or
+        periodUnit = 'd' or
+        periodUnit = 'wk' or
+        periodUnit = 'mo'
+      )
+    )
+  )
+)"
 Severity: #error
 
 Invariant: TimingPeriodOnlyWholeNumber
@@ -251,22 +279,28 @@ Expression: "(period.exists() implies period mod 1 = 0) and (periodMax.exists() 
 Severity: #error
 
 Invariant: TimingOnlyOneType
-Description: "Only one kind of Timing is allowed. Current allowed timings: 4-Scheme/TimeOfDay (with optional Interval), DayOfWeek (with optional Time/4-Schema), Interval only"
-Expression: "/* DayOfWeek only (without when/timeOfDay) */
+Description: "Es ist genau eines der unterstützten Timing-Schemata zulässig. Bei dayOfWeek sind frequency sowie das Paar period = 1 und periodUnit = wk als redundante Legacy-Angaben optional; sie begründen kein Intervallschema. Bei when oder timeOfDay ist frequency optional; eine Periode unterscheidet das tägliche vom äußeren Intervallschema."
+Expression: "/* DayOfWeek only; legacy frequency and the exact 1 wk pair are optional */
 (
-  %resource.ofType(MedicationRequest).dosageInstruction | 
-  %resource.ofType(MedicationDispense).dosageInstruction | 
+  %resource.ofType(MedicationRequest).dosageInstruction |
+  %resource.ofType(MedicationDispense).dosageInstruction |
   %resource.ofType(MedicationStatement).dosage
 ).all(
   timing.repeat.dayOfWeek.exists() and
   timing.repeat.when.empty() and
-  timing.repeat.timeOfDay.empty()
+  timing.repeat.timeOfDay.empty() and
+  timing.repeat.frequencyMax.empty() and
+  timing.repeat.periodMax.empty() and
+  (
+    (timing.repeat.period.empty() and timing.repeat.periodUnit.empty()) or
+    (timing.repeat.period = 1 and timing.repeat.periodUnit = 'wk')
+  )
 ) or
 
 /* Interval only (frequency + period + periodUnit, no when/timeOfDay/dayOfWeek) */
 (
-  %resource.ofType(MedicationRequest).dosageInstruction | 
-  %resource.ofType(MedicationDispense).dosageInstruction | 
+  %resource.ofType(MedicationRequest).dosageInstruction |
+  %resource.ofType(MedicationDispense).dosageInstruction |
   %resource.ofType(MedicationStatement).dosage
 ).all(
   timing.repeat.frequency.exists() and
@@ -277,7 +311,7 @@ Expression: "/* DayOfWeek only (without when/timeOfDay) */
   timing.repeat.dayOfWeek.empty()
 ) or
 
-/* DayOfWeek and Time/4-Schema (with optional frequency/period/periodUnit) */
+/* DayOfWeek and Time/4-Schema; legacy frequency and the exact 1 wk pair are optional */
 (
   %resource.ofType(MedicationRequest).dosageInstruction | 
   %resource.ofType(MedicationDispense).dosageInstruction | 
@@ -287,10 +321,16 @@ Expression: "/* DayOfWeek only (without when/timeOfDay) */
   (
     (timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()) or
     (timing.repeat.when.exists() and timing.repeat.timeOfDay.empty())
+  ) and
+  timing.repeat.frequencyMax.empty() and
+  timing.repeat.periodMax.empty() and
+  (
+    (timing.repeat.period.empty() and timing.repeat.periodUnit.empty()) or
+    (timing.repeat.period = 1 and timing.repeat.periodUnit = 'wk')
   )
 ) or
 
-/* When or TimeOfDay only (no dayOfWeek; frequency/period/periodUnit optional) */
+/* Daily When or TimeOfDay; frequency is optional */
 (
   %resource.ofType(MedicationRequest).dosageInstruction | 
   %resource.ofType(MedicationDispense).dosageInstruction | 
@@ -300,6 +340,32 @@ Expression: "/* DayOfWeek only (without when/timeOfDay) */
   (
     (timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()) or
     (timing.repeat.when.exists() and timing.repeat.timeOfDay.empty())
+  ) and
+  timing.repeat.periodMax.empty() and
+  (
+    (timing.repeat.period.empty() and timing.repeat.periodUnit.empty()) or
+    (timing.repeat.period = 1 and timing.repeat.periodUnit = 'd')
+  )
+) or
+
+/* Non-daily outer interval with When or TimeOfDay; frequency is optional */
+(
+  %resource.ofType(MedicationRequest).dosageInstruction |
+  %resource.ofType(MedicationDispense).dosageInstruction |
+  %resource.ofType(MedicationStatement).dosage
+).all(
+  timing.repeat.dayOfWeek.empty() and
+  (
+    (timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()) or
+    (timing.repeat.when.exists() and timing.repeat.timeOfDay.empty())
+  ) and
+  timing.repeat.period.exists() and
+  timing.repeat.periodUnit.exists() and
+  (timing.repeat.periodUnit = 'd' or timing.repeat.periodUnit = 'wk' or timing.repeat.periodUnit = 'mo') and
+  (
+    timing.repeat.periodUnit != 'd' or
+    timing.repeat.period != 1 or
+    timing.repeat.periodMax.exists()
   )
 )"
 Severity: #error

@@ -11,6 +11,7 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
 * obeys DosageDoseQuantityAllowedFractions
 * obeys DosageDoseUnitSameCode
 * obeys DosageDoseValueDecimalNotation
+* obeys DosageDoseValuePositive
 * obeys DosageViererschemaInText
 * obeys PatientInstructionIdentical
 * obeys MaxDoseSameUnitAsDose
@@ -290,6 +291,17 @@ doseAndRate.all(
     dose.ofType(Range).high.value.empty() or
     dose.ofType(Range).high.value.toString().matches('^[0-9]+([.][0-9]{1,2})?$')
   )
+)
+"""
+Severity: #error
+
+Invariant: DosageDoseValuePositive
+Description: "Dosiswerte in doseQuantity sowie in der unteren und oberen Grenze von doseRange dürfen nicht negativ sein. Der Wert 0 ist zulässig."
+Expression: """
+doseAndRate.all(
+  dose.ofType(Quantity).value.all($this >= 0) and
+  dose.ofType(Range).low.value.all($this >= 0) and
+  dose.ofType(Range).high.value.all($this >= 0)
 )
 """
 Severity: #error

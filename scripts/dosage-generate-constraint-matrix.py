@@ -242,8 +242,10 @@ def main():
 
     # Step 2: Collect constraints
     constraints = []
+    constraints += extract_constraints_from_element(sd_map["TimingDgMP"], "Timing", "Timing")
     constraints += extract_constraints_from_element(sd_map["TimingDgMP"], "Timing.repeat", "Timing.repeat")
     if "TimingDE" in sd_map:
+        constraints += extract_constraints_from_element(sd_map["TimingDE"], "Timing", "Timing")
         constraints += extract_constraints_from_element(sd_map["TimingDE"], "Timing.repeat", "Timing.repeat")
     if "DosageDE" in sd_map:
         constraints += extract_constraints_from_element(sd_map["DosageDE"], "Dosage", "Dosage")
@@ -251,7 +253,7 @@ def main():
         constraints += extract_constraints_from_element(sd_map["DosageDgMP"], "Dosage", "Dosage")
 
     if not constraints:
-        print("ERROR: No constraints found (Timing.repeat or Dosage roots).")
+        print("ERROR: No constraints found (Timing, Timing.repeat or Dosage roots).")
         sys.exit(1)
 
     # Merge: prefer higher severity (error>warning) and dgMP profile if same severity

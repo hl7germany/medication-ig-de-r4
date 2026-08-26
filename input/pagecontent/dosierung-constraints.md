@@ -668,17 +668,6 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-AsNeededForIdentical-examples.md%}
 
-##### MindestabstandIdentical
-
-**Beschreibung:**
-Enthält eine Ressource mehrere `Dosage`-Elemente, muss der Mindestabstand zwischen Gaben (`modifierExtension[minimumIntervalBetweenAdministrations]`) in allen Elementen identisch befüllt sein — in Wert wie in Zeiteinheit. Entweder tragen alle Elemente die Angabe oder keines, und jede vorhandene Angabe muss vollständig sein (`valueDuration.value` **und** `valueDuration.code`).
-
-**Warum?**
-Der Mindestabstand wird ausschließlich aus dem ersten `Dosage`-Element gelesen. Da es sich um eine `modifierExtension` handelt, verändert er die zulässige Anwendung der Dosierung; ein nur in einem späteren Element hinterlegter Abstand entfiele im erzeugten Text unbemerkt.
-
-Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
-
-{% include dosage-constraint-MindestabstandIdentical-examples.md%}
 
 ##### MindestabstandUnitMatchesCode
 

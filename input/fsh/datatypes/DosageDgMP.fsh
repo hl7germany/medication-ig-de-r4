@@ -26,7 +26,6 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
 * obeys AsNeededSingleDosageOnly
 * obeys AsNeededIdentical
 * obeys AsNeededForIdentical
-* obeys MindestabstandIdentical
 * obeys MindestabstandUnitMatchesCode
 * obeys MaxDosePerPeriodIdentical
 * timing only TimingDgMP
@@ -488,95 +487,6 @@ Expression: "(
   ).value.ofType(CodeableConcept).text.distinct().count()
 )"
 
-Invariant: MindestabstandIdentical
-Description: "The minimum interval between administrations (Mindestabstand) must be populated identically across all Dosage elements of a resource."
-Severity: #error
-/* Die distinct()-Prüfungen allein genügen nicht: Ein Element, das value oder code
-   nicht mit einem tatsächlichen primitiven Wert belegt, steuert keinen vergleichbaren
-   Wert zur Menge bei und könnte unbemerkt bleiben. Deshalb muss jede vorhandene
-   Extension genau einen tatsächlichen Wert und einen tatsächlichen Code beitragen.
-   hasValue() ist nötig, weil ein FHIR-Primitive auch ohne eigenen Wert existieren
-   kann, wenn es lediglich eine Extension trägt. */
-Expression: "(
-  (
-    %resource.ofType(MedicationRequest).dosageInstruction |
-    %resource.ofType(MedicationDispense).dosageInstruction |
-    %resource.ofType(MedicationStatement).dosage
-  ).modifierExtension.where(
-    url='http://ig.fhir.de/igs/medication/StructureDefinition/MinimumIntervalBetweenAdministrations'
-  ).value.ofType(Duration).value.where($this.hasValue()).count()
-  =
-  (
-    %resource.ofType(MedicationRequest).dosageInstruction |
-    %resource.ofType(MedicationDispense).dosageInstruction |
-    %resource.ofType(MedicationStatement).dosage
-  ).modifierExtension.where(
-    url='http://ig.fhir.de/igs/medication/StructureDefinition/MinimumIntervalBetweenAdministrations'
-  ).count()
-)
-and
-(
-  (
-    %resource.ofType(MedicationRequest).dosageInstruction |
-    %resource.ofType(MedicationDispense).dosageInstruction |
-    %resource.ofType(MedicationStatement).dosage
-  ).modifierExtension.where(
-    url='http://ig.fhir.de/igs/medication/StructureDefinition/MinimumIntervalBetweenAdministrations'
-  ).value.ofType(Duration).code.where($this.hasValue()).count()
-  =
-  (
-    %resource.ofType(MedicationRequest).dosageInstruction |
-    %resource.ofType(MedicationDispense).dosageInstruction |
-    %resource.ofType(MedicationStatement).dosage
-  ).modifierExtension.where(
-    url='http://ig.fhir.de/igs/medication/StructureDefinition/MinimumIntervalBetweenAdministrations'
-  ).count()
-)
-and
-(
-  (
-    %resource.ofType(MedicationRequest).dosageInstruction |
-    %resource.ofType(MedicationDispense).dosageInstruction |
-    %resource.ofType(MedicationStatement).dosage
-  ).modifierExtension.where(
-    url='http://ig.fhir.de/igs/medication/StructureDefinition/MinimumIntervalBetweenAdministrations'
-  ).value.ofType(Duration).value.distinct().count() <= 1
-)
-and
-(
-  (
-    %resource.ofType(MedicationRequest).dosageInstruction |
-    %resource.ofType(MedicationDispense).dosageInstruction |
-    %resource.ofType(MedicationStatement).dosage
-  ).modifierExtension.where(
-    url='http://ig.fhir.de/igs/medication/StructureDefinition/MinimumIntervalBetweenAdministrations'
-  ).value.ofType(Duration).code.distinct().count() <= 1
-)
-and
-(
-  (
-    (
-      %resource.ofType(MedicationRequest).dosageInstruction |
-      %resource.ofType(MedicationDispense).dosageInstruction |
-      %resource.ofType(MedicationStatement).dosage
-    ).modifierExtension.where(
-      url='http://ig.fhir.de/igs/medication/StructureDefinition/MinimumIntervalBetweenAdministrations'
-    ).exists()
-  )
-  implies
-  (
-    (
-      %resource.ofType(MedicationRequest).dosageInstruction |
-      %resource.ofType(MedicationDispense).dosageInstruction |
-      %resource.ofType(MedicationStatement).dosage
-    ).all(
-      modifierExtension.where(
-        url='http://ig.fhir.de/igs/medication/StructureDefinition/MinimumIntervalBetweenAdministrations'
-      ).exists()
-    )
-  )
-)"
-
 Invariant: MindestabstandUnitMatchesCode
 Description: "The display unit of the minimum interval (valueDuration.unit) must match the UCUM code (e.g. 'Stunde(n)' only with code='h')."
 Severity: #error
@@ -597,7 +507,7 @@ Expression: "modifierExtension.where(
 Invariant: MaxDosePerPeriodIdentical
 Description: "The maximum amount (maxDosePerPeriod) applies to the total amount within the reference period and must be populated identically across all Dosage elements of a resource."
 Severity: #error
-/* Wie bei MindestabstandIdentical genügen die distinct()-Prüfungen allein nicht:
+/* Die distinct()-Prüfungen allein genügen nicht:
    Ein Element, das ein Teilfeld gar nicht belegt, steuert nichts zur Menge bei.
    Deshalb muss jede vorhandene Maximalmenge alle vier Teilfelder führen. */
 Expression: "(

@@ -9,6 +9,7 @@ Description: "Gibt an, wie das Medikament eingenommen oder verabreicht wurde bzw
 * obeys DosageStructuredOrFreeTextWarning
 * obeys DosageStructuredRequiresBothWarning
 * obeys DosageDoseUnitSameCodeWarning
+* obeys DosageDoseValuePositiveWarning
 * obeys DosageWarnungViererschemaInText
 * obeys FreeTextSingleDosageOnlyWarning
 * obeys dos-1
@@ -126,6 +127,17 @@ doseAndRate.exists() implies
     (%resource.ofType(MedicationRequest).dosageInstruction | %resource.ofType(MedicationDispense).dosageInstruction | %resource.ofType(MedicationStatement).dosage).doseAndRate.dose.ofType(Range).high.code
   ).distinct().count() = 1
 )"
+Severity: #warning
+
+Invariant: DosageDoseValuePositiveWarning
+Description: "Dosiswerte in doseQuantity sowie in der unteren und oberen Grenze von doseRange sollten nicht negativ sein. Der Wert 0 ist zulässig."
+Expression: """
+doseAndRate.all(
+  dose.ofType(Quantity).value.all($this >= 0) and
+  dose.ofType(Range).low.value.all($this >= 0) and
+  dose.ofType(Range).high.value.all($this >= 0)
+)
+"""
 Severity: #warning
 
 Invariant: DosageWarnungViererschemaInText

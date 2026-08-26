@@ -67,7 +67,6 @@
 | [MedicationRequest-Example-MR-Dosage-UnitStueck-1020](./MedicationRequest-Example-MR-Dosage-UnitStueck-1020.html) | 1-0-2-0 Stück | 1 Stück |  |  |  |  |  | MORN |  |
 |  |  | 2 Stück |  |  |  |  |  | EVE |  |
 | [MedicationRequest-Example-MR-Dosage-UnitTasse-1000](./MedicationRequest-Example-MR-Dosage-UnitTasse-1000.html) | 2-0-0-0 Teelöffel | 2 Teelöffel |  |  |  |  |  | MORN |  |
-| [MedicationRequest-Example-MR-Dosage-Zero-Quantity](./MedicationRequest-Example-MR-Dosage-Zero-Quantity.html) | 0-0-0-0 Stück | 0 Stück |  |  |  |  |  | MORN |  |
 | [MedicationRequest-Example-MR-Dosage-asneeded-b4-4schema](./MedicationRequest-Example-MR-Dosage-asneeded-b4-4schema.html) | Bei Bedarf: 1-0-2-0 Stück | 1 Stück |  |  |  |  |  | MORN |  |
 |  |  | 2 Stück |  |  |  |  |  | EVE |  |
 | [MedicationRequest-Example-MR-Dosage-asneeded-b5-timeofday-maxdose-1d](./MedicationRequest-Example-MR-Dosage-asneeded-b5-timeofday-maxdose-1d.html) | Bei Bedarf: täglich 08:00 Uhr — je 1 Stück, 20:00 Uhr — je 2 Stück — nicht mehr als 6 Stück pro Tag | 1 Stück |  |  |  |  | 08:00:00 |  |  |
@@ -140,7 +139,6 @@
 | [MedicationStatement-Example-MS-Dosage-UnitStueck-1020](./MedicationStatement-Example-MS-Dosage-UnitStueck-1020.html) | 1-0-2-0 Stück | 1 Stück |  |  |  |  |  | MORN |  |
 |  |  | 2 Stück |  |  |  |  |  | EVE |  |
 | [MedicationStatement-Example-MS-Dosage-UnitTasse-1000](./MedicationStatement-Example-MS-Dosage-UnitTasse-1000.html) | 2-0-0-0 Teelöffel | 2 Teelöffel |  |  |  |  |  | MORN |  |
-| [MedicationStatement-Example-MS-Dosage-Zero-Range-High](./MedicationStatement-Example-MS-Dosage-Zero-Range-High.html) | morgens — je bis zu 0 Stück | bis 0 Stück |  |  |  |  |  | MORN |  |
 | [MedicationStatement-Example-MS-DosageTr-1000](./MedicationStatement-Example-MS-DosageTr-1000.html) | 20-0-0-0 Tropfen | 20 Tropfen |  |  |  |  |  | MORN |  |
 | [MedicationStatement-Example-MS-Weekday-Legacy](./MedicationStatement-Example-MS-Weekday-Legacy.html) | dienstags — je 1 Stück; donnerstags — je 1 Stück | 1 Stück | 2 | 1 | wk | tue, thu |  |  |  |
 | [MedicationStatement-Example-MS-Weekday-TimeOfDay-Legacy](./MedicationStatement-Example-MS-Weekday-TimeOfDay-Legacy.html) | dienstags 08:00 Uhr, 20:00 Uhr — je 1 Stück; donnerstags 08:00 Uhr, 20:00 Uhr — je 1 Stück | 1 Stück | 4 | 1 | wk | tue, thu | 08:00:00, 20:00:00 |  |  |

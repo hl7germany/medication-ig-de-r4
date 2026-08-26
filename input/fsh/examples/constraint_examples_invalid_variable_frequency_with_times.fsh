@@ -4,7 +4,7 @@
 // dropped without trace by the text generation. No period is given, so
 // TimingVarFreqOrPeriod does not apply and TimingOnlyOneType is isolated.
 
-Instance: INV-C-TimingOnlyOneType-VarFreq-MR
+Instance: INV-VarFreq-C-TimingOnlyOneType-MR
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid MedicationRequest: variable frequency together with when"
@@ -20,7 +20,7 @@ Description: "CAVE: frequencyMax cannot be combined with concrete when values."
     * frequencyMax = 3
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-C-TimingOnlyOneType-VarFreq-MD
+Instance: INV-VarFreq-C-TimingOnlyOneType-MD
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
 Title: "Invalid MedicationDispense: variable frequency together with timeOfDay"
@@ -35,7 +35,7 @@ Description: "CAVE: frequencyMax cannot be combined with concrete timeOfDay valu
     * frequencyMax = 3
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-C-TimingOnlyOneType-VarFreq-MS
+Instance: INV-VarFreq-C-TimingOnlyOneType-MS
 InstanceOf: MedicationStatementDgMP
 Usage: #example
 Title: "Invalid MedicationStatement: variable frequency together with an interval combination"

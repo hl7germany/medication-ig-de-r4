@@ -1,13 +1,22 @@
 import os
 import subprocess
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import importlib
+fetch_algorithm = importlib.import_module("fetch-algorithm")
 
 def main():
     base_dir = os.path.dirname(os.path.abspath(__file__))
 
     input_folder = os.path.normpath(os.path.join(base_dir, "../fsh-generated/resources"))
     output_folder = os.path.normpath(os.path.join(base_dir, "../input/includes"))
-    medication_dosage_script = os.path.join(base_dir, "medication-dosage-to-text.py")
     extension_script = os.path.join(base_dir, "dosage-add-extension.py")
+
+    # 0. Provide the pinned algorithm version from the external repository.
+    #    Its __version__ is written into every resource as algorithmVersion.
+    print("Providing the pinned dosage text generation algorithm...")
+    medication_dosage_script = fetch_algorithm.main()
 
     # 1. Add consolidated dosage extensions to resources (using the updated extension script)
     print("Adding renderedDosageInstruction and GeneratedDosageInstructionsMeta extensions to medication resources...")

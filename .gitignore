@@ -9,3 +9,5 @@ Thumbs.db
 /medication-no-sushi/
 __pycache__
 .vscode/
+# Gepinnte, extern gepflegte Skripte (siehe scripts/dosage-algorithm.lock)
+scripts/vendor/

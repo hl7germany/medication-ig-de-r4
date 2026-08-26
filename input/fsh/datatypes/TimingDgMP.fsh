@@ -73,7 +73,7 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
     * ^comment = "Begründung Einschränkung Kardinalität: Ein Zeitversatz ist in der ersten Ausbaustufe desdgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
 
 Invariant: TimingSingleDosageForTimeOfDay
-Description: "Wenn nur timeOfDay verwendet wird und täglich dosiert wird, ist die Angabe in einem einzigen Dosage-Element zu modellieren. Mehrere Dosage-Elemente sind nur zulässig, wenn sich die Dosis einschließlich ihres Datentyps unterscheidet."
+Description: "If only timeOfDay is used and dosing is daily, the times must be modelled in a single Dosage element. Multiple Dosage elements are only allowed if every element carries a distinct dose, including its data type."
 Expression: "(
   %resource.ofType(MedicationRequest).dosageInstruction
   | %resource.ofType(MedicationDispense).dosageInstruction
@@ -118,7 +118,7 @@ Expression: "(
 Severity: #error
 
 Invariant: TimingSingleDosageForWhen
-Description: "Wenn nur when verwendet wird und täglich dosiert wird, ist die Angabe in einem einzigen Dosage-Element zu modellieren. Mehrere Dosage-Elemente sind nur zulässig, wenn sich die Dosis einschließlich ihres Datentyps unterscheidet."
+Description: "If only when is used and dosing is daily, the times of day must be modelled in a single Dosage element. Multiple Dosage elements are only allowed if every element carries a distinct dose, including its data type."
 Expression: "(
   %resource.ofType(MedicationRequest).dosageInstruction
   | %resource.ofType(MedicationDispense).dosageInstruction
@@ -163,7 +163,7 @@ Expression: "(
 Severity: #error
 
 Invariant: TimingBoundsUnitMatchesCode
-Description: "boundsDuration.unit muss zur UCUM boundsDuration.code passen (z. B. 'Woche(n)' nur mit code='wk')."
+Description: "boundsDuration.unit must match the UCUM boundsDuration.code (e.g. 'Woche(n)' only with code='wk')."
 Expression: "bounds.ofType(Duration).exists().not() or (
   (
     bounds.ofType(Duration).code = 'd'
@@ -202,7 +202,7 @@ Expression: "bounds.ofType(Duration).exists().not() or (
 Severity: #error
 
 Invariant: TimingVarFreqOrPeriod
-Description: "Bei einer reinen Intervallangabe ohne Zeitpunkte sollte nicht gleichzeitig die Frequenz (frequencyMax) und die Periode (periodMax) variabel angegeben werden. Eine feste Frequenz größer als 1 zusammen mit einer Periode, etwa '2 x alle 8 Stunden', bleibt zulässig."
+Description: "For a pure interval without concrete times, frequency (frequencyMax) and period (periodMax) should not both be given as variable. A fixed frequency greater than 1 together with a period, such as twice every 8 hours, remains allowed."
 Expression: "/* Detect Interval only */
 (
   timeOfDay.empty() and
@@ -217,17 +217,17 @@ Expression: "/* Detect Interval only */
 Severity: #warning
 
 Invariant: TimingVarFreqGtMin
-Description: "Bei variabler Frequenz muss die maximale Frequenz größer als die minimale Frequenz sein."
+Description: "For a variable frequency, the maximum frequency must be greater than the minimum frequency."
 Expression: "frequencyMax.empty() or frequency.empty() or frequency.value < frequencyMax.value"
 Severity: #error
 
 Invariant: TimingVarPeriodGtMin
-Description: "Bei variabler Periode muss die maximale Periode größer als die minimale Periode sein."
+Description: "For a variable period, the maximum period must be greater than the minimum period."
 Expression: "periodMax.empty() or period.empty() or period < periodMax"
 Severity: #error
 
 Invariant: TimingFrequencyCount
-Description: "Wenn frequency bei when, timeOfDay oder dayOfWeek angegeben ist, muss der Wert der Anzahl der konkreten Anwendungen entsprechen."
+Description: "If frequency is given together with when, timeOfDay or dayOfWeek, its value must match the number of concrete administrations."
 Expression: "(when.exists() and dayOfWeek.empty() and frequency.exists() implies when.count() = frequency)
 and
 (when.exists() and dayOfWeek.exists() and frequency.exists() implies (when.count() * dayOfWeek.count()) = frequency)
@@ -240,7 +240,7 @@ and
 Severity: #error
 
 Invariant: TimingPeriodUnit
-Description: "periodUnit darf nur zusammen mit period angegeben werden. Bei dayOfWeek ist ausschließlich die redundante Wochenangabe zulässig; bei when oder timeOfDay ohne dayOfWeek sind Tage, Wochen oder Monate zulässig."
+Description: "periodUnit may only be given together with period. With dayOfWeek, only the redundant weekly statement is allowed; with when or timeOfDay without dayOfWeek, days, weeks or months are allowed."
 Expression: "periodUnit.empty() or (
   period.exists() and
   (
@@ -264,7 +264,7 @@ Expression: "(period.exists() implies period mod 1 = 0) and (periodMax.exists() 
 Severity: #error
 
 Invariant: TimingOnlyOneType
-Description: "Es ist genau eines der unterstützten Timing-Schemata zulässig. Bei dayOfWeek sind frequency sowie das Paar period = 1 und periodUnit = wk als redundante Legacy-Angaben optional; sie begründen kein Intervallschema. Bei when oder timeOfDay ist frequency optional; eine nicht tägliche Periode unterscheidet das tägliche Schema von der Kombination aus Zeitintervall und Tageszeiten- beziehungsweise Uhrzeiten-Bezug. Eine variable Frequenz (frequencyMax) bleibt der reinen Intervallangabe vorbehalten, weil konkrete Zeitpunkte oder Wochentage die Zahl der Gaben bereits festlegen."
+Description: "Exactly one of the supported timing schemas is allowed. With dayOfWeek, frequency and the pair period = 1 and periodUnit = wk are optional redundant legacy statements; they do not constitute an interval schema. With when or timeOfDay, frequency is optional; a non-daily period distinguishes the daily schema from a time interval combined with a time-of-day or clock-time reference. A variable frequency (frequencyMax) is reserved for the pure interval, because concrete times or weekdays already determine the number of administrations."
 Expression: "/* DayOfWeek only; legacy frequency and the exact 1 wk pair are optional */
 (
   %resource.ofType(MedicationRequest).dosageInstruction |

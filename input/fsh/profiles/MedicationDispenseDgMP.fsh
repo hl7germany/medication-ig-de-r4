@@ -13,7 +13,7 @@ Description: "Dieses Profil dient ausschließlich der Validierung des Implementa
   * ^short = "Angabe der Dosierinformationen strukturiert oder als Freitext"
 
 Invariant: ExtRequiresDosage-MD
-Description: "Wenn eine Dosierungs-Extension (GeneratedDosageInstructionsMeta oder renderedDosageInstruction) vorhanden ist, muss mindestens eine dosageInstruction vorhanden sein."
+Description: "If a dosage extension (GeneratedDosageInstructionsMeta or renderedDosageInstruction) is present, at least one dosageInstruction must be present."
 Expression: "(
   extension.where(
     url = 'http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta' or

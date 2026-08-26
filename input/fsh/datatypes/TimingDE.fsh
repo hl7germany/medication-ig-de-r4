@@ -54,7 +54,7 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * ^comment = "Wenn mehr als ein Ereignis angegeben ist, bezieht sich das Ereignis auf die Vereinigung der angegebenen Ereignisse."
 
 Invariant: TimingSingleDosageForTimeOfDayWarning
-Description: "Wenn nur timeOfDay verwendet wird und täglich dosiert wird, ist die Angabe in einem einzigen Dosage-Element zu modellieren. Mehrere Dosage-Elemente sind nur zulässig, wenn sich die Dosis einschließlich ihres Datentyps unterscheidet."
+Description: "If only timeOfDay is used and dosing is daily, the times must be modelled in a single Dosage element. Multiple Dosage elements are only allowed if every element carries a distinct dose, including its data type."
 Expression: "(
   %resource.ofType(MedicationRequest).dosageInstruction
   | %resource.ofType(MedicationDispense).dosageInstruction
@@ -99,7 +99,7 @@ Expression: "(
 Severity: #warning
 
 Invariant: TimingSingleDosageForWhenWarning
-Description: "Wenn nur when verwendet wird und täglich dosiert wird, ist die Angabe in einem einzigen Dosage-Element zu modellieren. Mehrere Dosage-Elemente sind nur zulässig, wenn sich die Dosis einschließlich ihres Datentyps unterscheidet."
+Description: "If only when is used and dosing is daily, the times of day must be modelled in a single Dosage element. Multiple Dosage elements are only allowed if every element carries a distinct dose, including its data type."
 Expression: "(
   %resource.ofType(MedicationRequest).dosageInstruction
   | %resource.ofType(MedicationDispense).dosageInstruction
@@ -144,7 +144,7 @@ Expression: "(
 Severity: #warning
 
 Invariant: TimingBoundsUnitMatchesCodeWarning
-Description: "boundsDuration.unit muss zur UCUM boundsDuration.code passen (z. B. 'Woche(n)' nur mit code='wk')."
+Description: "boundsDuration.unit must match the UCUM boundsDuration.code (e.g. 'Woche(n)' only with code='wk')."
 Expression: "bounds.ofType(Duration).exists().not() or (
   (
     bounds.ofType(Duration).code = 'd'

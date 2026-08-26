@@ -10,10 +10,10 @@ Die folgenden Invarianten sind auf den generischen Profilen [DosageDE](./Structu
 
 ##### DosageStructuredOrFreeTextWarning
 
-**Beschreibung:**  
+**Beschreibung:**
 Warnung in `DosageDE`, wenn eine Dosierungsangabe strukturierte Elemente (`timing`, `doseAndRate`) und Freitext (`text`) mischt.
 
-**Warum?**  
+**Warum?**
 Verhindert widersprüchliche oder doppelte Informationsquellen (Freitext vs. Struktur) und erleichtert die automatische Verarbeitung. Implementierungen sollten die strukturierte Variante bevorzugen und Freitext nur verwenden, wenn eine strukturierte Abbildung nicht möglich ist. In den dgMP-Profilen gilt für denselben Sachverhalt der Fehler [DosageStructuredOrFreeText](#dosagestructuredorfreetext).
 
 Folgende Beispiele lösen eine Warnung aus:
@@ -55,6 +55,18 @@ Gemischte Einheiten (z. B. Stück und mg) erschweren Vergleich, Summierung und D
 Folgende Beispiele lösen eine Warnung aus:
 
 {% include dosage-constraint-DosageDoseUnitSameCodeWarning-examples.md%}
+
+##### DosageDoseValuePositiveWarning
+
+**Beschreibung:**
+Warnung in `DosageDE`, wenn `doseQuantity.value`, `doseRange.low.value` oder `doseRange.high.value` negativ ist. Der Wert `0` ist zulässig.
+
+**Warum?**
+Negative Dosiswerte sind fachlich nicht als verabreichbare Arzneimittelmenge interpretierbar. Im generischen DE-Profil bleibt die Regel eine Warnung; in den dgMP-Profilen gilt für denselben Sachverhalt der Fehler [DosageDoseValuePositive](#dosagedosevaluepositive). `0` bleibt insbesondere als Untergrenze eines Bereichs wie „0 bis 2 Tabletten“ erlaubt.
+
+Folgende Beispiele lösen eine Warnung aus:
+
+{% include dosage-constraint-DosageDoseValuePositiveWarning-examples.md%}
 
 ##### DosageWarnungViererschemaInText
 
@@ -144,7 +156,7 @@ Beispiele (Warnungskontext – variable Einzeldosis und variable Periode):
 Bei einer reinen Intervallangabe ohne Zeitpunkte sollte bei gleichzeitiger Angabe von Frequenz und Periode entweder nur die Frequenz einschließlich `frequencyMax` oder nur die Periode einschließlich `periodMax` größer als 1 sein.
 
 **Warum?**  
-Die gleichzeitige Variation beider Achsen führt zu einem nur schwer eindeutig interpretierbaren Einnahmeschema. Sind zusätzlich Zeitpunkte (`timeOfDay`, `when`) oder Wochentage (`dayOfWeek`) angegeben, greift die Regel nicht: Dort entspricht `frequency` gemäß `TimingFrequencyCount` der Anzahl der Zeitpunkte und ist kein Faktor des Einnahmerhythmus.
+Die gleichzeitige Variation beider Achsen führt zu einem nur schwer eindeutig interpretierbaren Einnahmeschema. Bei `when`, `timeOfDay` oder `dayOfWeek` ist `frequency` optional und redundant, weil die konkreten Zeitpunkte beziehungsweise Anwendungstage die Zahl der Gaben bereits festlegen. Die optionale Angabe dient ausschließlich der Rückwärtskompatibilität und begründet kein zusätzliches Intervallschema.
 
 Folgende Beispiele lösen eine Warnung aus:
 
@@ -157,10 +169,10 @@ Die folgenden Invarianten beziehen sich auf `timing.repeat` und wirken über all
 ##### TimingFrequencyCount
 
 **Beschreibung:**  
-Wenn die Häufigkeit (`frequency`) angegeben ist, muss sie mit der Anzahl der angegebenen Zeitpunkte (`timeOfDay` oder `when`) übereinstimmen, abhängig davon, welche Felder gesetzt sind.
+Wird `frequency` bei konkreten Werten in `when`, `timeOfDay` oder `dayOfWeek` angegeben, muss der Wert deren Anzahl entsprechen. Bei einer Kombination aus Wochentagen und konkreten Zeitpunkten entspricht `frequency` dem Produkt beider Anzahlen.
 
 **Warum?**  
-Diese Regel stellt sicher, dass die Anzahl der Dosierungen pro Periode korrekt mit den angegebenen Zeitpunkten übereinstimmt, wenn `frequency` explizit angegeben wird. So wird verhindert, dass widersprüchliche oder unklare Dosierungsangaben entstehen.
+Die optionale Angabe darf der bereits strukturiert ausgedrückten Häufigkeit nicht widersprechen. Bei Wochentagsschemata wird `frequency` nicht als Frequenz eines inneren Intervalls interpretiert.
 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
@@ -169,10 +181,10 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 ##### TimingPeriodUnit
 
 **Beschreibung:**  
-Wenn `periodUnit` angegeben ist und Wochentage (`dayOfWeek`) angegeben sind, muss die Zeiteinheit (`periodUnit`) „Woche“ (`wk`) sein; andernfalls muss sie „Tag“ (`d`) sein.
+`periodUnit` darf nur zusammen mit `period` angegeben werden. Bei `dayOfWeek` ist als redundante Angabe ausschließlich das Paar `period = 1` und `periodUnit = wk` zulässig. Ein äußeres Intervall zusammen mit `when` oder `timeOfDay` darf Tage (`d`), Wochen (`wk`) oder Monate (`mo`) verwenden. Reine Intervalle verwenden weiterhin die vollständige gebundene Wertemenge.
 
 **Warum?**  
-Dadurch wird sichergestellt, dass die Zeiteinheit zur Angabe der Dosierungsperiode konsistent zu den verwendeten Feldern passt und keine Missverständnisse bei der Interpretation entstehen.
+So bleibt unterscheidbar, ob die Periode nur die bereits implizite wöchentliche Wiederholung eines Wochentagsschemas redundant ausdrückt oder den äußeren Rhythmus ausgewählter Tagesabschnitte beziehungsweise Uhrzeiten beschreibt. Minuten- oder Stundenintervalle werden nicht mit Wochentagen kombiniert.
 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
@@ -193,7 +205,7 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 ##### TimingOnlyOneType
 
 **Beschreibung:**  
-Es darf pro Dosierung nur eine Art der Zeitangabe verwendet werden (z.B. ausschließlich `4-Schema`, `TimeOfDay`, `DayOfWeek`, `Interval`, Kombinationen wie `DayOfWeek+TimeOfDay` oder `Interval+TimeOfDay`).
+Es darf pro Ressource nur eines der unterstützten Timing-Schemata verwendet werden: Tagesabschnitt/Uhrzeit, Wochentag, reines Intervall, Wochentag mit Tagesabschnitt/Uhrzeit oder ein äußeres Intervall mit Tagesabschnitt/Uhrzeit. Redundante `frequency`-, `period`- und `periodUnit`-Angaben bleiben bei Wochentagsschemata sowie in den dafür vorgesehenen zeitbezogenen Schemata optional zulässig; sie machen aus einem Wochentagsschema kein Intervallschema.
 
 **Warum?**  
 Diese Einschränkung verhindert Mehrdeutigkeiten und sorgt dafür, dass die Dosierungszeitpunkte eindeutig interpretierbar bleiben.
@@ -325,7 +337,7 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 ##### TimingSingleDosageForTimeOfDay
 
 **Beschreibung:**  
-In den dgMP-Profilen sind bei täglicher Dosierung mit ausschließlich `timeOfDay` mehrere Tageszeiten in einem einzigen `Dosage`‑Element zu modellieren. Mehrere `Dosage`‑Elemente sind nur zulässig, wenn sich die Dosis (Wert) unterscheidet.
+In den dgMP-Profilen sind bei täglicher Dosierung mit ausschließlich `timeOfDay` mehrere Tageszeiten in einem einzigen `Dosage`‑Element zu modellieren. Mehrere `Dosage`‑Elemente sind nur zulässig, wenn jedes Element eine eindeutige vollständige Dosis einschließlich ihres Datentyps (`Quantity` oder `Range`) besitzt.
 
 **Warum?**  
 Verhindert unnötige Aufsplitterung gleichartiger Dosierungen und sorgt für eine klare, eindeutige Modellierung der Tageszeiten.
@@ -337,7 +349,7 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 ##### TimingSingleDosageForWhen
 
 **Beschreibung:**  
-In den dgMP-Profilen sind bei täglicher Dosierung mit ausschließlich `when` mehrere Zeitabschnitte des Tages in einem einzigen `Dosage`‑Element zu modellieren. Mehrere `Dosage`‑Elemente sind nur zulässig, wenn sich die Dosis (Wert) unterscheidet.
+In den dgMP-Profilen sind bei täglicher Dosierung mit ausschließlich `when` mehrere Zeitabschnitte des Tages in einem einzigen `Dosage`‑Element zu modellieren. Mehrere `Dosage`‑Elemente sind nur zulässig, wenn jedes Element eine eindeutige vollständige Dosis einschließlich ihres Datentyps (`Quantity` oder `Range`) besitzt.
 
 **Warum?**  
 Verhindert unnötige Aufsplitterung gleichartiger Dosierungen und sorgt für eine klare, eindeutige Modellierung der Tagesabschnitte.
@@ -473,6 +485,18 @@ Der Constraint `DosageDoseQuantityAllowedFractions` schränkt den Wertebereich e
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-DosageDoseValueDecimalNotation-examples.md%}
+
+##### DosageDoseValuePositive
+
+**Beschreibung:**
+Dosiswerte dürfen nicht negativ sein. Der Wert `0` ist zulässig. Die Regel prüft alle im dgMP zulässigen Varianten der Einzeldosis: `doseQuantity.value`, `doseRange.low.value` und `doseRange.high.value`.
+
+**Warum?**
+Eine negative Dosis beschreibt keine verabreichbare Arzneimittelmenge und kann nicht sinnvoll in eine Dosierungsanweisung überführt werden. `0` wird dagegen insbesondere als Untergrenze einer variablen Dosis benötigt, zum Beispiel für „0 bis 2 Tabletten“. Der Constraint hält die Profilvalidierung konsistent mit der defensiven Prüfung der Textgenerierung.
+
+Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
+
+{% include dosage-constraint-DosageDoseValuePositive-examples.md%}
 
 ##### DoseRangeHighRequiredWhenLowPresent
 

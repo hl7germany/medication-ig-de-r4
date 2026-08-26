@@ -11,10 +11,9 @@ Folgende weitere Beispiele sind in diesem IG dargestellt:
 | Beispiel    | Beipspiel Datei |
 | -------- | ------- |
 | Jeden 2. Tag 1 Stück um 08:00 Uhr und 2 Stück um 18:00 Uhr  | [Example-MR-Dosage-comb-interval-1](./MedicationRequest-Example-MR-Dosage-comb-interval-1.html)    |  |
-| 1 x pro Woche 1 Stück morgens  | [Example-MR-Dosage-comb-interval-2](./MedicationRequest-Example-MR-Dosage-comb-interval-2.html)    |
+| Wöchentlich 1 Stück morgens  | [Example-MR-Dosage-comb-interval-2](./MedicationRequest-Example-MR-Dosage-comb-interval-2.html)    |
 | Jeden 2. Tag 1 Stück um 08:00 Uhr und jeden 2. Tag 1 Stück um 08:00 Uhr  | [Example-MR-Dosage-comb-interval-3](./MedicationRequest-Example-MR-Dosage-comb-interval-3.html)    |
 | Jeden 2. Tag 1 Stück um 08:00 und 20:00 Uhr sowie 2 Stück um 10:00, 14:00 und 22:00 Uhr (ohne `frequency`)  | [Example-MR-Dosage-comb-interval-4](./MedicationRequest-Example-MR-Dosage-comb-interval-4.html)    |
-| Dasselbe Schema mit zusätzlich angegebener, redundanter `frequency`  | [Example-MR-Dosage-comb-interval-5](./MedicationRequest-Example-MR-Dosage-comb-interval-5.html)    |
 
 ### Angabe und Erkennung der Dosierart 
 
@@ -38,20 +37,14 @@ timing.repeat.dayOfWeek.empty() and
   )
 ```
 
-Wird `frequency` zusätzlich angegeben, entspricht der Wert der Anzahl an Elementen
-in `when` beziehungsweise `timeOfDay`. Die Angabe ist redundant und wird im
-generierten Dosierungstext nicht ausgegeben, weil sich die Häufigkeit bereits aus
-den konkreten Zeitpunkten ergibt.
-[Example-MR-Dosage-comb-interval-4](./MedicationRequest-Example-MR-Dosage-comb-interval-4.html)
-und [Example-MR-Dosage-comb-interval-5](./MedicationRequest-Example-MR-Dosage-comb-interval-5.html)
-bilden dasselbe Schema einmal ohne und einmal mit `frequency` ab und erzeugen
-denselben Dosierungstext.
+`frequency` ist in diesem Schema optional. Die Häufigkeit ergibt sich bereits
+aus den konkreten Werten in `when` beziehungsweise `timeOfDay`; eine vorhandene
+Angabe muss deren Anzahl entsprechen und wird im generierten Text nicht
+ausgegeben.
 
 Die Warnung `TimingVarFreqOrPeriod`, die eine gleichzeitige Erhöhung von
 `frequency` und `period` beanstandet, gilt ausschließlich für reine
-Intervallangaben ohne Zeitpunkte. Im Kombinationsschema ist `frequency` die
-Anzahl der Zeitpunkte und kein Faktor des Einnahmerhythmus, deshalb greift die
-Warnung hier nicht.
+Intervallangaben ohne Zeitpunkte.
 
 Mit `period` und `periodUnit` wird der Einnahmerhythmus festgelegt. `when` oder
 `timeOfDay` ordnet diesem Rhythmus konkrete Tagesabschnitte beziehungsweise

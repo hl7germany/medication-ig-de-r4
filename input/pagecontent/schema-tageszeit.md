@@ -27,8 +27,8 @@ Folgende weitere Beispiele sind in diesem IG dargestellt:
 Diese Dosierungsart wird daran erkannt, dass unter `Dosage.timing.repeat`
 
 - `when`
-- opt. Angabe von `frequency` (muss bei Angabe der Anzahl der `when`-Elemente entsprechen)
-- opt. Angabe von `period` und `periodUnit` in Tagen (`d`) – Standardinterpretation: täglich
+- opt. Angabe von `frequency` (muss der Anzahl der `when`-Elemente entsprechen)
+- opt. Angabe von `period = 1` und `periodUnit = d`
 - opt. Angabe von `bounds[x]`
   
 angegeben ist. An diesem Feld wird dann kodiert die Tageszeit angegeben an der eine konkrete Dosierung einzunehmen ist.
@@ -41,7 +41,10 @@ timing.repeat.timeOfDay.empty() and
 timing.repeat.dayOfWeek.empty()
 ```
 
-Der Wert von `frequency` entspricht dabei – sofern angegeben – der Anzahl an Elementen in `when`.
+Die tägliche Wiederholung und die Zahl der Gaben ergeben sich bereits aus
+`when`. `frequency`, `period = 1` und `periodUnit = d` dürfen redundant
+angegeben werden. Ist `frequency`
+vorhanden, muss der Wert der Anzahl der `when`-Elemente entsprechen.
 
 Soll das Arzneimittel in derselben Dosierung zu mehreren Tageszeiten angewandt werden, wird dies über mehrere Angaben von "when" ausgedrückt. Die angegebene Dosierung ist dann zu jeder der genannten Tageszeiten anzuwenden. 
 

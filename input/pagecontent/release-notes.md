@@ -13,9 +13,19 @@
   - **TimingDE**: `TimingSingleDosageForTimeOfDayWarning`, `TimingSingleDosageForWhenWarning`
 - **Rückwärtskompatibilität für redundante Legacy-Angaben** bei Wochentags- und Zeitpunktschemata
 - **Nicht tägliche Perioden im [Schema für Kombinationen von Zeitintervallen](./schema-intervall-kombination.html)**
+- **Geändertes Ausgabeverhalten der Textgenerierung:** jeder erzeugte Text ist durchgehend kleingeschrieben; nicht numerische Dosiswerte werden abgewiesen
 - **Erweiterte Beispielabdeckung** für Legacy-Angaben, Kombinationsschemata, Bedarfsdosierungen und `doseRange`-Varianten
 
 **Details**
+
+- **Textgenerierung: durchgehende Kleinschreibung**
+  - Betroffen: alle generierten Dosierungstexte außer Freitext
+  - Änderung: Die Groß-/Kleinschreibung war zuvor an vier Stellen verteilt. `boundsPeriod` erzeugte `Ab dem`, `Vom` und `Bis zum` großgeschrieben, während `boundsDuration` im selben Baustein `für 7 Tage` klein schreibt, und ein Abschlussschritt schrieb bei Bedarfsmedikation das erste Zeichen groß. Jetzt gibt es keine Ausnahme mehr: der erzeugte Text ist ein Fragment, die Schreibweise am Satzanfang entscheidet das anzeigende System. Ein als Freitext angegebener `Dosage.text` wird weiterhin unverändert durchgereicht.
+  - Auswirkung: 51 der bisher veröffentlichten Beispieltexte ändern sich, insbesondere die Bedarfsdosierungen (`Bei Bedarf: …` wird zu `bei Bedarf: …`). Systeme, die den Text unverändert anzeigen, sollten die Großschreibung am Satzanfang selbst setzen.
+
+- **Textgenerierung: nicht numerische Dosiswerte**
+  - Betroffen: `doseQuantity.value`, `doseRange.low.value`, `doseRange.high.value`
+  - Änderung: Zahlen und numerische Strings werden geprüft, alles andere wird mit `<Feld> muss numerisch sein.` abgewiesen. Zuvor konnte ein nicht numerischer Wert unverändert in den Dosierungstext gelangen.
 
 - **`DosageDoseValuePositive` (`DosageDgMP`) — neu**
   - Betroffene Ressourcentypen: `MedicationRequest`, `MedicationDispense`, `MedicationStatement`

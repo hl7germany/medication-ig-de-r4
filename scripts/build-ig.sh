@@ -10,42 +10,13 @@ Abfolge der Erstellung von Ressourcen und Dokumenten
 3. Der IG Publisher erzeugt die Seiten
 4. Die erwarteten Fehler werden gegen qa.xml geprüft
 
-Verwendung:
-  scripts/build-ig.sh                 gepinnte Version aus dosage-algorithm.lock
-  scripts/build-ig.sh --algo main     Stand eines Branches, Tags oder Commits
-  scripts/build-ig.sh --algo local    die Arbeitskopie in scripts/
-
---algo umgeht das Pinning und ist für die Weiterentwicklung des Algorithmus
-gedacht. Der Build ist dann nicht reproduzierbar, und die erzeugte
-algorithmVersion bezeichnet eine so nicht veröffentlichte Version. Solche
-Stände gehören nicht in eine Veröffentlichung.
+Existiert der gepinnte Tag noch nicht, weicht Schritt 2 auf main des
+Algorithmus-Repositories aus. Der Build läuft dann durch, ist aber nicht
+reproduzierbar — darauf weist die Ausgabe am Ende hin.
 '
 
-usage() {
-    sed -n '/^Verwendung:/,/^--algo/p' "$0" | sed 's/^/  /'
-    exit "${1:-0}"
-}
-
-while [[ $# -gt 0 ]]; do
-    case "$1" in
-        --algo)
-            [[ $# -ge 2 ]] || { echo "--algo braucht einen Wert (z. B. main, local, 2.0.0)" >&2; exit 2; }
-            export DOSAGE_ALGORITHM_REF="$2"
-            shift 2
-            ;;
-        --algo=*)
-            export DOSAGE_ALGORITHM_REF="${1#*=}"
-            shift
-            ;;
-        -h|--help)
-            usage 0
-            ;;
-        *)
-            echo "Unbekannte Option: $1" >&2
-            usage 2
-            ;;
-    esac
-done
+MARKER="scripts/vendor/UNPINNED"
+rm -f "$MARKER"
 
 # Generate Sushi
 sushi .
@@ -58,3 +29,16 @@ python3 scripts/dosage-main.py
 
 # Run Error checks
 python3 scripts/ig-expected-error-check.py
+
+# Am Ende, damit der Hinweis nicht im Build-Log verschwindet
+if [[ -f "$MARKER" ]]; then
+    LINE=$(printf '=%.0s' {1..78})
+    printf '\n%s\n' "$LINE" >&2
+    printf '  ACHTUNG: DIESER BUILD IST NICHT REPRODUZIERBAR\n\n' >&2
+    sed 's/^/  /' "$MARKER" >&2
+    printf '\n  Die erzeugten Texte tragen eine algorithmVersion, die so nicht\n' >&2
+    printf '  veroeffentlicht ist. Nicht als Release publizieren - erst den Tag\n' >&2
+    printf '  im Algorithmus-Repository anlegen und die Pruefsumme in\n' >&2
+    printf '  scripts/dosage-algorithm.lock nachziehen.\n' >&2
+    printf '%s\n\n' "$LINE" >&2
+fi

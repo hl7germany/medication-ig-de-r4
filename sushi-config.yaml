@@ -76,6 +76,8 @@ pages:
     title: Variable Angaben
   schema-start-end-datum.md:
     title: Angabe von Start- und Enddatum
+  schema-dauer.md:
+    title: Angabe der Anwendungsdauer
   dosierung-beispiele.md:
     title: Beispielliste Dosierung
   artifacts.html:
@@ -120,7 +122,6 @@ menu:
     Übersicht der Timing & Dosierungs-Invarianten: dosierung-constraints.html
   Dosierschemata:
     Freitext-Dosierung: schema-freitext.html
-    Zusätzliche Instruktionen: schema-zusaetzliche-instruktionen.html
     Schema mit Tageszeiten-Bezug: schema-tageszeit.html
     Schema mit Uhrzeiten-Bezug: schema-uhrzeit.html
     Schema mit Wochentags-Bezug: schema-wochentag.html
@@ -128,9 +129,12 @@ menu:
     Schema für Kombinationen von Zeitintervallen: schema-intervall-kombination.html
     Schema für Kombinationen von Wochentagen: schema-wochentag-kombination.html
     Schema für Bedarfsmedikation: schema-bedarfsmedikation.html
-    Variable Angaben: schema-variable-angaben.html
-    Angabe von Start- und Enddatum: schema-start-end-datum.html
     Beispiel Dosierungen: dosierung-beispiele.html
+  Schemaübergreifende Angaben:
+    Zusätzliche Instruktionen: schema-zusaetzliche-instruktionen.html
+    Angabe von Start- und Enddatum: schema-start-end-datum.html
+    Angabe der Anwendungsdauer: schema-dauer.html
+    Variable Angaben: schema-variable-angaben.html
   FHIR-Artefakte: artifacts.html
   Anhänge:
     Downloads: downloads.html

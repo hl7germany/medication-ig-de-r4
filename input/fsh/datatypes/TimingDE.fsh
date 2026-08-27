@@ -10,7 +10,7 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * obeys TimingSingleDosageForTimeOfDayWarning
   * obeys TimingSingleDosageForWhenWarning
   * obeys TimingBoundsUnitMatchesCodeWarning
-  * obeys TimingVarFreqOrPeriodWarning
+  * obeys TimingFreqOrPeriodGtOneWarning
 * repeat.bounds[x] MS
   * ^short = "Länge/Bereich der Längen oder (Start- und/oder End-)Grenzen"
   * ^definition = "Entweder eine Dauer für die Länge des Zeitplans, ein Bereich möglicher Längen oder äußere Begrenzungen für Start- und/oder Endgrenzen des Zeitplans."
@@ -183,8 +183,9 @@ Expression: "bounds.ofType(Duration).exists().not() or (
 )"
 Severity: #warning
 
-Invariant: TimingVarFreqOrPeriodWarning
-Description: "For a pure interval without concrete times, frequency (frequencyMax) and period (periodMax) should not both be given as variable. A fixed frequency greater than 1 together with a period, such as twice every 8 hours, remains allowed."
+Invariant: TimingFreqOrPeriodGtOneWarning
+Description: "If frequency and period are given together, only one of them may exceed 1 - either the frequency including frequencyMax or the period including periodMax. A statement in which both exceed 1, such as 'six times within three hours', is hard to express in language and is not needed: the same meaning can be conveyed by adapting the period, e.g. 'every 30 minutes'."
+Severity: #warning
 Expression: "/* Detect Interval only */
 (
   timeOfDay.empty() and
@@ -194,6 +195,21 @@ Expression: "/* Detect Interval only */
   period.exists()
 ) implies
 (
-  frequencyMax.empty() or periodMax.empty()
+  (
+    (frequency > 1 or (frequencyMax.exists() and frequencyMax > 1))
+    implies
+    (
+      period = 1 and
+      (periodMax.empty() or periodMax = 1)
+    )
+  )
+  and
+  (
+    (period > 1 or (periodMax.exists() and periodMax > 1))
+    implies
+    (
+      frequency = 1 and
+      (frequencyMax.empty() or frequencyMax = 1)
+    )
+  )
 )"
-Severity: #warning

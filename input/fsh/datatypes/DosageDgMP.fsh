@@ -16,18 +16,16 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
 * obeys PatientInstructionIdentical
 * obeys MaxDoseSameUnitAsDose
 * obeys MaxDosePerPeriodOnly24hOr1d
-* obeys MaxDoseOnlyWhenAsNeeded
+* obeys MaxDoseOnlyPureAsNeeded
 * obeys DoseRangeHighRequiredWhenLowPresent
 * obeys DoseRangeLowAndHighSameUnit
 * obeys DoseRangeNoVarPeriod
-* obeys VarFreqNoMaxDose
 * obeys MinimumIntervalOnlyPureAsNeeded
 * obeys AsNeededForRequiresAsNeeded
 * obeys AsNeededSingleDosageOnly
 * obeys AsNeededIdentical
 * obeys AsNeededForIdentical
 * obeys MinimumIntervalUnitMatchesCode
-* obeys MaxDosePerPeriodIdentical
 * timing only TimingDgMP
 * doseAndRate 0..1 // Nur eine Dosierung für eine Medikation erlauben
   * ^comment = "Begründung Einschränkung Kardinalität: Nur eine Dosierung pro Medikation ist in der ersten Ausbaustufe des dgMP vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
@@ -392,11 +390,6 @@ Description: "A variable single dose and a variable period should not be used to
 Severity: #warning
 Expression: "doseAndRate.dose.ofType(Range).empty() or timing.repeat.periodMax.empty()"
 
-Invariant: VarFreqNoMaxDose
-Description: "A variable frequency and a maximum dose per period must not be used together."
-Severity: #error
-Expression: "timing.repeat.frequencyMax.empty() or maxDosePerPeriod.empty()"
-
 Invariant: MinimumIntervalOnlyPureAsNeeded
 Description: "A minimum interval between two single administrations (Mindestabstand) may only be given for a pure as-needed dosage: asNeededBoolean = true and no timing. A structured rhythm already determines the spacing between administrations; a second, weaker lower bound next to it is contradictory."
 Severity: #error
@@ -424,10 +417,10 @@ implies
 ).count() = 1"
 Severity: #error
 
-Invariant: MaxDoseOnlyWhenAsNeeded
-Description: "A maximum amount (maxDosePerPeriod) may only be given for an as-needed dosage (asNeededBoolean = true)."
+Invariant: MaxDoseOnlyPureAsNeeded
+Description: "A maximum amount (maxDosePerPeriod) may only be given for a pure as-needed dosage: asNeededBoolean = true and no timing. A structured rhythm already determines how much is applied within the reference period."
 Severity: #error
-Expression: "maxDosePerPeriod.empty() or asNeeded.ofType(boolean) = true"
+Expression: "maxDosePerPeriod.exists() implies (asNeeded.ofType(boolean) = true and timing.empty())"
 
 // --- Konsistenz der Rahmen-Angaben über mehrere Dosage-Elemente ---
 // Die Textgenerierung liest Bedarfskennzeichen, Einnahmeanlass, Mindestabstand und
@@ -504,69 +497,3 @@ Expression: "modifierExtension.where(
   )
 )"
 
-Invariant: MaxDosePerPeriodIdentical
-Description: "The maximum amount (maxDosePerPeriod) applies to the total amount within the reference period and must be populated identically across all Dosage elements of a resource."
-Severity: #error
-/* Die distinct()-Prüfungen allein genügen nicht:
-   Ein Element, das ein Teilfeld gar nicht belegt, steuert nichts zur Menge bei.
-   Deshalb muss jede vorhandene Maximalmenge alle vier Teilfelder führen. */
-Expression: "(
-  (
-    %resource.ofType(MedicationRequest).dosageInstruction |
-    %resource.ofType(MedicationDispense).dosageInstruction |
-    %resource.ofType(MedicationStatement).dosage
-  ).maxDosePerPeriod.all(
-    numerator.value.hasValue() and numerator.unit.hasValue() and
-    denominator.value.hasValue() and denominator.code.hasValue()
-  )
-)
-and
-(
-  (
-    %resource.ofType(MedicationRequest).dosageInstruction |
-    %resource.ofType(MedicationDispense).dosageInstruction |
-    %resource.ofType(MedicationStatement).dosage
-  ).maxDosePerPeriod.numerator.value.distinct().count() <= 1
-)
-and
-(
-  (
-    %resource.ofType(MedicationRequest).dosageInstruction |
-    %resource.ofType(MedicationDispense).dosageInstruction |
-    %resource.ofType(MedicationStatement).dosage
-  ).maxDosePerPeriod.numerator.unit.distinct().count() <= 1
-)
-and
-(
-  (
-    %resource.ofType(MedicationRequest).dosageInstruction |
-    %resource.ofType(MedicationDispense).dosageInstruction |
-    %resource.ofType(MedicationStatement).dosage
-  ).maxDosePerPeriod.denominator.value.distinct().count() <= 1
-)
-and
-(
-  (
-    %resource.ofType(MedicationRequest).dosageInstruction |
-    %resource.ofType(MedicationDispense).dosageInstruction |
-    %resource.ofType(MedicationStatement).dosage
-  ).maxDosePerPeriod.denominator.code.distinct().count() <= 1
-)
-and
-(
-  (
-    (
-      %resource.ofType(MedicationRequest).dosageInstruction |
-      %resource.ofType(MedicationDispense).dosageInstruction |
-      %resource.ofType(MedicationStatement).dosage
-    ).maxDosePerPeriod.exists()
-  )
-  implies
-  (
-    (
-      %resource.ofType(MedicationRequest).dosageInstruction |
-      %resource.ofType(MedicationDispense).dosageInstruction |
-      %resource.ofType(MedicationStatement).dosage
-    ).all(maxDosePerPeriod.exists())
-  )
-)"

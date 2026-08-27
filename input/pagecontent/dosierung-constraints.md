@@ -153,21 +153,22 @@ Beispiele (Warnungskontext – variable Einzeldosis und variable Periode):
 
 #### Fehler: Timing-bezogen
 
-##### TimingVarFreqOrPeriod
+##### TimingFreqOrPeriodGtOne
 
 **Beschreibung:**  
-Bei einer reinen Intervallangabe ohne Zeitpunkte dürfen nicht gleichzeitig die Frequenz über `frequencyMax` und die Periode über `periodMax` variabel angegeben werden.
+Bei einer reinen Intervallangabe darf von Frequenz und Periode nur **eine** größer als `1` sein — entweder die Frequenz einschließlich `frequencyMax` oder die Periode einschließlich `periodMax`.
 
 **Warum?**  
-Die gleichzeitige Variation beider Achsen führt zu einem nur schwer eindeutig interpretierbaren Einnahmeschema — „1 bis 2 x alle 4 bis 6 Stunden“ lässt weder die Zahl der Gaben noch den Abstand eindeutig erkennen. Die Variation nur einer Achse bleibt zulässig, ebenso eine feste Frequenz größer als 1 zusammen mit einer Periode (`2 x alle 8 Stunden`): Dort sind Zahl der Gaben und Bezugszeitraum eindeutig bestimmt.
+Eine Angabe, in der beide größer als `1` sind, ist sprachlich schwer auszudrücken und fachlich nicht erforderlich: „6 x innerhalb von 3 Stunden" lässt sich als „alle 30 Minuten" formulieren, „2 x alle 8 Stunden" als „alle 4 Stunden". Die Periode wird dazu entsprechend angepasst.
 
-Bei `when`, `timeOfDay` oder `dayOfWeek` greift die Regel nicht. Dort ist `frequency` optional und redundant, weil die konkreten Zeitpunkte beziehungsweise Anwendungstage die Zahl der Gaben bereits festlegen; die Angabe dient ausschließlich der Rückwärtskompatibilität und begründet kein zusätzliches Intervallschema.
+Bei `when`, `timeOfDay` oder `dayOfWeek` greift die Regel nicht. Dort legen die konkreten Zeitpunkte die Zahl der Gaben fest, und eine Periode größer als `1` beschreibt den Abstand der Anwendungstage — „alle 2 Tage: morgens, abends" ist zulässig.
+
+Im generischen Profil `TimingDE` gilt die Regel als Warnung (`TimingFreqOrPeriodGtOneWarning`).
 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
-{% include dosage-constraint-TimingVarFreqOrPeriod-examples.md%}
+{% include dosage-constraint-TimingFreqOrPeriodGtOne-examples.md%}
 
-Die folgenden Invarianten beziehen sich auf `Timing` — überwiegend auf `Timing.repeat` — und wirken über alle Dosierungsinstanzen einer Ressource.
 
 ##### TimingFrequencyCount
 
@@ -276,6 +277,8 @@ So wird ausgeschlossen, dass mehrere unterschiedliche Zeiträume für eine Dosie
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-TimingOnlyOneBounds-examples.md%}
+
+Zusätzlich gilt: Entweder tragen **alle** `Dosage`-Elemente einen Zeitrahmen oder keines. Die Textgenerierung liest ihn nur aus dem ersten Element; ein Element ohne Zeitrahmen würde sonst stillschweigend als begrenzt dargestellt.
 
 ##### TimingBoundsDurationOnlyWholeNumber
 
@@ -525,17 +528,6 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-DoseRangeLowAndHighSameUnit-examples.md%}
 
-##### VarFreqNoMaxDose
-
-**Beschreibung:**  
-Variable Frequenz (`frequencyMax`) und `maxDosePerPeriod` dürfen nicht gemeinsam verwendet werden.
-
-**Warum?**  
-Beide Angaben begrenzen die Häufigkeit bzw. Gesamtmenge pro Zeitraum. In Kombination entsteht eine doppelte, potenziell widersprüchliche Modellierung.
-
-Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
-
-{% include dosage-constraint-VarFreqNoMaxDose-examples.md%}
 
 ##### MinimumIntervalOnlyPureAsNeeded
 
@@ -597,7 +589,7 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-MaxDosePerPeriodOnly24hOr1d-examples.md%}
 
-##### MaxDoseOnlyWhenAsNeeded
+##### MaxDoseOnlyPureAsNeeded
 
 **Beschreibung:**  
 Eine Maximalmenge (`maxDosePerPeriod`) darf nur bei einer Bedarfsdosierung (`asNeededBoolean = true`) angegeben werden.
@@ -607,19 +599,8 @@ Die Maximalmenge wird in der Textgenerierung ausschließlich im Bedarfsfall darg
 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
-{% include dosage-constraint-MaxDoseOnlyWhenAsNeeded-examples.md%}
+{% include dosage-constraint-MaxDoseOnlyPureAsNeeded-examples.md%}
 
-##### MaxDosePerPeriodIdentical
-
-**Beschreibung:**  
-Enthält eine Ressource mehrere `Dosage`-Elemente, muss `maxDosePerPeriod` in allen Elementen identisch befüllt sein — in Zähler (Wert und Einheit) wie in Nenner (Wert und Code). Entweder tragen alle Elemente die Angabe oder keines, und jede vorhandene Angabe muss alle vier Teilfelder führen.
-
-**Warum?**  
-Die Maximalmenge gilt für die Gesamtmenge im Bezugszeitraum, nicht je Einzelsegment. Die Textgenerierung liest sie ausschließlich aus dem ersten `Dosage`-Element und stellt sie einmal am Ende der Anweisung dar (siehe [Dosis Textgenerierung](./dosierung-textgenerierung.html)). Ohne diesen Constraint könnte ein zweites Element eine abweichende Obergrenze führen, die im erzeugten Text unbemerkt entfiele — mit unmittelbarer Auswirkung auf die Arzneimittelsicherheit.
-
-Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
-
-{% include dosage-constraint-MaxDosePerPeriodIdentical-examples.md%}
 
 ##### AsNeededForRequiresAsNeeded
 

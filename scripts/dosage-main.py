@@ -30,6 +30,13 @@ def main():
     name_check_script = os.path.join(base_dir, "check-example-filenames.py")
     subprocess.run(['python3', name_check_script, input_folder], check=True)
 
+    # 1c. The page names the algorithm version the example texts were generated
+    #     with. A stale value fails silently: the build succeeds, only the page
+    #     claims something untrue.
+    print("Checking the documented algorithm version...")
+    version_check_script = os.path.join(base_dir, "check-documented-version.py")
+    subprocess.run(['python3', version_check_script, medication_dosage_script], check=True)
+
     # 2. Generate the supported/unsupported table
     print("Generating unsupported table...")
     unsupported_table_script = os.path.join(base_dir, "dosage-generate-unsupported-table.py")
@@ -43,7 +50,7 @@ def main():
     # 4. Generate the dosage summary table with consolidated dosage texts
     print("Generating dosage summary table...")
     summary_table_script = os.path.join(base_dir, "generate-dosage-summary-table.py")
-    subprocess.run(['python3', summary_table_script], check=True)
+    subprocess.run(['python3', summary_table_script, medication_dosage_script], check=True)
 
     print("All steps completed.")
 

@@ -22,7 +22,7 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * obeys TimingPeriodUnit
   * obeys TimingPeriodOnlyWholeNumber
   * obeys TimingBoundsDurationOnlyWholeNumber
-  * obeys TimingVarFreqOrPeriod
+  * obeys TimingFreqOrPeriodGtOne
   * obeys TimingVarFreqGtMin
   * obeys TimingVarPeriodGtMin
   * obeys TimingSingleDosageForTimeOfDay
@@ -201,8 +201,9 @@ Expression: "bounds.ofType(Duration).exists().not() or (
 )"
 Severity: #error
 
-Invariant: TimingVarFreqOrPeriod
-Description: "For a pure interval without concrete times, frequency (frequencyMax) and period (periodMax) must not both be given as variable. A fixed frequency greater than 1 together with a period, such as twice every 8 hours, remains allowed."
+Invariant: TimingFreqOrPeriodGtOne
+Description: "If frequency and period are given together, only one of them may exceed 1 - either the frequency including frequencyMax or the period including periodMax. A statement in which both exceed 1, such as 'six times within three hours', is hard to express in language and is not needed: the same meaning can be conveyed by adapting the period, e.g. 'every 30 minutes'."
+Severity: #error
 Expression: "/* Detect Interval only */
 (
   timeOfDay.empty() and
@@ -212,13 +213,29 @@ Expression: "/* Detect Interval only */
   period.exists()
 ) implies
 (
-  frequencyMax.empty() or periodMax.empty()
+  (
+    (frequency > 1 or (frequencyMax.exists() and frequencyMax > 1))
+    implies
+    (
+      period = 1 and
+      (periodMax.empty() or periodMax = 1)
+    )
+  )
+  and
+  (
+    (period > 1 or (periodMax.exists() and periodMax > 1))
+    implies
+    (
+      frequency = 1 and
+      (frequencyMax.empty() or frequencyMax = 1)
+    )
+  )
 )"
-Severity: #error
 
 Invariant: TimingVarFreqGtMin
 Description: "For a variable frequency, the maximum frequency must be greater than the minimum frequency."
-Expression: "frequencyMax.empty() or frequency.empty() or frequency.value < frequencyMax.value"
+Expression: "frequencyMax.empty() or frequency.empty() or
+  frequency.value.toInteger() < frequencyMax.value.toInteger()"
 Severity: #error
 
 Invariant: TimingVarPeriodGtMin
@@ -470,7 +487,7 @@ Expression: "( /* Detect DayOfWeek */
 Severity: #error
 
 Invariant: TimingOnlyOneBounds
-Description: "All Dosage elements of a resource must state the same bounds (Duration or Period)."
+Description: "All Dosage elements of a resource must state the same bounds (Duration or Period), and either all of them carry a bounds or none."
 Expression: "(
   %resource.ofType(MedicationRequest).dosageInstruction
   | %resource.ofType(MedicationDispense).dosageInstruction
@@ -520,6 +537,26 @@ Expression: "(
         and
         (%resource.dosage.timing.repeat.bounds.ofType(Period).end.distinct().count() <= 1)
       )
+    )
+  )
+  and
+  ( /* Entweder alle Dosage-Elemente tragen einen Zeitrahmen oder keines. Die
+       Textgenerierung liest ihn nur aus dem ersten Element; ein Element ohne
+       Zeitrahmen wuerde sonst stillschweigend als begrenzt dargestellt. */
+    (
+      (
+        %resource.ofType(MedicationRequest).dosageInstruction |
+        %resource.ofType(MedicationDispense).dosageInstruction |
+        %resource.ofType(MedicationStatement).dosage
+      ).timing.repeat.bounds.exists()
+    )
+    implies
+    (
+      (
+        %resource.ofType(MedicationRequest).dosageInstruction |
+        %resource.ofType(MedicationDispense).dosageInstruction |
+        %resource.ofType(MedicationStatement).dosage
+      ).all(timing.repeat.bounds.exists())
     )
   )
 )"

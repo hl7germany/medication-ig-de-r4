@@ -1,17 +1,17 @@
-### Release: 2.0.0-ballot
+### Release: 2.0.0-alpha1
 
 Diese Version erweitert das dgMP-Dosiermodell erheblich: Dosierungen, die bisher
 als „nicht unterstützt" geführt waren, sind jetzt strukturiert abbildbar. Der
 Eintrag fasst alle Änderungen seit 1.0.5 zusammen.
 
-**Version des Textgenerierungs-Algorithmus:** `2.0.0`. Der Algorithmus wird in
+**Version des Textgenerierungs-Algorithmus:** `2.0.0-alpha1`. Der Algorithmus wird in
 [hl7germany/dgMP-DosageTextgenerierung-Skript](https://github.com/hl7germany/dgMP-DosageTextgenerierung-Skript)
 gepflegt; seine Änderungen stehen im dortigen `CHANGELOG.md`.
 
 **Neu unterstützte Dosierangaben**
 
 - **Variable Einzeldosis** über `doseRange` — „1 bis 2 Stück" statt eines festen Werts. Untergrenze `0` ist zulässig, Obergrenze ist Pflicht. Siehe [Variable Angaben](./schema-variable-angaben.html).
-- **Variable Frequenz und Periode** über `frequencyMax` und `periodMax` — „1 bis 2 x täglich", „alle 2 bis 3 Tage". Beide Achsen gleichzeitig zu variieren ist unzulässig (`TimingVarFreqOrPeriod`); im generischen DE-Profil löst es eine Warnung aus.
+- **Variable Frequenz und Periode** über `frequencyMax` und `periodMax` — „1 bis 2 x täglich", „alle 2 bis 3 Tage". Bei einer reinen Intervallangabe darf von beiden nur eine größer als `1` sein (`TimingFreqOrPeriodGtOne`): „2 x alle 8 Stunden" wird als „alle 4 Stunden" ausgedrückt, und beide Achsen zugleich zu variieren ist damit ebenfalls ausgeschlossen. Im generischen DE-Profil löst die Regel eine Warnung aus.
 - **Bedarfsmedikation** über `asNeededBoolean`, mit **Anlass** (`asNeededFor`), **Mindestabstand zwischen zwei Gaben** und **Maximalmenge** (`maxDosePerPeriod`). Mehrere Anlässe sind zulässig und werden als Aufzählung wiedergegeben; der Mindestabstand ist der reinen Bedarfsdosierung vorbehalten. Siehe [Schema für Bedarfsmedikation](./schema-bedarfsmedikation.html).
 - **Anwendungszeitraum** über `boundsPeriod` — Start- und/oder Enddatum, optional mit Uhrzeit und Zeitzone. Siehe [Angabe von Start- und Enddatum](./schema-start-end-datum.html).
 - **Zusätzliche Instruktionen** über `patientInstruction` für Hinweise, die sich nicht strukturiert abbilden lassen. Siehe [Zusätzliche Instruktionen](./schema-zusaetzliche-instruktionen.html).
@@ -29,9 +29,14 @@ Damit entfallen 20 Beispiele aus der Liste nicht unterstützter Dosierkonfigurat
 
 **Invarianten**
 
-33 Invarianten sind neu hinzugekommen; sie sichern die oben genannten Angaben ab.
-Vollständig aufgeführt sind sie unter [Übersicht der Timing- & Dosierungs-Invarianten](./dosierung-constraints.html).
-Die folgenden bestehenden Regeln haben sich in ihrer Aussage geändert:
+**Neu** sind 31 Invarianten; sie sichern die oben genannten Angaben ab. Was jede einzelne prüft, beschreibt die [Übersicht der Timing- & Dosierungs-Invarianten](./dosierung-constraints.html).
+
+- **`DosageDgMP`**: `AsNeededForIdentical`, `AsNeededForRequiresAsNeeded`, `AsNeededIdentical`, `AsNeededSingleDosageOnly`, `DosageDoseQuantityAllowedFractions`, `DosageDoseValueDecimalNotation`, `DosageDoseValuePositive`, `DosageFourSlotPatternInText`, `DoseRangeHighRequiredWhenLowPresent`, `DoseRangeLowAndHighSameUnit`, `DoseRangeNoVarPeriod`, `MaxDoseOnlyPureAsNeeded`, `MaxDosePerPeriodOnly24hOr1d`, `MaxDoseSameUnitAsDose`, `MinimumIntervalOnlyPureAsNeeded`, `MinimumIntervalUnitMatchesCode`, `PatientInstructionIdentical`
+- **`TimingDgMP`**: `TimingBoundsDurationOnlyWholeNumber`, `TimingFreqOrPeriodGtOne`, `TimingPeriodOnlyWholeNumber`, `TimingVarFreqGtMin`, `TimingVarPeriodGtMin`
+- **`DosageDE`** (Warnungen): `DosageDoseUnitSameCodeWarning`, `DosageDoseValuePositiveWarning`, `DosageFourSlotPatternInTextWarning`, `DosageStructuredRequiresBothWarning`, `dos-1`
+- **`TimingDE`** (Warnungen): `TimingBoundsUnitMatchesCodeWarning`, `TimingFreqOrPeriodGtOneWarning`, `TimingSingleDosageForTimeOfDayWarning`, `TimingSingleDosageForWhenWarning`
+
+**Geändert** haben sich die folgenden bestehenden Regeln. Ihr Wortlaut steht hier, weil die Übersichtsseite nur den aktuellen Stand zeigt, nicht den Unterschied zu 1.0.5:
 
 - **`TimingOnlyOneType` (`TimingDgMP`)**
   - Bei `dayOfWeek` sind `frequency` sowie das Paar `period = 1`, `periodUnit = wk` als redundante Legacy-Angaben zulässig; zuvor führten sie zu einem Fehler. Jede andere Periode ist mit `dayOfWeek` nicht kombinierbar.
@@ -50,24 +55,24 @@ Die folgenden bestehenden Regeln haben sich in ihrer Aussage geändert:
 - **`DosageWarnungViererschemaInText` (`DosageDE`) — umbenannt in `DosageFourSlotPatternInTextWarning`**
   - Der Schlüssel trug als einziger einen deutschen Wortstamm und zudem „Warnung" statt des sonst verwendeten `Warning`-Suffixes. Er erscheint in Validierungsmeldungen; Werkzeuge, die darauf abstellen, müssen angepasst werden. Der Ausdruck ist unverändert.
 
+- **`TimingVarFreqGtMin` (`TimingDgMP`)**
+  - Vergleicht `frequency` und `frequencyMax` jetzt numerisch über `.value.toInteger()`. Zuvor verglich der Ausdruck die Werte als Zeichenketten: „9 bis 10 x täglich" galt dadurch als ungültig, weil `"9" < "10"` lexikographisch nicht zutrifft. Betroffen war jede variable Frequenz, deren Ober- und Untergrenze unterschiedlich viele Stellen haben.
+
+- **`TimingOnlyOneWhen`, `TimingOnlyOneTimeOfDay`, `TimingOnlyOneDayOfWeek`, `TimingOnlyOneTimeForInterval` und `TimingOnlyWhenOrTimeOfDay` (`TimingDgMP`)**
+  - Die Schema-Erkennung in der Vorbedingung setzt `frequency`, `period` und `periodUnit` nicht mehr voraus. Zuvor griffen diese Regeln nur, wenn alle drei Felder belegt waren — seit sie optionale Legacy-Angaben sind, wären Ressourcen ohne sie ungeprüft geblieben. Die Regeln erfassen damit alle Ressourcen des jeweiligen Schemas.
+
+- **`DosageStructuredRequiresBoth` und `DosageStructuredRequiresGeneratedText` (`DosageDgMP`)**
+  - Beide berücksichtigen jetzt die reine Bedarfsmedikation: `doseAndRate` darf ohne `timing` angegeben werden, wenn `asNeededBoolean = true` oder ein Anlass gesetzt ist, und eine solche Dosierung verlangt ebenfalls die Extension `GeneratedDosageInstructionsMeta`. Zuvor galt eine Dosierung ohne `timing` als unvollständig.
+
+- **`TimingOnlyOneBounds` (`TimingDgMP`)**
+  - Deckt zusätzlich `boundsPeriod` ab: Start und Ende müssen über alle `Dosage`-Elemente gleich belegt sein. Zuvor prüfte die Regel nur `boundsDuration`, obwohl die Textgenerierung den Zeitrahmen in beiden Fällen ausschließlich aus dem ersten Element liest. Ebenso gilt jetzt: Entweder tragen alle Elemente einen Zeitrahmen oder keines.
+
 - **`TimingOnlyOnePeriodForDayOfWeek` (`TimingDgMP`)**
   - Von `Timing.repeat` auf `Timing` verschoben, um einen Überlauf im IG Publisher bei der Erzeugung der Excel-Tabellen zu umgehen. Der Ausdruck wertet ohnehin die gesamte Ressource aus; inhaltlich ändert sich nichts.
 
-- **`MinimumIntervalOnlyPureAsNeeded` (`DosageDgMP`) — neu, ersetzt `VarPeriodNoMindestabstand`**
+- **`MinimumIntervalOnlyPureAsNeeded` (`DosageDgMP`) — neu**
   - `modifierExtension[MinimumIntervalBetweenAdministrations]` ist nur zusammen mit `asNeededBoolean = true` und ohne `timing` zulässig.
-  - Ein strukturierter Rhythmus legt den Abstand zwischen zwei Gaben bereits fest. Eine zweite, schwächere Untergrenze daneben lässt offen, welche Angabe gilt — „alle 8 Stunden, mit mindestens 6 Stunden Abstand" ist als Anweisung widersprüchlich. `VarPeriodNoMindestabstand` geht in der neuen Regel auf, da eine variable Periode ein `timing` voraussetzt.
-
-- **`MindestabstandIdentical` (`DosageDgMP`) — entfallen**
-  - Die Invariante forderte, dass der Mindestabstand über alle `Dosage`-Elemente gleich belegt ist. Sie ist nicht mehr erreichbar: Ein Mindestabstand setzt eine reine Bedarfsdosierung voraus, und dafür erlaubt `AsNeededSingleDosageOnly` genau ein `Dosage`-Element. `MaxDosePerPeriodIdentical` bleibt bestehen — eine Maximalmenge setzt kein leeres `timing` voraus.
-
-**Entfallene Beispiele**
-
-Gegenüber 1.0.5 entfallen 110 Beispiel-Instanzen; deren Seiten-URLs sind danach nicht mehr erreichbar. Ursache ist zum einen die vereinheitlichte Benennung der Validierungsbeispiele, zum anderen entfallen 20 Beispiele für inzwischen unterstützte Angaben und mehrere neu gefasste Negativbeispiele: an die Stelle durchnummerierter Reihen treten wenige Beispiele, die je einen Auslöser des Constraints isolieren. Profile, Extensions und ValueSets behalten ihre kanonischen URLs.
-
-**Sonstiges**
-
-- Die Spezifikation der Dosis-Textgenerierung liegt nicht mehr im IG. Die Seite [Dosis Textgenerierung](./dosierung-textgenerierung.html) verweist auf das externe Repository; der Build bezieht den Algorithmus als über Tag und Prüfsumme gepinnte Version.
-- Die Seiten der Dosierschemata beschreiben jetzt durchgängig, welche `frequency`-, `period`- und `periodUnit`-Angaben optional zulässig sind und dass sie den erzeugten Text nicht verändern.
+  - Ein strukturierter Rhythmus legt den Abstand zwischen zwei Gaben bereits fest. Eine zweite, schwächere Untergrenze daneben lässt offen, welche Angabe gilt — „alle 8 Stunden, mit mindestens 6 Stunden Abstand" ist als Anweisung widersprüchlich.
 
 ### Release: 1.0.5
 

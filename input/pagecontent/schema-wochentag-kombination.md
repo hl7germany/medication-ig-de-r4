@@ -25,7 +25,7 @@ Diese Dosierungsart wird daran erkannt, dass folgende Felder unter `Dosage.timin
 
 - `dayOfWeek`
 - opt. Angabe von `frequency`
-- opt. Angabe von `period` und `periodUnit` in Wochen (`wk`)
+- opt. Angabe des Paars `period = 1` und `periodUnit = wk` als redundante Angabe
 - und `when` ODER `timeOfDay` existieren
 - opt. Angabe von `bounds[x]`
 
@@ -39,9 +39,13 @@ timing.repeat.dayOfWeek.exists() and
   )
 ```
 
-Der Wert von `frequency` entspricht dabei – sofern angegeben – dem Produkt aus der Anzahl von Elementen in `when`, bzw. `timeOfDay` und `dayOfWeek`.
-
-und entweder `when` oder `timeOfDay`. Damit kann diese Dosierangabe verwendet werden um eine Interval angabe auf Tageszeit oder Uhrzeit zu kombinieren.
+Die Werte in `dayOfWeek` und `when` beziehungsweise `timeOfDay` legen die
+Anwendungstage und Gaben eindeutig fest. Als
+[Legacy-Angaben](./StructureDefinition-TimingDgMP.html) zulässig sind hier
+`frequency` — entsprechend dem Produkt aus der Anzahl der Wochentage und der
+Anzahl der `when`- beziehungsweise `timeOfDay`-Werte — sowie das Paar
+`period = 1` und `periodUnit = wk`.
 
 Lesende Systeme werten entsprechend auch `Dosage.timing.repeat` aus. 
-Wenn die oben genannten Felder angegeben sind, ist dem Nutzer anzuzeigen, dass die Dosierung nach einem Interval mit Tageszeit oder Uhrzeitbezug definiert ist.
+Wenn die oben genannten Felder angegeben sind, ist dem Nutzer anzuzeigen, dass
+die Dosierung nach Wochentagen mit Tageszeit- oder Uhrzeitbezug definiert ist.

@@ -1,17 +1,5 @@
 | File | doseQuantity | duration | durationUnit | frequency | period | periodUnit | Day<br>of<br>Week | Time<br>Of<br>Day | when | bounds[x] |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| [MedicationDispense-INV-C-TimingFrequencyCount-Dispense-01-of-05](./MedicationDispense-INV-C-TimingFrequencyCount-Dispense-01-of-05.html) | 1 Stück |  |  | 2 | 1 | d |  |  | MORN |  |
-| [MedicationDispense-INV-C-TimingFrequencyCount-Dispense-02-of-05](./MedicationDispense-INV-C-TimingFrequencyCount-Dispense-02-of-05.html) | 1 Stück |  |  | 2 | 1 | d |  | 08:00:00 |  |  |
-| [MedicationDispense-INV-C-TimingFrequencyCount-Dispense-03-of-05](./MedicationDispense-INV-C-TimingFrequencyCount-Dispense-03-of-05.html) | 2 Stück |  |  | 3 | 1 | wk | tue, thu |  |  |  |
-| [MedicationDispense-INV-C-TimingFrequencyCount-Dispense-04-of-05](./MedicationDispense-INV-C-TimingFrequencyCount-Dispense-04-of-05.html) | 1 Stück<br>2 Stück |  |  | 3<br>2 | 2 | d |  | 08:00:00, 20:00:00<br>10:00:00, 14:00:00, 22:00:00 |  |  |
-| [MedicationDispense-INV-C-TimingFrequencyCount-Dispense-05-of-05](./MedicationDispense-INV-C-TimingFrequencyCount-Dispense-05-of-05.html) | 1 Stück |  |  | 3 | 1 | wk | mon, fri |  | MORN | {'system': 'http://unitsofmeasure.org', 'value': 3, 'code': 'wk', 'unit': 'Woche(n)'} |
-| [MedicationRequest-INV-C-TimingFrequencyCount-Request-01-of-05](./MedicationRequest-INV-C-TimingFrequencyCount-Request-01-of-05.html) | 1 Stück |  |  | 2 | 1 | d |  |  | MORN |  |
-| [MedicationRequest-INV-C-TimingFrequencyCount-Request-02-of-05](./MedicationRequest-INV-C-TimingFrequencyCount-Request-02-of-05.html) | 1 Stück |  |  | 2 | 1 | d |  | 08:00:00 |  |  |
-| [MedicationRequest-INV-C-TimingFrequencyCount-Request-03-of-05](./MedicationRequest-INV-C-TimingFrequencyCount-Request-03-of-05.html) | 2 Stück |  |  | 3 | 1 | wk | tue, thu |  |  |  |
-| [MedicationRequest-INV-C-TimingFrequencyCount-Request-04-of-05](./MedicationRequest-INV-C-TimingFrequencyCount-Request-04-of-05.html) | 1 Stück<br>2 Stück |  |  | 3<br>2 | 2 | d |  | 08:00:00, 20:00:00<br>10:00:00, 14:00:00, 22:00:00 |  |  |
-| [MedicationRequest-INV-C-TimingFrequencyCount-Request-05-of-05](./MedicationRequest-INV-C-TimingFrequencyCount-Request-05-of-05.html) | 1 Stück |  |  | 3 | 1 | wk | mon, fri |  | MORN | {'system': 'http://unitsofmeasure.org', 'value': 3, 'code': 'wk', 'unit': 'Woche(n)'} |
-| [MedicationStatement-INV-C-TimingFrequencyCount-Statement-01-of-05](./MedicationStatement-INV-C-TimingFrequencyCount-Statement-01-of-05.html) | 1 Stück |  |  | 2 | 1 | d |  |  | MORN |  |
-| [MedicationStatement-INV-C-TimingFrequencyCount-Statement-02-of-05](./MedicationStatement-INV-C-TimingFrequencyCount-Statement-02-of-05.html) | 1 Stück |  |  | 2 | 1 | d |  | 08:00:00 |  |  |
-| [MedicationStatement-INV-C-TimingFrequencyCount-Statement-03-of-05](./MedicationStatement-INV-C-TimingFrequencyCount-Statement-03-of-05.html) | 2 Stück |  |  | 3 | 1 | wk | tue, thu |  |  |  |
-| [MedicationStatement-INV-C-TimingFrequencyCount-Statement-04-of-05](./MedicationStatement-INV-C-TimingFrequencyCount-Statement-04-of-05.html) | 1 Stück<br>2 Stück |  |  | 3<br>2 | 2 | d |  | 08:00:00, 20:00:00<br>10:00:00, 14:00:00, 22:00:00 |  |  |
-| [MedicationStatement-INV-C-TimingFrequencyCount-Statement-05-of-05](./MedicationStatement-INV-C-TimingFrequencyCount-Statement-05-of-05.html) | 1 Stück |  |  | 3 | 1 | wk | mon, fri |  | MORN | {'system': 'http://unitsofmeasure.org', 'value': 3, 'code': 'wk', 'unit': 'Woche(n)'} |
+| [MedicationDispense-INV-C-TimingFrequencyCount-Dispense](./MedicationDispense-INV-C-TimingFrequencyCount-Dispense.html) | 1 Stück |  |  | 2 | 2 | d |  | 08:00:00 |  |  |
+| [MedicationRequest-INV-C-TimingFrequencyCount-Request](./MedicationRequest-INV-C-TimingFrequencyCount-Request.html) | 1 Stück |  |  | 2 | 1 | wk |  |  | MORN |  |
+| [MedicationStatement-INV-C-TimingFrequencyCount-Statement](./MedicationStatement-INV-C-TimingFrequencyCount-Statement.html) | 1 Stück |  |  | 1 |  |  | tue, thu |  |  |  |

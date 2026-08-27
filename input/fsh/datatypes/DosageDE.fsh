@@ -9,7 +9,8 @@ Description: "Gibt an, wie das Medikament eingenommen oder verabreicht wurde bzw
 * obeys DosageStructuredOrFreeTextWarning
 * obeys DosageStructuredRequiresBothWarning
 * obeys DosageDoseUnitSameCodeWarning
-* obeys DosageWarnungViererschemaInText
+* obeys DosageDoseValuePositiveWarning
+* obeys DosageFourSlotPatternInTextWarning
 * obeys FreeTextSingleDosageOnlyWarning
 * obeys dos-1
 * text 0..1 MS
@@ -33,13 +34,13 @@ Description: "Gibt an, wie das Medikament eingenommen oder verabreicht wurde bzw
   * ^short = "Bedarfsdosierung (nur Ja/Nein-Angabe)"
   * ^definition = "Gibt an, ob es sich um eine Bedarfsdosierung handelt. Es ist nur eine Ja/Nein-Angabe erlaubt. Die Abbildung der Indikation erfolgt über die Extension asNeededFor."
 * extension contains $dosage-asNeededFor-r5 named asNeededFor 0..* MS
-* modifierExtension contains MindestabstandZwischenGaben named mindestabstandZwischenGaben 0..1 MS
+* modifierExtension contains MinimumIntervalBetweenAdministrations named minimumIntervalBetweenAdministrations 0..1 MS
 * extension[asNeededFor]
   * ^short = "Indikation für die Bedarfsdosierung"
   * ^definition = "Gibt die Indikation für die Bedarfsdosierung an."
   * valueCodeableConcept
     * text MS
-* modifierExtension[mindestabstandZwischenGaben]
+* modifierExtension[minimumIntervalBetweenAdministrations]
   * ^short = "Mindestabstand zwischen zwei Gaben"
   * ^definition = "Gibt den Mindestabstand zwischen zwei Gaben einer Bedarfsmedikation an."
   * valueDuration MS
@@ -76,7 +77,7 @@ Description: "Gibt an, wie das Medikament eingenommen oder verabreicht wurde bzw
   * ^short = "Maximale Dosis pro Zeitraum"
 
 Invariant: DosageStructuredOrFreeTextWarning
-Description: "Die Dosierungsangabe darf entweder nur als Freitext oder nur als vollständige strukturierte Information erfolgen — eine Mischung ist nicht erlaubt."
+Description: "A dosage must be given either as free text only or as complete structured information only; mixing both is not allowed."
 Expression: "(%resource.ofType(MedicationRequest).dosageInstruction | 
  %resource.ofType(MedicationDispense).dosageInstruction | 
  %resource.ofType(MedicationStatement).dosage).all(
@@ -86,7 +87,7 @@ Expression: "(%resource.ofType(MedicationRequest).dosageInstruction |
 Severity: #warning
 
 Invariant: FreeTextSingleDosageOnlyWarning
-Description: "Wenn eine Dosierung als reiner Freitext angegeben ist, soll nur genau ein Dosage-Element existieren."
+Description: "If a dosage is given as pure free text, there should be exactly one Dosage element."
 Expression: "(
   (%resource.ofType(MedicationRequest).dosageInstruction |
    %resource.ofType(MedicationDispense).dosageInstruction |
@@ -103,7 +104,7 @@ implies
 Severity: #warning
 
 Invariant: DosageStructuredRequiresBothWarning
-Description: "Wenn eine strukturierte Dosierungsangabe erfolgt, sollten sowohl timing als auch doseAndRate angegeben werden. Für reine Bedarfsdosierungen darf doseAndRate auch ohne timing angegeben werden."
+Description: "If a structured dosage is given, both timing and doseAndRate should be present. For pure as-needed dosages, doseAndRate may be given without timing."
 Expression: "(%resource.ofType(MedicationRequest).dosageInstruction | 
  %resource.ofType(MedicationDispense).dosageInstruction | 
  %resource.ofType(MedicationStatement).dosage).all(
@@ -117,7 +118,7 @@ Expression: "(%resource.ofType(MedicationRequest).dosageInstruction |
 Severity: #warning
 
 Invariant: DosageDoseUnitSameCodeWarning
-Description: "Die Dosiereinheit sollte über alle Dosierungen gleich sein."
+Description: "The dose unit should be the same across all dosages."
 Expression: "(%resource.ofType(MedicationRequest).dosageInstruction | %resource.ofType(MedicationDispense).dosageInstruction | %resource.ofType(MedicationStatement).dosage).all(
 doseAndRate.exists() implies
   (
@@ -128,8 +129,19 @@ doseAndRate.exists() implies
 )"
 Severity: #warning
 
-Invariant: DosageWarnungViererschemaInText
-Description: "Hinweis: In Dosage.text wurde ein Viererschema (z. B. 1-1-1-1) erkannt. Bitte prüfen, ob dies strukturiert abgebildet werden kann."
+Invariant: DosageDoseValuePositiveWarning
+Description: "doseQuantity.value and doseRange.high.value should be greater than 0. The value 0 is additionally allowed for doseRange.low.value only."
+Expression: """
+doseAndRate.all(
+  dose.ofType(Quantity).value.all($this > 0) and
+  dose.ofType(Range).low.value.all($this >= 0) and
+  dose.ofType(Range).high.value.all($this > 0)
+)
+"""
+Severity: #warning
+
+Invariant: DosageFourSlotPatternInTextWarning
+Description: "A four-slot dosing schema (Viererschema, e.g. 1-1-1-1) was detected in Dosage.text. Please check whether it can be represented structurally."
 Expression: "text.exists() implies text.matches('.*\\\\d+\\\\s*[-–]\\\\s*\\\\d+\\\\s*[-–]\\\\s*\\\\d+\\\\s*[-–]\\\\d+.*').not()"
 Severity: #warning
 

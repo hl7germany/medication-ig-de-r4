@@ -11,7 +11,8 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
 * obeys DosageDoseQuantityAllowedFractions
 * obeys DosageDoseUnitSameCode
 * obeys DosageDoseValueDecimalNotation
-* obeys DosageViererschemaInText
+* obeys DosageDoseValuePositive
+* obeys DosageFourSlotPatternInText
 * obeys PatientInstructionIdentical
 * obeys MaxDoseSameUnitAsDose
 * obeys MaxDosePerPeriodOnly24hOr1d
@@ -20,13 +21,12 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
 * obeys DoseRangeLowAndHighSameUnit
 * obeys DoseRangeNoVarPeriod
 * obeys VarFreqNoMaxDose
-* obeys VarPeriodNoMindestabstand
+* obeys MinimumIntervalOnlyPureAsNeeded
 * obeys AsNeededForRequiresAsNeeded
 * obeys AsNeededSingleDosageOnly
 * obeys AsNeededIdentical
 * obeys AsNeededForIdentical
-* obeys MindestabstandIdentical
-* obeys MindestabstandUnitMatchesCode
+* obeys MinimumIntervalUnitMatchesCode
 * obeys MaxDosePerPeriodIdentical
 * timing only TimingDgMP
 * doseAndRate 0..1 // Nur eine Dosierung für eine Medikation erlauben
@@ -72,7 +72,7 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
       * ^comment = "Begründung Einschränkung Kardinalität: Eine Codierung der Indikation für die Bedarfsdosierung ist in der aktuellen Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
     * text 1.. MS
       * ^comment = "Indikation für die Bedarfsdosierung."
-* modifierExtension[mindestabstandZwischenGaben]
+* modifierExtension[minimumIntervalBetweenAdministrations]
   * valueDuration 1..1 MS
     * value 1..1 MS
     * system 1..1 MS
@@ -95,7 +95,7 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
   * ^comment = "Begründung Einschränkung Kardinalität: Eine maximale Dosis über die Lebenszeit ist in der aktuellen Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
 
 Invariant: DosageStructuredOrFreeText
-Description: "Die Dosierungsangabe darf entweder nur als Freitext oder nur als vollständige strukturierte Information erfolgen — eine Mischung ist nicht erlaubt."
+Description: "A dosage must be given either as free text only or as complete structured information only; mixing both is not allowed."
 Expression: "(%resource.ofType(MedicationRequest).dosageInstruction | 
  %resource.ofType(MedicationDispense).dosageInstruction | 
  %resource.ofType(MedicationStatement).dosage).all(
@@ -105,7 +105,7 @@ Expression: "(%resource.ofType(MedicationRequest).dosageInstruction |
 Severity: #error
 
 Invariant: DosageStructuredRequiresBoth
-Description: "Wenn eine strukturierte Dosierungsangabe erfolgt, müssen sowohl timing als auch doseAndRate angegeben werden. Für reine Bedarfsdosierungen darf doseAndRate auch ohne timing angegeben werden."
+Description: "If a structured dosage is given, both timing and doseAndRate must be present. For pure as-needed dosages, doseAndRate may be given without timing."
 Expression: "(%resource.ofType(MedicationRequest).dosageInstruction |
  %resource.ofType(MedicationDispense).dosageInstruction |
  %resource.ofType(MedicationStatement).dosage).all(
@@ -119,7 +119,7 @@ Expression: "(%resource.ofType(MedicationRequest).dosageInstruction |
 Severity: #error
 
 Invariant: DosageStructuredRequiresGeneratedText
-Description: "Liegt eine strukturierte Dosierungsangabe vor (doseAndRate belegt, text leer, dazu timing oder eine reine Bedarfsdosierung), muss die Extension GeneratedDosageInstructionsMeta vorhanden sein."
+Description: "If a structured dosage is present (doseAndRate populated, text empty, plus timing or a pure as-needed dosage), the GeneratedDosageInstructionsMeta extension must be present."
 Expression: "(
   (%resource.ofType(MedicationRequest).dosageInstruction |
    %resource.ofType(MedicationDispense).dosageInstruction |
@@ -148,13 +148,13 @@ implies
 )"
 Severity: #error
 
-Invariant: DosageViererschemaInText
-Description: "Ein reines Viererschema (z. B. 1-0-1-0 oder 1-0-1-0 Stück) darf nicht als Freitext in Dosage.text angegeben werden, sondern ist strukturiert abzubilden."
+Invariant: DosageFourSlotPatternInText
+Description: "A bare four-slot dosing schema (Viererschema, e.g. 1-0-1-0 or 1-0-1-0 Stück) must not be given as free text in Dosage.text; it has to be represented structurally."
 Expression: "text.exists() implies text.matches('^\\\\s*\\\\d+([.,]\\\\d+)?(\\\\s*/\\\\s*\\\\d+)?(\\\\s*[-–]\\\\s*\\\\d+([.,]\\\\d+)?(\\\\s*/\\\\s*\\\\d+)?){3}(\\\\s*[A-Za-zÄÖÜäöüß().]+)?\\\\s*$').not()"
 Severity: #error
 
 Invariant: FreeTextSingleDosageOnly
-Description: "Wenn eine Dosierung als reiner Freitext angegeben ist, darf nur genau ein Dosage-Element existieren."
+Description: "If a dosage is given as pure free text, there must be exactly one Dosage element."
 Expression: "(
   (%resource.ofType(MedicationRequest).dosageInstruction |
    %resource.ofType(MedicationDispense).dosageInstruction |
@@ -171,7 +171,7 @@ implies
 Severity: #error
 
 Invariant: FreeTextMatchesRenderedText
-Description: "Wenn eine Dosierung als reiner Freitext angegeben ist (text vorhanden, timing und doseAndRate leer) UND die Extension renderedDosageInstruction befüllt ist, muss der Wert in dosageInstruction.text mit dem Wert in der Extension übereinstimmen."
+Description: "If a dosage is given as pure free text (text present, timing and doseAndRate empty) AND the renderedDosageInstruction extension is populated, the value in dosageInstruction.text must match the value in the extension."
 Expression: "(
   (%resource.ofType(MedicationRequest).dosageInstruction |
    %resource.ofType(MedicationDispense).dosageInstruction |
@@ -217,7 +217,7 @@ implies
 Severity: #error
 
 Invariant: DosageDoseQuantityAllowedFractions
-Description: "Dosiswerte in doseQuantity oder doseRange dürfen nur ganzzahlig sein oder einen der folgenden Dezimalanteile verwenden: .25, .33, .5, .66 oder .75."
+Description: "Dose values in doseQuantity or doseRange must be whole numbers or use one of the following fractional parts: .25, .33, .5, .66 or .75."
 Expression: """
 doseAndRate.all(
   (
@@ -261,7 +261,7 @@ doseAndRate.all(
 Severity: #error
 
 Invariant: DosageDoseUnitSameCode
-Description: "Die Dosiereinheit muss über alle Dosierungen gleich sein."
+Description: "The dose unit must be the same across all dosages."
 Expression: "(%resource.ofType(MedicationRequest).dosageInstruction | %resource.ofType(MedicationDispense).dosageInstruction | %resource.ofType(MedicationStatement).dosage).all(
 doseAndRate.exists() implies
   (
@@ -273,7 +273,7 @@ doseAndRate.exists() implies
 Severity: #error
 
 Invariant: DosageDoseValueDecimalNotation
-Description: "Dosiswerte in doseQuantity oder doseRange müssen in einfacher Dezimalschreibweise mit maximal zwei Nachkommastellen angegeben werden. Die Exponentialschreibweise (z. B. 50e-2 statt 0.5) ist nicht zulässig."
+Description: "Dose values in doseQuantity or doseRange must use plain decimal notation with at most two decimal places. Exponential notation (e.g. 50e-2 instead of 0.5) is not allowed."
 Expression: """
 doseAndRate.all(
   (
@@ -294,8 +294,19 @@ doseAndRate.all(
 """
 Severity: #error
 
+Invariant: DosageDoseValuePositive
+Description: "doseQuantity.value and doseRange.high.value must be greater than 0. The value 0 is additionally allowed for doseRange.low.value only."
+Expression: """
+doseAndRate.all(
+  dose.ofType(Quantity).value.all($this > 0) and
+  dose.ofType(Range).low.value.all($this >= 0) and
+  dose.ofType(Range).high.value.all($this > 0)
+)
+"""
+Severity: #error
+
 Invariant: PatientInstructionIdentical
-Description: "Wenn patientInstruction in einer Ressource mit mehreren Dosierungen verwendet wird, muss das Feld in allen Dosage-Elementen identisch befüllt sein."
+Description: "If patientInstruction is used in a resource with multiple dosages, the field must be populated identically in all Dosage elements."
 Expression: "(
   (
     %resource.ofType(MedicationRequest).dosageInstruction |
@@ -324,7 +335,7 @@ and
 Severity: #error
 
 Invariant: MaxDoseSameUnitAsDose
-Description: "maxDosePerPeriod muss die gleiche Einheit, den gleichen Code und das gleiche System wie doseQuantity verwenden."
+Description: "maxDosePerPeriod must use the same unit, code and system as doseQuantity."
 Severity: #error
 Expression: "
   maxDosePerPeriod.empty() or (
@@ -353,7 +364,7 @@ Expression: "
 "
 
 Invariant: MaxDosePerPeriodOnly24hOr1d
-Description: "maxDosePerPeriod ist nur mit einem Bezugszeitraum von 24 Stunden (24 h) oder 1 Tag (1 d) zulässig. Andere Perioden (z. B. maximal 3 alle 6 h) sind nicht erlaubt."
+Description: "maxDosePerPeriod is only allowed with a reference period of 24 hours (24 h) or 1 day (1 d). Other periods (e.g. at most 3 every 6 h) are not allowed."
 Severity: #error
 Expression: "maxDosePerPeriod.empty() or (
   (maxDosePerPeriod.denominator.value = 24 and maxDosePerPeriod.denominator.code = 'h') or
@@ -361,12 +372,12 @@ Expression: "maxDosePerPeriod.empty() or (
 )"
 
 Invariant: DoseRangeHighRequiredWhenLowPresent
-Description: "Wenn bei doseRange eine Untergrenze angegeben wird, muss auch eine Obergrenze angegeben werden."
+Description: "If a lower bound is given for doseRange, an upper bound must be given as well."
 Severity: #error
 Expression: "doseAndRate.dose.ofType(Range).low.empty() or doseAndRate.dose.ofType(Range).high.exists()"
 
 Invariant: DoseRangeLowAndHighSameUnit
-Description: "Unter- und Obergrenze einer variablen Einzeldosis müssen dieselbe Maßeinheit verwenden."
+Description: "The lower and upper bound of a variable single dose must use the same unit of measure."
 Severity: #error
 Expression: "doseAndRate.dose.ofType(Range).low.empty()
 or doseAndRate.dose.ofType(Range).high.empty()
@@ -377,27 +388,27 @@ or (
 )"
 
 Invariant: DoseRangeNoVarPeriod
-Description: "Eine variable Einzeldosis und eine variable Periode sollten nicht gemeinsam verwendet werden."
+Description: "A variable single dose and a variable period should not be used together."
 Severity: #warning
 Expression: "doseAndRate.dose.ofType(Range).empty() or timing.repeat.periodMax.empty()"
 
 Invariant: VarFreqNoMaxDose
-Description: "Variable Frequenz und maximale Dosis pro Zeitraum dürfen nicht gemeinsam verwendet werden."
+Description: "A variable frequency and a maximum dose per period must not be used together."
 Severity: #error
 Expression: "timing.repeat.frequencyMax.empty() or maxDosePerPeriod.empty()"
 
-Invariant: VarPeriodNoMindestabstand
-Description: "Variable Periode und Mindestabstand zwischen zwei Einzelgaben dürfen nicht gemeinsam verwendet werden."
+Invariant: MinimumIntervalOnlyPureAsNeeded
+Description: "A minimum interval between two single administrations (Mindestabstand) may only be given for a pure as-needed dosage: asNeededBoolean = true and no timing. A structured rhythm already determines the spacing between administrations; a second, weaker lower bound next to it is contradictory."
 Severity: #error
-Expression: "timing.repeat.periodMax.empty() or modifierExtension.where(url='http://ig.fhir.de/igs/medication/StructureDefinition/MindestabstandZwischenGaben').empty()"
+Expression: "modifierExtension.where(url='http://ig.fhir.de/igs/medication/StructureDefinition/MinimumIntervalBetweenAdministrations').exists() implies (asNeeded.ofType(boolean) = true and timing.empty())"
 
 Invariant: AsNeededForRequiresAsNeeded
-Description: "Ein Einnahmeanlass (asNeededFor) darf nur bei einer Bedarfsdosierung (asNeededBoolean=true) angegeben werden."
+Description: "A reason for use (asNeededFor) may only be given for an as-needed dosage (asNeededBoolean = true)."
 Severity: #error
 Expression: "extension.where(url='http://hl7.org/fhir/5.0/StructureDefinition/extension-Dosage.asNeededFor').exists() implies asNeeded.ofType(boolean) = true"
 
 Invariant: AsNeededSingleDosageOnly
-Description: "Wenn eine Bedarfsdosierung mit asNeededBoolean = true ohne timing angegeben ist, muss genau ein Dosage-Element in der Ressource existieren."
+Description: "If an as-needed dosage with asNeededBoolean = true is given without timing, exactly one Dosage element must exist in the resource."
 Expression: "(
   %resource.ofType(MedicationRequest).dosageInstruction |
   %resource.ofType(MedicationDispense).dosageInstruction |
@@ -414,7 +425,7 @@ implies
 Severity: #error
 
 Invariant: MaxDoseOnlyWhenAsNeeded
-Description: "Eine Maximalmenge (maxDosePerPeriod) darf nur bei einer Bedarfsdosierung (asNeededBoolean=true) angegeben werden."
+Description: "A maximum amount (maxDosePerPeriod) may only be given for an as-needed dosage (asNeededBoolean = true)."
 Severity: #error
 Expression: "maxDosePerPeriod.empty() or asNeeded.ofType(boolean) = true"
 
@@ -424,7 +435,7 @@ Expression: "maxDosePerPeriod.empty() or asNeeded.ofType(boolean) = true"
 // Invarianten könnten abweichende Angaben in weiteren Elementen unbemerkt entfallen.
 
 Invariant: AsNeededIdentical
-Description: "Das Bedarfskennzeichen (asNeededBoolean) muss über alle Dosage-Elemente einer Ressource identisch befüllt sein."
+Description: "The as-needed flag (asNeededBoolean) must be populated identically across all Dosage elements of a resource."
 Severity: #error
 Expression: "(
   (
@@ -453,7 +464,7 @@ and
 )"
 
 Invariant: AsNeededForIdentical
-Description: "Der Einnahmeanlass (asNeededFor) muss über alle Dosage-Elemente einer Ressource identisch befüllt sein. Mehrere Anlässe je Element sind zulässig, müssen dann aber in allen Elementen übereinstimmen."
+Description: "The reason for use (asNeededFor) must be populated identically across all Dosage elements of a resource. Multiple reasons per element are allowed but must then match in every element."
 Severity: #error
 /* Jedes Dosage-Element muss genauso viele verschiedene Anlässe tragen wie die
    Ressource insgesamt. Zwei Mengen gleicher Mächtigkeit, deren Vereinigung
@@ -476,100 +487,11 @@ Expression: "(
   ).value.ofType(CodeableConcept).text.distinct().count()
 )"
 
-Invariant: MindestabstandIdentical
-Description: "Der Mindestabstand zwischen Gaben muss über alle Dosage-Elemente einer Ressource identisch befüllt sein."
-Severity: #error
-/* Die distinct()-Prüfungen allein genügen nicht: Ein Element, das value oder code
-   nicht mit einem tatsächlichen primitiven Wert belegt, steuert keinen vergleichbaren
-   Wert zur Menge bei und könnte unbemerkt bleiben. Deshalb muss jede vorhandene
-   Extension genau einen tatsächlichen Wert und einen tatsächlichen Code beitragen.
-   hasValue() ist nötig, weil ein FHIR-Primitive auch ohne eigenen Wert existieren
-   kann, wenn es lediglich eine Extension trägt. */
-Expression: "(
-  (
-    %resource.ofType(MedicationRequest).dosageInstruction |
-    %resource.ofType(MedicationDispense).dosageInstruction |
-    %resource.ofType(MedicationStatement).dosage
-  ).modifierExtension.where(
-    url='http://ig.fhir.de/igs/medication/StructureDefinition/MindestabstandZwischenGaben'
-  ).value.ofType(Duration).value.where($this.hasValue()).count()
-  =
-  (
-    %resource.ofType(MedicationRequest).dosageInstruction |
-    %resource.ofType(MedicationDispense).dosageInstruction |
-    %resource.ofType(MedicationStatement).dosage
-  ).modifierExtension.where(
-    url='http://ig.fhir.de/igs/medication/StructureDefinition/MindestabstandZwischenGaben'
-  ).count()
-)
-and
-(
-  (
-    %resource.ofType(MedicationRequest).dosageInstruction |
-    %resource.ofType(MedicationDispense).dosageInstruction |
-    %resource.ofType(MedicationStatement).dosage
-  ).modifierExtension.where(
-    url='http://ig.fhir.de/igs/medication/StructureDefinition/MindestabstandZwischenGaben'
-  ).value.ofType(Duration).code.where($this.hasValue()).count()
-  =
-  (
-    %resource.ofType(MedicationRequest).dosageInstruction |
-    %resource.ofType(MedicationDispense).dosageInstruction |
-    %resource.ofType(MedicationStatement).dosage
-  ).modifierExtension.where(
-    url='http://ig.fhir.de/igs/medication/StructureDefinition/MindestabstandZwischenGaben'
-  ).count()
-)
-and
-(
-  (
-    %resource.ofType(MedicationRequest).dosageInstruction |
-    %resource.ofType(MedicationDispense).dosageInstruction |
-    %resource.ofType(MedicationStatement).dosage
-  ).modifierExtension.where(
-    url='http://ig.fhir.de/igs/medication/StructureDefinition/MindestabstandZwischenGaben'
-  ).value.ofType(Duration).value.distinct().count() <= 1
-)
-and
-(
-  (
-    %resource.ofType(MedicationRequest).dosageInstruction |
-    %resource.ofType(MedicationDispense).dosageInstruction |
-    %resource.ofType(MedicationStatement).dosage
-  ).modifierExtension.where(
-    url='http://ig.fhir.de/igs/medication/StructureDefinition/MindestabstandZwischenGaben'
-  ).value.ofType(Duration).code.distinct().count() <= 1
-)
-and
-(
-  (
-    (
-      %resource.ofType(MedicationRequest).dosageInstruction |
-      %resource.ofType(MedicationDispense).dosageInstruction |
-      %resource.ofType(MedicationStatement).dosage
-    ).modifierExtension.where(
-      url='http://ig.fhir.de/igs/medication/StructureDefinition/MindestabstandZwischenGaben'
-    ).exists()
-  )
-  implies
-  (
-    (
-      %resource.ofType(MedicationRequest).dosageInstruction |
-      %resource.ofType(MedicationDispense).dosageInstruction |
-      %resource.ofType(MedicationStatement).dosage
-    ).all(
-      modifierExtension.where(
-        url='http://ig.fhir.de/igs/medication/StructureDefinition/MindestabstandZwischenGaben'
-      ).exists()
-    )
-  )
-)"
-
-Invariant: MindestabstandUnitMatchesCode
-Description: "Die Anzeigeeinheit des Mindestabstands (valueDuration.unit) muss zum UCUM-Code passen (z. B. 'Stunde(n)' nur mit code='h')."
+Invariant: MinimumIntervalUnitMatchesCode
+Description: "The display unit of the minimum interval (valueDuration.unit) must match the UCUM code (e.g. 'Stunde(n)' only with code='h')."
 Severity: #error
 Expression: "modifierExtension.where(
-  url='http://ig.fhir.de/igs/medication/StructureDefinition/MindestabstandZwischenGaben'
+  url='http://ig.fhir.de/igs/medication/StructureDefinition/MinimumIntervalBetweenAdministrations'
 ).value.ofType(Duration).all(
   (
     code = 'min'
@@ -583,9 +505,9 @@ Expression: "modifierExtension.where(
 )"
 
 Invariant: MaxDosePerPeriodIdentical
-Description: "Die Maximalmenge (maxDosePerPeriod) gilt für die Gesamtmenge im Bezugszeitraum und muss über alle Dosage-Elemente einer Ressource identisch befüllt sein."
+Description: "The maximum amount (maxDosePerPeriod) applies to the total amount within the reference period and must be populated identically across all Dosage elements of a resource."
 Severity: #error
-/* Wie bei MindestabstandIdentical genügen die distinct()-Prüfungen allein nicht:
+/* Die distinct()-Prüfungen allein genügen nicht:
    Ein Element, das ein Teilfeld gar nicht belegt, steuert nichts zur Menge bei.
    Deshalb muss jede vorhandene Maximalmenge alle vier Teilfelder führen. */
 Expression: "(

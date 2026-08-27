@@ -1,4 +1,4 @@
-Instance: Warning-Dosage-Viererschema-Text-01
+Instance: Warning-Dosage-FourSlotPattern-Text-01
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Warnung: Viererschema in Dosage.text"
@@ -9,7 +9,7 @@ Description: "Beispiel, das ein eingebettetes Viererschema (1-1-1-1) in Dosage.t
 * medicationCodeableConcept.text = "Amoxicillin 500mg"
 * dosageInstruction[0].text = "Einnahme nach Schema 1-1-1-1"
 
-Instance: Warning-Dosage-Viererschema-Text-MD-01
+Instance: Warning-Dosage-FourSlotPattern-Text-MD-01
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
 Title: "Warnung: Viererschema in Dosage.text"
@@ -19,7 +19,7 @@ Description: "Beispiel, das ein eingebettetes Viererschema (1-1-1-1) in Dosage.t
 * medicationCodeableConcept.text = "Amoxicillin 500mg"
 * dosageInstruction[0].text = "Einnahme nach Schema 1-1-1-1"
 
-Instance: Warning-Dosage-Viererschema-Text-MS-01
+Instance: Warning-Dosage-FourSlotPattern-Text-MS-01
 InstanceOf: MedicationStatementDgMP
 Usage: #example
 Title: "Warnung: Viererschema in Dosage.text"

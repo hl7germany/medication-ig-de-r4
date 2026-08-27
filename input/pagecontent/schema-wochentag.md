@@ -29,7 +29,7 @@ Diese Dosierungsart wird daran erkannt, dass unter `Dosage.timing.repeat`
 
 - `dayOfWeek`
 - opt. Angabe von `frequency` (muss bei Angabe der Anzahl der `dayOfWeek`-Elemente entsprechen)
-- opt. Angabe von `period` und `periodUnit` in Wochen (`wk`) – Standardinterpretation: wöchentlich
+- opt. Angabe des Paars `period = 1` und `periodUnit = wk` als redundante Angabe
 - opt. Angabe von `bounds[x]`
 
 angegeben ist. An diesem Feld wird dann kodiert der Wochentag angegeben an der eine konkrete Dosierung einzunehmen ist.
@@ -41,7 +41,11 @@ timing.repeat.dayOfWeek.exists() and
 timing.repeat.when.empty() and
 timing.repeat.timeOfDay.empty()
 ```
-Der Wert von `frequency` entspricht dabei – sofern angegeben – der Anzahl an Elementen in `dayOfWeek`.
+Die wöchentliche Wiederholung ist durch `dayOfWeek` bereits eindeutig. Als
+[Legacy-Angaben](./StructureDefinition-TimingDgMP.html) zulässig sind hier
+`frequency` — entsprechend der Anzahl der `dayOfWeek`-Elemente — sowie das
+Paar `period = 1` und `periodUnit = wk`. Jede andere Periode ist mit
+`dayOfWeek` nicht kombinierbar, ebenso wenig `frequencyMax` und `periodMax`.
 
 Soll das Arzneimittel in derselben Dosierung an mehreren Tagen angewandt werden, wird dies über mehrere Angaben von `dayOfWeek` ausgedrückt. Die angegebene Dosierung ist dann zu jedem der genannten Tage anzuwenden.
 

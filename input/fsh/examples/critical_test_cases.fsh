@@ -10,12 +10,10 @@ Description: "Example showing interval dosing with when codes instead of timeOfD
 * medicationCodeableConcept.text = "Test Medication"
 * status = #active
 * intent = #order
-* dosageInstruction[0].timing.repeat.frequency = 1
 * dosageInstruction[0].timing.repeat.period = 3
 * dosageInstruction[0].timing.repeat.periodUnit = #d
 * dosageInstruction[0].timing.repeat.when = #MORN
 * dosageInstruction[0].doseAndRate[0].doseQuantity = 1 '1' "Stück"
-* dosageInstruction[1].timing.repeat.frequency = 1
 * dosageInstruction[1].timing.repeat.period = 3
 * dosageInstruction[1].timing.repeat.periodUnit = #d
 * dosageInstruction[1].timing.repeat.when = #EVE
@@ -169,12 +167,10 @@ Description: "Example showing interval dosing with when codes instead of timeOfD
 * subject.display = "Patient"
 * medicationCodeableConcept.text = "Test Medication"
 * status = #completed
-* dosageInstruction[0].timing.repeat.frequency = 1
 * dosageInstruction[0].timing.repeat.period = 3
 * dosageInstruction[0].timing.repeat.periodUnit = #d
 * dosageInstruction[0].timing.repeat.when = #MORN
 * dosageInstruction[0].doseAndRate[0].doseQuantity = 1 '1' "Stück"
-* dosageInstruction[1].timing.repeat.frequency = 1
 * dosageInstruction[1].timing.repeat.period = 3
 * dosageInstruction[1].timing.repeat.periodUnit = #d
 * dosageInstruction[1].timing.repeat.when = #EVE
@@ -287,9 +283,6 @@ Description: "Example showing multiple dayOfWeek + timeOfDay combination"
     * dayOfWeek[+] = #tue
     * dayOfWeek[+] = #thu
     * timeOfDay[+] = "08:00:00"
-    * frequency = 2
-    * period = 1
-    * periodUnit = #wk
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 * dosageInstruction[+]
   * timing.repeat
@@ -297,9 +290,6 @@ Description: "Example showing multiple dayOfWeek + timeOfDay combination"
     * dayOfWeek[+] = #fri
     * timeOfDay[+] = "08:00:00"
     * timeOfDay[+] = "20:00:00"
-    * frequency = 4
-    * period = 1
-    * periodUnit = #wk
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
 Instance: MD-Dosage-interval-monthly
@@ -325,12 +315,10 @@ Description: "Example showing interval dosing with when codes instead of timeOfD
 * subject.display = "Patient"
 * medicationCodeableConcept.text = "Test Medication"
 * status = #active
-* dosage[0].timing.repeat.frequency = 1
 * dosage[0].timing.repeat.period = 3
 * dosage[0].timing.repeat.periodUnit = #d
 * dosage[0].timing.repeat.when = #MORN
 * dosage[0].doseAndRate[0].doseQuantity = 1 '1' "Stück"
-* dosage[1].timing.repeat.frequency = 1
 * dosage[1].timing.repeat.period = 3
 * dosage[1].timing.repeat.periodUnit = #d
 * dosage[1].timing.repeat.when = #EVE
@@ -344,12 +332,10 @@ Description: "Example showing interval dosing with timeOfDay values across dosag
 * subject.display = "Patient"
 * medicationCodeableConcept.text = "Test Medication"
 * status = #active
-* dosage[0].timing.repeat.frequency = 1
 * dosage[0].timing.repeat.period = 3
 * dosage[0].timing.repeat.periodUnit = #d
 * dosage[0].timing.repeat.timeOfDay = "08:00:00"
 * dosage[0].doseAndRate[0].doseQuantity = 1 '1' "Stück"
-* dosage[1].timing.repeat.frequency = 1
 * dosage[1].timing.repeat.period = 3
 * dosage[1].timing.repeat.periodUnit = #d
 * dosage[1].timing.repeat.timeOfDay = "20:00:00"

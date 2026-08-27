@@ -13,6 +13,12 @@
 | [MedicationDispense-INV-C-TimingOnlyOneType-Dispense-11-of-13](./MedicationDispense-INV-C-TimingOnlyOneType-Dispense-11-of-13.html) | 1 Stück<br>2 Stück |  |  | 1 | 1<br>3 | wk<br>d | fri | 08:00:00 |  |  |
 | [MedicationDispense-INV-C-TimingOnlyOneType-Dispense-12-of-13](./MedicationDispense-INV-C-TimingOnlyOneType-Dispense-12-of-13.html) | 1 Stück<br>2 Stück |  |  | 1 | 1<br>3 | wk<br>d | fri |  | EVE<br>MORN |  |
 | [MedicationDispense-INV-C-TimingOnlyOneType-Dispense-13-of-13](./MedicationDispense-INV-C-TimingOnlyOneType-Dispense-13-of-13.html) | 1 Stück<br>2 Stück |  |  | 1 | 1<br>3 | wk<br>d | fri | 08:00:00<br>20:00:00 |  |  |
+| [MedicationDispense-INV-C-TimingOnlyOneType-Dispense](./MedicationDispense-INV-C-TimingOnlyOneType-Dispense.html) | 1 Stück |  |  | 1 | 2 | wk | tue |  |  |  |
+| [MedicationDispense-INV-C-TimingOnlyOneType-MD-01-of-02](./MedicationDispense-INV-C-TimingOnlyOneType-MD-01-of-02.html) | 1 Stück |  |  | 1 | 2 | wk | tue |  | MORN |  |
+| [MedicationDispense-INV-C-TimingOnlyOneType-MD-02-of-02](./MedicationDispense-INV-C-TimingOnlyOneType-MD-02-of-02.html) | 1 Stück |  |  | 1 | 2 | wk | tue | 08:00:00 |  |  |
+| [MedicationDispense-INV-VarFreq-C-TimingOnlyOneType-MD](./MedicationDispense-INV-VarFreq-C-TimingOnlyOneType-MD.html) | 1 Stück |  |  | 1-3 |  |  |  | 08:00:00 |  |  |
+| [MedicationRequest-INV-C-TimingOnlyOneType-MR-01-of-02](./MedicationRequest-INV-C-TimingOnlyOneType-MR-01-of-02.html) | 1 Stück |  |  | 1 | 2 | wk | tue |  | MORN |  |
+| [MedicationRequest-INV-C-TimingOnlyOneType-MR-02-of-02](./MedicationRequest-INV-C-TimingOnlyOneType-MR-02-of-02.html) | 1 Stück |  |  | 1 | 2 | wk | tue | 08:00:00 |  |  |
 | [MedicationRequest-INV-C-TimingOnlyOneType-Request-01-of-13](./MedicationRequest-INV-C-TimingOnlyOneType-Request-01-of-13.html) | 1 Stück<br>1 Stück |  |  | 1 | 1 | d<br>wk | mon |  | EVE |  |
 | [MedicationRequest-INV-C-TimingOnlyOneType-Request-02-of-13](./MedicationRequest-INV-C-TimingOnlyOneType-Request-02-of-13.html) | 1 Stück<br>1 Stück |  |  | 1 | 1 | d |  |  | NOON |  |
 | [MedicationRequest-INV-C-TimingOnlyOneType-Request-03-of-13](./MedicationRequest-INV-C-TimingOnlyOneType-Request-03-of-13.html) | 1 Stück<br>1 Stück |  |  | 1 | 1 | d<br>wk | fri | 07:00:00 |  |  |
@@ -26,6 +32,10 @@
 | [MedicationRequest-INV-C-TimingOnlyOneType-Request-11-of-13](./MedicationRequest-INV-C-TimingOnlyOneType-Request-11-of-13.html) | 1 Stück<br>2 Stück |  |  | 1 | 1<br>3 | wk<br>d | fri | 08:00:00 |  |  |
 | [MedicationRequest-INV-C-TimingOnlyOneType-Request-12-of-13](./MedicationRequest-INV-C-TimingOnlyOneType-Request-12-of-13.html) | 1 Stück<br>2 Stück |  |  | 1 | 1<br>3 | wk<br>d | fri |  | EVE<br>MORN |  |
 | [MedicationRequest-INV-C-TimingOnlyOneType-Request-13-of-13](./MedicationRequest-INV-C-TimingOnlyOneType-Request-13-of-13.html) | 1 Stück<br>2 Stück |  |  | 1 | 1<br>3 | wk<br>d | fri | 08:00:00<br>20:00:00 |  |  |
+| [MedicationRequest-INV-C-TimingOnlyOneType-Request](./MedicationRequest-INV-C-TimingOnlyOneType-Request.html) | 1 Stück |  |  | 1 | 2 | wk | tue |  |  |  |
+| [MedicationRequest-INV-VarFreq-C-TimingOnlyOneType-MR](./MedicationRequest-INV-VarFreq-C-TimingOnlyOneType-MR.html) | 1 Stück |  |  | 1-3 |  |  |  |  | MORN |  |
+| [MedicationStatement-INV-C-TimingOnlyOneType-MS-01-of-02](./MedicationStatement-INV-C-TimingOnlyOneType-MS-01-of-02.html) | 1 Stück |  |  | 1 | 2 | wk | tue |  | MORN |  |
+| [MedicationStatement-INV-C-TimingOnlyOneType-MS-02-of-02](./MedicationStatement-INV-C-TimingOnlyOneType-MS-02-of-02.html) | 1 Stück |  |  | 1 | 2 | wk | tue | 08:00:00 |  |  |
 | [MedicationStatement-INV-C-TimingOnlyOneType-Statement-01-of-13](./MedicationStatement-INV-C-TimingOnlyOneType-Statement-01-of-13.html) | 1 Stück<br>1 Stück |  |  | 1 | 1 | d<br>wk | mon |  | EVE |  |
 | [MedicationStatement-INV-C-TimingOnlyOneType-Statement-02-of-13](./MedicationStatement-INV-C-TimingOnlyOneType-Statement-02-of-13.html) | 1 Stück<br>1 Stück |  |  | 1 | 1 | d |  |  | NOON |  |
 | [MedicationStatement-INV-C-TimingOnlyOneType-Statement-03-of-13](./MedicationStatement-INV-C-TimingOnlyOneType-Statement-03-of-13.html) | 1 Stück<br>1 Stück |  |  | 1 | 1 | d<br>wk | fri | 07:00:00 |  |  |
@@ -39,3 +49,5 @@
 | [MedicationStatement-INV-C-TimingOnlyOneType-Statement-11-of-13](./MedicationStatement-INV-C-TimingOnlyOneType-Statement-11-of-13.html) | 1 Stück<br>2 Stück |  |  | 1 | 1<br>3 | wk<br>d | fri | 08:00:00 |  |  |
 | [MedicationStatement-INV-C-TimingOnlyOneType-Statement-12-of-13](./MedicationStatement-INV-C-TimingOnlyOneType-Statement-12-of-13.html) | 1 Stück<br>2 Stück |  |  | 1 | 1<br>3 | wk<br>d | fri |  | EVE<br>MORN |  |
 | [MedicationStatement-INV-C-TimingOnlyOneType-Statement-13-of-13](./MedicationStatement-INV-C-TimingOnlyOneType-Statement-13-of-13.html) | 1 Stück<br>2 Stück |  |  | 1 | 1<br>3 | wk<br>d | fri | 08:00:00<br>20:00:00 |  |  |
+| [MedicationStatement-INV-C-TimingOnlyOneType-Statement](./MedicationStatement-INV-C-TimingOnlyOneType-Statement.html) | 1 Stück |  |  | 1 | 2 | wk | tue |  |  |  |
+| [MedicationStatement-INV-VarFreq-C-TimingOnlyOneType-MS](./MedicationStatement-INV-VarFreq-C-TimingOnlyOneType-MS.html) | 1 Stück |  |  | 1-3 | 2 | d |  |  | MORN |  |

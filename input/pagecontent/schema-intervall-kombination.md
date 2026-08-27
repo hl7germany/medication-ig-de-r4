@@ -1,6 +1,6 @@
-Es wird ermöglicht, einen Tageszeiten-Bezug oder einen Uhrzeiten-Bezug mit einem Zeitintervall (Einheit mind. „Tag“) zu kombinieren.
+{% include StructureDefinition-IntervalCombinationSchemeLogical-intro.xhtml %}
 
-Es wird ermöglicht, die geplante Dauer der Anwendung zu begrenzen.
+{% include StructureDefinition-IntervalCombinationSchemeLogical-diff.xhtml %}
 
 ### Beispiel
 

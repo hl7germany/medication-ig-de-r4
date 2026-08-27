@@ -2,13 +2,7 @@ Logical: IntervalSchemeLogical
 Parent: Base
 Id: IntervalSchemeLogical
 Title: "Fachliches Informationsmodell für das Schema für wiederkehrende Intervalle"
-Description: """
-Dieses Modell beschreibt eine Anwendung in regelmäßigen Abständen, ohne festzulegen, zu welchem genauen
-Zeitpunkt das Arzneimittel angewendet wird. Es sagt also aus, wie oft in einem bestimmten Zeitraum eine
-Dosis angewendet wird: zum Beispiel „dreimal täglich“ oder „einmal alle acht Stunden“.
-
-Die Häufigkeit ergibt sich aus zwei Angaben: der Frequenz (wie oft) und der Periode (je welchem Zeitraum).
-"""
+// Zum Anpassen der Beschreibung siehe StructureDefinition-IntervalSchemeLogical-intro.md
 
 * insert Kopf
 * insert Hinweis

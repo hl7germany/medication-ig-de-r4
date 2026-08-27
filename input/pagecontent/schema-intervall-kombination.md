@@ -44,10 +44,12 @@ ergibt sich bereits aus den konkreten Werten in `when` beziehungsweise
 generierten Text nicht ausgegeben. `period` und `periodUnit` sind hier dagegen
 keine Legacy-Angaben, sondern legen den Rhythmus fest.
 
-Die Regel `TimingVarFreqOrPeriod`, die eine gleichzeitig variable Frequenz
-(`frequencyMax`) und Periode (`periodMax`) beanstandet, gilt ausschließlich für
-reine Intervallangaben ohne Zeitpunkte. Im dgMP-Profil ist sie ein Fehler, im
-generischen Profil `TimingDE` eine Warnung.
+Die Regel `TimingFreqOrPeriodGtOne`, nach der von Frequenz und Periode nur eine
+größer als `1` sein darf, gilt ausschließlich für reine Intervallangaben ohne
+Zeitpunkte. Hier legen `when` beziehungsweise `timeOfDay` die Zahl der Gaben
+fest, und eine Periode größer als `1` beschreibt den Abstand der Anwendungstage.
+Im dgMP-Profil ist die Regel ein Fehler, im generischen Profil `TimingDE` eine
+Warnung.
 
 Mit `period` und `periodUnit` wird der Einnahmerhythmus festgelegt. `when` oder
 `timeOfDay` ordnet diesem Rhythmus konkrete Tagesabschnitte beziehungsweise

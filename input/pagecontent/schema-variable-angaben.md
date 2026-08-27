@@ -85,7 +85,7 @@ timing.repeat.frequencyMax.empty() or maxDosePerPeriod.empty()
 
 Folgende Beispiele sind nicht valide, da sie diese Constraints brechen:
 
-{% include dosage-constraint-TimingVarFreqOrPeriod-examples.md%}
+{% include dosage-constraint-TimingFreqOrPeriodGtOne-examples.md%}
 
 {% include dosage-constraint-TimingVarFreqGtMin-examples.md%}
 

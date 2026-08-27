@@ -22,7 +22,6 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * obeys TimingPeriodUnit
   * obeys TimingPeriodOnlyWholeNumber
   * obeys TimingBoundsDurationOnlyWholeNumber
-  * obeys TimingVarFreqOrPeriod
   * obeys TimingFreqOrPeriodGtOne
   * obeys TimingVarFreqGtMin
   * obeys TimingVarPeriodGtMin
@@ -199,21 +198,6 @@ Expression: "bounds.ofType(Duration).exists().not() or (
       bounds.ofType(Duration).unit = 'Jahre'
     )
   )
-)"
-Severity: #error
-
-Invariant: TimingVarFreqOrPeriod
-Description: "For a pure interval without concrete times, frequency (frequencyMax) and period (periodMax) must not both be given as variable. A fixed frequency greater than 1 together with a period, such as twice every 8 hours, remains allowed."
-Expression: "/* Detect Interval only */
-(
-  timeOfDay.empty() and
-  when.empty() and
-  dayOfWeek.empty() and
-  frequency.exists() and
-  period.exists()
-) implies
-(
-  frequencyMax.empty() or periodMax.empty()
 )"
 Severity: #error
 

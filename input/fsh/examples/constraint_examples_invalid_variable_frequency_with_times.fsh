@@ -2,7 +2,7 @@
 // interval schemas. Together with concrete when/timeOfDay values the number of
 // administrations is already fixed, so frequencyMax contradicts it and would be
 // dropped without trace by the text generation. No period is given, so
-// TimingVarFreqOrPeriod does not apply and TimingOnlyOneType is isolated.
+// TimingFreqOrPeriodGtOne does not apply and TimingOnlyOneType is isolated.
 
 Instance: INV-VarFreq-C-TimingOnlyOneType-MR
 InstanceOf: MedicationRequestDgMP

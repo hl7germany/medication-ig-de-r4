@@ -143,6 +143,7 @@
 | [MedicationRequest-Example-MR-Dosage-tod-multi](./MedicationRequest-Example-MR-Dosage-tod-multi.html) | täglich: 08:00 Uhr — je 2 Stück, 11:00 Uhr, 14:00 Uhr, 17:00 Uhr, 20:00 Uhr, 23:00 Uhr — je 1 Stück | 2 Stück |  |  |  |  | 08:00:00 |  |  |
 |  |  | 1 Stück |  |  |  |  | 11:00:00, 14:00:00, 17:00:00, 20:00:00, 23:00:00 |  |  |
 | [MedicationRequest-Example-MR-Dosage-tod-unsorted](./MedicationRequest-Example-MR-Dosage-tod-unsorted.html) | täglich: 08:00 Uhr, 15:00 Uhr — je 1 Stück | 1 Stück |  |  |  |  | 15:00:00, 08:00:00 |  |  |
+| [MedicationRequest-Example-MR-Dosage-varfreq-9-to-10](./MedicationRequest-Example-MR-Dosage-varfreq-9-to-10.html) | 9 bis 10 x täglich: je 1 Stück | 1 Stück | 9-10 | 1 | d |  |  |  |  |
 | [MedicationRequest-Example-MR-Dosage-variable-doseRange](./MedicationRequest-Example-MR-Dosage-variable-doseRange.html) | täglich: je 1 bis 2 Stück | 1-2 Stück | 1 | 1 | d |  |  |  |  |
 | [MedicationRequest-Example-MR-Dosage-variable-frequency](./MedicationRequest-Example-MR-Dosage-variable-frequency.html) | 1 bis 2 x täglich: je 1 Stück | 1 Stück | 1-2 | 1 | d |  |  |  |  |
 | [MedicationRequest-Example-MR-Dosage-variable-period](./MedicationRequest-Example-MR-Dosage-variable-period.html) | alle 4 bis 6 Tage: je 1 Stück | 1 Stück | 1 | 4-6 | d |  |  |  |  |

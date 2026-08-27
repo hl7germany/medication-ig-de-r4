@@ -234,7 +234,8 @@ Expression: "/* Detect Interval only */
 
 Invariant: TimingVarFreqGtMin
 Description: "For a variable frequency, the maximum frequency must be greater than the minimum frequency."
-Expression: "frequencyMax.empty() or frequency.empty() or frequency < frequencyMax"
+Expression: "frequencyMax.empty() or frequency.empty() or
+  frequency.value.toInteger() < frequencyMax.value.toInteger()"
 Severity: #error
 
 Invariant: TimingVarPeriodGtMin

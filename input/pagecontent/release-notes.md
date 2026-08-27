@@ -51,7 +51,7 @@ Die folgenden bestehenden Regeln haben sich in ihrer Aussage geändert:
   - Der Schlüssel trug als einziger einen deutschen Wortstamm und zudem „Warnung" statt des sonst verwendeten `Warning`-Suffixes. Er erscheint in Validierungsmeldungen; Werkzeuge, die darauf abstellen, müssen angepasst werden. Der Ausdruck ist unverändert.
 
 - **`TimingVarFreqGtMin` (`TimingDgMP`)**
-  - Vergleicht `frequency` und `frequencyMax` jetzt numerisch. Zuvor stand `.value` im Ausdruck, was die Werte als Zeichenketten verglich: „9 bis 10 x täglich" galt dadurch als ungültig, weil `"9" < "10"` lexikographisch nicht zutrifft. Betroffen war jede variable Frequenz, deren Ober- und Untergrenze unterschiedlich viele Stellen haben.
+  - Vergleicht `frequency` und `frequencyMax` jetzt numerisch über `.value.toInteger()`. Zuvor verglich der Ausdruck die Werte als Zeichenketten: „9 bis 10 x täglich" galt dadurch als ungültig, weil `"9" < "10"` lexikographisch nicht zutrifft. Betroffen war jede variable Frequenz, deren Ober- und Untergrenze unterschiedlich viele Stellen haben.
 
 - **`TimingOnlyOneWhen`, `TimingOnlyOneTimeOfDay`, `TimingOnlyOneDayOfWeek`, `TimingOnlyOneTimeForInterval` und `TimingOnlyWhenOrTimeOfDay` (`TimingDgMP`)**
   - Die Schema-Erkennung in der Vorbedingung setzt `frequency`, `period` und `periodUnit` nicht mehr voraus. Zuvor griffen diese Regeln nur, wenn alle drei Felder belegt waren — seit sie optionale Legacy-Angaben sind, wären Ressourcen ohne sie ungeprüft geblieben. Die Regeln erfassen damit alle Ressourcen des jeweiligen Schemas.

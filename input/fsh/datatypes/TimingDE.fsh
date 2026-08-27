@@ -188,28 +188,28 @@ Description: "If frequency and period are given together, only one of them may e
 Severity: #warning
 Expression: "/* Detect Interval only */
 (
-  repeat.timeOfDay.empty() and
-  repeat.when.empty() and
-  repeat.dayOfWeek.empty() and
-  repeat.frequency.exists() and
-  repeat.period.exists()
+  timeOfDay.empty() and
+  when.empty() and
+  dayOfWeek.empty() and
+  frequency.exists() and
+  period.exists()
 ) implies
 (
   (
-    (repeat.frequency > 1 or repeat.frequencyMax > 1)
+    (frequency.value > 1 or frequencyMax.value > 1)
     implies
     (
-      repeat.period = 1 and
-      (repeat.periodMax.empty() or repeat.periodMax = 1)
+      period = 1 and
+      (periodMax.empty() or periodMax = 1)
     )
   )
   and
   (
-    (repeat.period > 1 or repeat.periodMax > 1)
+    (period > 1 or periodMax > 1)
     implies
     (
-      repeat.frequency = 1 and
-      (repeat.frequencyMax.empty() or repeat.frequencyMax = 1)
+      frequency.value = 1 and
+      (frequencyMax.empty() or frequencyMax.value = 1)
     )
   )
 )"

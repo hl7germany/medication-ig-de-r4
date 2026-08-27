@@ -57,7 +57,7 @@ Die folgenden bestehenden Regeln haben sich in ihrer Aussage geändert:
   - Beide berücksichtigen jetzt die reine Bedarfsmedikation: `doseAndRate` darf ohne `timing` angegeben werden, wenn `asNeededBoolean = true` oder ein Anlass gesetzt ist, und eine solche Dosierung verlangt ebenfalls die Extension `GeneratedDosageInstructionsMeta`. Zuvor galt eine Dosierung ohne `timing` als unvollständig.
 
 - **`TimingOnlyOneBounds` (`TimingDgMP`)**
-  - Deckt zusätzlich `boundsPeriod` ab: Start und Ende müssen über alle `Dosage`-Elemente gleich belegt sein. Zuvor prüfte die Regel nur `boundsDuration`, obwohl die Textgenerierung den Zeitrahmen in beiden Fällen ausschließlich aus dem ersten Element liest.
+  - Deckt zusätzlich `boundsPeriod` ab: Start und Ende müssen über alle `Dosage`-Elemente gleich belegt sein. Zuvor prüfte die Regel nur `boundsDuration`, obwohl die Textgenerierung den Zeitrahmen in beiden Fällen ausschließlich aus dem ersten Element liest. Ebenso gilt jetzt: Entweder tragen alle Elemente einen Zeitrahmen oder keines.
 
 - **`TimingOnlyOnePeriodForDayOfWeek` (`TimingDgMP`)**
   - Von `Timing.repeat` auf `Timing` verschoben, um einen Überlauf im IG Publisher bei der Erzeugung der Excel-Tabellen zu umgehen. Der Ausdruck wertet ohnehin die gesamte Ressource aus; inhaltlich ändert sich nichts.

@@ -206,28 +206,28 @@ Description: "If frequency and period are given together, only one of them may e
 Severity: #error
 Expression: "/* Detect Interval only */
 (
-  repeat.timeOfDay.empty() and
-  repeat.when.empty() and
-  repeat.dayOfWeek.empty() and
-  repeat.frequency.exists() and
-  repeat.period.exists()
+  timeOfDay.empty() and
+  when.empty() and
+  dayOfWeek.empty() and
+  frequency.exists() and
+  period.exists()
 ) implies
 (
   (
-    (repeat.frequency > 1 or repeat.frequencyMax > 1)
+    (frequency.value > 1 or frequencyMax.value > 1)
     implies
     (
-      repeat.period = 1 and
-      (repeat.periodMax.empty() or repeat.periodMax = 1)
+      period = 1 and
+      (periodMax.empty() or periodMax = 1)
     )
   )
   and
   (
-    (repeat.period > 1 or repeat.periodMax > 1)
+    (period > 1 or periodMax > 1)
     implies
     (
-      repeat.frequency = 1 and
-      (repeat.frequencyMax.empty() or repeat.frequencyMax = 1)
+      frequency.value = 1 and
+      (frequencyMax.empty() or frequencyMax.value = 1)
     )
   )
 )"
@@ -486,7 +486,7 @@ Expression: "( /* Detect DayOfWeek */
 Severity: #error
 
 Invariant: TimingOnlyOneBounds
-Description: "All Dosage elements of a resource must state the same bounds (Duration or Period)."
+Description: "All Dosage elements of a resource must state the same bounds (Duration or Period), and either all of them carry a bounds or none."
 Expression: "(
   %resource.ofType(MedicationRequest).dosageInstruction
   | %resource.ofType(MedicationDispense).dosageInstruction
@@ -536,6 +536,26 @@ Expression: "(
         and
         (%resource.dosage.timing.repeat.bounds.ofType(Period).end.distinct().count() <= 1)
       )
+    )
+  )
+  and
+  ( /* Entweder alle Dosage-Elemente tragen einen Zeitrahmen oder keines. Die
+       Textgenerierung liest ihn nur aus dem ersten Element; ein Element ohne
+       Zeitrahmen wuerde sonst stillschweigend als begrenzt dargestellt. */
+    (
+      (
+        %resource.ofType(MedicationRequest).dosageInstruction |
+        %resource.ofType(MedicationDispense).dosageInstruction |
+        %resource.ofType(MedicationStatement).dosage
+      ).timing.repeat.bounds.exists()
+    )
+    implies
+    (
+      (
+        %resource.ofType(MedicationRequest).dosageInstruction |
+        %resource.ofType(MedicationDispense).dosageInstruction |
+        %resource.ofType(MedicationStatement).dosage
+      ).all(timing.repeat.bounds.exists())
     )
   )
 )"

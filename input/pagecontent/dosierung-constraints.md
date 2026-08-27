@@ -278,6 +278,8 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-TimingOnlyOneBounds-examples.md%}
 
+Zusätzlich gilt: Entweder tragen **alle** `Dosage`-Elemente einen Zeitrahmen oder keines. Die Textgenerierung liest ihn nur aus dem ersten Element; ein Element ohne Zeitrahmen würde sonst stillschweigend als begrenzt dargestellt.
+
 ##### TimingBoundsDurationOnlyWholeNumber
 
 **Beschreibung:**  

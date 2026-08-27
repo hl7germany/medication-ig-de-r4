@@ -1,4 +1,4 @@
-{% include StructureDefinition-PRNSchemeLogical-intro.xhtml %}
+{% include StructureDefinition-PRNSchemeLogical-intro.md %}
 
 {% include StructureDefinition-PRNSchemeLogical-diff.xhtml %}
 

@@ -1,4 +1,4 @@
-{% include StructureDefinition-TimeSchemeLogical-intro.xhtml %}
+{% include StructureDefinition-TimeSchemeLogical-intro.md %}
 
 {% include StructureDefinition-TimeSchemeLogical-diff.xhtml %}
 

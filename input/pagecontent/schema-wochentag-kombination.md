@@ -1,4 +1,4 @@
-{% include StructureDefinition-WeekdayCombinationSchemeLogical-intro.xhtml %}
+{% include StructureDefinition-WeekdayCombinationSchemeLogical-intro.md %}
 
 {% include StructureDefinition-WeekdayCombinationSchemeLogical-diff.xhtml %}
 

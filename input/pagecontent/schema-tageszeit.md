@@ -1,4 +1,4 @@
-{% include StructureDefinition-WhenSchemeLogical-intro.xhtml %}
+{% include StructureDefinition-WhenSchemeLogical-intro.md %}
 
 {% include StructureDefinition-WhenSchemeLogical-diff.xhtml %}
 

@@ -1,4 +1,4 @@
-{% include StructureDefinition-IntervalSchemeLogical-intro.xhtml %}
+{% include StructureDefinition-IntervalSchemeLogical-intro.md %}
 
 {% include StructureDefinition-IntervalSchemeLogical-diff.xhtml %}
 

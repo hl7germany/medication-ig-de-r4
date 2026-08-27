@@ -25,6 +25,7 @@ Für die Abbildung der Dosierung sollen die in diesem IG beschriebenen Dosiersch
 - [Schema für Bedarfsmedikation](./schema-bedarfsmedikation.html)
 - [Variable Angaben](./schema-variable-angaben.html)
 - [Angabe von Start- und Enddatum](./schema-start-end-datum.html)
+- [Angabe der Anwendungsdauer](./schema-dauer.html)
 
 Auf der Seite [Beispiele für Dosierungen](./dosierung-beispiele.html) sind Beispiele der Dosierschemata aufgeführt.
 

@@ -85,6 +85,7 @@ Der digital gestützte Medikationsprozess unterstützt aktuell die folgenden Dos
 - [Schema für Bedarfsmedikation](./schema-bedarfsmedikation.html)
 - [Variable Angaben](./schema-variable-angaben.html)
 - [Angabe von Start- und Enddatum](./schema-start-end-datum.html)
+- [Angabe der Anwendungsdauer](./schema-dauer.html)
 
 #### Folgende Ausbaustufe
 

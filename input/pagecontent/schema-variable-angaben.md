@@ -89,7 +89,6 @@ Folgende Beispiele sind nicht valide, da sie diese Constraints brechen:
 
 {% include dosage-constraint-TimingVarFreqGtMin-examples.md%}
 
-{% include dosage-constraint-VarFreqNoMaxDose-examples.md%}
 
 ### Variable Periode
 

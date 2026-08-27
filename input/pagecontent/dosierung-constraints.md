@@ -525,17 +525,6 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-DoseRangeLowAndHighSameUnit-examples.md%}
 
-##### VarFreqNoMaxDose
-
-**Beschreibung:**  
-Variable Frequenz (`frequencyMax`) und `maxDosePerPeriod` dürfen nicht gemeinsam verwendet werden.
-
-**Warum?**  
-Beide Angaben begrenzen die Häufigkeit bzw. Gesamtmenge pro Zeitraum. In Kombination entsteht eine doppelte, potenziell widersprüchliche Modellierung.
-
-Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
-
-{% include dosage-constraint-VarFreqNoMaxDose-examples.md%}
 
 ##### MinimumIntervalOnlyPureAsNeeded
 
@@ -597,7 +586,7 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-MaxDosePerPeriodOnly24hOr1d-examples.md%}
 
-##### MaxDoseOnlyWhenAsNeeded
+##### MaxDoseOnlyPureAsNeeded
 
 **Beschreibung:**  
 Eine Maximalmenge (`maxDosePerPeriod`) darf nur bei einer Bedarfsdosierung (`asNeededBoolean = true`) angegeben werden.
@@ -607,19 +596,8 @@ Die Maximalmenge wird in der Textgenerierung ausschließlich im Bedarfsfall darg
 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
-{% include dosage-constraint-MaxDoseOnlyWhenAsNeeded-examples.md%}
+{% include dosage-constraint-MaxDoseOnlyPureAsNeeded-examples.md%}
 
-##### MaxDosePerPeriodIdentical
-
-**Beschreibung:**  
-Enthält eine Ressource mehrere `Dosage`-Elemente, muss `maxDosePerPeriod` in allen Elementen identisch befüllt sein — in Zähler (Wert und Einheit) wie in Nenner (Wert und Code). Entweder tragen alle Elemente die Angabe oder keines, und jede vorhandene Angabe muss alle vier Teilfelder führen.
-
-**Warum?**  
-Die Maximalmenge gilt für die Gesamtmenge im Bezugszeitraum, nicht je Einzelsegment. Die Textgenerierung liest sie ausschließlich aus dem ersten `Dosage`-Element und stellt sie einmal am Ende der Anweisung dar (siehe [Dosis Textgenerierung](./dosierung-textgenerierung.html)). Ohne diesen Constraint könnte ein zweites Element eine abweichende Obergrenze führen, die im erzeugten Text unbemerkt entfiele — mit unmittelbarer Auswirkung auf die Arzneimittelsicherheit.
-
-Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
-
-{% include dosage-constraint-MaxDosePerPeriodIdentical-examples.md%}
 
 ##### AsNeededForRequiresAsNeeded
 

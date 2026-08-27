@@ -50,7 +50,7 @@ Instance: Example-MR-Dosage-Bedarfsmedikation-Struktur-Intervall
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-Bedarfsmedikation-Struktur-Intervall"
-Description: "Strukturierte Bedarfsmedikation: ein Intervall-Dosierschema (alle 8 Stunden), das nur bei Bedarf angewendet wird. Die Bedarfsangabe kennzeichnet hier ein bestehendes strukturiertes Schema (timing ist befüllt). Ein Mindestabstand ist hier nicht zulaessig, weil der Rhythmus den Abstand bereits festlegt."
+Description: "Strukturierte Bedarfsmedikation: ein Intervall-Dosierschema (alle 8 Stunden), das nur bei Bedarf angewendet wird. Die Bedarfsangabe kennzeichnet hier ein bestehendes strukturiertes Schema (timing ist befüllt). Weder ein Mindestabstand noch eine Maximalmenge sind hier zulaessig, weil der Rhythmus die Anwendung bereits vollstaendig festlegt."
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -62,11 +62,3 @@ Description: "Strukturierte Bedarfsmedikation: ein Intervall-Dosierschema (alle 
   * timing.repeat.period = 8
   * timing.repeat.periodUnit = #h
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
-  * maxDosePerPeriod.numerator.value = 4
-  * maxDosePerPeriod.numerator.system = $kbv-dosiereinheit
-  * maxDosePerPeriod.numerator.code = #1
-  * maxDosePerPeriod.numerator.unit = "Stück"
-  * maxDosePerPeriod.denominator.value = 24
-  * maxDosePerPeriod.denominator.system = $ucum
-  * maxDosePerPeriod.denominator.code = #h
-  * maxDosePerPeriod.denominator.unit = "Stunde(n)"

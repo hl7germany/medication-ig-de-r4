@@ -214,7 +214,7 @@ Expression: "/* Detect Interval only */
 ) implies
 (
   (
-    (frequency.value > 1 or (frequencyMax.exists() and frequencyMax.value > 1))
+    (frequency > 1 or (frequencyMax.exists() and frequencyMax > 1))
     implies
     (
       period = 1 and
@@ -226,15 +226,15 @@ Expression: "/* Detect Interval only */
     (period > 1 or (periodMax.exists() and periodMax > 1))
     implies
     (
-      frequency.value = 1 and
-      (frequencyMax.empty() or frequencyMax.value = 1)
+      frequency = 1 and
+      (frequencyMax.empty() or frequencyMax = 1)
     )
   )
 )"
 
 Invariant: TimingVarFreqGtMin
 Description: "For a variable frequency, the maximum frequency must be greater than the minimum frequency."
-Expression: "frequencyMax.empty() or frequency.empty() or frequency.value < frequencyMax.value"
+Expression: "frequencyMax.empty() or frequency.empty() or frequency < frequencyMax"
 Severity: #error
 
 Invariant: TimingVarPeriodGtMin

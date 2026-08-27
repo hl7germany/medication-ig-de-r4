@@ -237,3 +237,21 @@ Description: "CAVE: Validation example - a warning in the generic DE profile."
     * period = 3
     * periodUnit = #h
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
+
+// Zweistellige Obergrenze: mit dem frueheren String-Vergleich von .value war
+// "9" < "10" falsch und die Regel schlug faelschlich an.
+Instance: Example-MR-Dosage-varfreq-9-to-10
+InstanceOf: MedicationRequestDgMP
+Usage: #example
+Title: "Example-MR-Dosage-varfreq-9-to-10"
+Description: "Variable Frequenz mit zweistelliger Obergrenze: 9 bis 10 x taeglich."
+* subject.display = "Patient"
+* status = #active
+* intent = #order
+* medicationCodeableConcept.text = "Ibuprofen 400mg"
+* dosageInstruction[+]
+  * timing.repeat.frequency = 9
+  * timing.repeat.frequencyMax = 10
+  * timing.repeat.period = 1
+  * timing.repeat.periodUnit = #d
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"

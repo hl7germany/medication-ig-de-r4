@@ -12,7 +12,7 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
 * obeys DosageDoseUnitSameCode
 * obeys DosageDoseValueDecimalNotation
 * obeys DosageDoseValuePositive
-* obeys DosageViererschemaInText
+* obeys DosageFourSlotPatternInText
 * obeys PatientInstructionIdentical
 * obeys MaxDoseSameUnitAsDose
 * obeys MaxDosePerPeriodOnly24hOr1d
@@ -21,13 +21,12 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
 * obeys DoseRangeLowAndHighSameUnit
 * obeys DoseRangeNoVarPeriod
 * obeys VarFreqNoMaxDose
-* obeys VarPeriodNoMindestabstand
+* obeys MinimumIntervalOnlyPureAsNeeded
 * obeys AsNeededForRequiresAsNeeded
 * obeys AsNeededSingleDosageOnly
 * obeys AsNeededIdentical
 * obeys AsNeededForIdentical
-* obeys MindestabstandIdentical
-* obeys MindestabstandUnitMatchesCode
+* obeys MinimumIntervalUnitMatchesCode
 * obeys MaxDosePerPeriodIdentical
 * timing only TimingDgMP
 * doseAndRate 0..1 // Nur eine Dosierung für eine Medikation erlauben
@@ -73,7 +72,7 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
       * ^comment = "Begründung Einschränkung Kardinalität: Eine Codierung der Indikation für die Bedarfsdosierung ist in der aktuellen Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
     * text 1.. MS
       * ^comment = "Indikation für die Bedarfsdosierung."
-* modifierExtension[mindestabstandZwischenGaben]
+* modifierExtension[minimumIntervalBetweenAdministrations]
   * valueDuration 1..1 MS
     * value 1..1 MS
     * system 1..1 MS
@@ -149,7 +148,7 @@ implies
 )"
 Severity: #error
 
-Invariant: DosageViererschemaInText
+Invariant: DosageFourSlotPatternInText
 Description: "A bare four-slot dosing schema (Viererschema, e.g. 1-0-1-0 or 1-0-1-0 Stück) must not be given as free text in Dosage.text; it has to be represented structurally."
 Expression: "text.exists() implies text.matches('^\\\\s*\\\\d+([.,]\\\\d+)?(\\\\s*/\\\\s*\\\\d+)?(\\\\s*[-–]\\\\s*\\\\d+([.,]\\\\d+)?(\\\\s*/\\\\s*\\\\d+)?){3}(\\\\s*[A-Za-zÄÖÜäöüß().]+)?\\\\s*$').not()"
 Severity: #error
@@ -398,10 +397,10 @@ Description: "A variable frequency and a maximum dose per period must not be use
 Severity: #error
 Expression: "timing.repeat.frequencyMax.empty() or maxDosePerPeriod.empty()"
 
-Invariant: VarPeriodNoMindestabstand
-Description: "A variable period and a minimum interval between two single administrations (Mindestabstand) must not be used together."
+Invariant: MinimumIntervalOnlyPureAsNeeded
+Description: "A minimum interval between two single administrations (Mindestabstand) may only be given for a pure as-needed dosage: asNeededBoolean = true and no timing. A structured rhythm already determines the spacing between administrations; a second, weaker lower bound next to it is contradictory."
 Severity: #error
-Expression: "timing.repeat.periodMax.empty() or modifierExtension.where(url='http://ig.fhir.de/igs/medication/StructureDefinition/MindestabstandZwischenGaben').empty()"
+Expression: "modifierExtension.where(url='http://ig.fhir.de/igs/medication/StructureDefinition/MinimumIntervalBetweenAdministrations').exists() implies (asNeeded.ofType(boolean) = true and timing.empty())"
 
 Invariant: AsNeededForRequiresAsNeeded
 Description: "A reason for use (asNeededFor) may only be given for an as-needed dosage (asNeededBoolean = true)."
@@ -488,100 +487,11 @@ Expression: "(
   ).value.ofType(CodeableConcept).text.distinct().count()
 )"
 
-Invariant: MindestabstandIdentical
-Description: "The minimum interval between administrations (Mindestabstand) must be populated identically across all Dosage elements of a resource."
-Severity: #error
-/* Die distinct()-Prüfungen allein genügen nicht: Ein Element, das value oder code
-   nicht mit einem tatsächlichen primitiven Wert belegt, steuert keinen vergleichbaren
-   Wert zur Menge bei und könnte unbemerkt bleiben. Deshalb muss jede vorhandene
-   Extension genau einen tatsächlichen Wert und einen tatsächlichen Code beitragen.
-   hasValue() ist nötig, weil ein FHIR-Primitive auch ohne eigenen Wert existieren
-   kann, wenn es lediglich eine Extension trägt. */
-Expression: "(
-  (
-    %resource.ofType(MedicationRequest).dosageInstruction |
-    %resource.ofType(MedicationDispense).dosageInstruction |
-    %resource.ofType(MedicationStatement).dosage
-  ).modifierExtension.where(
-    url='http://ig.fhir.de/igs/medication/StructureDefinition/MindestabstandZwischenGaben'
-  ).value.ofType(Duration).value.where($this.hasValue()).count()
-  =
-  (
-    %resource.ofType(MedicationRequest).dosageInstruction |
-    %resource.ofType(MedicationDispense).dosageInstruction |
-    %resource.ofType(MedicationStatement).dosage
-  ).modifierExtension.where(
-    url='http://ig.fhir.de/igs/medication/StructureDefinition/MindestabstandZwischenGaben'
-  ).count()
-)
-and
-(
-  (
-    %resource.ofType(MedicationRequest).dosageInstruction |
-    %resource.ofType(MedicationDispense).dosageInstruction |
-    %resource.ofType(MedicationStatement).dosage
-  ).modifierExtension.where(
-    url='http://ig.fhir.de/igs/medication/StructureDefinition/MindestabstandZwischenGaben'
-  ).value.ofType(Duration).code.where($this.hasValue()).count()
-  =
-  (
-    %resource.ofType(MedicationRequest).dosageInstruction |
-    %resource.ofType(MedicationDispense).dosageInstruction |
-    %resource.ofType(MedicationStatement).dosage
-  ).modifierExtension.where(
-    url='http://ig.fhir.de/igs/medication/StructureDefinition/MindestabstandZwischenGaben'
-  ).count()
-)
-and
-(
-  (
-    %resource.ofType(MedicationRequest).dosageInstruction |
-    %resource.ofType(MedicationDispense).dosageInstruction |
-    %resource.ofType(MedicationStatement).dosage
-  ).modifierExtension.where(
-    url='http://ig.fhir.de/igs/medication/StructureDefinition/MindestabstandZwischenGaben'
-  ).value.ofType(Duration).value.distinct().count() <= 1
-)
-and
-(
-  (
-    %resource.ofType(MedicationRequest).dosageInstruction |
-    %resource.ofType(MedicationDispense).dosageInstruction |
-    %resource.ofType(MedicationStatement).dosage
-  ).modifierExtension.where(
-    url='http://ig.fhir.de/igs/medication/StructureDefinition/MindestabstandZwischenGaben'
-  ).value.ofType(Duration).code.distinct().count() <= 1
-)
-and
-(
-  (
-    (
-      %resource.ofType(MedicationRequest).dosageInstruction |
-      %resource.ofType(MedicationDispense).dosageInstruction |
-      %resource.ofType(MedicationStatement).dosage
-    ).modifierExtension.where(
-      url='http://ig.fhir.de/igs/medication/StructureDefinition/MindestabstandZwischenGaben'
-    ).exists()
-  )
-  implies
-  (
-    (
-      %resource.ofType(MedicationRequest).dosageInstruction |
-      %resource.ofType(MedicationDispense).dosageInstruction |
-      %resource.ofType(MedicationStatement).dosage
-    ).all(
-      modifierExtension.where(
-        url='http://ig.fhir.de/igs/medication/StructureDefinition/MindestabstandZwischenGaben'
-      ).exists()
-    )
-  )
-)"
-
-Invariant: MindestabstandUnitMatchesCode
+Invariant: MinimumIntervalUnitMatchesCode
 Description: "The display unit of the minimum interval (valueDuration.unit) must match the UCUM code (e.g. 'Stunde(n)' only with code='h')."
 Severity: #error
 Expression: "modifierExtension.where(
-  url='http://ig.fhir.de/igs/medication/StructureDefinition/MindestabstandZwischenGaben'
+  url='http://ig.fhir.de/igs/medication/StructureDefinition/MinimumIntervalBetweenAdministrations'
 ).value.ofType(Duration).all(
   (
     code = 'min'
@@ -597,7 +507,7 @@ Expression: "modifierExtension.where(
 Invariant: MaxDosePerPeriodIdentical
 Description: "The maximum amount (maxDosePerPeriod) applies to the total amount within the reference period and must be populated identically across all Dosage elements of a resource."
 Severity: #error
-/* Wie bei MindestabstandIdentical genügen die distinct()-Prüfungen allein nicht:
+/* Die distinct()-Prüfungen allein genügen nicht:
    Ein Element, das ein Teilfeld gar nicht belegt, steuert nichts zur Menge bei.
    Deshalb muss jede vorhandene Maximalmenge alle vier Teilfelder führen. */
 Expression: "(

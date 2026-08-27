@@ -10,7 +10,7 @@ Description: "Gibt an, wie das Medikament eingenommen oder verabreicht wurde bzw
 * obeys DosageStructuredRequiresBothWarning
 * obeys DosageDoseUnitSameCodeWarning
 * obeys DosageDoseValuePositiveWarning
-* obeys DosageWarnungViererschemaInText
+* obeys DosageFourSlotPatternInTextWarning
 * obeys FreeTextSingleDosageOnlyWarning
 * obeys dos-1
 * text 0..1 MS
@@ -34,13 +34,13 @@ Description: "Gibt an, wie das Medikament eingenommen oder verabreicht wurde bzw
   * ^short = "Bedarfsdosierung (nur Ja/Nein-Angabe)"
   * ^definition = "Gibt an, ob es sich um eine Bedarfsdosierung handelt. Es ist nur eine Ja/Nein-Angabe erlaubt. Die Abbildung der Indikation erfolgt über die Extension asNeededFor."
 * extension contains $dosage-asNeededFor-r5 named asNeededFor 0..* MS
-* modifierExtension contains MindestabstandZwischenGaben named mindestabstandZwischenGaben 0..1 MS
+* modifierExtension contains MinimumIntervalBetweenAdministrations named minimumIntervalBetweenAdministrations 0..1 MS
 * extension[asNeededFor]
   * ^short = "Indikation für die Bedarfsdosierung"
   * ^definition = "Gibt die Indikation für die Bedarfsdosierung an."
   * valueCodeableConcept
     * text MS
-* modifierExtension[mindestabstandZwischenGaben]
+* modifierExtension[minimumIntervalBetweenAdministrations]
   * ^short = "Mindestabstand zwischen zwei Gaben"
   * ^definition = "Gibt den Mindestabstand zwischen zwei Gaben einer Bedarfsmedikation an."
   * valueDuration MS
@@ -140,7 +140,7 @@ doseAndRate.all(
 """
 Severity: #warning
 
-Invariant: DosageWarnungViererschemaInText
+Invariant: DosageFourSlotPatternInTextWarning
 Description: "A four-slot dosing schema (Viererschema, e.g. 1-1-1-1) was detected in Dosage.text. Please check whether it can be represented structurally."
 Expression: "text.exists() implies text.matches('.*\\\\d+\\\\s*[-–]\\\\s*\\\\d+\\\\s*[-–]\\\\s*\\\\d+\\\\s*[-–]\\\\d+.*').not()"
 Severity: #warning

@@ -105,7 +105,7 @@ class MedicationDosageTextGenerator:
 
     # Kanonische Extension-URLs (exakter Vergleich, kein Teilstring-Match)
     URL_AS_NEEDED_FOR = 'http://hl7.org/fhir/5.0/StructureDefinition/extension-Dosage.asNeededFor'
-    URL_MINDESTABSTAND = 'http://ig.fhir.de/igs/medication/StructureDefinition/MindestabstandZwischenGaben'
+    URL_MINDESTABSTAND = 'http://ig.fhir.de/igs/medication/StructureDefinition/MinimumIntervalBetweenAdministrations'
 
     # Verbindliche IANA-Zielzeitzone für die Darstellung von boundsPeriod.
     OUTPUT_TIMEZONE_NAME = "Europe/Berlin"
@@ -1418,12 +1418,12 @@ class MedicationDosageTextGenerator:
             duration = extension.get('valueDuration')
             if not duration:
                 raise ValueError(
-                    "MindestabstandZwischenGaben.valueDuration ist "
+                    "MinimumIntervalBetweenAdministrations.valueDuration ist "
                     "für die Textgenerierung erforderlich."
                 )
             return self._format_duration_text(
                 duration,
-                field_name="MindestabstandZwischenGaben.valueDuration"
+                field_name="MinimumIntervalBetweenAdministrations.valueDuration"
             )
         return ""
 

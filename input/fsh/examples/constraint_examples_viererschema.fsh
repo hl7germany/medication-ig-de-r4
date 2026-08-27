@@ -1,7 +1,7 @@
-// Error examples for DosageViererschemaInText
+// Error examples for DosageFourSlotPatternInText
 // Dosage.text consists solely of a 4-scheme, which must be modelled structurally in dgMP
 
-Instance: INV-C-DosageViererschemaInText-Request-01-of-03
+Instance: INV-C-DosageFourSlotPatternInText-Request-01-of-03
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Ungültig (Request): reines Viererschema im Freitext"
@@ -13,7 +13,7 @@ Description: "CAVE: Validierungsbeispiel - Dosage.text besteht ausschließlich a
 * dosageInstruction[+]
   * text = "1-0-1-0"
 
-Instance: INV-C-DosageViererschemaInText-Dispense-02-of-03
+Instance: INV-C-DosageFourSlotPatternInText-Dispense-02-of-03
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
 Title: "Ungültig (Dispense): reines Viererschema im Freitext"
@@ -24,7 +24,7 @@ Description: "CAVE: Validierungsbeispiel - Dosage.text besteht ausschließlich a
 * dosageInstruction[+]
   * text = "1-0-1-0"
 
-Instance: INV-C-DosageViererschemaInText-Statement-03-of-03
+Instance: INV-C-DosageFourSlotPatternInText-Statement-03-of-03
 InstanceOf: MedicationStatementDgMP
 Usage: #example
 Title: "Ungültig (Statement): reines Viererschema im Freitext"

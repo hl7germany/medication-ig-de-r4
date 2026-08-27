@@ -111,7 +111,7 @@ Description: "Drei Dosages mit den Dosen 1, 1 und 2 Stück. Die beiden Dosages m
   * timing.repeat.when[+] = #EVE
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
-Instance: W-TimingSingleDosageForTimeOfDayWarning-Request-04-of-06
+Instance: W-TimingSingleDosageForTimeOfDayWarning-MR-04-of-06
 InstanceOf: MedicationRequestDE
 Usage: #example
 Title: "Warning (Request): teilweise identische Dosis bei timeOfDay"
@@ -130,7 +130,7 @@ Description: "Warning example - drei Dosages mit den Dosen 1, 1 und 2 Stück; di
   * timing.repeat.timeOfDay[+] = "20:00:00"
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
-Instance: W-TimingSingleDosageForTimeOfDayWarning-Dispense-05-of-06
+Instance: W-TimingSingleDosageForTimeOfDayWarning-MD-05-of-06
 InstanceOf: MedicationDispenseDE
 Usage: #example
 Title: "Warning (Dispense): teilweise identische Dosis bei timeOfDay"
@@ -148,7 +148,7 @@ Description: "Warning example - drei Dosages mit den Dosen 1, 1 und 2 Stück; di
   * timing.repeat.timeOfDay[+] = "20:00:00"
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
-Instance: W-TimingSingleDosageForTimeOfDayWarning-Statement-06-of-06
+Instance: W-TimingSingleDosageForTimeOfDayWarning-MS-06-of-06
 InstanceOf: MedicationStatementDE
 Usage: #example
 Title: "Warning (Statement): teilweise identische Dosis bei timeOfDay"
@@ -166,7 +166,7 @@ Description: "Warning example - drei Dosages mit den Dosen 1, 1 und 2 Stück; di
   * timing.repeat.timeOfDay[+] = "20:00:00"
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
-Instance: W-TimingSingleDosageForWhenWarning-Request-04-of-06
+Instance: W-TimingSingleDosageForWhenWarning-MR-04-of-06
 InstanceOf: MedicationRequestDE
 Usage: #example
 Title: "Warning (Request): teilweise identische Dosis bei when"
@@ -185,7 +185,7 @@ Description: "Warning example - drei Dosages mit den Dosen 1, 1 und 2 Stück; di
   * timing.repeat.when[+] = #EVE
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
-Instance: W-TimingSingleDosageForWhenWarning-Dispense-05-of-06
+Instance: W-TimingSingleDosageForWhenWarning-MD-05-of-06
 InstanceOf: MedicationDispenseDE
 Usage: #example
 Title: "Warning (Dispense): teilweise identische Dosis bei when"
@@ -203,7 +203,7 @@ Description: "Warning example - drei Dosages mit den Dosen 1, 1 und 2 Stück; di
   * timing.repeat.when[+] = #EVE
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
-Instance: W-TimingSingleDosageForWhenWarning-Statement-06-of-06
+Instance: W-TimingSingleDosageForWhenWarning-MS-06-of-06
 InstanceOf: MedicationStatementDE
 Usage: #example
 Title: "Warning (Statement): teilweise identische Dosis bei when"

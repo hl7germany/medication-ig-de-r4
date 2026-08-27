@@ -11,3 +11,16 @@ __pycache__
 .vscode/
 # Gepinnte, extern gepflegte Skripte (siehe scripts/dosage-algorithm.lock)
 scripts/vendor/
+
+# IDE
+.idea/
+
+# Cloudflare Pages (lokales Deployment)
+.wrangler/
+wrangler.jsonc
+
+# Interne Arbeitsdokumente, gehoeren nicht in den veroeffentlichten Guide
+/REVIEW-*.md
+/DOSIERUNG-*.md
+/PDF-*.md
+/ERPCHANGES-*

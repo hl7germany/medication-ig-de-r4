@@ -68,7 +68,7 @@ Folgende Beispiele lösen eine Warnung aus:
 
 {% include dosage-constraint-DosageDoseValuePositiveWarning-examples.md%}
 
-##### DosageWarnungViererschemaInText
+##### DosageFourSlotPatternInTextWarning
 
 **Beschreibung:**  
 Warnung, wenn ein klassisches 4-Schema (z. B. Darstellung wie "1-0-1-0") irgendwo im Freitext vorkommt, obwohl eine strukturierte Abbildung möglich wäre.
@@ -76,11 +76,11 @@ Warnung, wenn ein klassisches 4-Schema (z. B. Darstellung wie "1-0-1-0") irgendw
 **Warum?**  
 Ermutigt zur strukturierten Modellierung der Einnahmezeiten anstelle rein schematischer Textdarstellungen, verbessert maschinelle Auswertbarkeit und Textgenerierung.
 
-Der Constraint ist auf `DosageDE` als Warnung definiert, weil das 4-Schema in einem längeren Freitext auch als erläuternder Bestandteil auftreten kann. Besteht der Freitext **ausschließlich** aus einem 4-Schema, greift in den dgMP-Profilen zusätzlich der Fehler [DosageViererschemaInText](#dosageviererschemaintext).
+Der Constraint ist auf `DosageDE` als Warnung definiert, weil das 4-Schema in einem längeren Freitext auch als erläuternder Bestandteil auftreten kann. Besteht der Freitext **ausschließlich** aus einem 4-Schema, greift in den dgMP-Profilen zusätzlich der Fehler [DosageFourSlotPatternInText](#dosageviererschemaintext).
 
 Gültige Beispiele (Warnungskontext – Freitext enthält 4-Schema):
 
-{% include dosage-constraint-DosageWarnungViererschemaInText-examples.md%}
+{% include dosage-constraint-DosageFourSlotPatternInTextWarning-examples.md%}
 
 ##### TimingSingleDosageForTimeOfDayWarning
 
@@ -123,10 +123,10 @@ Folgende Beispiele lösen eine Warnung aus:
 ##### dos-1
 
 **Beschreibung:**  
-Basisregel aus dem generischen Profil `DosageDE`: Ein Einnahmeanlass (`asNeededFor`) darf nur gesetzt sein, wenn `asNeeded` leer oder `true` ist. Das dgMP‑Profil verschärft dies über `AsNeededForRequiresAsNeeded` auf `asNeeded = true`.
+Basisregel aus dem generischen Profil `DosageDE`: Ein Anlass (`asNeededFor`) darf nur gesetzt sein, wenn `asNeeded` leer oder `true` ist. Das dgMP‑Profil verschärft dies über `AsNeededForRequiresAsNeeded` auf `asNeeded = true`.
 
 **Warum?**  
-Stellt sicher, dass ein Einnahmeanlass nicht einer Nicht‑Bedarfsdosierung zugeordnet wird.
+Stellt sicher, dass ein Anlass nicht einer Nicht‑Bedarfsdosierung zugeordnet wird.
 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
@@ -150,21 +150,22 @@ Beispiele (Warnungskontext – variable Einzeldosis und variable Periode):
 
 {% include dosage-constraint-DoseRangeNoVarPeriod-examples.md%}
 
+
+#### Fehler: Timing-bezogen
+
 ##### TimingVarFreqOrPeriod
 
 **Beschreibung:**  
-Bei einer reinen Intervallangabe ohne Zeitpunkte sollten nicht gleichzeitig die Frequenz über `frequencyMax` und die Periode über `periodMax` variabel angegeben werden.
+Bei einer reinen Intervallangabe ohne Zeitpunkte dürfen nicht gleichzeitig die Frequenz über `frequencyMax` und die Periode über `periodMax` variabel angegeben werden.
 
 **Warum?**  
 Die gleichzeitige Variation beider Achsen führt zu einem nur schwer eindeutig interpretierbaren Einnahmeschema — „1 bis 2 x alle 4 bis 6 Stunden“ lässt weder die Zahl der Gaben noch den Abstand eindeutig erkennen. Die Variation nur einer Achse bleibt zulässig, ebenso eine feste Frequenz größer als 1 zusammen mit einer Periode (`2 x alle 8 Stunden`): Dort sind Zahl der Gaben und Bezugszeitraum eindeutig bestimmt.
 
 Bei `when`, `timeOfDay` oder `dayOfWeek` greift die Regel nicht. Dort ist `frequency` optional und redundant, weil die konkreten Zeitpunkte beziehungsweise Anwendungstage die Zahl der Gaben bereits festlegen; die Angabe dient ausschließlich der Rückwärtskompatibilität und begründet kein zusätzliches Intervallschema.
 
-Folgende Beispiele lösen eine Warnung aus:
+Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-TimingVarFreqOrPeriod-examples.md%}
-
-#### Fehler: Timing-bezogen
 
 Die folgenden Invarianten beziehen sich auf `Timing` — überwiegend auf `Timing.repeat` — und wirken über alle Dosierungsinstanzen einer Ressource.
 
@@ -536,29 +537,29 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-VarFreqNoMaxDose-examples.md%}
 
-##### VarPeriodNoMindestabstand
+##### MinimumIntervalOnlyPureAsNeeded
 
 **Beschreibung:**  
-Variable Periode (`periodMax`) und `modifierExtension[MindestabstandZwischenGaben]` dürfen nicht gemeinsam verwendet werden.
+`modifierExtension[MinimumIntervalBetweenAdministrations]` ist ausschließlich bei einer reinen Bedarfsmedikation zulässig, also zusammen mit `asNeededBoolean = true` und ohne `timing`.
 
 **Warum?**  
-Beide Angaben beschreiben Abstände zwischen Gaben. Ihre gleichzeitige Verwendung erzeugt konkurrierende Zeitlogiken.
+Ein strukturierter Rhythmus legt den Abstand zwischen zwei Gaben bereits fest. Ein zusätzlicher, schwächerer Mindestabstand daneben ergibt eine widersprüchliche Anweisung — etwa „alle 8 Stunden, mindestens 6 Stunden Abstand", bei der offenbleibt, welche Angabe gilt. Beim Bedarfsfall ohne Rhythmus ist der Mindestabstand dagegen die einzige zeitliche Schranke und damit sinnvoll.
 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
-{% include dosage-constraint-VarPeriodNoMindestabstand-examples.md%}
+{% include dosage-constraint-MinimumIntervalOnlyPureAsNeeded-examples.md%}
 
-##### DosageViererschemaInText
+##### DosageFourSlotPatternInText
 
 **Beschreibung:**  
-`Dosage.text` darf nicht ausschließlich aus einem 4-Schema bestehen. Erfasst wird der reine Fall – vier durch `-` oder `–` getrennte Werte, optional mit Nachkommastellen, Bruchangabe und nachgestellter Einheit (z. B. `1-0-1-0`, `0,5-0-0,5-0`, `1-0-1-0 Stück`). Ein 4-Schema, das in einen Text eingebettet ist, löst weiterhin nur die Warnung `DosageWarnungViererschemaInText` aus.
+`Dosage.text` darf nicht ausschließlich aus einem 4-Schema bestehen. Erfasst wird der reine Fall – vier durch `-` oder `–` getrennte Werte, optional mit Nachkommastellen, Bruchangabe und nachgestellter Einheit (z. B. `1-0-1-0`, `0,5-0-0,5-0`, `1-0-1-0 Stück`). Ein 4-Schema, das in einen Text eingebettet ist, löst weiterhin nur die Warnung `DosageFourSlotPatternInTextWarning` aus.
 
 **Warum?**  
 Ein Freitext, der nur ein 4-Schema enthält, trägt keine Information, die nicht strukturiert über `timing.repeat.when` und `doseAndRate` abbildbar wäre. Er entzieht die Dosierung der maschinellen Auswertung und der Textgenerierung, die genau diese Darstellung aus strukturierten Angaben selbst erzeugt (siehe [Dosis Textgenerierung](./dosierung-textgenerierung.html)).
 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
-{% include dosage-constraint-DosageViererschemaInText-examples.md%}
+{% include dosage-constraint-DosageFourSlotPatternInText-examples.md%}
 
 ##### PatientInstructionIdentical
 
@@ -623,10 +624,10 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 ##### AsNeededForRequiresAsNeeded
 
 **Beschreibung:**  
-Ein Einnahmeanlass (`extension[asNeededFor]`) darf nur bei einer Bedarfsdosierung (`asNeededBoolean = true`) angegeben werden. Eine Bedarfsdosierung selbst benötigt keinen Einnahmeanlass.
+Ein Anlass (`extension[asNeededFor]`) darf nur bei einer Bedarfsdosierung (`asNeededBoolean = true`) angegeben werden. Eine Bedarfsdosierung selbst benötigt keinen Anlass.
 
 **Warum?**  
-Ein Einnahmeanlass ohne Bedarfskennzeichnung wäre fachlich unstimmig. Umgekehrt ist der Anlass optional, da eine Bedarfsdosierung auch ohne konkrete Indikation zulässig ist.
+Ein Anlass ohne Bedarfskennzeichnung wäre fachlich unstimmig. Umgekehrt ist der Anlass optional, da eine Bedarfsdosierung auch ohne konkrete Indikation zulässig ist.
 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
@@ -659,28 +660,17 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 ##### AsNeededForIdentical
 
 **Beschreibung:**
-Enthält eine Ressource mehrere `Dosage`-Elemente, muss der Einnahmeanlass (`extension[asNeededFor]`) in allen Elementen übereinstimmen. Mehrere Anlässe je Element sind zulässig, müssen dann aber in jedem Element dieselben sein; auf die Reihenfolge kommt es nicht an.
+Enthält eine Ressource mehrere `Dosage`-Elemente, muss der Anlass (`extension[asNeededFor]`) in allen Elementen übereinstimmen. Mehrere Anlässe je Element sind zulässig, müssen dann aber in jedem Element dieselben sein; auf die Reihenfolge kommt es nicht an.
 
 **Warum?**
-Der Einnahmeanlass wird ausschließlich aus dem ersten `Dosage`-Element gelesen und dem Text vorangestellt (siehe [Dosis Textgenerierung](./dosierung-textgenerierung.html)). Ein nur in einem späteren Element angegebener oder dort abweichender Anlass würde im erzeugten Text ersatzlos entfallen und die Dosierung auf ein generisches „Bei Bedarf“ reduzieren.
+Der Anlass wird ausschließlich aus dem ersten `Dosage`-Element gelesen und dem Text vorangestellt (siehe [Dosis Textgenerierung](./dosierung-textgenerierung.html)). Ein nur in einem späteren Element angegebener oder dort abweichender Anlass würde im erzeugten Text ersatzlos entfallen und die Dosierung auf ein generisches „Bei Bedarf“ reduzieren.
 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-AsNeededForIdentical-examples.md%}
 
-##### MindestabstandIdentical
 
-**Beschreibung:**
-Enthält eine Ressource mehrere `Dosage`-Elemente, muss der Mindestabstand zwischen Gaben (`modifierExtension[mindestabstandZwischenGaben]`) in allen Elementen identisch befüllt sein — in Wert wie in Zeiteinheit. Entweder tragen alle Elemente die Angabe oder keines, und jede vorhandene Angabe muss vollständig sein (`valueDuration.value` **und** `valueDuration.code`).
-
-**Warum?**
-Der Mindestabstand wird ausschließlich aus dem ersten `Dosage`-Element gelesen. Da es sich um eine `modifierExtension` handelt, verändert er die zulässige Anwendung der Dosierung; ein nur in einem späteren Element hinterlegter Abstand entfiele im erzeugten Text unbemerkt.
-
-Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
-
-{% include dosage-constraint-MindestabstandIdentical-examples.md%}
-
-##### MindestabstandUnitMatchesCode
+##### MinimumIntervalUnitMatchesCode
 
 **Beschreibung:**
 Die Anzeigeeinheit des Mindestabstands (`valueDuration.unit`) muss zum UCUM-Code passen: `min` nur mit „Minute(n)“, „Minute“ oder „Minuten“, `h` nur mit „Stunde(n)“, „Stunde“ oder „Stunden“. Als Code sind ausschließlich `min` und `h` zulässig (ValueSet `MindestabstandUnitsOfTimeDgMPVS`).
@@ -690,7 +680,7 @@ Die Textgenerierung leitet die ausgeschriebene Einheit aus `.code` ab. Ohne dies
 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
-{% include dosage-constraint-MindestabstandUnitMatchesCode-examples.md%}
+{% include dosage-constraint-MinimumIntervalUnitMatchesCode-examples.md%}
 
 #### Fehler: Auf Ressourcen-Ebene
 

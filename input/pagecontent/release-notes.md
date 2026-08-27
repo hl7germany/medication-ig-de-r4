@@ -29,7 +29,7 @@ Damit entfallen 20 Beispiele aus der Liste nicht unterstützter Dosierkonfigurat
 
 **Invarianten**
 
-33 Invarianten sind neu hinzugekommen; sie sichern die oben genannten Angaben ab.
+34 Invarianten sind neu hinzugekommen; sie sichern die oben genannten Angaben ab.
 Vollständig aufgeführt sind sie unter [Übersicht der Timing- & Dosierungs-Invarianten](./dosierung-constraints.html).
 Die folgenden bestehenden Regeln haben sich in ihrer Aussage geändert:
 
@@ -49,6 +49,15 @@ Die folgenden bestehenden Regeln haben sich in ihrer Aussage geändert:
 
 - **`DosageWarnungViererschemaInText` (`DosageDE`) — umbenannt in `DosageFourSlotPatternInTextWarning`**
   - Der Schlüssel trug als einziger einen deutschen Wortstamm und zudem „Warnung" statt des sonst verwendeten `Warning`-Suffixes. Er erscheint in Validierungsmeldungen; Werkzeuge, die darauf abstellen, müssen angepasst werden. Der Ausdruck ist unverändert.
+
+- **`TimingOnlyOneWhen`, `TimingOnlyOneTimeOfDay`, `TimingOnlyOneDayOfWeek`, `TimingOnlyOneTimeForInterval` und `TimingOnlyWhenOrTimeOfDay` (`TimingDgMP`)**
+  - Die Schema-Erkennung in der Vorbedingung setzt `frequency`, `period` und `periodUnit` nicht mehr voraus. Zuvor griffen diese Regeln nur, wenn alle drei Felder belegt waren — seit sie optionale Legacy-Angaben sind, wären Ressourcen ohne sie ungeprüft geblieben. Die Regeln erfassen damit alle Ressourcen des jeweiligen Schemas.
+
+- **`DosageStructuredRequiresBoth` und `DosageStructuredRequiresGeneratedText` (`DosageDgMP`)**
+  - Beide berücksichtigen jetzt die reine Bedarfsmedikation: `doseAndRate` darf ohne `timing` angegeben werden, wenn `asNeededBoolean = true` oder ein Anlass gesetzt ist, und eine solche Dosierung verlangt ebenfalls die Extension `GeneratedDosageInstructionsMeta`. Zuvor galt eine Dosierung ohne `timing` als unvollständig.
+
+- **`TimingOnlyOneBounds` (`TimingDgMP`)**
+  - Deckt zusätzlich `boundsPeriod` ab: Start und Ende müssen über alle `Dosage`-Elemente gleich belegt sein. Zuvor prüfte die Regel nur `boundsDuration`, obwohl die Textgenerierung den Zeitrahmen in beiden Fällen ausschließlich aus dem ersten Element liest.
 
 - **`TimingOnlyOnePeriodForDayOfWeek` (`TimingDgMP`)**
   - Von `Timing.repeat` auf `Timing` verschoben, um einen Überlauf im IG Publisher bei der Erzeugung der Excel-Tabellen zu umgehen. Der Ausdruck wertet ohnehin die gesamte Ressource aus; inhaltlich ändert sich nichts.

@@ -12,7 +12,7 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
 * obeys DosageDoseUnitSameCode
 * obeys DosageDoseValueDecimalNotation
 * obeys DosageDoseValuePositive
-* obeys DosageViererschemaInText
+* obeys DosageFourSlotPatternInText
 * obeys PatientInstructionIdentical
 * obeys MaxDoseSameUnitAsDose
 * obeys MaxDosePerPeriodOnly24hOr1d
@@ -21,12 +21,12 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
 * obeys DoseRangeLowAndHighSameUnit
 * obeys DoseRangeNoVarPeriod
 * obeys VarFreqNoMaxDose
-* obeys MindestabstandOnlyPureAsNeeded
+* obeys MinimumIntervalOnlyPureAsNeeded
 * obeys AsNeededForRequiresAsNeeded
 * obeys AsNeededSingleDosageOnly
 * obeys AsNeededIdentical
 * obeys AsNeededForIdentical
-* obeys MindestabstandUnitMatchesCode
+* obeys MinimumIntervalUnitMatchesCode
 * obeys MaxDosePerPeriodIdentical
 * timing only TimingDgMP
 * doseAndRate 0..1 // Nur eine Dosierung für eine Medikation erlauben
@@ -148,7 +148,7 @@ implies
 )"
 Severity: #error
 
-Invariant: DosageViererschemaInText
+Invariant: DosageFourSlotPatternInText
 Description: "A bare four-slot dosing schema (Viererschema, e.g. 1-0-1-0 or 1-0-1-0 Stück) must not be given as free text in Dosage.text; it has to be represented structurally."
 Expression: "text.exists() implies text.matches('^\\\\s*\\\\d+([.,]\\\\d+)?(\\\\s*/\\\\s*\\\\d+)?(\\\\s*[-–]\\\\s*\\\\d+([.,]\\\\d+)?(\\\\s*/\\\\s*\\\\d+)?){3}(\\\\s*[A-Za-zÄÖÜäöüß().]+)?\\\\s*$').not()"
 Severity: #error
@@ -397,7 +397,7 @@ Description: "A variable frequency and a maximum dose per period must not be use
 Severity: #error
 Expression: "timing.repeat.frequencyMax.empty() or maxDosePerPeriod.empty()"
 
-Invariant: MindestabstandOnlyPureAsNeeded
+Invariant: MinimumIntervalOnlyPureAsNeeded
 Description: "A minimum interval between two single administrations (Mindestabstand) may only be given for a pure as-needed dosage: asNeededBoolean = true and no timing. A structured rhythm already determines the spacing between administrations; a second, weaker lower bound next to it is contradictory."
 Severity: #error
 Expression: "modifierExtension.where(url='http://ig.fhir.de/igs/medication/StructureDefinition/MinimumIntervalBetweenAdministrations').exists() implies (asNeeded.ofType(boolean) = true and timing.empty())"
@@ -487,7 +487,7 @@ Expression: "(
   ).value.ofType(CodeableConcept).text.distinct().count()
 )"
 
-Invariant: MindestabstandUnitMatchesCode
+Invariant: MinimumIntervalUnitMatchesCode
 Description: "The display unit of the minimum interval (valueDuration.unit) must match the UCUM code (e.g. 'Stunde(n)' only with code='h')."
 Severity: #error
 Expression: "modifierExtension.where(

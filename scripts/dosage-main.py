@@ -24,6 +24,12 @@ def main():
         'python3', extension_script, input_folder, input_folder, medication_dosage_script
     ], check=True)
 
+    # 1b. Verify example file names before the publisher runs. Both conditions
+    #     they check fail late and with misleading messages otherwise.
+    print("Checking example file names...")
+    name_check_script = os.path.join(base_dir, "check-example-filenames.py")
+    subprocess.run(['python3', name_check_script, input_folder], check=True)
+
     # 2. Generate the supported/unsupported table
     print("Generating unsupported table...")
     unsupported_table_script = os.path.join(base_dir, "dosage-generate-unsupported-table.py")

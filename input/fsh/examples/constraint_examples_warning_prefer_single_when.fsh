@@ -2,7 +2,7 @@
 // Two dosages with identical dose, each carrying a single period of day.
 // Allowed as a warning in DE, error in dgMP.
 
-Instance: W-TimingSingleDosageForWhenWarning-Request-01-of-03
+Instance: W-TimingSingleDosageForWhenWarning-MR-01-of-03
 InstanceOf: MedicationRequestDE
 Usage: #example
 Title: "Warning (Request): split when into two dosages (same dose)"
@@ -20,7 +20,7 @@ Description: "Warning example - zwei Dosages mit identischer Dosis, jeweils ein 
     * when[+] = #EVE
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: W-TimingSingleDosageForWhenWarning-Dispense-02-of-03
+Instance: W-TimingSingleDosageForWhenWarning-MD-02-of-03
 InstanceOf: MedicationDispenseDE
 Usage: #example
 Title: "Warning (Dispense): split when into two dosages (same dose)"
@@ -37,7 +37,7 @@ Description: "Warning example - zwei Dosages mit identischer Dosis, jeweils ein 
     * when[+] = #EVE
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: W-TimingSingleDosageForWhenWarning-Statement-03-of-03
+Instance: W-TimingSingleDosageForWhenWarning-MS-03-of-03
 InstanceOf: MedicationStatementDE
 Usage: #example
 Title: "Warning (Statement): split when into two dosages (same dose)"

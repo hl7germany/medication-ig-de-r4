@@ -299,6 +299,10 @@ def main():
             print(f"{YELLOW}  - {k}{RESET}", file=sys.stderr)
         if failures_warning:
             print(f"{YELLOW}WARNING: Missing warning-level examples for: {', '.join(failures_warning)}{RESET}", file=sys.stderr)
+        # Ohne Abbruch laeuft der Build weiter und scheitert erst in Jekyll beim
+        # Aufloesen des nicht erzeugten Includes - eine Minute spaeter und ohne
+        # Hinweis auf die Ursache.
+        sys.exit(1)
 
     # Success path
     summary = (

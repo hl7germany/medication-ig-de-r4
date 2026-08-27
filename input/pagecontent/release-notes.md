@@ -47,10 +47,13 @@ Die folgenden bestehenden Regeln haben sich in ihrer Aussage geändert:
 - **`TimingFrequencyCount` (`TimingDgMP`)**
   - Beschreibung präzisiert, Ausdruck unverändert: `frequency` ist bei `when`, `timeOfDay` und `dayOfWeek` optional, muss bei Angabe aber der Anzahl der konkreten Anwendungen entsprechen.
 
+- **`DosageWarnungViererschemaInText` (`DosageDE`) — umbenannt in `DosageFourSlotPatternInTextWarning`**
+  - Der Schlüssel trug als einziger einen deutschen Wortstamm und zudem „Warnung" statt des sonst verwendeten `Warning`-Suffixes. Er erscheint in Validierungsmeldungen; Werkzeuge, die darauf abstellen, müssen angepasst werden. Der Ausdruck ist unverändert.
+
 - **`TimingOnlyOnePeriodForDayOfWeek` (`TimingDgMP`)**
   - Von `Timing.repeat` auf `Timing` verschoben, um einen Überlauf im IG Publisher bei der Erzeugung der Excel-Tabellen zu umgehen. Der Ausdruck wertet ohnehin die gesamte Ressource aus; inhaltlich ändert sich nichts.
 
-- **`MindestabstandOnlyPureAsNeeded` (`DosageDgMP`) — neu, ersetzt `VarPeriodNoMindestabstand`**
+- **`MinimumIntervalOnlyPureAsNeeded` (`DosageDgMP`) — neu, ersetzt `VarPeriodNoMindestabstand`**
   - `modifierExtension[MinimumIntervalBetweenAdministrations]` ist nur zusammen mit `asNeededBoolean = true` und ohne `timing` zulässig.
   - Ein strukturierter Rhythmus legt den Abstand zwischen zwei Gaben bereits fest. Eine zweite, schwächere Untergrenze daneben lässt offen, welche Angabe gilt — „alle 8 Stunden, mit mindestens 6 Stunden Abstand" ist als Anweisung widersprüchlich. `VarPeriodNoMindestabstand` geht in der neuen Regel auf, da eine variable Periode ein `timing` voraussetzt.
 
@@ -59,7 +62,7 @@ Die folgenden bestehenden Regeln haben sich in ihrer Aussage geändert:
 
 **Entfallene Beispiele**
 
-Gegenüber 1.0.5 entfallen 68 Beispiel-Instanzen; deren Seiten-URLs sind danach nicht mehr erreichbar. Neben den 20 Beispielen für nun unterstützte Angaben betrifft das vor allem neu gefasste Negativbeispiele zu `TimingFrequencyCount`, `TimingPeriodUnit` und `TimingOnlyOneType`: an die Stelle der durchnummerierten Reihen treten wenige Beispiele, die je einen Auslöser des Constraints isolieren. Profile, Extensions und ValueSets behalten ihre kanonischen URLs.
+Gegenüber 1.0.5 entfallen 74 Beispiel-Instanzen; deren Seiten-URLs sind danach nicht mehr erreichbar. Neben den 20 Beispielen für nun unterstützte Angaben betrifft das vor allem neu gefasste Negativbeispiele zu `TimingFrequencyCount`, `TimingPeriodUnit` und `TimingOnlyOneType`: an die Stelle der durchnummerierten Reihen treten wenige Beispiele, die je einen Auslöser des Constraints isolieren. Hinzu kommen die Beispiele zum Viererschema im Freitext, die der Umbenennung ihrer Invariante folgen. Profile, Extensions und ValueSets behalten ihre kanonischen URLs.
 
 **Sonstiges**
 
@@ -188,7 +191,7 @@ Gegenüber 1.0.5 entfallen 68 Beispiel-Instanzen; deren Seiten-URLs sind danach 
 - Only one dosage by @patrick-werner in [#90](https://github.com/hl7germany/medication-ig-de-r4/pull/90)
 - Ig-page-for-script by @florianschoffke in [#92](https://github.com/hl7germany/medication-ig-de-r4/pull/92)
 - Skript für eine zusammenfassende Evaluierung der Dosierung by @florianschoffke in [#93](https://github.com/hl7germany/medication-ig-de-r4/pull/93)
-- added DosageWarnungViererschemaInText & example by @patrick-werner in [#91](https://github.com/hl7germany/medication-ig-de-r4/pull/91)
+- added DosageFourSlotPatternInTextWarning & example by @patrick-werner in [#91](https://github.com/hl7germany/medication-ig-de-r4/pull/91)
 - feat: add FreeTextSingleDosageOnly invariant to enforce single dosage element in free text by @patrick-werner in [#95](https://github.com/hl7germany/medication-ig-de-r4/pull/95)
 - Update ext card and script by @patrick-werner in [#94](https://github.com/hl7germany/medication-ig-de-r4/pull/94)
 - Extract-script by @florianschoffke in [#96](https://github.com/hl7germany/medication-ig-de-r4/pull/96)

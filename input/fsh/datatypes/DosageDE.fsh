@@ -10,7 +10,7 @@ Description: "Gibt an, wie das Medikament eingenommen oder verabreicht wurde bzw
 * obeys DosageStructuredRequiresBothWarning
 * obeys DosageDoseUnitSameCodeWarning
 * obeys DosageDoseValuePositiveWarning
-* obeys DosageWarnungViererschemaInText
+* obeys DosageFourSlotPatternInTextWarning
 * obeys FreeTextSingleDosageOnlyWarning
 * obeys dos-1
 * text 0..1 MS
@@ -140,7 +140,7 @@ doseAndRate.all(
 """
 Severity: #warning
 
-Invariant: DosageWarnungViererschemaInText
+Invariant: DosageFourSlotPatternInTextWarning
 Description: "A four-slot dosing schema (Viererschema, e.g. 1-1-1-1) was detected in Dosage.text. Please check whether it can be represented structurally."
 Expression: "text.exists() implies text.matches('.*\\\\d+\\\\s*[-–]\\\\s*\\\\d+\\\\s*[-–]\\\\s*\\\\d+\\\\s*[-–]\\\\d+.*').not()"
 Severity: #warning

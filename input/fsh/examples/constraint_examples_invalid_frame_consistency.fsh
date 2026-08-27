@@ -117,10 +117,10 @@ Description: "CAVE: Validation example - der Einnahmeanlass ist nur im ersten Do
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
 // ---------------------------------------------------------------------------
-// MindestabstandUnitMatchesCode
+// MinimumIntervalUnitMatchesCode
 // ---------------------------------------------------------------------------
 
-Instance: INV-C-MindestabstandUnitMatchesCode-Request-01-of-03
+Instance: INV-C-MinimumIntervalUnitMatchesCode-Request-01-of-03
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid: Mindestabstand unit does not match code"
@@ -134,7 +134,7 @@ Description: "CAVE: Validation example - valueDuration.code ist 'h', die Anzeige
   * modifierExtension[minimumIntervalBetweenAdministrations].valueDuration = 4 $ucum#h "Tag(e)"
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-C-MindestabstandUnitMatchesCode-Dispense-02-of-03
+Instance: INV-C-MinimumIntervalUnitMatchesCode-Dispense-02-of-03
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
 Title: "Invalid: Mindestabstand unit does not match code"
@@ -147,7 +147,7 @@ Description: "CAVE: Validation example - valueDuration.code ist 'h', die Anzeige
   * modifierExtension[minimumIntervalBetweenAdministrations].valueDuration = 4 $ucum#h "Tag(e)"
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-C-MindestabstandUnitMatchesCode-Statement-03-of-03
+Instance: INV-C-MinimumIntervalUnitMatchesCode-Statement-03-of-03
 InstanceOf: MedicationStatementDgMP
 Usage: #example
 Title: "Invalid: Mindestabstand unit does not match code"

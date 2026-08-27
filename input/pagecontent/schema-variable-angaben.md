@@ -118,4 +118,4 @@ Folgende Beispiele sind nicht valide, da sie diese Constraints brechen:
 
 {% include dosage-constraint-TimingVarPeriodGtMin-examples.md%}
 
-{% include dosage-constraint-MindestabstandOnlyPureAsNeeded-examples.md%}
+{% include dosage-constraint-MinimumIntervalOnlyPureAsNeeded-examples.md%}

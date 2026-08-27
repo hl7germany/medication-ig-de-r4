@@ -68,7 +68,7 @@ Folgende Beispiele lösen eine Warnung aus:
 
 {% include dosage-constraint-DosageDoseValuePositiveWarning-examples.md%}
 
-##### DosageWarnungViererschemaInText
+##### DosageFourSlotPatternInTextWarning
 
 **Beschreibung:**  
 Warnung, wenn ein klassisches 4-Schema (z. B. Darstellung wie "1-0-1-0") irgendwo im Freitext vorkommt, obwohl eine strukturierte Abbildung möglich wäre.
@@ -76,11 +76,11 @@ Warnung, wenn ein klassisches 4-Schema (z. B. Darstellung wie "1-0-1-0") irgendw
 **Warum?**  
 Ermutigt zur strukturierten Modellierung der Einnahmezeiten anstelle rein schematischer Textdarstellungen, verbessert maschinelle Auswertbarkeit und Textgenerierung.
 
-Der Constraint ist auf `DosageDE` als Warnung definiert, weil das 4-Schema in einem längeren Freitext auch als erläuternder Bestandteil auftreten kann. Besteht der Freitext **ausschließlich** aus einem 4-Schema, greift in den dgMP-Profilen zusätzlich der Fehler [DosageViererschemaInText](#dosageviererschemaintext).
+Der Constraint ist auf `DosageDE` als Warnung definiert, weil das 4-Schema in einem längeren Freitext auch als erläuternder Bestandteil auftreten kann. Besteht der Freitext **ausschließlich** aus einem 4-Schema, greift in den dgMP-Profilen zusätzlich der Fehler [DosageFourSlotPatternInText](#dosageviererschemaintext).
 
 Gültige Beispiele (Warnungskontext – Freitext enthält 4-Schema):
 
-{% include dosage-constraint-DosageWarnungViererschemaInText-examples.md%}
+{% include dosage-constraint-DosageFourSlotPatternInTextWarning-examples.md%}
 
 ##### TimingSingleDosageForTimeOfDayWarning
 
@@ -537,7 +537,7 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-VarFreqNoMaxDose-examples.md%}
 
-##### MindestabstandOnlyPureAsNeeded
+##### MinimumIntervalOnlyPureAsNeeded
 
 **Beschreibung:**  
 `modifierExtension[MinimumIntervalBetweenAdministrations]` ist ausschließlich bei einer reinen Bedarfsmedikation zulässig, also zusammen mit `asNeededBoolean = true` und ohne `timing`.
@@ -547,19 +547,19 @@ Ein strukturierter Rhythmus legt den Abstand zwischen zwei Gaben bereits fest. E
 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
-{% include dosage-constraint-MindestabstandOnlyPureAsNeeded-examples.md%}
+{% include dosage-constraint-MinimumIntervalOnlyPureAsNeeded-examples.md%}
 
-##### DosageViererschemaInText
+##### DosageFourSlotPatternInText
 
 **Beschreibung:**  
-`Dosage.text` darf nicht ausschließlich aus einem 4-Schema bestehen. Erfasst wird der reine Fall – vier durch `-` oder `–` getrennte Werte, optional mit Nachkommastellen, Bruchangabe und nachgestellter Einheit (z. B. `1-0-1-0`, `0,5-0-0,5-0`, `1-0-1-0 Stück`). Ein 4-Schema, das in einen Text eingebettet ist, löst weiterhin nur die Warnung `DosageWarnungViererschemaInText` aus.
+`Dosage.text` darf nicht ausschließlich aus einem 4-Schema bestehen. Erfasst wird der reine Fall – vier durch `-` oder `–` getrennte Werte, optional mit Nachkommastellen, Bruchangabe und nachgestellter Einheit (z. B. `1-0-1-0`, `0,5-0-0,5-0`, `1-0-1-0 Stück`). Ein 4-Schema, das in einen Text eingebettet ist, löst weiterhin nur die Warnung `DosageFourSlotPatternInTextWarning` aus.
 
 **Warum?**  
 Ein Freitext, der nur ein 4-Schema enthält, trägt keine Information, die nicht strukturiert über `timing.repeat.when` und `doseAndRate` abbildbar wäre. Er entzieht die Dosierung der maschinellen Auswertung und der Textgenerierung, die genau diese Darstellung aus strukturierten Angaben selbst erzeugt (siehe [Dosis Textgenerierung](./dosierung-textgenerierung.html)).
 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
-{% include dosage-constraint-DosageViererschemaInText-examples.md%}
+{% include dosage-constraint-DosageFourSlotPatternInText-examples.md%}
 
 ##### PatientInstructionIdentical
 
@@ -670,7 +670,7 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 {% include dosage-constraint-AsNeededForIdentical-examples.md%}
 
 
-##### MindestabstandUnitMatchesCode
+##### MinimumIntervalUnitMatchesCode
 
 **Beschreibung:**
 Die Anzeigeeinheit des Mindestabstands (`valueDuration.unit`) muss zum UCUM-Code passen: `min` nur mit „Minute(n)“, „Minute“ oder „Minuten“, `h` nur mit „Stunde(n)“, „Stunde“ oder „Stunden“. Als Code sind ausschließlich `min` und `h` zulässig (ValueSet `MindestabstandUnitsOfTimeDgMPVS`).
@@ -680,7 +680,7 @@ Die Textgenerierung leitet die ausgeschriebene Einheit aus `.code` ab. Ohne dies
 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
-{% include dosage-constraint-MindestabstandUnitMatchesCode-examples.md%}
+{% include dosage-constraint-MinimumIntervalUnitMatchesCode-examples.md%}
 
 #### Fehler: Auf Ressourcen-Ebene
 

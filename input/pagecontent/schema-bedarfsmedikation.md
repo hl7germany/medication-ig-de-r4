@@ -1,12 +1,12 @@
-Bedarfsmedikation beschreibt eine Dosierung, die nicht ausschließlich nach einem festen Einnahmeplan, sondern bei auftretendem Bedarf angewendet wird. Der Bedarf kann optional mit einem Anlass näher beschrieben werden, z. B. "bei Kopfschmerzen"; zwingend erforderlich ist der Anlass nicht.
+Bedarfsmedikation beschreibt eine Dosierung, die nicht ausschließlich nach einem festen Einnahmeplan, sondern bei auftretendem Bedarf angewendet wird. Der Bedarf wird dabei immer mit einem Einnahmeanlass angegeben, z. B. "bei Kopfschmerzen".
 
 In diesem Anwendungsfall wird davon ausgegangen, dass die Bedarfsangabe in einer eigenen `Dosage`-Instanz abgebildet wird. Die Angaben zu Menge, Mindestabstand oder Maximalgabe beziehen sich dann auf diese Bedarfsdosierung.
 
 Es wird zudem ermöglicht:
 
-- einen oder mehrere Anlässe als Freitext anzugeben
+- einen oder mehrere Einnahmeanlässe als Freitext anzugeben
   - Bei der Angabe mehrere Bedingungen gelten diese als *oder* verknüpft. Es muss also nur eine der Bedingungen zutreffen.
-- einen Mindestabstand zwischen zwei Gaben explizit über die Modifier Extension `MinimumIntervalBetweenAdministrations` anzugeben
+- einen Mindestabstand zwischen zwei Gaben explizit über die Modifier Extension `MindestabstandZwischenGaben` anzugeben
 - eine maximale Menge je Zeitraum anzugeben
 
 ### Beispiel

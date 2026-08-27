@@ -1,10 +1,6 @@
-Dieses Schema unterteilt den Tag in die Tageszeiten "Morgen", "Mittag", "Abend" und "Nacht".
-Es gibt an, zu welchen dieser vier Tageszeiten das Medikament angewandt werden soll. Das Tageszeitenschema wird auch "Viererschema" oder "MMAN-Schema" genannt und häufig als Kette von vier Zahlen abgebildet (z.B. 1-0-1-0). 
+{% include StructureDefinition-WhenSchemeLogical-intro.md %}
 
-In diesem Anwendungsfall wird davon ausgegangen, dass das Arzneimittel (für die geplante Dauer) täglich in einem gleichbleibenden Tageszeitenschema angewandt wird. Es wird zudem ermöglicht:
-
-- die geplante Dauer der Anwendung zu begrenzen (bspw. in Tagen)
-- eine abweichende Dosis abhängig von der Tageszeit anzugeben (in einer weiteren Dosage-Instanz).
+{% include StructureDefinition-WhenSchemeLogical-diff.xhtml %}
 
 ### Beispiel
 

@@ -196,7 +196,7 @@ Expression: "/* Detect Interval only */
 ) implies
 (
   (
-    (frequency.value > 1 or frequencyMax.value > 1)
+    (frequency.value > 1 or (frequencyMax.exists() and frequencyMax.value > 1))
     implies
     (
       period = 1 and
@@ -205,7 +205,7 @@ Expression: "/* Detect Interval only */
   )
   and
   (
-    (period > 1 or periodMax > 1)
+    (period > 1 or (periodMax.exists() and periodMax > 1))
     implies
     (
       frequency.value = 1 and

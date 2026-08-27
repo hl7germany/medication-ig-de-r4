@@ -1,7 +1,7 @@
 // Warning examples for DosageDoseValuePositiveWarning in the generic DE profiles.
 // The dgMP profiles tighten the same rule through DosageDoseValuePositive.
 
-Instance: Dosage-W-DosageDoseValuePositiveWarning-01-of-05
+Instance: W-DosageDoseValuePositiveWarning-01-of-05
 InstanceOf: MedicationRequestDE
 Usage: #example
 Title: "Warning (Request): negative doseQuantity.value"
@@ -14,7 +14,7 @@ Description: "Warning example - doseQuantity.value should be greater than 0."
   * timing.repeat.when = #MORN
   * doseAndRate.doseQuantity = -1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: Dosage-W-DosageDoseValuePositiveWarning-02-of-05
+Instance: W-DosageDoseValuePositiveWarning-02-of-05
 InstanceOf: MedicationDispenseDE
 Usage: #example
 Title: "Warning (Dispense): negative doseRange.low.value"
@@ -28,7 +28,7 @@ Description: "Warning example - doseRange.low.value should not be negative."
     * low = -1 $kbv-dosiereinheit#1 "Stück"
     * high = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: Dosage-W-DosageDoseValuePositiveWarning-03-of-05
+Instance: W-DosageDoseValuePositiveWarning-03-of-05
 InstanceOf: MedicationStatementDE
 Usage: #example
 Title: "Warning (Statement): negative doseRange.high.value"
@@ -40,7 +40,7 @@ Description: "Warning example - doseRange.high.value should be greater than 0."
   * timing.repeat.when = #MORN
   * doseAndRate.doseRange.high = -1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: Dosage-W-DosageDoseValuePositiveWarning-04-of-05
+Instance: W-DosageDoseValuePositiveWarning-04-of-05
 InstanceOf: MedicationRequestDE
 Usage: #example
 Title: "Warning (Request): doseQuantity.value is 0"
@@ -53,7 +53,7 @@ Description: "Warning example - a single dose of 0 does not describe an administ
   * timing.repeat.when = #MORN
   * doseAndRate.doseQuantity = 0 $kbv-dosiereinheit#1 "Stück"
 
-Instance: Dosage-W-DosageDoseValuePositiveWarning-05-of-05
+Instance: W-DosageDoseValuePositiveWarning-05-of-05
 InstanceOf: MedicationDispenseDE
 Usage: #example
 Title: "Warning (Dispense): doseRange.high.value is 0"

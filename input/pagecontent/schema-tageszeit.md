@@ -42,9 +42,9 @@ timing.repeat.dayOfWeek.empty()
 ```
 
 Die tägliche Wiederholung und die Zahl der Gaben ergeben sich bereits aus
-`when`. `frequency`, `period = 1` und `periodUnit = d` dürfen redundant
-angegeben werden. Ist `frequency`
-vorhanden, muss der Wert der Anzahl der `when`-Elemente entsprechen.
+`when`. Als [Legacy-Angaben](./StructureDefinition-TimingDgMP.html) zulässig
+sind hier `frequency` — entsprechend der Anzahl der `when`-Elemente — sowie
+das Paar `period = 1` und `periodUnit = d`.
 
 Soll das Arzneimittel in derselben Dosierung zu mehreren Tageszeiten angewandt werden, wird dies über mehrere Angaben von "when" ausgedrückt. Die angegebene Dosierung ist dann zu jeder der genannten Tageszeiten anzuwenden. 
 

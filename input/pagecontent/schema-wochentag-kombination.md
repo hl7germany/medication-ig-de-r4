@@ -40,12 +40,11 @@ timing.repeat.dayOfWeek.exists() and
 ```
 
 Die Werte in `dayOfWeek` und `when` beziehungsweise `timeOfDay` legen die
-Anwendungstage und Gaben eindeutig fest. Die optionalen Angaben
-`frequency`, `period = 1` und `periodUnit = wk` bleiben aus Gründen der
-Rückwärtskompatibilität zulässig, werden aber nicht als zusätzliches
-Intervallschema interpretiert. Falls `frequency` angegeben ist, entspricht sie
-dem Produkt aus der Anzahl der Wochentage und der Anzahl der `when`- bzw.
-`timeOfDay`-Werte.
+Anwendungstage und Gaben eindeutig fest. Als
+[Legacy-Angaben](./StructureDefinition-TimingDgMP.html) zulässig sind hier
+`frequency` — entsprechend dem Produkt aus der Anzahl der Wochentage und der
+Anzahl der `when`- beziehungsweise `timeOfDay`-Werte — sowie das Paar
+`period = 1` und `periodUnit = wk`.
 
 Lesende Systeme werten entsprechend auch `Dosage.timing.repeat` aus. 
 Wenn die oben genannten Felder angegeben sind, ist dem Nutzer anzuzeigen, dass

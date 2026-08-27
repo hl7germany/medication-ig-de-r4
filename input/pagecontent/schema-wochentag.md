@@ -41,11 +41,11 @@ timing.repeat.dayOfWeek.exists() and
 timing.repeat.when.empty() and
 timing.repeat.timeOfDay.empty()
 ```
-Die wöchentliche Wiederholung ist durch `dayOfWeek` bereits eindeutig. Die
-optionalen Angaben `frequency`, `period = 1` und `periodUnit = wk` bleiben
-aus Gründen der Rückwärtskompatibilität zulässig, werden aber nicht als
-zusätzliches Intervallschema interpretiert. `frequency` entspricht dabei der
-Anzahl der `dayOfWeek`-Elemente.
+Die wöchentliche Wiederholung ist durch `dayOfWeek` bereits eindeutig. Als
+[Legacy-Angaben](./StructureDefinition-TimingDgMP.html) zulässig sind hier
+`frequency` — entsprechend der Anzahl der `dayOfWeek`-Elemente — sowie das
+Paar `period = 1` und `periodUnit = wk`. Jede andere Periode ist mit
+`dayOfWeek` nicht kombinierbar, ebenso wenig `frequencyMax` und `periodMax`.
 
 Soll das Arzneimittel in derselben Dosierung an mehreren Tagen angewandt werden, wird dies über mehrere Angaben von `dayOfWeek` ausgedrückt. Die angegebene Dosierung ist dann zu jedem der genannten Tage anzuwenden.
 

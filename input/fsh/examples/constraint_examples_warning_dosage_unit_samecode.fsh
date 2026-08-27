@@ -1,7 +1,7 @@
 // Warning examples for DosageDoseUnitSameCodeWarning
 // Two dosage entries with different dose unit codes. Allowed as a warning in DE, error in dgMP.
 
-Instance: Dosage-W-DosageDoseUnitSameCodeWarning-01-of-03
+Instance: W-DosageDoseUnitSameCodeWarning-01-of-03
 InstanceOf: MedicationRequestDE
 Usage: #example
 Title: "Warning (Request): mixed dose units"
@@ -19,7 +19,7 @@ Description: "Warning example - two dosageInstructions use different dose unit c
     * when[+] = #EVE
   * doseAndRate.doseQuantity = 500 $kbv-dosiereinheit#mg "mg"
 
-Instance: Dosage-W-DosageDoseUnitSameCodeWarning-02-of-03
+Instance: W-DosageDoseUnitSameCodeWarning-02-of-03
 InstanceOf: MedicationDispenseDE
 Usage: #example
 Title: "Warning (Dispense): mixed dose units"
@@ -36,7 +36,7 @@ Description: "Warning example - two dosageInstruction entries use different dose
     * when[+] = #EVE
   * doseAndRate.doseQuantity = 500 $kbv-dosiereinheit#mg "mg"
 
-Instance: Dosage-W-DosageDoseUnitSameCodeWarning-03-of-03
+Instance: W-DosageDoseUnitSameCodeWarning-03-of-03
 InstanceOf: MedicationStatementDE
 Usage: #example
 Title: "Warning (Statement): mixed dose units"

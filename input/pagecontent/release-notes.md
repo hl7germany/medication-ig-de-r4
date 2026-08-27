@@ -62,7 +62,7 @@ Die folgenden bestehenden Regeln haben sich in ihrer Aussage geändert:
 
 **Entfallene Beispiele**
 
-Gegenüber 1.0.5 entfallen 74 Beispiel-Instanzen; deren Seiten-URLs sind danach nicht mehr erreichbar. Neben den 20 Beispielen für nun unterstützte Angaben betrifft das vor allem neu gefasste Negativbeispiele zu `TimingFrequencyCount`, `TimingPeriodUnit` und `TimingOnlyOneType`: an die Stelle der durchnummerierten Reihen treten wenige Beispiele, die je einen Auslöser des Constraints isolieren. Hinzu kommen die Beispiele zum Viererschema im Freitext, die der Umbenennung ihrer Invariante folgen. Profile, Extensions und ValueSets behalten ihre kanonischen URLs.
+Gegenüber 1.0.5 entfallen 110 Beispiel-Instanzen; deren Seiten-URLs sind danach nicht mehr erreichbar. Ursache ist zum einen die vereinheitlichte Benennung der Validierungsbeispiele, zum anderen entfallen 20 Beispiele für inzwischen unterstützte Angaben und mehrere neu gefasste Negativbeispiele: an die Stelle durchnummerierter Reihen treten wenige Beispiele, die je einen Auslöser des Constraints isolieren. Profile, Extensions und ValueSets behalten ihre kanonischen URLs.
 
 **Sonstiges**
 

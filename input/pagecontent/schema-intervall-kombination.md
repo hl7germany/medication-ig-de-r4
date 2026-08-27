@@ -37,14 +37,17 @@ timing.repeat.dayOfWeek.empty() and
   )
 ```
 
-`frequency` ist in diesem Schema optional. Die Häufigkeit ergibt sich bereits
-aus den konkreten Werten in `when` beziehungsweise `timeOfDay`; eine vorhandene
-Angabe muss deren Anzahl entsprechen und wird im generierten Text nicht
-ausgegeben.
+`frequency` ist in diesem Schema als
+[Legacy-Angabe](./StructureDefinition-TimingDgMP.html) zulässig. Die Häufigkeit
+ergibt sich bereits aus den konkreten Werten in `when` beziehungsweise
+`timeOfDay`; eine vorhandene Angabe muss deren Anzahl entsprechen und wird im
+generierten Text nicht ausgegeben. `period` und `periodUnit` sind hier dagegen
+keine Legacy-Angaben, sondern legen den Rhythmus fest.
 
-Die Warnung `TimingVarFreqOrPeriod`, die eine gleichzeitig variable Frequenz
+Die Regel `TimingVarFreqOrPeriod`, die eine gleichzeitig variable Frequenz
 (`frequencyMax`) und Periode (`periodMax`) beanstandet, gilt ausschließlich für
-reine Intervallangaben ohne Zeitpunkte.
+reine Intervallangaben ohne Zeitpunkte. Im dgMP-Profil ist sie ein Fehler, im
+generischen Profil `TimingDE` eine Warnung.
 
 Mit `period` und `periodUnit` wird der Einnahmerhythmus festgelegt. `when` oder
 `timeOfDay` ordnet diesem Rhythmus konkrete Tagesabschnitte beziehungsweise

@@ -242,8 +242,10 @@ def main():
 
     # Step 2: Collect constraints
     constraints = []
+    constraints += extract_constraints_from_element(sd_map["TimingDgMP"], "Timing", "Timing")
     constraints += extract_constraints_from_element(sd_map["TimingDgMP"], "Timing.repeat", "Timing.repeat")
     if "TimingDE" in sd_map:
+        constraints += extract_constraints_from_element(sd_map["TimingDE"], "Timing", "Timing")
         constraints += extract_constraints_from_element(sd_map["TimingDE"], "Timing.repeat", "Timing.repeat")
     if "DosageDE" in sd_map:
         constraints += extract_constraints_from_element(sd_map["DosageDE"], "Dosage", "Dosage")
@@ -251,7 +253,7 @@ def main():
         constraints += extract_constraints_from_element(sd_map["DosageDgMP"], "Dosage", "Dosage")
 
     if not constraints:
-        print("ERROR: No constraints found (Timing.repeat or Dosage roots).")
+        print("ERROR: No constraints found (Timing, Timing.repeat or Dosage roots).")
         sys.exit(1)
 
     # Merge: prefer higher severity (error>warning) and dgMP profile if same severity
@@ -297,6 +299,10 @@ def main():
             print(f"{YELLOW}  - {k}{RESET}", file=sys.stderr)
         if failures_warning:
             print(f"{YELLOW}WARNING: Missing warning-level examples for: {', '.join(failures_warning)}{RESET}", file=sys.stderr)
+        # Ohne Abbruch laeuft der Build weiter und scheitert erst in Jekyll beim
+        # Aufloesen des nicht erzeugten Includes - eine Minute spaeter und ohne
+        # Hinweis auf die Ursache.
+        sys.exit(1)
 
     # Success path
     summary = (

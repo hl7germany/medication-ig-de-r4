@@ -1,6 +1,6 @@
 // MedicationRequest
 
-Instance: INV-C-TimingBoundsDurationOnlyWholeNumber-Request-01-of-02
+Instance: INV-C-TimingBoundsDurationOnlyWholeNumber-MR-01-of-02
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid Dosage"
@@ -17,7 +17,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * boundsDuration = 1.5 $ucum#d "Tag(e)"
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-C-TimingBoundsDurationOnlyWholeNumber-Request-02-of-02
+Instance: INV-C-TimingBoundsDurationOnlyWholeNumber-MR-02-of-02
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid Dosage"
@@ -36,7 +36,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
 
 // MedicationDispense
 
-Instance: INV-C-TimingBoundsDurationOnlyWholeNumber-Dispense-01-of-02
+Instance: INV-C-TimingBoundsDurationOnlyWholeNumber-MD-01-of-02
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
 Title: "Invalid Dosage"
@@ -52,7 +52,7 @@ Description: "CAVE: This MedicationDispense is for validation purposes and does 
     * boundsDuration = 1.5 $ucum#d "Tag(e)"
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-C-TimingBoundsDurationOnlyWholeNumber-Dispense-02-of-02
+Instance: INV-C-TimingBoundsDurationOnlyWholeNumber-MD-02-of-02
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
 Title: "Invalid Dosage"
@@ -70,7 +70,7 @@ Description: "CAVE: This MedicationDispense is for validation purposes and does 
 
 // MedicationStatement
 
-Instance: INV-C-TimingBoundsDurationOnlyWholeNumber-Statement-01-of-02
+Instance: INV-C-TimingBoundsDurationOnlyWholeNumber-MS-01-of-02
 InstanceOf: MedicationStatementDgMP
 Usage: #example
 Title: "Invalid Dosage"
@@ -86,7 +86,7 @@ Description: "CAVE: This MedicationStatement is for validation purposes and does
     * boundsDuration = 1.5 $ucum#d "Tag(e)"
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-C-TimingBoundsDurationOnlyWholeNumber-Statement-02-of-02
+Instance: INV-C-TimingBoundsDurationOnlyWholeNumber-MS-02-of-02
 InstanceOf: MedicationStatementDgMP
 Usage: #example
 Title: "Invalid Dosage"

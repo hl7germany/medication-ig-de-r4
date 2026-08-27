@@ -10,7 +10,7 @@ Description: "Dieses Beispiel stellt eine Bedarfsmedikation mit Einnahmeanlass, 
 * dosageInstruction[+]
   * asNeededBoolean = true
   * extension[asNeededFor].valueCodeableConcept.text = "Kopfschmerzen"
-  * modifierExtension[mindestabstandZwischenGaben].valueDuration = 4 $ucum#h "Stunde(n)"
+  * modifierExtension[minimumIntervalBetweenAdministrations].valueDuration = 4 $ucum#h "Stunde(n)"
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
   * maxDosePerPeriod.numerator.value = 6
   * maxDosePerPeriod.numerator.system = $kbv-dosiereinheit
@@ -35,7 +35,7 @@ Description: "Bedarfsmedikation mit mehreren Einnahmeanlässen (asNeededFor 0..*
   * extension[asNeededFor][+].valueCodeableConcept.text = "Kopfschmerzen"
   * extension[asNeededFor][+].valueCodeableConcept.text = "Fieber"
   * extension[asNeededFor][+].valueCodeableConcept.text = "Gliederschmerzen"
-  * modifierExtension[mindestabstandZwischenGaben].valueDuration = 6 $ucum#h "Stunde(n)"
+  * modifierExtension[minimumIntervalBetweenAdministrations].valueDuration = 6 $ucum#h "Stunde(n)"
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
   * maxDosePerPeriod.numerator.value = 4
   * maxDosePerPeriod.numerator.system = $kbv-dosiereinheit
@@ -50,7 +50,7 @@ Instance: Example-MR-Dosage-Bedarfsmedikation-Struktur-Intervall
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-Bedarfsmedikation-Struktur-Intervall"
-Description: "Strukturierte Bedarfsmedikation: ein Intervall-Dosierschema (alle 8 Stunden), das nur bei Bedarf angewendet wird. Die Bedarfsangabe kennzeichnet hier ein bestehendes strukturiertes Schema (timing ist befüllt)."
+Description: "Strukturierte Bedarfsmedikation: ein Intervall-Dosierschema (alle 8 Stunden), das nur bei Bedarf angewendet wird. Die Bedarfsangabe kennzeichnet hier ein bestehendes strukturiertes Schema (timing ist befüllt). Ein Mindestabstand ist hier nicht zulaessig, weil der Rhythmus den Abstand bereits festlegt."
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -58,7 +58,6 @@ Description: "Strukturierte Bedarfsmedikation: ein Intervall-Dosierschema (alle 
 * dosageInstruction[+]
   * asNeededBoolean = true
   * extension[asNeededFor].valueCodeableConcept.text = "Kopfschmerzen"
-  * modifierExtension[mindestabstandZwischenGaben].valueDuration = 6 $ucum#h "Stunde(n)"
   * timing.repeat.frequency = 1
   * timing.repeat.period = 8
   * timing.repeat.periodUnit = #h

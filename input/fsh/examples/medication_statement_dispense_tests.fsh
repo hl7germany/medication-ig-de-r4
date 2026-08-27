@@ -109,14 +109,12 @@ Description: "Example showing Interval and Time pattern in MedicationDispense"
 * status = #completed
 * dosageInstruction[+]
   * timing.repeat
-    * frequency = 1
     * period = 2
     * periodUnit = #d
     * timeOfDay = "09:00:00"
   * doseAndRate[+].doseQuantity = 1 '1' "Stück"
 * dosageInstruction[+]
   * timing.repeat
-    * frequency = 1
     * period = 2
     * periodUnit = #d
     * timeOfDay = "21:00:00"

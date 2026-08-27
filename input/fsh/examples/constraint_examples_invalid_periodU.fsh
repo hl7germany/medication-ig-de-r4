@@ -1,42 +1,8 @@
-Instance: INV-C-TimingPeriodUnit-Request-01-of-05
+Instance: INV-C-TimingPeriodUnit-Request
 InstanceOf: MedicationRequestDgMP
 Usage: #example
-Title: "Invalid Dosage"
-Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for invalid Permutations"
-* subject.display = "Patient"
-* status = #active
-* intent = #order
-* medicationCodeableConcept.text = "Ibuprofen 400mg"
-* dosageInstruction[+]
-  * timing.repeat
-    * when[+] = #MORN
-    * frequency = 1
-    * period = 1
-    * periodUnit = #wk
-  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
-
-Instance: INV-C-TimingPeriodUnit-Request-02-of-05
-InstanceOf: MedicationRequestDgMP
-Usage: #example
-Title: "Invalid Dosage"
-Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for invalid Permutations"
-* subject.display = "Patient"
-* status = #active
-* intent = #order
-* medicationCodeableConcept.text = "Ibuprofen 400mg"
-* dosageInstruction[+]
-  * timing.repeat
-    * timeOfDay[+] = "08:00:00"
-    * frequency = 1
-    * period = 1
-    * periodUnit = #wk
-  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
-
-Instance: INV-C-TimingPeriodUnit-Request-03-of-05
-InstanceOf: MedicationRequestDgMP
-Usage: #example
-Title: "Invalid Dosage"
-Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for invalid Permutations"
+Title: "Invalid Dosage: hourly interval in a weekday schema"
+Description: "CAVE: a weekday schema cannot be combined with an hourly interval."
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -45,248 +11,142 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
   * timing.repeat
     * dayOfWeek[+] = #tue
     * frequency = 1
-    * period = 1
-    * periodUnit = #d
-  * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
+    * period = 3
+    * periodUnit = #h
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-C-TimingPeriodUnit-Request-04-of-05
+Instance: INV-C-TimingPeriodUnit-Dispense
+InstanceOf: MedicationDispenseDgMP
+Usage: #example
+Title: "Invalid Dosage: hourly interval with weekday and timeOfDay"
+Description: "CAVE: weekday plus timeOfDay cannot be combined with an hourly interval."
+* subject.display = "Patient"
+* status = #completed
+* medicationCodeableConcept.text = "Ibuprofen 400mg"
+* dosageInstruction[+]
+  * timing.repeat
+    * dayOfWeek[+] = #thu
+    * frequency = 1
+    * period = 3
+    * periodUnit = #h
+    * timeOfDay[+] = "08:00:00"
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
+
+Instance: INV-C-TimingPeriodUnit-Statement
+InstanceOf: MedicationStatementDgMP
+Usage: #example
+Title: "Invalid Dosage: minute interval with weekday and when"
+Description: "CAVE: weekday plus when cannot be combined with a minute interval."
+* subject.display = "Patient"
+* status = #active
+* medicationCodeableConcept.text = "Ibuprofen 400mg"
+* dosage[+]
+  * timing.repeat
+    * dayOfWeek[+] = #fri
+    * frequency = 1
+    * period = 30
+    * periodUnit = #min
+    * when[+] = #MORN
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
+
+Instance: INV-C-TimingPeriodUnit-MR-01-of-02
 InstanceOf: MedicationRequestDgMP
 Usage: #example
-Title: "Invalid Dosage"
-Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for invalid Permutations"
+Title: "Invalid MedicationRequest: weekday and when plus hourly interval"
+Description: "CAVE: dayOfWeek and when cannot be combined with an hourly interval."
 * subject.display = "Patient"
 * status = #active
 * intent = #order
-* medicationCodeableConcept.text = "Ibuprofen 400mg"
+* medicationCodeableConcept.text = "Test Medication"
 * dosageInstruction[+]
   * timing.repeat
-    * dayOfWeek[+] = #mon
-    * dayOfWeek[+] = #fri
-    * when[+] = #MORN
-    * frequency = 2
-    * period = 1
-    * periodUnit = #d
-    * boundsDuration = 3 $ucum#wk "Woche(n)"
+    * dayOfWeek = #tue
+    * when = #MORN
+    * frequency = 1
+    * period = 3
+    * periodUnit = #h
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-C-TimingPeriodUnit-Request-05-of-05
+Instance: INV-C-TimingPeriodUnit-MR-02-of-02
 InstanceOf: MedicationRequestDgMP
 Usage: #example
-Title: "Invalid Dosage"
-Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for invalid Permutations"
+Title: "Invalid MedicationRequest: weekday and timeOfDay plus hourly interval"
+Description: "CAVE: dayOfWeek and timeOfDay cannot be combined with an hourly interval."
 * subject.display = "Patient"
 * status = #active
 * intent = #order
-* medicationCodeableConcept.text = "Ibuprofen 400mg"
+* medicationCodeableConcept.text = "Test Medication"
 * dosageInstruction[+]
   * timing.repeat
-    * dayOfWeek[+] = #mon
-    * dayOfWeek[+] = #fri
-    * when[+] = #MORN
-    * frequency = 2
-    * period = 1
-    * periodUnit = #wk
-    * boundsDuration = 3 $ucum#wk "Woche(n)"
+    * dayOfWeek = #tue
+    * timeOfDay = "08:00:00"
+    * frequency = 1
+    * period = 3
+    * periodUnit = #h
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
-* dosageInstruction[+]
-  * timing.repeat
-    * dayOfWeek[+] = #mon
-    * dayOfWeek[+] = #fri
-    * when[+] = #NOON
-    * frequency = 2
-    * period = 1
-    * periodUnit = #d
-    * boundsDuration = 3 $ucum#wk "Woche(n)"
-  * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-C-TimingPeriodUnit-Dispense-01-of-05
+Instance: INV-C-TimingPeriodUnit-MD-01-of-02
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
-Title: "Invalid Dosage"
-Description: "CAVE: This MedicationDispense is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for invalid Permutations"
+Title: "Invalid MedicationDispense: weekday plus hourly interval"
+Description: "CAVE: a plain weekday schema cannot be combined with an hourly interval."
 * subject.display = "Patient"
 * status = #completed
-* medicationCodeableConcept.text = "Ibuprofen 400mg"
+* medicationCodeableConcept.text = "Test Medication"
 * dosageInstruction[+]
   * timing.repeat
-    * when[+] = #MORN
+    * dayOfWeek = #tue
     * frequency = 1
-    * period = 1
-    * periodUnit = #wk
+    * period = 3
+    * periodUnit = #h
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-C-TimingPeriodUnit-Statement-01-of-05
-InstanceOf: MedicationStatementDgMP
-Usage: #example
-Title: "Invalid Dosage"
-Description: "CAVE: This MedicationStatement is for validation purposes and does NOT represent a valid dosage. It only checks for invalid Permutations"
-* subject.display = "Patient"
-* status = #active
-* medicationCodeableConcept.text = "Ibuprofen 400mg"
-* dosage[+]
-  * timing.repeat
-    * when[+] = #MORN
-    * frequency = 1
-    * period = 1
-    * periodUnit = #wk
-  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
-
-Instance: INV-C-TimingPeriodUnit-Dispense-02-of-05
+Instance: INV-C-TimingPeriodUnit-MD-02-of-02
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
-Title: "Invalid Dosage"
-Description: "CAVE: This MedicationDispense is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for invalid Permutations"
+Title: "Invalid MedicationDispense: weekday and when plus hourly interval"
+Description: "CAVE: dayOfWeek and when cannot be combined with an hourly interval."
 * subject.display = "Patient"
 * status = #completed
-* medicationCodeableConcept.text = "Ibuprofen 400mg"
+* medicationCodeableConcept.text = "Test Medication"
 * dosageInstruction[+]
   * timing.repeat
-    * timeOfDay[+] = "08:00:00"
+    * dayOfWeek = #tue
+    * when = #MORN
     * frequency = 1
-    * period = 1
-    * periodUnit = #wk
+    * period = 3
+    * periodUnit = #h
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-C-TimingPeriodUnit-Statement-02-of-05
+Instance: INV-C-TimingPeriodUnit-MS-01-of-02
 InstanceOf: MedicationStatementDgMP
 Usage: #example
-Title: "Invalid Dosage"
-Description: "CAVE: This MedicationStatement is for validation purposes and does NOT represent a valid dosage. It only checks for invalid Permutations"
+Title: "Invalid MedicationStatement: weekday plus hourly interval"
+Description: "CAVE: a plain weekday schema cannot be combined with an hourly interval."
 * subject.display = "Patient"
 * status = #active
-* medicationCodeableConcept.text = "Ibuprofen 400mg"
+* medicationCodeableConcept.text = "Test Medication"
 * dosage[+]
   * timing.repeat
-    * timeOfDay[+] = "08:00:00"
+    * dayOfWeek = #tue
     * frequency = 1
-    * period = 1
-    * periodUnit = #wk
+    * period = 3
+    * periodUnit = #h
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-C-TimingPeriodUnit-Dispense-03-of-05
-InstanceOf: MedicationDispenseDgMP
-Usage: #example
-Title: "Invalid Dosage"
-Description: "CAVE: This MedicationDispense is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for invalid Permutations"
-* subject.display = "Patient"
-* status = #completed
-* medicationCodeableConcept.text = "Ibuprofen 400mg"
-* dosageInstruction[+]
-  * timing.repeat
-    * dayOfWeek[+] = #tue
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
-  * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
-
-Instance: INV-C-TimingPeriodUnit-Statement-03-of-05
+Instance: INV-C-TimingPeriodUnit-MS-02-of-02
 InstanceOf: MedicationStatementDgMP
 Usage: #example
-Title: "Invalid Dosage"
-Description: "CAVE: This MedicationStatement is for validation purposes and does NOT represent a valid dosage. It only checks for invalid Permutations"
+Title: "Invalid MedicationStatement: weekday and timeOfDay plus hourly interval"
+Description: "CAVE: dayOfWeek and timeOfDay cannot be combined with an hourly interval."
 * subject.display = "Patient"
 * status = #active
-* medicationCodeableConcept.text = "Ibuprofen 400mg"
+* medicationCodeableConcept.text = "Test Medication"
 * dosage[+]
   * timing.repeat
-    * dayOfWeek[+] = #tue
+    * dayOfWeek = #tue
+    * timeOfDay = "08:00:00"
     * frequency = 1
-    * period = 1
-    * periodUnit = #d
-  * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
-
-Instance: INV-C-TimingPeriodUnit-Dispense-04-of-05
-InstanceOf: MedicationDispenseDgMP
-Usage: #example
-Title: "Invalid Dosage"
-Description: "CAVE: This MedicationDispense is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for invalid Permutations"
-* subject.display = "Patient"
-* status = #completed
-* medicationCodeableConcept.text = "Ibuprofen 400mg"
-* dosageInstruction[+]
-  * timing.repeat
-    * dayOfWeek[+] = #mon
-    * dayOfWeek[+] = #fri
-    * when[+] = #MORN
-    * frequency = 2
-    * period = 1
-    * periodUnit = #d
-    * boundsDuration = 3 $ucum#wk "Woche(n)"
+    * period = 3
+    * periodUnit = #h
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
-
-Instance: INV-C-TimingPeriodUnit-Statement-04-of-05
-InstanceOf: MedicationStatementDgMP
-Usage: #example
-Title: "Invalid Dosage"
-Description: "CAVE: This MedicationStatement is for validation purposes and does NOT represent a valid dosage. It only checks for invalid Permutations"
-* subject.display = "Patient"
-* status = #active
-* medicationCodeableConcept.text = "Ibuprofen 400mg"
-* dosage[+]
-  * timing.repeat
-    * dayOfWeek[+] = #mon
-    * dayOfWeek[+] = #fri
-    * when[+] = #MORN
-    * frequency = 2
-    * period = 1
-    * periodUnit = #d
-    * boundsDuration = 3 $ucum#wk "Woche(n)"
-  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
-
-Instance: INV-C-TimingPeriodUnit-Dispense-05-of-05
-InstanceOf: MedicationDispenseDgMP
-Usage: #example
-Title: "Invalid Dosage"
-Description: "CAVE: This MedicationDispense is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for invalid Permutations"
-* subject.display = "Patient"
-* status = #completed
-* medicationCodeableConcept.text = "Ibuprofen 400mg"
-* dosageInstruction[+]
-  * timing.repeat
-    * dayOfWeek[+] = #mon
-    * dayOfWeek[+] = #fri
-    * when[+] = #MORN
-    * frequency = 2
-    * period = 1
-    * periodUnit = #wk
-    * boundsDuration = 3 $ucum#wk "Woche(n)"
-  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
-* dosageInstruction[+]
-  * timing.repeat
-    * dayOfWeek[+] = #mon
-    * dayOfWeek[+] = #fri
-    * when[+] = #NOON
-    * frequency = 2
-    * period = 1
-    * periodUnit = #d
-    * boundsDuration = 3 $ucum#wk "Woche(n)"
-  * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
-
-Instance: INV-C-TimingPeriodUnit-Statement-05-of-05
-InstanceOf: MedicationStatementDgMP
-Usage: #example
-Title: "Invalid Dosage"
-Description: "CAVE: This MedicationStatement is for validation purposes and does NOT represent a valid dosage. It only checks for invalid Permutations"
-* subject.display = "Patient"
-* status = #active
-* medicationCodeableConcept.text = "Ibuprofen 400mg"
-* dosage[+]
-  * timing.repeat
-    * dayOfWeek[+] = #mon
-    * dayOfWeek[+] = #fri
-    * when[+] = #MORN
-    * frequency = 2
-    * period = 1
-    * periodUnit = #wk
-    * boundsDuration = 3 $ucum#wk "Woche(n)"
-  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
-* dosage[+]
-  * timing.repeat
-    * dayOfWeek[+] = #mon
-    * dayOfWeek[+] = #fri
-    * when[+] = #NOON
-    * frequency = 2
-    * period = 1
-    * periodUnit = #d
-    * boundsDuration = 3 $ucum#wk "Woche(n)"
-  * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"

@@ -10,6 +10,7 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * obeys TimingSingleDosageForTimeOfDayWarning
   * obeys TimingSingleDosageForWhenWarning
   * obeys TimingBoundsUnitMatchesCodeWarning
+  * obeys TimingVarFreqOrPeriodWarning
 * repeat.bounds[x] MS
   * ^short = "Länge/Bereich der Längen oder (Start- und/oder End-)Grenzen"
   * ^definition = "Entweder eine Dauer für die Länge des Zeitplans, ein Bereich möglicher Längen oder äußere Begrenzungen für Start- und/oder Endgrenzen des Zeitplans."
@@ -54,7 +55,7 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * ^comment = "Wenn mehr als ein Ereignis angegeben ist, bezieht sich das Ereignis auf die Vereinigung der angegebenen Ereignisse."
 
 Invariant: TimingSingleDosageForTimeOfDayWarning
-Description: "Wenn nur timeOfDay verwendet wird und täglich dosiert wird, ist die Angabe in einem einzigen Dosage-Element zu modellieren. Mehrere Dosage-Elemente sind nur zulässig, wenn sich die Dosis (Wert) unterscheidet."
+Description: "If only timeOfDay is used and dosing is daily, the times must be modelled in a single Dosage element. Multiple Dosage elements are only allowed if every element carries a distinct dose, including its data type."
 Expression: "(
   %resource.ofType(MedicationRequest).dosageInstruction
   | %resource.ofType(MedicationDispense).dosageInstruction
@@ -84,14 +85,22 @@ Expression: "(
         | %resource.ofType(MedicationStatement).dosage
       ).where(
         timing.repeat.dayOfWeek.empty() and timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()
-      ).doseAndRate.dose.ofType(Quantity).value.distinct().count() > 1
+      ).doseAndRate.dose.distinct().count()
+      =
+      (
+        %resource.ofType(MedicationRequest).dosageInstruction
+        | %resource.ofType(MedicationDispense).dosageInstruction
+        | %resource.ofType(MedicationStatement).dosage
+      ).where(
+        timing.repeat.dayOfWeek.empty() and timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()
+      ).count()
     )
   )
 )"
 Severity: #warning
 
 Invariant: TimingSingleDosageForWhenWarning
-Description: "Wenn nur when verwendet wird und täglich dosiert wird, ist die Angabe in einem einzigen Dosage-Element zu modellieren. Mehrere Dosage-Elemente sind nur zulässig, wenn sich die Dosis (Wert) unterscheidet."
+Description: "If only when is used and dosing is daily, the times of day must be modelled in a single Dosage element. Multiple Dosage elements are only allowed if every element carries a distinct dose, including its data type."
 Expression: "(
   %resource.ofType(MedicationRequest).dosageInstruction
   | %resource.ofType(MedicationDispense).dosageInstruction
@@ -121,14 +130,22 @@ Expression: "(
         | %resource.ofType(MedicationStatement).dosage
       ).where(
         timing.repeat.dayOfWeek.empty() and timing.repeat.when.exists() and timing.repeat.timeOfDay.empty()
-      ).doseAndRate.dose.ofType(Quantity).value.distinct().count() > 1
+      ).doseAndRate.dose.distinct().count()
+      =
+      (
+        %resource.ofType(MedicationRequest).dosageInstruction
+        | %resource.ofType(MedicationDispense).dosageInstruction
+        | %resource.ofType(MedicationStatement).dosage
+      ).where(
+        timing.repeat.dayOfWeek.empty() and timing.repeat.when.exists() and timing.repeat.timeOfDay.empty()
+      ).count()
     )
   )
 )"
 Severity: #warning
 
 Invariant: TimingBoundsUnitMatchesCodeWarning
-Description: "boundsDuration.unit muss zur UCUM boundsDuration.code passen (z. B. 'Woche(n)' nur mit code='wk')."
+Description: "boundsDuration.unit must match the UCUM boundsDuration.code (e.g. 'Woche(n)' only with code='wk')."
 Expression: "bounds.ofType(Duration).exists().not() or (
   (
     bounds.ofType(Duration).code = 'd'
@@ -163,5 +180,20 @@ Expression: "bounds.ofType(Duration).exists().not() or (
       bounds.ofType(Duration).unit = 'Jahre'
     )
   )
+)"
+Severity: #warning
+
+Invariant: TimingVarFreqOrPeriodWarning
+Description: "For a pure interval without concrete times, frequency (frequencyMax) and period (periodMax) should not both be given as variable. A fixed frequency greater than 1 together with a period, such as twice every 8 hours, remains allowed."
+Expression: "/* Detect Interval only */
+(
+  timeOfDay.empty() and
+  when.empty() and
+  dayOfWeek.empty() and
+  frequency.exists() and
+  period.exists()
+) implies
+(
+  frequencyMax.empty() or periodMax.empty()
 )"
 Severity: #warning

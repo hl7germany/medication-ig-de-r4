@@ -1,6 +1,6 @@
 // Warning examples for DosageStructuredOrFreeTextWarning
 
-Instance: Dosage-W-DosageStructuredOrFreeTextWarning-01-of-03
+Instance: W-DosageStructuredOrFreeTextWarning-01-of-03
 InstanceOf: MedicationRequestDE
 Usage: #example
 Title: "Warning (Request): text and structured dosage"
@@ -16,7 +16,7 @@ Description: "Warning example - dosage contains free text and structured dosage 
   * timing.repeat.periodUnit = #d
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: Dosage-W-DosageStructuredOrFreeTextWarning-02-of-03
+Instance: W-DosageStructuredOrFreeTextWarning-02-of-03
 InstanceOf: MedicationDispenseDE
 Usage: #example
 Title: "Warning (Dispense): text and structured dosage"
@@ -31,7 +31,7 @@ Description: "Warning example - dosage contains free text and structured dosage 
   * timing.repeat.periodUnit = #d
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: Dosage-W-DosageStructuredOrFreeTextWarning-03-of-03
+Instance: W-DosageStructuredOrFreeTextWarning-03-of-03
 InstanceOf: MedicationStatementDE
 Usage: #example
 Title: "Warning (Statement): text and structured dosage"

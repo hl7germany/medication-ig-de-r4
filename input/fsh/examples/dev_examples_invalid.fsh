@@ -1,4 +1,4 @@
-Instance: Invalid-Dosage-01-of-12-FreqPeriod-When
+Instance: INV-01-of-12-FreqPeriod-When
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid Dosage"
@@ -16,7 +16,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * when[+] = #MORN
     * timeOfDay[+] = "08:00:00"
 
-Instance: Invalid-Dosage-02-of-12-FreqPeriod-ToD-DayOfWeek
+Instance: INV-02-of-12-FreqPeriod-ToD-DayOfWeek
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid Dosage"
@@ -34,7 +34,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * timeOfDay[+] = "08:00:00"
     * dayOfWeek[+] = #mon
 
-Instance: Invalid-Dosage-03-of-12-FreqPeriod-When-DayOfWeek
+Instance: INV-03-of-12-FreqPeriod-When-DayOfWeek
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid Dosage"
@@ -52,7 +52,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * when[+] = #MORN
     * dayOfWeek[+] = #mon
 
-Instance: Invalid-Dosage-04-of-12-FreeText-and-structured
+Instance: INV-04-of-12-FreeText-and-structured
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid Dosage"
@@ -70,7 +70,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * period = 1
     * periodUnit = #d
 
-Instance: Invalid-Dosage-05-of-12-multiple-types
+Instance: INV-05-of-12-multiple-types
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid Dosage"
@@ -92,7 +92,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * periodUnit = #d
     * timeOfDay[+] = "08:00:00"
 
-Instance: Invalid-Dosage-06-of-12-multiple-dosagecodes
+Instance: INV-06-of-12-multiple-dosagecodes
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid Dosage"
@@ -116,7 +116,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * periodUnit = #d
   * doseAndRate.doseQuantity = 400 $kbv-dosiereinheit#v "mg"
 
-Instance: Invalid-Dosage-07-of-12-timing-no-dose
+Instance: INV-07-of-12-timing-no-dose
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid Dosage"
@@ -132,7 +132,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * period = 1
     * periodUnit = #d
 
-Instance: Invalid-Dosage-09-of-12-C-TimingOnlyOneTimeForInterval
+Instance: INV-09-of-12-C-TimingOnlyOneTimeForInterval
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid Dosage"
@@ -157,7 +157,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * periodUnit = #d
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
-Instance: Invalid-Dosage-10-of-12-When-DiffPeriodU
+Instance: INV-10-of-12-When-DiffPeriodU
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid Dosage"
@@ -182,7 +182,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * periodUnit = #wk
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
-Instance: Invalid-Dosage-11-of-12-C-TimingOnlyOneWhen
+Instance: INV-11-of-12-C-TimingOnlyOneWhen
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid Dosage"
@@ -207,7 +207,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * periodUnit = #d
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
-Instance: Invalid-Dosage-12-of-12-C-TimingOnlyOneDayOfWeek
+Instance: INV-12-of-12-C-TimingOnlyOneDayOfWeek
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid Dosage"
@@ -233,7 +233,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
 
 // --- MedicationDispense equivalents ---
 
-Instance: Invalid-Dosage-01-of-12-FreqPeriod-When-MD
+Instance: INV-01-of-12-FreqPeriod-When-MD
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
 Title: "Invalid Dosage"
@@ -250,7 +250,7 @@ Description: "CAVE: This MedicationDispense is for validation purposes and does 
     * when[+] = #MORN
     * timeOfDay[+] = "08:00:00"
 
-Instance: Invalid-Dosage-02-of-12-FreqPeriod-ToD-DayOfWeek-MD
+Instance: INV-02-of-12-FreqPeriod-ToD-DayOfWeek-MD
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
 Title: "Invalid Dosage"
@@ -267,7 +267,7 @@ Description: "CAVE: This MedicationDispense is for validation purposes and does 
     * timeOfDay[+] = "08:00:00"
     * dayOfWeek[+] = #mon
 
-Instance: Invalid-Dosage-03-of-12-FreqPeriod-When-DayOfWeek-MD
+Instance: INV-03-of-12-FreqPeriod-When-DayOfWeek-MD
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
 Title: "Invalid Dosage"
@@ -284,7 +284,7 @@ Description: "CAVE: This MedicationDispense is for validation purposes and does 
     * when[+] = #MORN
     * dayOfWeek[+] = #mon
 
-Instance: Invalid-Dosage-04-of-12-FreeText-and-structured-MD
+Instance: INV-04-of-12-FreeText-and-structured-MD
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
 Title: "Invalid Dosage"
@@ -301,7 +301,7 @@ Description: "CAVE: This MedicationDispense is for validation purposes and does 
     * period = 1
     * periodUnit = #d
 
-Instance: Invalid-Dosage-05-of-12-multiple-types-MD
+Instance: INV-05-of-12-multiple-types-MD
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
 Title: "Invalid Dosage"
@@ -322,7 +322,7 @@ Description: "CAVE: This MedicationDispense is for validation purposes and does 
     * periodUnit = #d
     * timeOfDay[+] = "08:00:00"
 
-Instance: Invalid-Dosage-06-of-12-multiple-dosagecodes-MD
+Instance: INV-06-of-12-multiple-dosagecodes-MD
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
 Title: "Invalid Dosage"
@@ -345,7 +345,7 @@ Description: "CAVE: This MedicationDispense is for validation purposes and does 
     * periodUnit = #d
   * doseAndRate.doseQuantity = 400 $kbv-dosiereinheit#v "mg"
 
-Instance: Invalid-Dosage-07-of-12-timing-no-dose-MD
+Instance: INV-07-of-12-timing-no-dose-MD
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
 Title: "Invalid Dosage"
@@ -360,7 +360,7 @@ Description: "CAVE: This MedicationDispense is for validation purposes and does 
     * period = 1
     * periodUnit = #d
 
-Instance: Invalid-Dosage-09-of-12-C-TimingOnlyOneTimeForInterval-MD
+Instance: INV-09-of-12-C-TimingOnlyOneTimeForInterval-MD
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
 Title: "Invalid Dosage"
@@ -384,7 +384,7 @@ Description: "CAVE: This MedicationDispense is for validation purposes and does 
     * periodUnit = #d
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
-Instance: Invalid-Dosage-10-of-12-When-DiffPeriodU-MD
+Instance: INV-10-of-12-When-DiffPeriodU-MD
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
 Title: "Invalid Dosage"
@@ -408,7 +408,7 @@ Description: "CAVE: This MedicationDispense is for validation purposes and does 
     * periodUnit = #wk
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
-Instance: Invalid-Dosage-11-of-12-C-TimingOnlyOneWhen-MD
+Instance: INV-11-of-12-C-TimingOnlyOneWhen-MD
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
 Title: "Invalid Dosage"
@@ -432,7 +432,7 @@ Description: "CAVE: This MedicationDispense is for validation purposes and does 
     * periodUnit = #d
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
-Instance: Invalid-Dosage-12-of-12-C-TimingOnlyOneDayOfWeek-MD
+Instance: INV-12-of-12-C-TimingOnlyOneDayOfWeek-MD
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
 Title: "Invalid Dosage"
@@ -457,7 +457,7 @@ Description: "CAVE: This MedicationDispense is for validation purposes and does 
 
 // --- MedicationStatement equivalents ---
 
-Instance: Invalid-Dosage-01-of-12-FreqPeriod-When-MS
+Instance: INV-01-of-12-FreqPeriod-When-MS
 InstanceOf: MedicationStatementDgMP
 Usage: #example
 Title: "Invalid Dosage"
@@ -474,7 +474,7 @@ Description: "CAVE: This MedicationStatement is for validation purposes and does
     * when[+] = #MORN
     * timeOfDay[+] = "08:00:00"
 
-Instance: Invalid-Dosage-02-of-12-FreqPeriod-ToD-DayOfWeek-MS
+Instance: INV-02-of-12-FreqPeriod-ToD-DayOfWeek-MS
 InstanceOf: MedicationStatementDgMP
 Usage: #example
 Title: "Invalid Dosage"
@@ -491,7 +491,7 @@ Description: "CAVE: This MedicationStatement is for validation purposes and does
     * timeOfDay[+] = "08:00:00"
     * dayOfWeek[+] = #mon
 
-Instance: Invalid-Dosage-03-of-12-FreqPeriod-When-DayOfWeek-MS
+Instance: INV-03-of-12-FreqPeriod-When-DayOfWeek-MS
 InstanceOf: MedicationStatementDgMP
 Usage: #example
 Title: "Invalid Dosage"
@@ -508,7 +508,7 @@ Description: "CAVE: This MedicationStatement is for validation purposes and does
     * when[+] = #MORN
     * dayOfWeek[+] = #mon
 
-Instance: Invalid-Dosage-04-of-12-FreeText-and-structured-MS
+Instance: INV-04-of-12-FreeText-and-structured-MS
 InstanceOf: MedicationStatementDgMP
 Usage: #example
 Title: "Invalid Dosage"
@@ -525,7 +525,7 @@ Description: "CAVE: This MedicationStatement is for validation purposes and does
     * period = 1
     * periodUnit = #d
 
-Instance: Invalid-Dosage-05-of-12-multiple-types-MS
+Instance: INV-05-of-12-multiple-types-MS
 InstanceOf: MedicationStatementDgMP
 Usage: #example
 Title: "Invalid Dosage"
@@ -546,7 +546,7 @@ Description: "CAVE: This MedicationStatement is for validation purposes and does
     * periodUnit = #d
     * timeOfDay[+] = "08:00:00"
 
-Instance: Invalid-Dosage-06-of-12-multiple-dosagecodes-MS
+Instance: INV-06-of-12-multiple-dosagecodes-MS
 InstanceOf: MedicationStatementDgMP
 Usage: #example
 Title: "Invalid Dosage"
@@ -569,7 +569,7 @@ Description: "CAVE: This MedicationStatement is for validation purposes and does
     * periodUnit = #d
   * doseAndRate.doseQuantity = 400 $kbv-dosiereinheit#v "mg"
 
-Instance: Invalid-Dosage-07-of-12-timing-no-dose-MS
+Instance: INV-07-of-12-timing-no-dose-MS
 InstanceOf: MedicationStatementDgMP
 Usage: #example
 Title: "Invalid Dosage"
@@ -584,7 +584,7 @@ Description: "CAVE: This MedicationStatement is for validation purposes and does
     * period = 1
     * periodUnit = #d
 
-Instance: Invalid-Dosage-09-of-12-C-TimingOnlyOneTimeForInterval-MS
+Instance: INV-09-of-12-C-TimingOnlyOneTimeForInterval-MS
 InstanceOf: MedicationStatementDgMP
 Usage: #example
 Title: "Invalid Dosage"
@@ -608,7 +608,7 @@ Description: "CAVE: This MedicationStatement is for validation purposes and does
     * periodUnit = #d
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
-Instance: Invalid-Dosage-10-of-12-When-DiffPeriodU-MS
+Instance: INV-10-of-12-When-DiffPeriodU-MS
 InstanceOf: MedicationStatementDgMP
 Usage: #example
 Title: "Invalid Dosage"
@@ -632,7 +632,7 @@ Description: "CAVE: This MedicationStatement is for validation purposes and does
     * periodUnit = #wk
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
-Instance: Invalid-Dosage-11-of-12-C-TimingOnlyOneWhen-MS
+Instance: INV-11-of-12-C-TimingOnlyOneWhen-MS
 InstanceOf: MedicationStatementDgMP
 Usage: #example
 Title: "Invalid Dosage"
@@ -656,7 +656,7 @@ Description: "CAVE: This MedicationStatement is for validation purposes and does
     * periodUnit = #d
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
-Instance: Invalid-Dosage-12-of-12-C-TimingOnlyOneDayOfWeek-MS
+Instance: INV-12-of-12-C-TimingOnlyOneDayOfWeek-MS
 InstanceOf: MedicationStatementDgMP
 Usage: #example
 Title: "Invalid Dosage"

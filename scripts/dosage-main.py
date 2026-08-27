@@ -43,7 +43,7 @@ def main():
     # 4. Generate the dosage summary table with consolidated dosage texts
     print("Generating dosage summary table...")
     summary_table_script = os.path.join(base_dir, "generate-dosage-summary-table.py")
-    subprocess.run(['python3', summary_table_script], check=True)
+    subprocess.run(['python3', summary_table_script, medication_dosage_script], check=True)
 
     print("All steps completed.")
 

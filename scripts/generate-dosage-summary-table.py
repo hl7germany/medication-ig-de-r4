@@ -195,7 +195,11 @@ def main():
     # Paths
     resources_dir = project_root / "fsh-generated" / "resources"
     output_file = project_root / "input" / "includes" / "dosage-summary-matrix.md"
-    dosage_script = script_dir / "medication-dosage-to-text.py"
+    # Der Algorithmus wird gepinnt aus dem externen Repository bezogen und liegt
+    # in scripts/vendor/ (siehe fetch-algorithm.py). Ein Pfad als Argument hat
+    # Vorrang, damit dosage-main.py denselben Stand durchreichen kann.
+    dosage_script = (Path(sys.argv[1]) if len(sys.argv) > 1
+                     else script_dir / "vendor" / "medication-dosage-to-text.py")
     
     if not resources_dir.exists():
         print(f"Fehler: Ressourcen-Verzeichnis nicht gefunden: {resources_dir}", file=sys.stderr)

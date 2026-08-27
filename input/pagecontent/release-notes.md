@@ -29,9 +29,14 @@ Damit entfallen 20 Beispiele aus der Liste nicht unterstützter Dosierkonfigurat
 
 **Invarianten**
 
-31 Invarianten sind neu hinzugekommen; sie sichern die oben genannten Angaben ab.
-Vollständig aufgeführt sind sie unter [Übersicht der Timing- & Dosierungs-Invarianten](./dosierung-constraints.html).
-Die folgenden bestehenden Regeln haben sich in ihrer Aussage geändert:
+**Neu** sind 31 Invarianten; sie sichern die oben genannten Angaben ab. Was jede einzelne prüft, beschreibt die [Übersicht der Timing- & Dosierungs-Invarianten](./dosierung-constraints.html).
+
+- **`DosageDgMP`**: `AsNeededForIdentical`, `AsNeededForRequiresAsNeeded`, `AsNeededIdentical`, `AsNeededSingleDosageOnly`, `DosageDoseQuantityAllowedFractions`, `DosageDoseValueDecimalNotation`, `DosageDoseValuePositive`, `DosageFourSlotPatternInText`, `DoseRangeHighRequiredWhenLowPresent`, `DoseRangeLowAndHighSameUnit`, `DoseRangeNoVarPeriod`, `MaxDoseOnlyPureAsNeeded`, `MaxDosePerPeriodOnly24hOr1d`, `MaxDoseSameUnitAsDose`, `MinimumIntervalOnlyPureAsNeeded`, `MinimumIntervalUnitMatchesCode`, `PatientInstructionIdentical`
+- **`TimingDgMP`**: `TimingBoundsDurationOnlyWholeNumber`, `TimingFreqOrPeriodGtOne`, `TimingPeriodOnlyWholeNumber`, `TimingVarFreqGtMin`, `TimingVarPeriodGtMin`
+- **`DosageDE`** (Warnungen): `DosageDoseUnitSameCodeWarning`, `DosageDoseValuePositiveWarning`, `DosageFourSlotPatternInTextWarning`, `DosageStructuredRequiresBothWarning`, `dos-1`
+- **`TimingDE`** (Warnungen): `TimingBoundsUnitMatchesCodeWarning`, `TimingFreqOrPeriodGtOneWarning`, `TimingSingleDosageForTimeOfDayWarning`, `TimingSingleDosageForWhenWarning`
+
+**Geändert** haben sich die folgenden bestehenden Regeln. Ihr Wortlaut steht hier, weil die Übersichtsseite nur den aktuellen Stand zeigt, nicht den Unterschied zu 1.0.5:
 
 - **`TimingOnlyOneType` (`TimingDgMP`)**
   - Bei `dayOfWeek` sind `frequency` sowie das Paar `period = 1`, `periodUnit = wk` als redundante Legacy-Angaben zulässig; zuvor führten sie zu einem Fehler. Jede andere Periode ist mit `dayOfWeek` nicht kombinierbar.

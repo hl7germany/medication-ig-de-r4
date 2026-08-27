@@ -29,7 +29,7 @@ Damit entfallen 20 Beispiele aus der Liste nicht unterstützter Dosierkonfigurat
 
 **Invarianten**
 
-34 Invarianten sind neu hinzugekommen; sie sichern die oben genannten Angaben ab.
+31 Invarianten sind neu hinzugekommen; sie sichern die oben genannten Angaben ab.
 Vollständig aufgeführt sind sie unter [Übersicht der Timing- & Dosierungs-Invarianten](./dosierung-constraints.html).
 Die folgenden bestehenden Regeln haben sich in ihrer Aussage geändert:
 
@@ -65,21 +65,9 @@ Die folgenden bestehenden Regeln haben sich in ihrer Aussage geändert:
 - **`TimingOnlyOnePeriodForDayOfWeek` (`TimingDgMP`)**
   - Von `Timing.repeat` auf `Timing` verschoben, um einen Überlauf im IG Publisher bei der Erzeugung der Excel-Tabellen zu umgehen. Der Ausdruck wertet ohnehin die gesamte Ressource aus; inhaltlich ändert sich nichts.
 
-- **`MinimumIntervalOnlyPureAsNeeded` (`DosageDgMP`) — neu, ersetzt `VarPeriodNoMindestabstand`**
+- **`MinimumIntervalOnlyPureAsNeeded` (`DosageDgMP`) — neu**
   - `modifierExtension[MinimumIntervalBetweenAdministrations]` ist nur zusammen mit `asNeededBoolean = true` und ohne `timing` zulässig.
-  - Ein strukturierter Rhythmus legt den Abstand zwischen zwei Gaben bereits fest. Eine zweite, schwächere Untergrenze daneben lässt offen, welche Angabe gilt — „alle 8 Stunden, mit mindestens 6 Stunden Abstand" ist als Anweisung widersprüchlich. `VarPeriodNoMindestabstand` geht in der neuen Regel auf, da eine variable Periode ein `timing` voraussetzt.
-
-- **`MindestabstandIdentical` (`DosageDgMP`) — entfallen**
-  - Die Invariante forderte, dass der Mindestabstand über alle `Dosage`-Elemente gleich belegt ist. Sie ist nicht mehr erreichbar: Ein Mindestabstand setzt eine reine Bedarfsdosierung voraus, und dafür erlaubt `AsNeededSingleDosageOnly` genau ein `Dosage`-Element. `MaxDosePerPeriodIdentical` bleibt bestehen — eine Maximalmenge setzt kein leeres `timing` voraus.
-
-**Entfallene Beispiele**
-
-Gegenüber 1.0.5 entfallen 110 Beispiel-Instanzen; deren Seiten-URLs sind danach nicht mehr erreichbar. Ursache ist zum einen die vereinheitlichte Benennung der Validierungsbeispiele, zum anderen entfallen 20 Beispiele für inzwischen unterstützte Angaben und mehrere neu gefasste Negativbeispiele: an die Stelle durchnummerierter Reihen treten wenige Beispiele, die je einen Auslöser des Constraints isolieren. Profile, Extensions und ValueSets behalten ihre kanonischen URLs.
-
-**Sonstiges**
-
-- Die Spezifikation der Dosis-Textgenerierung liegt nicht mehr im IG. Die Seite [Dosis Textgenerierung](./dosierung-textgenerierung.html) verweist auf das externe Repository; der Build bezieht den Algorithmus als über Tag und Prüfsumme gepinnte Version.
-- Die Seiten der Dosierschemata beschreiben jetzt durchgängig, welche `frequency`-, `period`- und `periodUnit`-Angaben optional zulässig sind und dass sie den erzeugten Text nicht verändern.
+  - Ein strukturierter Rhythmus legt den Abstand zwischen zwei Gaben bereits fest. Eine zweite, schwächere Untergrenze daneben lässt offen, welche Angabe gilt — „alle 8 Stunden, mit mindestens 6 Stunden Abstand" ist als Anweisung widersprüchlich.
 
 ### Release: 1.0.5
 

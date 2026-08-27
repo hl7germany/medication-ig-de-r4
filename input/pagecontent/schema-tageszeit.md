@@ -2,7 +2,7 @@
 
 {% include StructureDefinition-WhenSchemeLogical-diff.xhtml %}
 
-### Beipiel
+### Beispiel
 
 {% fragment MedicationRequest/Example-MR-Dosage-1010 JSON %}
 
@@ -23,9 +23,8 @@ Folgende weitere Beispiele sind in diesem IG dargestellt:
 Diese Dosierungsart wird daran erkannt, dass unter `Dosage.timing.repeat`
 
 - `when`
-- `frequency`
-- `period`
-- `periodUnit` in Tagen (d)
+- opt. Angabe von `frequency` (muss der Anzahl der `when`-Elemente entsprechen)
+- opt. Angabe von `period = 1` und `periodUnit = d`
 - opt. Angabe von `bounds[x]`
   
 angegeben ist. An diesem Feld wird dann kodiert die Tageszeit angegeben an der eine konkrete Dosierung einzunehmen ist.
@@ -34,14 +33,14 @@ Folgende FHIR-Path Expression auf Ebene von `Dosage.timing.repeat` liefert die A
 
 ```
 timing.repeat.when.exists() and
-timing.repeat.frequency.exists() and
-timing.repeat.period = 1 and
-timing.repeat.periodUnit = 'd' and
 timing.repeat.timeOfDay.empty() and
 timing.repeat.dayOfWeek.empty()
 ```
 
-Der Wert von frequency entspricht dabei der Anzahl an Elementen in `when`.
+Die tägliche Wiederholung und die Zahl der Gaben ergeben sich bereits aus
+`when`. Als [Legacy-Angaben](./StructureDefinition-TimingDgMP.html) zulässig
+sind hier `frequency` — entsprechend der Anzahl der `when`-Elemente — sowie
+das Paar `period = 1` und `periodUnit = d`.
 
 Soll das Arzneimittel in derselben Dosierung zu mehreren Tageszeiten angewandt werden, wird dies über mehrere Angaben von "when" ausgedrückt. Die angegebene Dosierung ist dann zu jeder der genannten Tageszeiten anzuwenden. 
 

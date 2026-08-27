@@ -11,8 +11,5 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit strukturier
   * timing.repeat
     * when[+] = #MORN
     * when[+] = #EVE
-    * frequency = 2
-    * period = 1
-    * periodUnit = #d
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
   * patientInstruction = "Tablette nicht zerkauen. Bei Fieber über 39 Grad Arzt kontaktieren."

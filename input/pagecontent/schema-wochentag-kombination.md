@@ -2,7 +2,7 @@
 
 {% include StructureDefinition-WeekdayCombinationSchemeLogical-diff.xhtml %}
 
-### Beipiel
+### Beispiel
 
 {% fragment MedicationRequest/Example-MR-Dosage-comb-dayofweek-1 JSON %}
 
@@ -20,9 +20,8 @@ Folgende weitere Beispiele sind in diesem IG dargestellt:
 Diese Dosierungsart wird daran erkannt, dass folgende Felder unter `Dosage.timing.repeat` angegeben sind:
 
 - `dayOfWeek`
-- `frequency`
-- `period`
-- `periodUnit` in Wochen (wk)
+- opt. Angabe von `frequency`
+- opt. Angabe des Paars `period = 1` und `periodUnit = wk` als redundante Angabe
 - und `when` ODER `timeOfDay` existieren
 - opt. Angabe von `bounds[x]`
 
@@ -30,18 +29,19 @@ Folgende FHIR-Path Expression auf Ebene von `Dosage.timing.repeat` liefert die A
 
 ```
 timing.repeat.dayOfWeek.exists() and
-timing.repeat.frequency.exists() and
-timing.repeat.period.exists() and
-timing.repeat.periodUnit = 'wk' and
   (
     (timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()) or
     (timing.repeat.when.exists() and timing.repeat.timeOfDay.empty())
   )
 ```
 
-Der Wert von frequency entspricht dabei dem Produkt aus der Anzahl von Elementen in `when`, bzw. `timeOfDay` und `dayOfWeek`.
-
-und entweder `when` oder `timeOfDay`. Damit kann diese Dosierangabe verwendet werden um eine Interval angabe auf Tageszeit oder Uhrzeit zu kombinieren.
+Die Werte in `dayOfWeek` und `when` beziehungsweise `timeOfDay` legen die
+Anwendungstage und Gaben eindeutig fest. Als
+[Legacy-Angaben](./StructureDefinition-TimingDgMP.html) zulässig sind hier
+`frequency` — entsprechend dem Produkt aus der Anzahl der Wochentage und der
+Anzahl der `when`- beziehungsweise `timeOfDay`-Werte — sowie das Paar
+`period = 1` und `periodUnit = wk`.
 
 Lesende Systeme werten entsprechend auch `Dosage.timing.repeat` aus. 
-Wenn die oben genannten Felder angegeben sind, ist dem Nutzer anzuzeigen, dass die Dosierung nach einem Interval mit Tageszeit oder Uhrzeitbezug definiert ist.
+Wenn die oben genannten Felder angegeben sind, ist dem Nutzer anzuzeigen, dass
+die Dosierung nach Wochentagen mit Tageszeit- oder Uhrzeitbezug definiert ist.

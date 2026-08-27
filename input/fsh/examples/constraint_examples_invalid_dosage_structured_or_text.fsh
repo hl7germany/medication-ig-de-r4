@@ -11,12 +11,9 @@ Description: "CAVE: Validation example - contains both text and timing (should b
 * intent = #order
 * medicationCodeableConcept.text = "Ibuprofen 400mg"
 * dosageInstruction[+]
-  * text = "1-0-1-0"
+  * text = "1 Stück morgens"
   * timing.repeat
     * when[+] = #MORN
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 Instance: INV-C-DosageStructuredOrFreeText-Request-02-of-02
@@ -41,12 +38,9 @@ Description: "CAVE: Validation example - contains both text and timing (should b
 * status = #completed
 * medicationCodeableConcept.text = "Ibuprofen 400mg"
 * dosageInstruction[+]
-  * text = "1-0-1-0"
+  * text = "1 Stück morgens"
   * timing.repeat
     * when[+] = #MORN
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 Instance: INV-C-DosageStructuredOrFreeText-Statement-01-of-02
@@ -58,12 +52,9 @@ Description: "CAVE: Validation example - contains both text and timing (should b
 * status = #active
 * medicationCodeableConcept.text = "Ibuprofen 400mg"
 * dosage[+]
-  * text = "1-0-1-0"
+  * text = "1 Stück morgens"
   * timing.repeat
     * when[+] = #MORN
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 Instance: INV-C-DosageStructuredOrFreeText-Dispense-02-of-02
@@ -78,9 +69,6 @@ Description: "CAVE: Validation example - contains both text and doseAndRate (sho
   * text = "2 Stück morgens"
   * timing.repeat
     * when[+] = #MORN
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
 Instance: INV-C-DosageStructuredOrFreeText-Statement-02-of-02

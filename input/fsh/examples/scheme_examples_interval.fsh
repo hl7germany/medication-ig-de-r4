@@ -73,3 +73,48 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
   * timing.repeat.periodUnit = #d
   * timing.repeat.boundsDuration = 6 $ucum#wk "Woche(n)"
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
+
+Instance: Example-MR-Dosage-interval-30min
+InstanceOf: MedicationRequestDgMP
+Usage: #example
+Title: "Example-MR-Dosage-interval-30min"
+Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von 1 Stück alle 30 Minuten dar"
+* subject.display = "Patient"
+* status = #active
+* intent = #order
+* medicationCodeableConcept.text = "Ibuprofen 400mg"
+* dosageInstruction[+]
+  * timing.repeat.frequency = 1
+  * timing.repeat.period = 30
+  * timing.repeat.periodUnit = #min
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
+
+Instance: Example-MR-Dosage-interval-6h
+InstanceOf: MedicationRequestDgMP
+Usage: #example
+Title: "Example-MR-Dosage-interval-6h"
+Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von 1 Stück alle 6 Stunden dar"
+* subject.display = "Patient"
+* status = #active
+* intent = #order
+* medicationCodeableConcept.text = "Ibuprofen 400mg"
+* dosageInstruction[+]
+  * timing.repeat.frequency = 1
+  * timing.repeat.period = 6
+  * timing.repeat.periodUnit = #h
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
+
+Instance: Example-MR-Dosage-interval-1mo
+InstanceOf: MedicationRequestDgMP
+Usage: #example
+Title: "Example-MR-Dosage-interval-1mo"
+Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosierung von 1 Stück monatlich dar"
+* subject.display = "Patient"
+* status = #active
+* intent = #order
+* medicationCodeableConcept.text = "Ibuprofen 400mg"
+* dosageInstruction[+]
+  * timing.repeat.frequency = 1
+  * timing.repeat.period = 1
+  * timing.repeat.periodUnit = #mo
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"

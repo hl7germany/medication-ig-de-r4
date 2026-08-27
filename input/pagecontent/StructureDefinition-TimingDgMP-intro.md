@@ -1,5 +1,23 @@
 ## Hinweise zur Verwendung
 
+### Legacy-Angaben
+
+In früheren Fassungen dieses Guide waren `frequency`, `period` und
+`periodUnit` in allen Dosierschemata verpflichtend — auch dort, wo sie nur
+wiederholen, was Wochentage, Tagesabschnitte oder Uhrzeiten bereits
+ausdrücken. Sie sind heute nur noch dort erforderlich, wo sie tatsächlich
+ein Intervall beschreiben.
+
+Damit bestehende Verordnungsdaten gültig bleiben, sind diese Angaben als
+**Legacy-Angaben** weiterhin zulässig, sofern sie dem jeweiligen Schema nicht
+widersprechen. Sie begründen kein zusätzliches Intervallschema und verändern
+den erzeugten Dosierungstext nicht: Eine Verordnung mit und eine ohne diese
+Felder erzeugen denselben Text.
+
+Welche Kombination im einzelnen Schema zulässig ist, beschreibt die jeweilige
+Seite im Abschnitt „Dosierschemata"; durchgesetzt wird es über die Invarianten
+[`TimingOnlyOneType` und `TimingPeriodUnit`](./dosierung-constraints.html).
+
 <div style="border-left:4px solid #f2c200; padding:10px; background:#fff9d6; margin:1em 0;">
   <p>
     <strong>Invariante: tim-9</strong><br>

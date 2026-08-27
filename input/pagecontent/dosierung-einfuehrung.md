@@ -70,6 +70,8 @@ Diese Profile nutzen folgende Extensions:
 
 {% capture extensionsdgmp %}
 StructureDefinition/GeneratedDosageInstructionsMeta,
+StructureDefinition/MinimumIntervalBetweenAdministrations,
+StructureDefinition/extension-Dosage.asNeededFor,
 {% endcapture %}  
 {% include artifacts-table-generator.html render=extensionsdgmp %}
 
@@ -87,12 +89,8 @@ Ein Mapping zwischen den verschiedenen Kodiersystemen wird aktuell erarbeitet un
 
 ### Technische Validierung der Dosierungen
 
-Um die syntaktische Korrektheit von Dosierungen sicherzustellen, wurden folgende technischen Prüfungen implementiert:
+Die syntaktische Korrektheit von Dosierungen wird über Invarianten auf den Profilen [DosageDE](./StructureDefinition-DosageDE.html), [DosageDgMP](./StructureDefinition-DosageDgMP.html), [TimingDE](./StructureDefinition-TimingDE.html) und [TimingDgMP](./StructureDefinition-TimingDgMP.html) sichergestellt.
 
-#### Freitext oder strukturierte Dosierung
+Dabei gilt durchgängig: Was in den generischen DE-Profilen als Warnung modelliert ist, ist in den dgMP-Profilen überwiegend ein Fehler. Die DE-Profile lassen bewusst Spielraum für Versorgungssituationen, die sich nicht vollständig strukturieren lassen, während der dgMP durchgängig maschinell auswertbare Dosierungen voraussetzt.
 
-Der Constraint `DosageStructuredOrFreeTextWarning` im Profil [DosageDE](./StructureDefinition-DosageDE.html) gibt eine Warnung aus, sobald das Element `.text` zusammen mit einer strukturierten Dosieranweisung verwendet wird.
-
-Der Constraint `DosageStructuredRequiresBoth`im im Profil [DosageDE](./StructureDefinition-DosageDE.html) stellt sicher, dass falls eine strukturierte Dosierungsangabe erfolgt, sowohl timing als auch doseAndRate angegeben werden.
-
-Der Constraint `DosageDoseUnitSameCode`im im Profil [DosageDE](./StructureDefinition-DosageDE.html) stellt sicher, dass die Dosiereinheit über alle Dosierungen gleich ist.
+Alle Invarianten sind mit Beschreibung, Begründung und Beispielen unter [Constraints](./dosierung-constraints.html) aufgeführt.

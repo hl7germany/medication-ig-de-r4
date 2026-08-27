@@ -1,6 +1,6 @@
 // Invalid examples for variable single dose constraints on DosageDgMP
 
-Instance: INV-C-DoseRangeHighRequiredWhenLowPresent-Request-01-of-03
+Instance: INV-C-DoseRangeHighRequiredWhenLowPresent-MR-01-of-03
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid: doseRange.low without doseRange.high"
@@ -18,7 +18,7 @@ Description: "CAVE: Validation example - doseRange.low is set while doseRange.hi
   * doseAndRate.doseRange.low.code = #mg
   * doseAndRate.doseRange.low.unit = "mg"
 
-Instance: INV-C-DoseRangeHighRequiredWhenLowPresent-Dispense-02-of-03
+Instance: INV-C-DoseRangeHighRequiredWhenLowPresent-MD-02-of-03
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
 Title: "Invalid: doseRange.low without doseRange.high"
@@ -35,7 +35,7 @@ Description: "CAVE: Validation example - doseRange.low is set while doseRange.hi
   * doseAndRate.doseRange.low.code = #mg
   * doseAndRate.doseRange.low.unit = "mg"
 
-Instance: INV-C-DoseRangeHighRequiredWhenLowPresent-Statement-03-of-03
+Instance: INV-C-DoseRangeHighRequiredWhenLowPresent-MS-03-of-03
 InstanceOf: MedicationStatementDgMP
 Usage: #example
 Title: "Invalid: doseRange.low without doseRange.high"

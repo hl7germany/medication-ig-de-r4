@@ -1,6 +1,6 @@
-Extension: MindestabstandZwischenGabenEx
-Id: MindestabstandZwischenGaben
-Title: "Mindestabstand zwischen Gaben"
+Extension: MinimumIntervalBetweenAdministrationsEx
+Id: MinimumIntervalBetweenAdministrations
+Title: "Minimum Interval Between Administrations"
 Description: "Gibt den Mindestabstand zwischen zwei Gaben einer Bedarfsmedikation an."
 Context: Dosage
 * . ^isModifier = true

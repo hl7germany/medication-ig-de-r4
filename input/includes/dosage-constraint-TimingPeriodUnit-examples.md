@@ -1,17 +1,11 @@
 | File | doseQuantity | duration | durationUnit | frequency | period | periodUnit | Day<br>of<br>Week | Time<br>Of<br>Day | when | bounds[x] |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| [MedicationDispense-INV-C-TimingPeriodUnit-Dispense-01-of-05](./MedicationDispense-INV-C-TimingPeriodUnit-Dispense-01-of-05.html) | 1 Stück |  |  | 1 | 1 | wk |  |  | MORN |  |
-| [MedicationDispense-INV-C-TimingPeriodUnit-Dispense-02-of-05](./MedicationDispense-INV-C-TimingPeriodUnit-Dispense-02-of-05.html) | 1 Stück |  |  | 1 | 1 | wk |  | 08:00:00 |  |  |
-| [MedicationDispense-INV-C-TimingPeriodUnit-Dispense-03-of-05](./MedicationDispense-INV-C-TimingPeriodUnit-Dispense-03-of-05.html) | 2 Stück |  |  | 1 | 1 | d | tue |  |  |  |
-| [MedicationDispense-INV-C-TimingPeriodUnit-Dispense-04-of-05](./MedicationDispense-INV-C-TimingPeriodUnit-Dispense-04-of-05.html) | 1 Stück |  |  | 2 | 1 | d | mon, fri |  | MORN | {'system': 'http://unitsofmeasure.org', 'value': 3, 'code': 'wk', 'unit': 'Woche(n)'} |
-| [MedicationDispense-INV-C-TimingPeriodUnit-Dispense-05-of-05](./MedicationDispense-INV-C-TimingPeriodUnit-Dispense-05-of-05.html) | 1 Stück<br>2 Stück |  |  | 2 | 1 | wk<br>d | mon, fri |  | MORN<br>NOON | {'system': 'http://unitsofmeasure.org', 'value': 3, 'code': 'wk', 'unit': 'Woche(n)'} |
-| [MedicationRequest-INV-C-TimingPeriodUnit-Request-01-of-05](./MedicationRequest-INV-C-TimingPeriodUnit-Request-01-of-05.html) | 1 Stück |  |  | 1 | 1 | wk |  |  | MORN |  |
-| [MedicationRequest-INV-C-TimingPeriodUnit-Request-02-of-05](./MedicationRequest-INV-C-TimingPeriodUnit-Request-02-of-05.html) | 1 Stück |  |  | 1 | 1 | wk |  | 08:00:00 |  |  |
-| [MedicationRequest-INV-C-TimingPeriodUnit-Request-03-of-05](./MedicationRequest-INV-C-TimingPeriodUnit-Request-03-of-05.html) | 2 Stück |  |  | 1 | 1 | d | tue |  |  |  |
-| [MedicationRequest-INV-C-TimingPeriodUnit-Request-04-of-05](./MedicationRequest-INV-C-TimingPeriodUnit-Request-04-of-05.html) | 1 Stück |  |  | 2 | 1 | d | mon, fri |  | MORN | {'system': 'http://unitsofmeasure.org', 'value': 3, 'code': 'wk', 'unit': 'Woche(n)'} |
-| [MedicationRequest-INV-C-TimingPeriodUnit-Request-05-of-05](./MedicationRequest-INV-C-TimingPeriodUnit-Request-05-of-05.html) | 1 Stück<br>2 Stück |  |  | 2 | 1 | wk<br>d | mon, fri |  | MORN<br>NOON | {'system': 'http://unitsofmeasure.org', 'value': 3, 'code': 'wk', 'unit': 'Woche(n)'} |
-| [MedicationStatement-INV-C-TimingPeriodUnit-Statement-01-of-05](./MedicationStatement-INV-C-TimingPeriodUnit-Statement-01-of-05.html) | 1 Stück |  |  | 1 | 1 | wk |  |  | MORN |  |
-| [MedicationStatement-INV-C-TimingPeriodUnit-Statement-02-of-05](./MedicationStatement-INV-C-TimingPeriodUnit-Statement-02-of-05.html) | 1 Stück |  |  | 1 | 1 | wk |  | 08:00:00 |  |  |
-| [MedicationStatement-INV-C-TimingPeriodUnit-Statement-03-of-05](./MedicationStatement-INV-C-TimingPeriodUnit-Statement-03-of-05.html) | 2 Stück |  |  | 1 | 1 | d | tue |  |  |  |
-| [MedicationStatement-INV-C-TimingPeriodUnit-Statement-04-of-05](./MedicationStatement-INV-C-TimingPeriodUnit-Statement-04-of-05.html) | 1 Stück |  |  | 2 | 1 | d | mon, fri |  | MORN | {'system': 'http://unitsofmeasure.org', 'value': 3, 'code': 'wk', 'unit': 'Woche(n)'} |
-| [MedicationStatement-INV-C-TimingPeriodUnit-Statement-05-of-05](./MedicationStatement-INV-C-TimingPeriodUnit-Statement-05-of-05.html) | 1 Stück<br>2 Stück |  |  | 2 | 1 | wk<br>d | mon, fri |  | MORN<br>NOON | {'system': 'http://unitsofmeasure.org', 'value': 3, 'code': 'wk', 'unit': 'Woche(n)'} |
+| [MedicationDispense-INV-C-TimingPeriodUnit-Dispense](./MedicationDispense-INV-C-TimingPeriodUnit-Dispense.html) | 1 Stück |  |  | 1 | 3 | h | thu | 08:00:00 |  |  |
+| [MedicationDispense-INV-C-TimingPeriodUnit-MD-01-of-02](./MedicationDispense-INV-C-TimingPeriodUnit-MD-01-of-02.html) | 1 Stück |  |  | 1 | 3 | h | tue |  |  |  |
+| [MedicationDispense-INV-C-TimingPeriodUnit-MD-02-of-02](./MedicationDispense-INV-C-TimingPeriodUnit-MD-02-of-02.html) | 1 Stück |  |  | 1 | 3 | h | tue |  | MORN |  |
+| [MedicationRequest-INV-C-TimingPeriodUnit-MR-01-of-02](./MedicationRequest-INV-C-TimingPeriodUnit-MR-01-of-02.html) | 1 Stück |  |  | 1 | 3 | h | tue |  | MORN |  |
+| [MedicationRequest-INV-C-TimingPeriodUnit-MR-02-of-02](./MedicationRequest-INV-C-TimingPeriodUnit-MR-02-of-02.html) | 1 Stück |  |  | 1 | 3 | h | tue | 08:00:00 |  |  |
+| [MedicationRequest-INV-C-TimingPeriodUnit-Request](./MedicationRequest-INV-C-TimingPeriodUnit-Request.html) | 1 Stück |  |  | 1 | 3 | h | tue |  |  |  |
+| [MedicationStatement-INV-C-TimingPeriodUnit-MS-01-of-02](./MedicationStatement-INV-C-TimingPeriodUnit-MS-01-of-02.html) | 1 Stück |  |  | 1 | 3 | h | tue |  |  |  |
+| [MedicationStatement-INV-C-TimingPeriodUnit-MS-02-of-02](./MedicationStatement-INV-C-TimingPeriodUnit-MS-02-of-02.html) | 1 Stück |  |  | 1 | 3 | h | tue | 08:00:00 |  |  |
+| [MedicationStatement-INV-C-TimingPeriodUnit-Statement](./MedicationStatement-INV-C-TimingPeriodUnit-Statement.html) | 1 Stück |  |  | 1 | 30 | min | fri |  | MORN |  |

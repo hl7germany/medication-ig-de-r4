@@ -2,7 +2,7 @@
 
 {% include StructureDefinition-WeekdaySchemeLogical-diff.xhtml %}
 
-### Beipiel
+### Beispiel
 
 {% fragment MedicationRequest/Example-MR-Dosage-weekday-2t JSON %}
 
@@ -21,9 +21,8 @@ Folgende Beispiele sind in diesem IG dargestellt:
 Diese Dosierungsart wird daran erkannt, dass unter `Dosage.timing.repeat`
 
 - `dayOfWeek`
-- `frequency`
-- `period`
-- `periodUnit` in Wochen (wk)
+- opt. Angabe von `frequency` (muss bei Angabe der Anzahl der `dayOfWeek`-Elemente entsprechen)
+- opt. Angabe des Paars `period = 1` und `periodUnit = wk` als redundante Angabe
 - opt. Angabe von `bounds[x]`
 
 angegeben ist. An diesem Feld wird dann kodiert der Wochentag angegeben an der eine konkrete Dosierung einzunehmen ist.
@@ -32,13 +31,14 @@ Folgende FHIR-Path Expression auf Ebene von `Dosage.timing.repeat` liefert die A
 
 ```
 timing.repeat.dayOfWeek.exists() and
-timing.repeat.frequency.exists() and
-timing.repeat.period = 1 and
-timing.repeat.periodUnit = 'wk' and
 timing.repeat.when.empty() and
 timing.repeat.timeOfDay.empty()
 ```
-Der Wert von frequency entspricht dabei der Anzahl an Elementen in `dayOfWeek`.
+Die wöchentliche Wiederholung ist durch `dayOfWeek` bereits eindeutig. Als
+[Legacy-Angaben](./StructureDefinition-TimingDgMP.html) zulässig sind hier
+`frequency` — entsprechend der Anzahl der `dayOfWeek`-Elemente — sowie das
+Paar `period = 1` und `periodUnit = wk`. Jede andere Periode ist mit
+`dayOfWeek` nicht kombinierbar, ebenso wenig `frequencyMax` und `periodMax`.
 
 Soll das Arzneimittel in derselben Dosierung an mehreren Tagen angewandt werden, wird dies über mehrere Angaben von `dayOfWeek` ausgedrückt. Die angegebene Dosierung ist dann zu jedem der genannten Tage anzuwenden.
 

@@ -15,6 +15,9 @@ Folgende weitere Beispiele sind in diesem IG dargestellt:
 | 4 x 1 Stück pro Tag  | [Example-MR-Dosage-interval-4times-d](./MedicationRequest-Example-MR-Dosage-interval-4times-d.html)    |
 | Alle 3 Tage 1 Stück  | [Example-MR-Dosage-interval-3d](./MedicationRequest-Example-MR-Dosage-interval-3d.html)    |
 | Alle 2 Tage 2 Stück für 6 Wochen  | [Example-MR-Dosage-interval-2d-bound](./MedicationRequest-Example-MR-Dosage-interval-2d-bound.html)    |
+| 1 Stück alle 30 Minuten  | [Example-MR-Dosage-interval-30min](./MedicationRequest-Example-MR-Dosage-interval-30min.html)    |
+| 1 Stück alle 6 Stunden  | [Example-MR-Dosage-interval-6h](./MedicationRequest-Example-MR-Dosage-interval-6h.html)    |
+| 1 Stück monatlich  | [Example-MR-Dosage-interval-1mo](./MedicationRequest-Example-MR-Dosage-interval-1mo.html)    |
 
 ### Angabe und Erkennung der Dosierart
 

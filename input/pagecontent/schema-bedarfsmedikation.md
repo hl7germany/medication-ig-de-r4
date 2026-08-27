@@ -1,6 +1,13 @@
-{% include StructureDefinition-PRNSchemeLogical-intro.md %}
+Bedarfsmedikation beschreibt eine Dosierung, die nicht ausschließlich nach einem festen Einnahmeplan, sondern bei auftretendem Bedarf angewendet wird. Der Bedarf wird dabei immer mit einem Einnahmeanlass angegeben, z. B. "bei Kopfschmerzen".
 
-{% include StructureDefinition-PRNSchemeLogical-diff.xhtml %}
+In diesem Anwendungsfall wird davon ausgegangen, dass die Bedarfsangabe in einer eigenen `Dosage`-Instanz abgebildet wird. Die Angaben zu Menge, Mindestabstand oder Maximalgabe beziehen sich dann auf diese Bedarfsdosierung.
+
+Es wird zudem ermöglicht:
+
+- einen oder mehrere Einnahmeanlässe als Freitext anzugeben
+  - Bei der Angabe mehrere Bedingungen gelten diese als *oder* verknüpft. Es muss also nur eine der Bedingungen zutreffen.
+- einen Mindestabstand zwischen zwei Gaben explizit über die Modifier Extension `MindestabstandZwischenGaben` anzugeben
+- eine maximale Menge je Zeitraum anzugeben
 
 ### Beispiel
 
@@ -21,16 +28,14 @@ Bedarfsangaben können in zwei unterschiedlichen Formen auftreten:
 
 Eine Bedarfsangabe wird daran erkannt, dass auf Ebene von `Dosage`
 
-- `asNeededBoolean = true` und
-- `extension[asNeededFor]`
+- `asNeededBoolean = true`
 
-gemeinsam angegeben sind.
+angegeben ist. Der Anlass `extension[asNeededFor]` ist optional und beschreibt den Bedarf lediglich näher.
 
 Folgende FHIRPath Expression auf Ebene von `Dosage` liefert die Angabe, ob es sich grundsätzlich um eine Bedarfsangabe handelt:
 
 ```
-asNeeded.ofType(boolean) = true and
-extension.where(url = 'http://hl7.org/fhir/5.0/StructureDefinition/extension-Dosage.asNeededFor').exists()
+asNeeded.ofType(boolean) = true
 ```
 
 #### Reine Bedarfsdosierung
@@ -40,15 +45,12 @@ Eine reine Bedarfsdosierung liegt vor, wenn die `Dosage`-Instanz eine Bedarfsang
 Folgende FHIRPath Expression auf Ebene von `Dosage` liefert die Angabe, ob es sich um eine reine Bedarfsdosierung handelt:
 
 ```
-(
-  asNeeded.ofType(boolean) = true and
-  extension.where(url = 'http://hl7.org/fhir/5.0/StructureDefinition/extension-Dosage.asNeededFor').exists()
-) and timing.empty()
+asNeeded.ofType(boolean) = true and timing.empty()
 ```
 
-Für Bedarfsmedikation sind sowohl `asNeededBoolean = true` als auch die Extension `asNeededFor` verpflichtend anzugeben.
+Für eine Bedarfsmedikation ist `asNeededBoolean = true` verpflichtend. Der Anlass `asNeededFor` ist optional; umgekehrt darf `asNeededFor` nur bei `asNeededBoolean = true` angegeben werden.
 
-Der Einnahmeanlass wird als Freitext in `extension[asNeededFor].valueCodeableConcept.text` angegeben. Mehrere `asNeededFor`-Extensions können verwendet werden; sie sind fachlich als ODER-Verknüpfung zu interpretieren.
+Der Anlass wird als Freitext in `extension[asNeededFor].valueCodeableConcept.text` angegeben. Mehrere `asNeededFor`-Extensions können verwendet werden; sie sind fachlich als ODER-Verknüpfung zu interpretieren.
 
 Bei Verwendung von `asNeededFor` muss `valueCodeableConcept.text` befüllt sein.
 
@@ -64,8 +66,8 @@ Die einzunehmende Menge wird wie in den anderen strukturierten Dosierschemata ü
 
 Bei einer reinen Bedarfsdosierung wird `timing` nicht befüllt.
 
-Der Mindestabstand zwischen zwei Gaben wird über die Modifier Extension `modifierExtension[MindestabstandZwischenGaben].valueDuration` angegeben.
+Der Mindestabstand zwischen zwei Gaben wird über die Modifier Extension `modifierExtension[MinimumIntervalBetweenAdministrations].valueDuration` angegeben.
 
-`maxDosePerPeriod` kann optional verwendet werden, um eine maximale Menge je Zeitraum anzugeben. Dabei muss die Einheit im `numerator` der Einheit von `doseAndRate.doseQuantity` entsprechen.
+`maxDosePerPeriod` kann optional verwendet werden, um eine maximale Menge je Zeitraum anzugeben. Dabei muss die Einheit im `numerator` der Einheit von `doseAndRate.doseQuantity` entsprechen. Als Bezugszeitraum (`denominator`) ist ausschließlich **24 Stunden** (`24 h`) oder **1 Tag** (`1 d`) zulässig; andere Perioden sind nicht erlaubt. Die Auswahl wird eingabetreu wiedergegeben: `24 h` ergibt „in 24 Stunden", `1 d` ergibt „pro Tag".
 
-Lesende Systeme werten `asNeededBoolean`, `extension[asNeededFor]`, `modifierExtension[MindestabstandZwischenGaben]` und `maxDosePerPeriod` aus. Sie müssen dem Nutzer insbesondere Einnahmeanlass, Mindestabstand und Maximalgabe verständlich darstellen.
+Lesende Systeme werten `asNeededBoolean`, `extension[asNeededFor]`, `modifierExtension[MinimumIntervalBetweenAdministrations]` und `maxDosePerPeriod` aus. Sie müssen dem Nutzer insbesondere Anlass, Mindestabstand und Maximalgabe verständlich darstellen.

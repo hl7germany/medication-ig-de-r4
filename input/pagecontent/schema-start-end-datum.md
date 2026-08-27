@@ -4,10 +4,12 @@ Die Seite beschreibt die hierfür geltenden technischen Anforderungen im dgMP-Ko
 
 | Information | Beschreibung | FHIR-Modellierung | Datentyp |
 | -------- | ------- | ------- | ------- |
-| Startdatum | Das Startdatum legt fest, ab wann das Dosierschema anzuwenden ist.| `Timing.repeat.boundsPeriod.start` | [dateTime](https://hl7.org/fhir/R4/datatypes.html#dateTime) |
-| Enddatum | Das Enddatum legt fest, bis wann das Dosierschema anzuwenden ist.| `Timing.repeat.boundsPeriod.end` | [dateTime](https://hl7.org/fhir/R4/datatypes.html#dateTime) |
+| Startdatum | Das Startdatum beziehungsweise der Startzeitpunkt legt fest, ab wann das Dosierschema anzuwenden ist.| `Timing.repeat.boundsPeriod.start` | [dateTime](https://hl7.org/fhir/R4/datatypes.html#dateTime) |
+| Enddatum | Das Enddatum beziehungsweise der Endzeitpunkt legt fest, bis wann das Dosierschema anzuwenden ist.| `Timing.repeat.boundsPeriod.end` | [dateTime](https://hl7.org/fhir/R4/datatypes.html#dateTime) |
 
-Die Kombination von Start- und Enddatum definiert den zeitlichen Gültigkeitsbereich einer Dosieranweisung.
+Die Angabe von Start- und Enddatum definiert den zeitlichen Gültigkeitsbereich einer Dosieranweisung. Sie kann nicht mit der Dauer einer Anwendung (`.boundsDuration`) kombiniert werden.
+
+Start und Ende können als vollständiges Kalenderdatum oder als Datum mit Uhrzeit angegeben werden. Enthält ein FHIR-`dateTime` eine Uhrzeit, ist eine Zeitzone verpflichtend. Für die Textdarstellung wird der Zeitpunkt in die IANA-Zeitzone `Europe/Berlin` umgerechnet.
 
 Folgende weitere Beispiele sind in diesem IG dargestellt:
 
@@ -16,7 +18,9 @@ Folgende weitere Beispiele sind in diesem IG dargestellt:
 | Dosierung mit Startdatum | [Example-MR-Dosage-1000-startdate](MedicationRequest-Example-MR-Dosage-1000-startdate.html) |
 | Dosierung mit Enddatum | [Example-MR-Dosage-1000-enddate](MedicationRequest-Example-MR-Dosage-1000-enddate.html) |
 | Dosierung mit Start und Enddatum | [Example-MR-Dosage-1000-startandenddate](MedicationRequest-Example-MR-Dosage-1000-startandenddate.html) |
+| Dosierung mit Startzeitpunkt und Zeitzone | [Example-MR-Dosage-1000-startdatetime](MedicationRequest-Example-MR-Dosage-1000-startdatetime.html) |
 
+*Hinweis:* Für eine gute UI eignet es sich das Start-Datum in Kombination mit dem Uhrzeiten- oder Tageszeitenschema entsprechend der Eingabe des Nutzers vorzuschlagen.
 
 ### Beispiel
 

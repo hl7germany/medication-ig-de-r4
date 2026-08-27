@@ -1,3 +1,102 @@
+### Release: 2.0.0-ballot
+
+Diese Version erweitert das dgMP-Dosiermodell erheblich: Dosierungen, die bisher
+als „nicht unterstützt" geführt waren, sind jetzt strukturiert abbildbar. Der
+Eintrag fasst alle Änderungen seit 1.0.5 zusammen.
+
+**Version des Textgenerierungs-Algorithmus:** `2.0.0`. Der Algorithmus wird in
+[hl7germany/dgMP-DosageTextgenerierung-Skript](https://github.com/hl7germany/dgMP-DosageTextgenerierung-Skript)
+gepflegt; seine Änderungen stehen im dortigen `CHANGELOG.md`.
+
+**Neu unterstützte Dosierangaben**
+
+- **Variable Einzeldosis** über `doseRange` — „1 bis 2 Stück" statt eines festen Werts. Untergrenze `0` ist zulässig, Obergrenze ist Pflicht. Siehe [Variable Angaben](./schema-variable-angaben.html).
+- **Variable Frequenz und Periode** über `frequencyMax` und `periodMax` — „1 bis 2 x täglich", „alle 2 bis 3 Tage". Beide Achsen gleichzeitig zu variieren ist unzulässig (`TimingVarFreqOrPeriod`); im generischen DE-Profil löst es eine Warnung aus.
+- **Bedarfsmedikation** über `asNeededBoolean`, mit **Anlass** (`asNeededFor`), **Mindestabstand zwischen zwei Gaben** und **Maximalmenge** (`maxDosePerPeriod`). Mehrere Anlässe sind zulässig und werden als Aufzählung wiedergegeben; der Mindestabstand ist der reinen Bedarfsdosierung vorbehalten. Siehe [Schema für Bedarfsmedikation](./schema-bedarfsmedikation.html).
+- **Anwendungszeitraum** über `boundsPeriod` — Start- und/oder Enddatum, optional mit Uhrzeit und Zeitzone. Siehe [Angabe von Start- und Enddatum](./schema-start-end-datum.html).
+- **Zusätzliche Instruktionen** über `patientInstruction` für Hinweise, die sich nicht strukturiert abbilden lassen. Siehe [Zusätzliche Instruktionen](./schema-zusaetzliche-instruktionen.html).
+- **Kombination aus Zeitintervall und Tageszeiten- beziehungsweise Uhrzeiten-Bezug** — nicht tägliche Perioden (`d`, `wk`, `mo`) zusammen mit `when` oder `timeOfDay`. Siehe [Schema für Kombinationen von Zeitintervallen](./schema-intervall-kombination.html).
+- **Rückwärtskompatibilität für redundante Legacy-Angaben:** Bei Wochentagsschemata bleiben `frequency` sowie das Paar `period = 1`, `periodUnit = wk` zulässig. Sie begründen kein Intervallschema und verändern den erzeugten Text nicht.
+
+Damit entfallen 20 Beispiele aus der Liste nicht unterstützter Dosierkonfigurationen:
+`asNeededBoolean`, `asNeededCodeableConcept`, `doseRange`, `maxDosePerPeriod` und `boundsPeriod`.
+
+**Neue Artefakte**
+
+- Extensions: `MinimumIntervalBetweenAdministrations`, Backport von `asNeededFor` aus R5
+- ValueSet: `MindestabstandUnitsOfTimeDgMP`
+- Seiten: Bedarfsmedikation, Variable Angaben, Start- und Enddatum, Zusätzliche Instruktionen
+
+**Invarianten**
+
+33 Invarianten sind neu hinzugekommen; sie sichern die oben genannten Angaben ab.
+Vollständig aufgeführt sind sie unter [Übersicht der Timing- & Dosierungs-Invarianten](./dosierung-constraints.html).
+Die folgenden bestehenden Regeln haben sich in ihrer Aussage geändert:
+
+- **`TimingOnlyOneType` (`TimingDgMP`)**
+  - Bei `dayOfWeek` sind `frequency` sowie das Paar `period = 1`, `periodUnit = wk` als redundante Legacy-Angaben zulässig; zuvor führten sie zu einem Fehler. Jede andere Periode ist mit `dayOfWeek` nicht kombinierbar.
+  - Die Kombination aus Zeitintervall und Tageszeiten- beziehungsweise Uhrzeiten-Bezug ist als eigenes Schema erfasst.
+  - Eine variable Frequenz (`frequencyMax`) bleibt der reinen Intervallangabe vorbehalten; konkrete Zeitpunkte und Wochentage legen die Zahl der Gaben bereits fest.
+
+- **`TimingPeriodUnit` (`TimingDgMP`)**
+  - `periodUnit` darf nur zusammen mit `period` angegeben werden. Bei `dayOfWeek` ist ausschließlich die redundante Wochenangabe zulässig; bei `when` oder `timeOfDay` ohne `dayOfWeek` sind Tage, Wochen oder Monate zulässig. Zuvor war dort ausschließlich `d` erlaubt, wodurch wöchentliche und monatliche Kombinationen nicht abbildbar waren.
+
+- **`TimingSingleDosageForTimeOfDay` und `TimingSingleDosageForWhen` (`TimingDgMP`)**
+  - Geprüft wird jetzt, ob jedes `Dosage`-Element eine eindeutige vollständige Dosis einschließlich Datentyp trägt. Zuvor genügte es, dass überhaupt zwei unterschiedliche Werte vorkamen — Ressourcen mit den Dosen 1, 1 und 2 wurden dadurch fälschlich akzeptiert.
+
+- **`TimingFrequencyCount` (`TimingDgMP`)**
+  - Beschreibung präzisiert, Ausdruck unverändert: `frequency` ist bei `when`, `timeOfDay` und `dayOfWeek` optional, muss bei Angabe aber der Anzahl der konkreten Anwendungen entsprechen.
+
+- **`DosageWarnungViererschemaInText` (`DosageDE`) — umbenannt in `DosageFourSlotPatternInTextWarning`**
+  - Der Schlüssel trug als einziger einen deutschen Wortstamm und zudem „Warnung" statt des sonst verwendeten `Warning`-Suffixes. Er erscheint in Validierungsmeldungen; Werkzeuge, die darauf abstellen, müssen angepasst werden. Der Ausdruck ist unverändert.
+
+- **`TimingOnlyOnePeriodForDayOfWeek` (`TimingDgMP`)**
+  - Von `Timing.repeat` auf `Timing` verschoben, um einen Überlauf im IG Publisher bei der Erzeugung der Excel-Tabellen zu umgehen. Der Ausdruck wertet ohnehin die gesamte Ressource aus; inhaltlich ändert sich nichts.
+
+- **`MinimumIntervalOnlyPureAsNeeded` (`DosageDgMP`) — neu, ersetzt `VarPeriodNoMindestabstand`**
+  - `modifierExtension[MinimumIntervalBetweenAdministrations]` ist nur zusammen mit `asNeededBoolean = true` und ohne `timing` zulässig.
+  - Ein strukturierter Rhythmus legt den Abstand zwischen zwei Gaben bereits fest. Eine zweite, schwächere Untergrenze daneben lässt offen, welche Angabe gilt — „alle 8 Stunden, mit mindestens 6 Stunden Abstand" ist als Anweisung widersprüchlich. `VarPeriodNoMindestabstand` geht in der neuen Regel auf, da eine variable Periode ein `timing` voraussetzt.
+
+- **`MindestabstandIdentical` (`DosageDgMP`) — entfallen**
+  - Die Invariante forderte, dass der Mindestabstand über alle `Dosage`-Elemente gleich belegt ist. Sie ist nicht mehr erreichbar: Ein Mindestabstand setzt eine reine Bedarfsdosierung voraus, und dafür erlaubt `AsNeededSingleDosageOnly` genau ein `Dosage`-Element. `MaxDosePerPeriodIdentical` bleibt bestehen — eine Maximalmenge setzt kein leeres `timing` voraus.
+
+**Entfallene Beispiele**
+
+Gegenüber 1.0.5 entfallen 110 Beispiel-Instanzen; deren Seiten-URLs sind danach nicht mehr erreichbar. Ursache ist zum einen die vereinheitlichte Benennung der Validierungsbeispiele, zum anderen entfallen 20 Beispiele für inzwischen unterstützte Angaben und mehrere neu gefasste Negativbeispiele: an die Stelle durchnummerierter Reihen treten wenige Beispiele, die je einen Auslöser des Constraints isolieren. Profile, Extensions und ValueSets behalten ihre kanonischen URLs.
+
+**Sonstiges**
+
+- Die Spezifikation der Dosis-Textgenerierung liegt nicht mehr im IG. Die Seite [Dosis Textgenerierung](./dosierung-textgenerierung.html) verweist auf das externe Repository; der Build bezieht den Algorithmus als über Tag und Prüfsumme gepinnte Version.
+- Die Seiten der Dosierschemata beschreiben jetzt durchgängig, welche `frequency`-, `period`- und `periodUnit`-Angaben optional zulässig sind und dass sie den erzeugten Text nicht verändern.
+
+### Release: 1.0.5
+
+**What's Changed**
+
+- **Fix für Timing-Schema-Mischungen mit `dayOfWeek`:**
+  - **TimingDgMP**: `TimingOnlyWhenOrTimeOfDay`
+- **Erweiterte Negativbeispiele zur Absicherung gegen Schema-Mischung**
+
+**Details**
+
+- **`TimingOnlyWhenOrTimeOfDay` (`TimingDgMP`)**
+  - Vom Fix betroffene Ressourcentypen: `MedicationRequest`, `MedicationDispense`, `MedicationStatement`
+  - Fix: Die Einschränkung `dayOfWeek.empty()` wurde aus der Schema-Erkennung entfernt. Dadurch wird jetzt auch der Fall korrekt invalidiert, in dem innerhalb einer Ressource `dayOfWeek + timeOfDay` und `dayOfWeek + when` gemischt werden.
+
+- **Testabdeckung für Mischformen von Dosierschemata**
+  - Für `TimingOnlyWhenOrTimeOfDay` wurden Negativbeispiele für alle drei Ressourcentypen um Fälle mit gesetztem `dayOfWeek` ergänzt.
+  - Für `TimingOnlyOneType` wurden zusätzliche Negativbeispiele ergänzt, um Mischungen zusammengesetzter Schemata explizit abzudecken:
+    - reines `dayOfWeek` gemischt mit `dayOfWeek + when`
+    - reines `dayOfWeek` gemischt mit `dayOfWeek + timeOfDay`
+    - reines `Interval` gemischt mit `Interval + when`
+    - reines `Interval` gemischt mit `Interval + timeOfDay`
+    - `dayOfWeek + when` gemischt mit reinem `Interval`
+    - `dayOfWeek + timeOfDay` gemischt mit reinem `Interval`
+    - `dayOfWeek + when` gemischt mit `Interval + when`
+    - `dayOfWeek + timeOfDay` gemischt mit `Interval + timeOfDay`
+
+---
+
 ### Release: 1.0.4
 
 **What's Changed**
@@ -92,7 +191,7 @@
 - Only one dosage by @patrick-werner in [#90](https://github.com/hl7germany/medication-ig-de-r4/pull/90)
 - Ig-page-for-script by @florianschoffke in [#92](https://github.com/hl7germany/medication-ig-de-r4/pull/92)
 - Skript für eine zusammenfassende Evaluierung der Dosierung by @florianschoffke in [#93](https://github.com/hl7germany/medication-ig-de-r4/pull/93)
-- added DosageWarnungViererschemaInText & example by @patrick-werner in [#91](https://github.com/hl7germany/medication-ig-de-r4/pull/91)
+- added DosageFourSlotPatternInTextWarning & example by @patrick-werner in [#91](https://github.com/hl7germany/medication-ig-de-r4/pull/91)
 - feat: add FreeTextSingleDosageOnly invariant to enforce single dosage element in free text by @patrick-werner in [#95](https://github.com/hl7germany/medication-ig-de-r4/pull/95)
 - Update ext card and script by @patrick-werner in [#94](https://github.com/hl7germany/medication-ig-de-r4/pull/94)
 - Extract-script by @florianschoffke in [#96](https://github.com/hl7germany/medication-ig-de-r4/pull/96)

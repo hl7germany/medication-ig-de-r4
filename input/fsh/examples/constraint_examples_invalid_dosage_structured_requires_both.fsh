@@ -12,9 +12,6 @@ Description: "CAVE: Validation example - timing exists but doseAndRate missing."
 * medicationCodeableConcept.text = "Ibuprofen 400mg"
 * dosageInstruction[+]
   * timing.repeat
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
     * when[+] = #MORN
 
 Instance: INV-C-DosageStructuredRequiresBoth-Request-02-of-02
@@ -39,9 +36,6 @@ Description: "CAVE: Validation example - timing exists but doseAndRate missing."
 * medicationCodeableConcept.text = "Ibuprofen 400mg"
 * dosageInstruction[+]
   * timing.repeat
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
     * when[+] = #MORN
 
 Instance: INV-C-DosageStructuredRequiresBoth-Statement-01-of-02
@@ -54,9 +48,6 @@ Description: "CAVE: Validation example - timing exists but doseAndRate missing."
 * medicationCodeableConcept.text = "Ibuprofen 400mg"
 * dosage[+]
   * timing.repeat
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
     * when[+] = #MORN
 
 Instance: INV-C-DosageStructuredRequiresBoth-Dispense-02-of-02

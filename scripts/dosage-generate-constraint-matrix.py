@@ -16,23 +16,32 @@ COLUMN_KEYS = [
 def extract_timing_matrix_fields(timing):
     def get(val, default=""):
         return val if val is not None else default
+    def format_range(value, max_value):
+        value = get(value, "")
+        max_value = get(max_value, "")
+        if value == "":
+            return ""
+        if max_value != "":
+            return f"{value}-{max_value}"
+        return str(value)
     fields = {}
-    fields["duration"] = str(get(timing.get("repeat", {}).get("duration", "")))
-    fields["durationUnit"] = get(timing.get("repeat", {}).get("durationUnit", ""))
-    fields["frequency"] = str(get(timing.get("repeat", {}).get("frequency", "")))
-    fields["period"] = str(get(timing.get("repeat", {}).get("period", "")))
-    fields["periodUnit"] = get(timing.get("repeat", {}).get("periodUnit", ""))
-    fields["Day of Week"] = ", ".join(timing.get("repeat", {}).get("dayOfWeek", []))
-    fields["Time Of Day"] = ", ".join(timing.get("repeat", {}).get("timeOfDay", []))
-    fields["when"] = ", ".join(timing.get("repeat", {}).get("when", []))
-    bounds = timing.get("repeat", {}).get("boundsDuration") \
-        or timing.get("repeat", {}).get("boundsPeriod") \
-        or timing.get("repeat", {}).get("boundsRange")
+    repeat = timing.get("repeat", {})
+    fields["duration"] = str(get(repeat.get("duration", "")))
+    fields["durationUnit"] = get(repeat.get("durationUnit", ""))
+    fields["frequency"] = format_range(repeat.get("frequency", ""), repeat.get("frequencyMax", ""))
+    fields["period"] = format_range(repeat.get("period", ""), repeat.get("periodMax", ""))
+    fields["periodUnit"] = get(repeat.get("periodUnit", ""))
+    fields["Day of Week"] = ", ".join(repeat.get("dayOfWeek", []))
+    fields["Time Of Day"] = ", ".join(repeat.get("timeOfDay", []))
+    fields["when"] = ", ".join(repeat.get("when", []))
+    bounds = repeat.get("boundsDuration") or repeat.get("boundsPeriod") or repeat.get("boundsRange")
     if bounds:
         if "duration" in bounds:
             fields["bounds[x]"] = f"Duration = {bounds['duration']} {bounds.get('unit', '')}"
-        elif "start" in bounds:
-            fields["bounds[x]"] = f"Period.start = {bounds['start']}"
+        elif "start" in bounds or "end" in bounds:
+            start = bounds.get("start", "")
+            end = bounds.get("end", "")
+            fields["bounds[x]"] = f"Period = {start} - {end}".strip()
         else:
             fields["bounds[x]"] = str(bounds)
     else:
@@ -40,11 +49,23 @@ def extract_timing_matrix_fields(timing):
     return fields
 
 def extract_dose_quantity(dosage):
-    dq = dosage.get("doseAndRate", [{}])[0].get("doseQuantity")
+    dose = dosage.get("doseAndRate", [{}])[0]
+    dq = dose.get("doseQuantity")
     if dq:
         value = dq.get("value", "")
         unit = dq.get("unit", "")
         return f"{value} {unit}".strip()
+    dr = dose.get("doseRange")
+    if dr:
+        low = dr.get("low", {})
+        high = dr.get("high", {})
+        low_value = low.get("value", "")
+        high_value = high.get("value", "")
+        unit = high.get("unit") or low.get("unit", "")
+        if low_value != "" and high_value != "":
+            return f"{low_value}-{high_value} {unit}".strip()
+        if high_value != "":
+            return f"bis {high_value} {unit}".strip()
     return ""
 
 def extract_dosages(resource):
@@ -112,7 +133,9 @@ def generate_matrix_for_constraint(input_folder, output_path, constraint_key, se
 
     Examples: filenames containing -C-<key> (error) or -W-<key> (warning).
     """
-    markers = [f"-C-{constraint_key}", f"-W-{constraint_key}"]
+    # The key must be followed by '-' or '.', otherwise a key would also match example
+    # files of a longer key sharing the same prefix (e.g. 'Foo' vs. 'FooWarning').
+    marker_pattern = re.compile(rf"-[CW]-{re.escape(constraint_key)}(?=[-.]|$)")
     all_files: List[str] = []
     for f in os.listdir(input_folder):
         if not (f.startswith('MedicationRequest-') or f.startswith('MedicationDispense-') or f.startswith('MedicationStatement-')):
@@ -120,7 +143,7 @@ def generate_matrix_for_constraint(input_folder, output_path, constraint_key, se
         fp = os.path.join(input_folder, f)
         if not os.path.isfile(fp):
             continue
-        if any(m in f for m in markers):
+        if marker_pattern.search(f):
             all_files.append(f)
     
     # Sort files naturally (01-of-02 before 02-of-02)
@@ -219,8 +242,10 @@ def main():
 
     # Step 2: Collect constraints
     constraints = []
+    constraints += extract_constraints_from_element(sd_map["TimingDgMP"], "Timing", "Timing")
     constraints += extract_constraints_from_element(sd_map["TimingDgMP"], "Timing.repeat", "Timing.repeat")
     if "TimingDE" in sd_map:
+        constraints += extract_constraints_from_element(sd_map["TimingDE"], "Timing", "Timing")
         constraints += extract_constraints_from_element(sd_map["TimingDE"], "Timing.repeat", "Timing.repeat")
     if "DosageDE" in sd_map:
         constraints += extract_constraints_from_element(sd_map["DosageDE"], "Dosage", "Dosage")
@@ -228,7 +253,7 @@ def main():
         constraints += extract_constraints_from_element(sd_map["DosageDgMP"], "Dosage", "Dosage")
 
     if not constraints:
-        print("ERROR: No constraints found (Timing.repeat or Dosage roots).")
+        print("ERROR: No constraints found (Timing, Timing.repeat or Dosage roots).")
         sys.exit(1)
 
     # Merge: prefer higher severity (error>warning) and dgMP profile if same severity
@@ -274,6 +299,10 @@ def main():
             print(f"{YELLOW}  - {k}{RESET}", file=sys.stderr)
         if failures_warning:
             print(f"{YELLOW}WARNING: Missing warning-level examples for: {', '.join(failures_warning)}{RESET}", file=sys.stderr)
+        # Ohne Abbruch laeuft der Build weiter und scheitert erst in Jekyll beim
+        # Aufloesen des nicht erzeugten Includes - eine Minute spaeter und ohne
+        # Hinweis auf die Ursache.
+        sys.exit(1)
 
     # Success path
     summary = (

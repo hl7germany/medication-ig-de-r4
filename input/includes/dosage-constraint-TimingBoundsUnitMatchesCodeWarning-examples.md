@@ -1,0 +1,5 @@
+| File | doseQuantity | duration | durationUnit | frequency | period | periodUnit | Day<br>of<br>Week | Time<br>Of<br>Day | when | bounds[x] |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| [MedicationDispense-W-TimingBoundsUnitMatchesCodeWarning-Dispense-02-of-03](./MedicationDispense-W-TimingBoundsUnitMatchesCodeWarning-Dispense-02-of-03.html) | 1 Stück |  |  | 1 | 2 | d |  |  |  | {'value': 3, 'code': 'wk', 'system': 'http://unitsofmeasure.org', 'unit': 'Tag(e)'} |
+| [MedicationRequest-W-TimingBoundsUnitMatchesCodeWarning-Request-01-of-03](./MedicationRequest-W-TimingBoundsUnitMatchesCodeWarning-Request-01-of-03.html) | 1 Stück |  |  | 1 | 2 | d |  |  |  | {'value': 3, 'code': 'wk', 'system': 'http://unitsofmeasure.org', 'unit': 'Tag(e)'} |
+| [MedicationStatement-W-TimingBoundsUnitMatchesCodeWarning-Statement-03-of-03](./MedicationStatement-W-TimingBoundsUnitMatchesCodeWarning-Statement-03-of-03.html) | 1 Stück |  |  | 1 | 2 | d |  |  |  | {'value': 3, 'code': 'wk', 'system': 'http://unitsofmeasure.org', 'unit': 'Tag(e)'} |

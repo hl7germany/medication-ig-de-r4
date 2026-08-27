@@ -12,16 +12,10 @@ Description: "CAVE: Validation example - two dosageInstructions use different do
 * medicationCodeableConcept.text = "Ibuprofen 400mg"
 * dosageInstruction[+]
   * timing.repeat
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
     * when[+] = #MORN
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 * dosageInstruction[+]
   * timing.repeat
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
     * when[+] = #EVE
   * doseAndRate.doseQuantity = 500 $kbv-dosiereinheit#mg "mg"
 
@@ -35,16 +29,10 @@ Description: "CAVE: Validation example - two dosage entries use different dose u
 * medicationCodeableConcept.text = "Ibuprofen 400mg"
 * dosage[+]
   * timing.repeat
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
     * when[+] = #MORN
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 * dosage[+]
   * timing.repeat
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
     * when[+] = #EVE
   * doseAndRate.doseQuantity = 500 $kbv-dosiereinheit#mg "mg"
 
@@ -58,15 +46,9 @@ Description: "CAVE: Validation example - two dosageInstruction entries use diffe
 * medicationCodeableConcept.text = "Ibuprofen 400mg"
 * dosageInstruction[+]
   * timing.repeat
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
     * when[+] = #MORN
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 * dosageInstruction[+]
   * timing.repeat
-    * frequency = 1
-    * period = 1
-    * periodUnit = #d
     * when[+] = #EVE
   * doseAndRate.doseQuantity = 500 $kbv-dosiereinheit#mg "mg"

@@ -11,6 +11,7 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * obeys TimingSingleDosageForWhenWarning
   * obeys TimingBoundsUnitMatchesCodeWarning
   * obeys TimingVarFreqOrPeriodWarning
+  * obeys TimingFreqOrPeriodGtOneWarning
 * repeat.bounds[x] MS
   * ^short = "Länge/Bereich der Längen oder (Start- und/oder End-)Grenzen"
   * ^definition = "Entweder eine Dauer für die Länge des Zeitplans, ein Bereich möglicher Längen oder äußere Begrenzungen für Start- und/oder Endgrenzen des Zeitplans."
@@ -197,3 +198,34 @@ Expression: "/* Detect Interval only */
   frequencyMax.empty() or periodMax.empty()
 )"
 Severity: #warning
+
+Invariant: TimingFreqOrPeriodGtOneWarning
+Description: "If frequency and period are given together, only one of them may exceed 1 - either the frequency including frequencyMax or the period including periodMax. A statement in which both exceed 1, such as 'six times within three hours', is hard to express in language and is not needed: the same meaning can be conveyed by adapting the period, e.g. 'every 30 minutes'."
+Severity: #warning
+Expression: "/* Detect Interval only */
+(
+  repeat.timeOfDay.empty() and
+  repeat.when.empty() and
+  repeat.dayOfWeek.empty() and
+  repeat.frequency.exists() and
+  repeat.period.exists()
+) implies
+(
+  (
+    (repeat.frequency > 1 or repeat.frequencyMax > 1)
+    implies
+    (
+      repeat.period = 1 and
+      (repeat.periodMax.empty() or repeat.periodMax = 1)
+    )
+  )
+  and
+  (
+    (repeat.period > 1 or repeat.periodMax > 1)
+    implies
+    (
+      repeat.frequency = 1 and
+      (repeat.frequencyMax.empty() or repeat.frequencyMax = 1)
+    )
+  )
+)"

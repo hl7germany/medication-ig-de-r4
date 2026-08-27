@@ -38,20 +38,22 @@ Description: "Wiederkehrende Intervalle: wöchentliches Muster (frequency=1, per
     * periodUnit = #wk
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-// B9 — Frequenz > 1 kombiniert mit Nicht-Tages-Periode
-// Erwarteter generierter Text: "2 x alle 8 Stunden: je 1 Stück"
-Instance: Example-MR-Dosage-interval-b9-freq2-8h
+// B9 — Frequenz = 1 mit Nicht-Tages-Periode. Frequenz und Periode duerfen nicht
+// beide groesser als 1 sein (TimingFreqOrPeriodGtOne); "2 x alle 8 Stunden" wird
+// als "alle 4 Stunden" ausgedrueckt.
+// Erwarteter generierter Text: "alle 4 Stunden: je 1 Stück"
+Instance: Example-MR-Dosage-interval-b9-4h
 InstanceOf: MedicationRequestDgMP
 Usage: #example
-Title: "Example-MR-Dosage-interval-b9-freq2-8h"
-Description: "Wiederkehrende Intervalle mit Frequenz > 1: frequency=2, period=8, periodUnit=h. Erzeugt die '2 x alle 8 Stunden'-Notation."
+Title: "Example-MR-Dosage-interval-b9-4h"
+Description: "Wiederkehrende Intervalle mit einer Periode unter einem Tag."
 * subject.display = "Patient"
 * status = #active
 * intent = #order
 * medicationCodeableConcept.text = "Ibuprofen 400mg"
 * dosageInstruction[+]
   * timing.repeat
-    * frequency = 2
-    * period = 8
+    * frequency = 1
+    * period = 4
     * periodUnit = #h
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"

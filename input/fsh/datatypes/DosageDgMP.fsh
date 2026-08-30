@@ -258,6 +258,12 @@ doseAndRate.all(
 
 Severity: #error
 
+// TODO: Nur code wird verglichen, nicht unit und system. Zwei Dosage-Elemente
+// mit Code #1, aber den Anzeigeeinheiten "Stück" und "Tablette" sind damit
+// gueltig; die Textgenerierung uebernimmt die Einheit des ersten Elements und
+// stellt "Tablette" stillschweigend als "Stück" dar. MaxDoseSameUnitAsDose
+// vergleicht dagegen system, code und unit. Zu klaeren, ob code-gleich genuegt
+// oder der Vergleich angeglichen wird.
 Invariant: DosageDoseUnitSameCode
 Description: "The dose unit must be the same across all dosages."
 Expression: "(%resource.ofType(MedicationRequest).dosageInstruction | %resource.ofType(MedicationDispense).dosageInstruction | %resource.ofType(MedicationStatement).dosage).all(

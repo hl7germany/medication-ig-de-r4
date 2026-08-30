@@ -142,7 +142,7 @@ Severity: #warning
 
 Invariant: DosageFourSlotPatternInTextWarning
 Description: "A four-slot dosing schema (Viererschema, e.g. 1-1-1-1) was detected in Dosage.text. Please check whether it can be represented structurally."
-Expression: "text.exists() implies text.matches('.*\\\\d+\\\\s*[-–]\\\\s*\\\\d+\\\\s*[-–]\\\\s*\\\\d+\\\\s*[-–]\\\\d+.*').not()"
+Expression: "text.exists() implies text.matches('.*\\\\d+\\\\s*[-–]\\\\s*\\\\d+\\\\s*[-–]\\\\s*\\\\d+\\\\s*[-–]\\\\s*\\\\d+.*').not()"
 Severity: #warning
 
 Invariant: dos-1

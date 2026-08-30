@@ -1,5 +1,10 @@
 // Positive compatibility matrix: all weekday schemas with the formerly
 // mandatory, now optional frequency / 1 wk legacy fields in all resource types.
+//
+// TODO: Es fehlt der Fall, dass die Legacy-Angaben nur in einem von mehreren
+// Dosage-Elementen stehen. Fuer when-Schemata ist er belegt (Legacy nur in
+// Element 2 ergibt 1-0-2-0 Stück), fuer Wochentage nicht. Offen ist, ob
+// TimingOnlyOnePeriodForDayOfWeek dort greift.
 
 Instance: Example-MR-Weekday-Legacy
 InstanceOf: MedicationRequestDgMP

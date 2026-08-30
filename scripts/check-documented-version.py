@@ -44,7 +44,7 @@ def script_version(path):
 def page_versions(text):
     """Alle Versionsangaben der Seite: Fließtext und Release-Link."""
     found = set()
-    # **[2.0.0-alpha1](…/releases/tag/2.0.0-alpha1)**
+    # **[<version>](…/releases/tag/<version>)**
     for m in re.finditer(r'\*\*\[([^\]]+)\]\(([^)]*/releases/tag/([^)/]+))\)\*\*', text):
         found.add(("Text", m.group(1)))
         found.add(("Release-Link", m.group(3)))

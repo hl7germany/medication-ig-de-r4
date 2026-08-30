@@ -1,10 +1,10 @@
-### Release: 2.0.0-alpha1
+### Release: 2.0.0-ballot
 
 Diese Version erweitert das dgMP-Dosiermodell erheblich: Dosierungen, die bisher
 als „nicht unterstützt" geführt waren, sind jetzt strukturiert abbildbar. Der
 Eintrag fasst alle Änderungen seit 1.0.5 zusammen.
 
-**Version des Textgenerierungs-Algorithmus:** `2.0.0-alpha1`. Der Algorithmus wird in
+**Version des Textgenerierungs-Algorithmus:** `2.0.0-ballot`. Der Algorithmus wird in
 [hl7germany/dgMP-DosageTextgenerierung-Skript](https://github.com/hl7germany/dgMP-DosageTextgenerierung-Skript)
 gepflegt; seine Änderungen stehen im dortigen `CHANGELOG.md`.
 

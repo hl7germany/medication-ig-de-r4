@@ -59,6 +59,6 @@ Description: "Dieses Beispiel stellt einen Startzeitpunkt mit Zeitzone dar, der 
 * dosageInstruction[+]
   * timing.repeat
     * boundsPeriod
-      * start = "2026-06-05T23:30:45Z"
+      * start = "2026-06-05T08:30:45Z"
     * when[+] = #MORN
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"

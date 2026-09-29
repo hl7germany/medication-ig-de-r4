@@ -1,4 +1,4 @@
-Bedarfsmedikation beschreibt eine Dosierung, die nicht ausschließlich nach einem festen Einnahmeplan, sondern bei auftretendem Bedarf angewendet wird. Der Bedarf wird dabei immer mit einem Einnahmeanlass angegeben, z. B. "bei Kopfschmerzen".
+Bedarfsmedikation beschreibt eine Dosierung, die nicht ausschließlich nach einem festen Einnahmeplan, sondern bei auftretendem Bedarf angewendet wird. Der Bedarf kann mit einem Anlass angegeben werden, z. B. "bei Kopfschmerzen“.
 
 In diesem Anwendungsfall wird davon ausgegangen, dass die Bedarfsangabe in einer eigenen `Dosage`-Instanz abgebildet wird. Die Angaben zu Menge, Mindestabstand oder Maximalgabe beziehen sich dann auf diese Bedarfsdosierung.
 

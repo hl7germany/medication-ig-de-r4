@@ -1,0 +1,361 @@
+[
+  {
+    "invariant": "MaxDosePerPeriodOnly24hOr1d",
+    "context": "Dosage",
+    "cases": [
+      {
+        "name": "24 h",
+        "dosage": {
+          "asNeededBoolean": true,
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ],
+          "maxDosePerPeriod": {
+            "numerator": {
+              "value": 6,
+              "unit": "Stück",
+              "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+              "code": "1"
+            },
+            "denominator": {
+              "value": 24,
+              "unit": "Stunde(n)",
+              "system": "http://unitsofmeasure.org",
+              "code": "h"
+            }
+          }
+        },
+        "expect": true
+      },
+      {
+        "name": "1 d",
+        "dosage": {
+          "asNeededBoolean": true,
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ],
+          "maxDosePerPeriod": {
+            "numerator": {
+              "value": 6,
+              "unit": "Stück",
+              "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+              "code": "1"
+            },
+            "denominator": {
+              "value": 1,
+              "unit": "Tag(e)",
+              "system": "http://unitsofmeasure.org",
+              "code": "d"
+            }
+          }
+        },
+        "expect": true
+      },
+      {
+        "name": "12 h",
+        "dosage": {
+          "asNeededBoolean": true,
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ],
+          "maxDosePerPeriod": {
+            "numerator": {
+              "value": 6,
+              "unit": "Stück",
+              "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+              "code": "1"
+            },
+            "denominator": {
+              "value": 12,
+              "unit": "Stunde(n)",
+              "system": "http://unitsofmeasure.org",
+              "code": "h"
+            }
+          }
+        },
+        "expect": false
+      },
+      {
+        "name": "2 d",
+        "dosage": {
+          "asNeededBoolean": true,
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ],
+          "maxDosePerPeriod": {
+            "numerator": {
+              "value": 6,
+              "unit": "Stück",
+              "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+              "code": "1"
+            },
+            "denominator": {
+              "value": 2,
+              "unit": "Tag(e)",
+              "system": "http://unitsofmeasure.org",
+              "code": "d"
+            }
+          }
+        },
+        "expect": false
+      },
+      {
+        "name": "ohne Maximalmenge",
+        "dosage": {
+          "asNeededBoolean": true,
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      }
+    ]
+  },
+  {
+    "invariant": "MaxDoseSameUnitAsDose",
+    "context": "Dosage",
+    "cases": [
+      {
+        "name": "gleiche Einheit",
+        "dosage": {
+          "asNeededBoolean": true,
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ],
+          "maxDosePerPeriod": {
+            "numerator": {
+              "value": 6,
+              "unit": "Stück",
+              "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+              "code": "1"
+            },
+            "denominator": {
+              "value": 24,
+              "unit": "Stunde(n)",
+              "system": "http://unitsofmeasure.org",
+              "code": "h"
+            }
+          }
+        },
+        "expect": true
+      },
+      {
+        "name": "anderer Code",
+        "dosage": {
+          "asNeededBoolean": true,
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ],
+          "maxDosePerPeriod": {
+            "numerator": {
+              "value": 6,
+              "unit": "Tablette",
+              "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+              "code": "2"
+            },
+            "denominator": {
+              "value": 24,
+              "unit": "Stunde(n)",
+              "system": "http://unitsofmeasure.org",
+              "code": "h"
+            }
+          }
+        },
+        "expect": false
+      },
+      {
+        "name": "Bereich, gleiche Einheit",
+        "dosage": {
+          "asNeededBoolean": true,
+          "doseAndRate": [
+            {
+              "doseRange": {
+                "low": {
+                  "value": 1,
+                  "unit": "Stück",
+                  "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                  "code": "1"
+                },
+                "high": {
+                  "value": 2,
+                  "unit": "Stück",
+                  "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                  "code": "1"
+                }
+              }
+            }
+          ],
+          "maxDosePerPeriod": {
+            "numerator": {
+              "value": 6,
+              "unit": "Stück",
+              "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+              "code": "1"
+            },
+            "denominator": {
+              "value": 24,
+              "unit": "Stunde(n)",
+              "system": "http://unitsofmeasure.org",
+              "code": "h"
+            }
+          }
+        },
+        "expect": true
+      }
+    ]
+  },
+  {
+    "invariant": "MaxDoseOnlyPureAsNeeded",
+    "context": "Dosage",
+    "cases": [
+      {
+        "name": "reiner Bedarf",
+        "dosage": {
+          "asNeededBoolean": true,
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ],
+          "maxDosePerPeriod": {
+            "numerator": {
+              "value": 6,
+              "unit": "Stück",
+              "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+              "code": "1"
+            },
+            "denominator": {
+              "value": 24,
+              "unit": "Stunde(n)",
+              "system": "http://unitsofmeasure.org",
+              "code": "h"
+            }
+          }
+        },
+        "expect": true
+      },
+      {
+        "name": "mit timing",
+        "dosage": {
+          "asNeededBoolean": true,
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ],
+          "maxDosePerPeriod": {
+            "numerator": {
+              "value": 6,
+              "unit": "Stück",
+              "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+              "code": "1"
+            },
+            "denominator": {
+              "value": 24,
+              "unit": "Stunde(n)",
+              "system": "http://unitsofmeasure.org",
+              "code": "h"
+            }
+          },
+          "timing": {
+            "repeat": {
+              "when": [
+                "MORN"
+              ]
+            }
+          }
+        },
+        "expect": false
+      },
+      {
+        "name": "ohne Bedarf",
+        "dosage": {
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ],
+          "maxDosePerPeriod": {
+            "numerator": {
+              "value": 6,
+              "unit": "Stück",
+              "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+              "code": "1"
+            },
+            "denominator": {
+              "value": 24,
+              "unit": "Stunde(n)",
+              "system": "http://unitsofmeasure.org",
+              "code": "h"
+            }
+          }
+        },
+        "expect": false
+      }
+    ]
+  }
+]

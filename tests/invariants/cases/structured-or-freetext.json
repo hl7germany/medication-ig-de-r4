@@ -1,0 +1,180 @@
+[
+  {
+    "invariant": "DosageStructuredOrFreeText",
+    "context": "Dosage",
+    "cases": [
+      {
+        "name": "nur Freitext",
+        "dosage": {
+          "text": "morgens 1 Stück"
+        },
+        "expect": true
+      },
+      {
+        "name": "nur strukturiert",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "Freitext und timing",
+        "dosage": {
+          "text": "x",
+          "timing": {
+            "repeat": {
+              "when": [
+                "MORN"
+              ]
+            }
+          }
+        },
+        "expect": false
+      },
+      {
+        "name": "Freitext und doseAndRate",
+        "dosage": {
+          "text": "x",
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": false
+      },
+      {
+        "name": "zweites Element gemischt",
+        "dosages": [
+          {
+            "text": "x"
+          },
+          {
+            "text": "y",
+            "doseAndRate": [
+              {
+                "doseQuantity": {
+                  "value": 1,
+                  "unit": "Stück",
+                  "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                  "code": "1"
+                }
+              }
+            ]
+          }
+        ],
+        "expect": false
+      }
+    ]
+  },
+  {
+    "invariant": "DosageStructuredOrFreeTextWarning",
+    "context": "Dosage",
+    "cases": [
+      {
+        "name": "nur Freitext",
+        "dosage": {
+          "text": "morgens 1 Stück"
+        },
+        "expect": true
+      },
+      {
+        "name": "nur strukturiert",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "Freitext und timing",
+        "dosage": {
+          "text": "x",
+          "timing": {
+            "repeat": {
+              "when": [
+                "MORN"
+              ]
+            }
+          }
+        },
+        "expect": false
+      },
+      {
+        "name": "Freitext und doseAndRate",
+        "dosage": {
+          "text": "x",
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": false
+      },
+      {
+        "name": "zweites Element gemischt",
+        "dosages": [
+          {
+            "text": "x"
+          },
+          {
+            "text": "y",
+            "doseAndRate": [
+              {
+                "doseQuantity": {
+                  "value": 1,
+                  "unit": "Stück",
+                  "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                  "code": "1"
+                }
+              }
+            ]
+          }
+        ],
+        "expect": false
+      }
+    ]
+  }
+]

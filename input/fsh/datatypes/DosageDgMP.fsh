@@ -12,6 +12,7 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
 * obeys DosageDoseUnitSameCode
 * obeys DosageDoseValueDecimalNotation
 * obeys DosageDoseValuePositive
+* obeys DosageLimitsPositive
 * obeys DosageFourSlotPatternInText
 * obeys PatientInstructionIdentical
 * obeys MaxDoseSameUnitAsDose
@@ -503,3 +504,11 @@ Expression: "modifierExtension.where(
   )
 )"
 
+Invariant: DosageLimitsPositive
+Description: "The minimum interval between administrations (valueDuration.value) and maxDosePerPeriod (numerator.value, denominator.value) must be greater than 0."
+Expression: "modifierExtension.where(
+  url = 'http://ig.fhir.de/igs/medication/StructureDefinition/MinimumIntervalBetweenAdministrations'
+).value.ofType(Duration).value.all($this > 0) and
+maxDosePerPeriod.numerator.value.all($this > 0) and
+maxDosePerPeriod.denominator.value.all($this > 0)"
+Severity: #error

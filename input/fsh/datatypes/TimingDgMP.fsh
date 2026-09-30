@@ -22,6 +22,7 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * obeys TimingPeriodUnit
   * obeys TimingPeriodOnlyWholeNumber
   * obeys TimingBoundsDurationOnlyWholeNumber
+  * obeys TimingValuesPositive
   * obeys TimingFreqOrPeriodGtOne
   * obeys TimingVarFreqGtMin
   * obeys TimingVarPeriodGtMin
@@ -784,4 +785,11 @@ Severity: #error
 Invariant: TimingBoundsDurationOnlyWholeNumber
 Description: "boundsDuration.value must be a whole number; decimal values are not allowed."
 Expression: "bounds.ofType(Duration).value.empty() or bounds.ofType(Duration).value mod 1 = 0"
+Severity: #error
+
+Invariant: TimingValuesPositive
+Description: "period, periodMax and boundsDuration.value must be greater than 0."
+Expression: "(period.exists() implies period > 0) and
+(periodMax.exists() implies periodMax > 0) and
+bounds.ofType(Duration).value.all($this > 0)"
 Severity: #error

@@ -4,7 +4,7 @@ In diesem Anwendungsfall wird davon ausgegangen, dass die Bedarfsangabe in einer
 
 Es wird zudem ermöglicht:
 
-- einen oder mehrere Einnahmeanlässe als Freitext anzugeben
+- einen oder mehrere Anlässe als Freitext anzugeben
   - Bei der Angabe mehrere Bedingungen gelten diese als *oder* verknüpft. Es muss also nur eine der Bedingungen zutreffen.
 - einen Mindestabstand zwischen zwei Gaben explizit über die Modifier Extension `MindestabstandZwischenGaben` anzugeben
 - eine maximale Menge je Zeitraum anzugeben

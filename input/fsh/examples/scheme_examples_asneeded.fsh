@@ -25,7 +25,7 @@ Instance: Example-MR-Dosage-Bedarfsmedikation-MehrereAnlaesse
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-Bedarfsmedikation-MehrereAnlaesse"
-Description: "Bedarfsmedikation mit mehreren Einnahmeanlässen (asNeededFor 0..*). Die Anlässe sind fachlich ODER-verknüpft; im generierten Text werden sie als deutsche Aufzählung mit abschließendem \"oder\" dargestellt (z. B. \"Bei Kopfschmerzen, Fieber oder Gliederschmerzen: ...\")."
+Description: "Bedarfsmedikation mit mehreren Anlässen (asNeededFor 0..*). Die Anlässe sind fachlich ODER-verknüpft; im generierten Text werden sie als deutsche Aufzählung mit abschließendem \"oder\" dargestellt (z. B. \"Bei Kopfschmerzen, Fieber oder Gliederschmerzen: ...\")."
 * subject.display = "Patient"
 * status = #active
 * intent = #order

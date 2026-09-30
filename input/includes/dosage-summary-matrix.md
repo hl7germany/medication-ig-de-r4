@@ -146,6 +146,9 @@
 | [MedicationRequest-Example-MR-Dosage-varfreq-9-to-10](./MedicationRequest-Example-MR-Dosage-varfreq-9-to-10.html) | 9 bis 10 x täglich: je 1 Stück | 1 Stück | 9-10 | 1 | d |  |  |  |  |
 | [MedicationRequest-Example-MR-Dosage-variable-doseRange](./MedicationRequest-Example-MR-Dosage-variable-doseRange.html) | täglich: je 1 bis 2 Stück | 1-2 Stück | 1 | 1 | d |  |  |  |  |
 | [MedicationRequest-Example-MR-Dosage-variable-frequency](./MedicationRequest-Example-MR-Dosage-variable-frequency.html) | 1 bis 2 x täglich: je 1 Stück | 1 Stück | 1-2 | 1 | d |  |  |  |  |
+| [MedicationRequest-Example-MR-Dosage-variable-period-1-2mo](./MedicationRequest-Example-MR-Dosage-variable-period-1-2mo.html) | monatlich: je 1 Stück | 1 Stück | 1 | 1-2 | mo |  |  |  |  |
+| [MedicationRequest-Example-MR-Dosage-variable-period-1-2wk](./MedicationRequest-Example-MR-Dosage-variable-period-1-2wk.html) | wöchentlich: je 1 Stück | 1 Stück | 1 | 1-2 | wk |  |  |  |  |
+| [MedicationRequest-Example-MR-Dosage-variable-period-1-3d](./MedicationRequest-Example-MR-Dosage-variable-period-1-3d.html) | täglich: je 1 Stück | 1 Stück | 1 | 1-3 | d |  |  |  |  |
 | [MedicationRequest-Example-MR-Dosage-variable-period](./MedicationRequest-Example-MR-Dosage-variable-period.html) | alle 4 bis 6 Tage: je 1 Stück | 1 Stück | 1 | 4-6 | d |  |  |  |  |
 | [MedicationRequest-Example-MR-Dosage-weekday-2t-1t](./MedicationRequest-Example-MR-Dosage-weekday-2t-1t.html) | montags — je 2 Stück; donnerstags — je 1 Stück | 2 Stück |  |  |  | mon |  |  |  |
 |  |  | 1 Stück |  |  |  | thu |  |  |  |

@@ -76,7 +76,7 @@ Warnung, wenn ein klassisches 4-Schema (z. B. Darstellung wie "1-0-1-0") irgendw
 **Warum?**  
 Ermutigt zur strukturierten Modellierung der Einnahmezeiten anstelle rein schematischer Textdarstellungen, verbessert maschinelle Auswertbarkeit und Textgenerierung.
 
-Der Constraint ist auf `DosageDE` als Warnung definiert, weil das 4-Schema in einem längeren Freitext auch als erläuternder Bestandteil auftreten kann. Besteht der Freitext **ausschließlich** aus einem 4-Schema, greift in den dgMP-Profilen zusätzlich der Fehler [DosageFourSlotPatternInText](#dosageviererschemaintext).
+Der Constraint ist auf `DosageDE` als Warnung definiert, weil das 4-Schema in einem längeren Freitext auch als erläuternder Bestandteil auftreten kann. Besteht der Freitext **ausschließlich** aus einem 4-Schema, greift in den dgMP-Profilen zusätzlich der Fehler [DosageFourSlotPatternInText](#dosagefourslotpatternintext).
 
 Gültige Beispiele (Warnungskontext – Freitext enthält 4-Schema):
 

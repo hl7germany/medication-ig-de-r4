@@ -76,11 +76,23 @@ Warnung, wenn ein klassisches 4-Schema (z. B. Darstellung wie "1-0-1-0") irgendw
 **Warum?**  
 Ermutigt zur strukturierten Modellierung der Einnahmezeiten anstelle rein schematischer Textdarstellungen, verbessert maschinelle Auswertbarkeit und Textgenerierung.
 
-Der Constraint ist auf `DosageDE` als Warnung definiert, weil das 4-Schema in einem längeren Freitext auch als erläuternder Bestandteil auftreten kann. Besteht der Freitext **ausschließlich** aus einem 4-Schema, greift in den dgMP-Profilen zusätzlich der Fehler [DosageFourSlotPatternInText](#dosageviererschemaintext).
+Der Constraint ist auf `DosageDE` als Warnung definiert, weil das 4-Schema in einem längeren Freitext auch als erläuternder Bestandteil auftreten kann. Besteht der Freitext **ausschließlich** aus einem 4-Schema, greift in den dgMP-Profilen zusätzlich der Fehler [DosageFourSlotPatternInText](#dosagefourslotpatternintext).
 
 Gültige Beispiele (Warnungskontext – Freitext enthält 4-Schema):
 
 {% include dosage-constraint-DosageFourSlotPatternInTextWarning-examples.md%}
+
+##### AsNeededForRequiresAsNeededWarning
+
+**Beschreibung:**  
+Warnung in `DosageDE`, wenn ein Anlass (`extension[asNeededFor]`) ohne `asNeededBoolean = true` angegeben ist.
+
+**Warum?**  
+Ein Anlass ohne `asNeeded` ist nach [dos-1](#dos-1) wie in FHIR R5 zulässig und kennzeichnet die Dosierung als Bedarfsmedikation; lesende Systeme müssen ihn so auswerten. Sendende Systeme sollen `asNeededBoolean = true` trotzdem angeben, damit Bedarf nur auf eine Weise ausgedrückt wird und auch an `asNeededBoolean` erkannt werden kann. In den dgMP-Profilen gilt für denselben Sachverhalt der Fehler [AsNeededForRequiresAsNeeded](#asneededforrequiresasneeded).
+
+Folgende Beispiele lösen eine Warnung aus:
+
+{% include dosage-constraint-AsNeededForRequiresAsNeededWarning-examples.md%}
 
 ##### TimingSingleDosageForTimeOfDayWarning
 
@@ -123,7 +135,7 @@ Folgende Beispiele lösen eine Warnung aus:
 ##### dos-1
 
 **Beschreibung:**  
-Basisregel aus dem generischen Profil `DosageDE`: Ein Anlass (`asNeededFor`) darf nur gesetzt sein, wenn `asNeeded` leer oder `true` ist. Das dgMP‑Profil verschärft dies über `AsNeededForRequiresAsNeeded` auf `asNeeded = true`.
+Basisregel aus dem generischen Profil `DosageDE`, entsprechend `dos-1` aus FHIR R5: Ein Anlass (`asNeededFor`) darf nur gesetzt sein, wenn `asNeeded` leer oder `true` ist. Fehlt `asNeeded`, warnt [AsNeededForRequiresAsNeededWarning](#asneededforrequiresasneededwarning); das dgMP‑Profil verlangt über [AsNeededForRequiresAsNeeded](#asneededforrequiresasneeded) `asNeeded = true`.
 
 **Warum?**  
 Stellt sicher, dass ein Anlass nicht einer Nicht‑Bedarfsdosierung zugeordnet wird.

@@ -25,7 +25,14 @@ sushi .
 python3 scripts/dosage-main.py
 
 # Generate IG Publisher Content
-./_genonce.sh -no-sushi
+# qa.xml vorher entfernen, damit Schritt 4 nicht gegen einen alten Lauf prüft
+rm -f output/qa.xml
+./_build.sh nosushi
+
+if [[ ! -f output/qa.xml ]]; then
+    echo "IG Publisher hat kein output/qa.xml erzeugt. Abbruch." >&2
+    exit 1
+fi
 
 # Run Error checks
 python3 scripts/ig-expected-error-check.py

@@ -12,6 +12,7 @@ Description: "Gibt an, wie das Medikament eingenommen oder verabreicht wurde bzw
 * obeys DosageDoseValuePositiveWarning
 * obeys DosageFourSlotPatternInTextWarning
 * obeys FreeTextSingleDosageOnlyWarning
+* obeys AsNeededForRequiresAsNeededWarning
 * obeys dos-1
 * text 0..1 MS
   * ^short = "Freitext-Dosierungsanweisungen, z. B. 'Maximal 3x täglich 1 Stück bei Bedarf'"
@@ -38,6 +39,7 @@ Description: "Gibt an, wie das Medikament eingenommen oder verabreicht wurde bzw
 * extension[asNeededFor]
   * ^short = "Indikation für die Bedarfsdosierung"
   * ^definition = "Gibt die Indikation für die Bedarfsdosierung an."
+  * ^comment = "Sendende Systeme sollen zusätzlich asNeededBoolean = true angeben. Lesende Systeme werten einen Anlass auch ohne asNeeded als Bedarfsdosierung, entsprechend FHIR R5."
   * valueCodeableConcept
     * text MS
 * modifierExtension[minimumIntervalBetweenAdministrations]
@@ -149,3 +151,8 @@ Invariant: dos-1
 Description: "AsNeededFor can only be set if AsNeeded is empty or true"
 Severity: #error
 Expression: "extension.where(url='http://hl7.org/fhir/5.0/StructureDefinition/extension-Dosage.asNeededFor').empty() or asNeeded.empty() or asNeeded"
+
+Invariant: AsNeededForRequiresAsNeededWarning
+Description: "A reason for use (asNeededFor) should only be given together with asNeededBoolean = true."
+Severity: #warning
+Expression: "extension.where(url='http://hl7.org/fhir/5.0/StructureDefinition/extension-Dosage.asNeededFor').exists() implies asNeeded.ofType(boolean) = true"

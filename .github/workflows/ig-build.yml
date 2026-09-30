@@ -57,7 +57,7 @@ jobs:
           java -jar input-cache/publisher.jar -v
       - name: Build und Prüfung der Beispiele
         run: bash scripts/build-ig.sh
-      - name: Generierte Dateien eingecheckt
+      - name: Erzeugte Includes entsprechen dem Repo-Stand
         run: git diff --exit-code -- input/
       - name: QA-Bericht sichern
         if: always()

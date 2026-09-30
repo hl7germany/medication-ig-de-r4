@@ -14,7 +14,7 @@ Die GitHub Action [`.github/workflows/ig-build.yml`](.github/workflows/ig-build.
    - nicht isolierten Negativbeispielen (siehe unten),
    - Fehlerbeispielen für DE-Regeln, die nicht auf einem DE-Profil liegen,
    - Broken Links.
-3. **Generierte Dateien**: Nach dem Build dürfen sich unter `input/` keine Dateien geändert haben. Wer Beispiele ändert, muss die neu erzeugten Includes mit einchecken.
+3. **Erzeugte Includes entsprechen dem Repo-Stand**: Nach dem Build dürfen sich unter `input/` keine Dateien geändert haben. Wer Beispiele ändert, muss die neu erzeugten Includes mit einchecken.
 
 Damit die Prüfungen wirken, braucht `main` eine Branch Protection (Repo-Admin, Settings → Branches): Status-Checks „Invariantentests (fhirpath.js)“ und „IG-Build und Prüfung der Beispiele“ erforderlich, mindestens eine Freigabe, offene Review-Kommentare vor dem Merge klären.
 

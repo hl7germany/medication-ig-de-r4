@@ -216,8 +216,10 @@ Expression: "/* Detect Interval only */
 )"
 
 Invariant: TimingValuesPositiveWarning
-Description: "period, periodMax and boundsDuration.value should be greater than 0."
+Description: "period, periodMax, boundsDuration.value and boundsRange.high.value should be greater than 0; boundsRange.low.value should not be negative."
 Expression: "(period.exists() implies period > 0) and
 (periodMax.exists() implies periodMax > 0) and
-bounds.ofType(Duration).value.all($this > 0)"
+bounds.ofType(Duration).value.all($this > 0) and
+bounds.ofType(Range).low.value.all($this >= 0) and
+bounds.ofType(Range).high.value.all($this > 0)"
 Severity: #warning

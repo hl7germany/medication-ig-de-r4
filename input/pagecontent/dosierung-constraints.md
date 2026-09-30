@@ -145,10 +145,10 @@ Folgende Beispiele lösen eine Warnung aus:
 ##### TimingValuesPositiveWarning
 
 **Beschreibung:**
-Warnung in `TimingDE`, wenn `period`, `periodMax` oder `boundsDuration.value` nicht größer als `0` ist.
+Warnung in `TimingDE`, wenn `period`, `periodMax`, `boundsDuration.value` oder `boundsRange.high.value` nicht größer als `0` ist oder wenn `boundsRange.low.value` negativ ist.
 
 **Warum?**
-FHIR R4 verlangt über `tim-5` lediglich `period >= 0`; `periodMax` und `boundsDuration` sind in der Basis gar nicht eingeschränkt. Eine Periode von `0` („alle 0 Tage“) ist nicht definiert, auch nicht als Untergrenze eines Bereichs wie „alle 0 bis 3 Tage“, der offenlässt, ob „spätestens“ oder „höchstens alle 3 Tage“ gemeint ist. Eine Dauer von `0` („für 0 Tage“) beschreibt keine Anwendung. In den dgMP-Profilen gilt für denselben Sachverhalt der Fehler [TimingValuesPositive](#timingvaluespositive).
+FHIR R4 verlangt über `tim-5` lediglich `period >= 0`; `periodMax` und `boundsDuration` sind in der Basis gar nicht eingeschränkt. Eine Periode von `0` („alle 0 Tage“) ist nicht definiert, auch nicht als Untergrenze eines Bereichs wie „alle 0 bis 3 Tage“, der offenlässt, ob „spätestens“ oder „höchstens alle 3 Tage“ gemeint ist. Eine Dauer von `0` („für 0 Tage“) beschreibt keine Anwendung. `boundsRange` ist nur im DE-Profil zulässig; wie beim Dosisbereich bleibt `0` als Untergrenze erlaubt („bis zu 5 Tage“). In den dgMP-Profilen gilt für denselben Sachverhalt der Fehler [TimingValuesPositive](#timingvaluespositive).
 
 Folgende Beispiele lösen eine Warnung aus:
 

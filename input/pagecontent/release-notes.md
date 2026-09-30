@@ -6,6 +6,7 @@
   - Warnt, wenn ein Anlass (`extension[asNeededFor]`) ohne `asNeededBoolean = true` angegeben ist. `dos-1` lässt einen Anlass ohne `asNeeded` wie in FHIR R5 weiterhin zu; lesende Systeme werten ihn als Bedarfsdosierung. In den dgMP-Profilen bleibt der Fall über `AsNeededForRequiresAsNeeded` ein Fehler.
 - **`TimingValuesPositive` (`TimingDgMP`) und `TimingValuesPositiveWarning` (`TimingDE`) — neu** (HDB-971)
   - `period`, `periodMax` und `boundsDuration.value` müssen größer als 0 sein. FHIR R4 verlangt über `tim-5` nur `period >= 0`; `periodMax` und `boundsDuration` waren ungeprüft.
+  - In `TimingDE` zusätzlich `boundsRange`: `low` nicht negativ, `high` größer als 0.
 - **`DosageLimitsPositive` (`DosageDgMP`) und `DosageLimitsPositiveWarning` (`DosageDE`) — neu** (HDB-971)
   - Mindestabstand (`valueDuration.value`) und `maxDosePerPeriod` (`numerator.value`, `denominator.value`) müssen größer als 0 sein.
 - **`MaxDoseNotBelowDose` (`DosageDgMP`) — neu** (HDB-971)

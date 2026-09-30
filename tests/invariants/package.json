@@ -1,0 +1,11 @@
+{
+  "name": "invariant-tests",
+  "private": true,
+  "description": "Tabellengetriebene Tests der FHIRPath-Invarianten mit fhirpath.js",
+  "scripts": {
+    "test": "node run.js"
+  },
+  "dependencies": {
+    "fhirpath": "5.2.0"
+  }
+}

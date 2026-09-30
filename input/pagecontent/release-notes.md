@@ -7,7 +7,7 @@
   - Der Schlüssel erscheint in Validierungsmeldungen; Werkzeuge, die auf `DosageStructuredRequiresGeneratedText` abstellen, müssen angepasst werden.
 - **`FreeTextMatchesRenderedText` (`DosageDgMP`)** (HDB-947)
   - Bei einer Freitext-Dosierung muss `renderedDosageInstruction` vorhanden sein und `Dosage.text` exakt entsprechen. Zuvor wurde nur verglichen, wenn die Extension vorhanden war.
-- Beide Regeln entsprechen damit wieder dem Stand von 1.0.1.
+- Beide Regeln entsprechen damit wieder dem Stand von 1.0.1. In 1.0.2 waren sie aus Gründen der Rückwärtskompatibilität zurückgenommen worden, da 1.0.1 ein Patch-Release war; mit 2.0.0 als Major-Release gelten sie wieder.
 
 ### Release: 2.0.0-ballot
 

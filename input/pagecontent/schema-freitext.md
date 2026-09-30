@@ -17,3 +17,5 @@ Diese Dosierungsart wird daran erkannt, dass ausschließlich `Dosage.text` angeg
 Folgende FHIR-Path Expression auf Ebene von `Dosage` liefert die Angabe, ob es sich um das Schema handelt: `(text.exists() and timing.empty() and doseAndRate.empty())`
 
 Lesende Systeme werten entsprechend ausschließlich `Dosage.text` aus.
+
+Auch bei einer Freitext-Dosierung sind die Extensions `renderedDosageInstruction` und `GeneratedDosageInstructionsMeta` anzugeben. `renderedDosageInstruction` enthält den Freitext unverändert (siehe [DosageRequiresGeneratedText](./dosierung-constraints.html#dosagerequiresgeneratedtext) und [FreeTextMatchesRenderedText](./dosierung-constraints.html#freetextmatchesrenderedtext)).

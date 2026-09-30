@@ -1,7 +1,7 @@
 Extension: GeneratedDosageInstructionsMetaEx
 Id: GeneratedDosageInstructionsMeta
 Title: "Generated Dosage Instructions Meta"
-Description: "Diese Extension enthält die Metainformationen zur generierten textuellen Dosierungsanweisung, die auf Basis der bereitgestellten strukturierten Dosierungsinformationen erstellt wurde."
+Description: "Diese Extension enthält die Metainformationen zur textuellen Dosierungsanweisung in renderedDosageInstruction, die nach der Dosis-Textgenerierung erstellt wurde. Bei einer Freitext-Dosierung übernimmt die Textgenerierung den Freitext unverändert."
 Context: MedicationRequest, MedicationDispense, MedicationStatement
 * extension contains 
   language 1..1 MS and

@@ -1,3 +1,14 @@
+### Release: 2.0.0
+
+**Invarianten**
+
+- **`DosageRequiresGeneratedText` (`DosageDgMP`) — ersetzt `DosageStructuredRequiresGeneratedText`** (HDB-947)
+  - `GeneratedDosageInstructionsMeta` und `renderedDosageInstruction` sind unabhängig von der Art der Dosierung anzugeben, also auch bei Freitext. Zuvor galt die Pflicht nur für strukturierte Dosierungen.
+  - Der Schlüssel erscheint in Validierungsmeldungen; Werkzeuge, die auf `DosageStructuredRequiresGeneratedText` abstellen, müssen angepasst werden.
+- **`FreeTextMatchesRenderedText` (`DosageDgMP`)** (HDB-947)
+  - Bei einer Freitext-Dosierung muss `renderedDosageInstruction` vorhanden sein und `Dosage.text` exakt entsprechen. Zuvor wurde nur verglichen, wenn die Extension vorhanden war.
+- Beide Regeln entsprechen damit wieder dem Stand von 1.0.1.
+
 ### Release: 2.0.0-ballot
 
 Diese Version erweitert das dgMP-Dosiermodell erheblich: Dosierungen, die bisher

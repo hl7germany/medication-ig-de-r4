@@ -420,22 +420,22 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-DosageStructuredRequiresBoth-examples.md%}
 
-##### DosageStructuredRequiresGeneratedText
+##### DosageRequiresGeneratedText
 
 **Beschreibung:**  
-Liegt eine strukturierte Dosierung vor, muss die Extension `GeneratedDosageInstructionsMeta` existieren sowie genau eine der FHIR R5 RenderedDosageInstruction-Extensions passend zur Ressource (MedicationRequest/Dispense/Statement). Als strukturiert gilt eine Dosierung, bei der `doseAndRate` befüllt und `text` leer ist und die entweder ein `timing` trägt **oder** eine reine Bedarfsdosierung (`asNeededBoolean = true`) ist.
+Unabhängig von der Art der Dosierung (strukturiert, reine Bedarfsdosierung oder Freitext) müssen die Extension `GeneratedDosageInstructionsMeta` sowie eine der FHIR R5 RenderedDosageInstruction-Extensions passend zur Ressource (MedicationRequest/Dispense/Statement) vorhanden sein.
 
 **Warum?**  
-Dokumentiert, dass ein (maschinen-)generierter, patientenlesbarer Dosierungstext verfügbar ist und stellt die Nachvollziehbarkeit der Generierung sicher. Die reine Bedarfsdosierung ist ausdrücklich eingeschlossen: Sie kommt gemäß [DosageStructuredRequiresBoth](#dosagestructuredrequiresboth) ohne `timing` aus, ist aber ebenso renderbar wie jede andere strukturierte Dosierung — eine Anknüpfung allein an `timing` würde sie unbeabsichtigt von der Pflicht ausnehmen.
+Lesende Systeme finden den patientenlesbaren Dosierungstext damit immer in `renderedDosageInstruction`. Bei einer strukturierten Dosierung erzeugt ihn die Dosis-Textgenerierung, bei einer Freitext-Dosierung übernimmt sie den Freitext unverändert (siehe [FreeTextMatchesRenderedText](#freetextmatchesrenderedtext)). `GeneratedDosageInstructionsMeta` dokumentiert Sprache und Algorithmus-Version und macht die Generierung nachvollziehbar.
 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
-{% include dosage-constraint-DosageStructuredRequiresGeneratedText-examples.md%}
+{% include dosage-constraint-DosageRequiresGeneratedText-examples.md%}
 
 ##### FreeTextMatchesRenderedText
 
 **Beschreibung:**  
-Wenn eine Dosierung als reiner Freitext angegeben ist (nur `text`, kein `timing`/`doseAndRate`), muss der Wert in `dosageInstruction.text` exakt mit dem Wert in der Extension `renderedDosageInstruction` übereinstimmen.
+Wenn eine Dosierung als reiner Freitext angegeben ist (nur `text`, kein `timing`/`doseAndRate`), muss der Wert in `dosageInstruction.text` exakt mit dem Wert in der Extension `renderedDosageInstruction` übereinstimmen. Fehlt die Extension, ist der Constraint ebenfalls verletzt.
 
 **Warum?**  
 Verhindert Inkonsistenzen zwischen der Freitextangabe und der gerenderten Dosierungsanweisung. Dies stellt sicher, dass der vom Anwender eingegebene Freitext konsistent in der Extension für die Darstellung übernommen wird.

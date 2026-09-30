@@ -637,6 +637,18 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-MaxDoseSameUnitAsDose-examples.md%}
 
+##### MaxDoseNotBelowDose
+
+**Beschreibung:**
+`maxDosePerPeriod.numerator.value` darf nicht kleiner als die Einzeldosis sein: nicht kleiner als `doseQuantity.value` beziehungsweise bei einer variablen Dosis nicht kleiner als `doseRange.high.value`. Gleichheit ist zulässig.
+
+**Warum?**
+Eine Maximalmenge unterhalb der Einzeldosis widerspricht sich selbst: „je 2 Stück — nicht mehr als 1 Stück in 24 Stunden“ lässt sich nicht befolgen. Bei einem Dosisbereich muss auch die Obergrenze einmal gegeben werden können. Der Vergleich der Werte setzt dieselbe Einheit voraus, die [MaxDoseSameUnitAsDose](#maxdosesameunitasdose) sicherstellt.
+
+Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
+
+{% include dosage-constraint-MaxDoseNotBelowDose-examples.md%}
+
 ##### MaxDosePerPeriodOnly24hOr1d
 
 **Beschreibung:**  

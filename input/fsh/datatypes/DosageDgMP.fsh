@@ -16,6 +16,7 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
 * obeys DosageFourSlotPatternInText
 * obeys PatientInstructionIdentical
 * obeys MaxDoseSameUnitAsDose
+* obeys MaxDoseNotBelowDose
 * obeys MaxDosePerPeriodOnly24hOr1d
 * obeys MaxDoseOnlyPureAsNeeded
 * obeys DoseRangeHighRequiredWhenLowPresent
@@ -511,4 +512,14 @@ Expression: "modifierExtension.where(
 ).value.ofType(Duration).value.all($this > 0) and
 maxDosePerPeriod.numerator.value.all($this > 0) and
 maxDosePerPeriod.denominator.value.all($this > 0)"
+Severity: #error
+
+Invariant: MaxDoseNotBelowDose
+Description: "maxDosePerPeriod.numerator.value must not be smaller than the single dose (doseQuantity.value or doseRange.high.value)."
+Expression: "maxDosePerPeriod.numerator.value.empty() or (
+  (doseAndRate.dose.ofType(Quantity).value.empty() or
+   doseAndRate.dose.ofType(Quantity).value <= maxDosePerPeriod.numerator.value) and
+  (doseAndRate.dose.ofType(Range).high.value.empty() or
+   doseAndRate.dose.ofType(Range).high.value <= maxDosePerPeriod.numerator.value)
+)"
 Severity: #error

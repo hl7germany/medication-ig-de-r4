@@ -1,0 +1,308 @@
+[
+  {
+    "invariant": "dos-1",
+    "context": "Dosage",
+    "cases": [
+      {
+        "name": "Anlass, asNeeded true",
+        "dosage": {
+          "asNeededBoolean": true,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-Dosage.asNeededFor",
+              "valueCodeableConcept": {
+                "text": "Kopfschmerzen"
+              }
+            }
+          ],
+          "text": "x"
+        },
+        "expect": true
+      },
+      {
+        "name": "Anlass, asNeeded false",
+        "dosage": {
+          "asNeededBoolean": false,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-Dosage.asNeededFor",
+              "valueCodeableConcept": {
+                "text": "Kopfschmerzen"
+              }
+            }
+          ],
+          "text": "x"
+        },
+        "expect": false
+      },
+      {
+        "name": "Anlass, asNeeded fehlt",
+        "dosage": {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-Dosage.asNeededFor",
+              "valueCodeableConcept": {
+                "text": "Kopfschmerzen"
+              }
+            }
+          ],
+          "text": "x"
+        },
+        "expect": true
+      },
+      {
+        "name": "zwei Anlässe, asNeeded fehlt",
+        "dosage": {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-Dosage.asNeededFor",
+              "valueCodeableConcept": {
+                "text": "A"
+              }
+            },
+            {
+              "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-Dosage.asNeededFor",
+              "valueCodeableConcept": {
+                "text": "B"
+              }
+            }
+          ],
+          "text": "x"
+        },
+        "expect": true
+      },
+      {
+        "name": "kein Anlass, asNeeded false",
+        "dosage": {
+          "asNeededBoolean": false,
+          "text": "x"
+        },
+        "expect": true
+      },
+      {
+        "name": "kein Anlass, asNeeded fehlt",
+        "dosage": {
+          "text": "x"
+        },
+        "expect": true
+      },
+      {
+        "name": "fremde Extension",
+        "dosage": {
+          "extension": [
+            {
+              "url": "http://example.org/x",
+              "valueString": "x"
+            }
+          ],
+          "text": "x"
+        },
+        "expect": true
+      }
+    ]
+  },
+  {
+    "invariant": "AsNeededForRequiresAsNeededWarning",
+    "context": "Dosage",
+    "cases": [
+      {
+        "name": "Anlass, asNeeded true",
+        "dosage": {
+          "asNeededBoolean": true,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-Dosage.asNeededFor",
+              "valueCodeableConcept": {
+                "text": "Kopfschmerzen"
+              }
+            }
+          ],
+          "text": "x"
+        },
+        "expect": true
+      },
+      {
+        "name": "Anlass, asNeeded false",
+        "dosage": {
+          "asNeededBoolean": false,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-Dosage.asNeededFor",
+              "valueCodeableConcept": {
+                "text": "Kopfschmerzen"
+              }
+            }
+          ],
+          "text": "x"
+        },
+        "expect": false
+      },
+      {
+        "name": "Anlass, asNeeded fehlt",
+        "dosage": {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-Dosage.asNeededFor",
+              "valueCodeableConcept": {
+                "text": "Kopfschmerzen"
+              }
+            }
+          ],
+          "text": "x"
+        },
+        "expect": false
+      },
+      {
+        "name": "zwei Anlässe, asNeeded fehlt",
+        "dosage": {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-Dosage.asNeededFor",
+              "valueCodeableConcept": {
+                "text": "A"
+              }
+            },
+            {
+              "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-Dosage.asNeededFor",
+              "valueCodeableConcept": {
+                "text": "B"
+              }
+            }
+          ],
+          "text": "x"
+        },
+        "expect": false
+      },
+      {
+        "name": "kein Anlass, asNeeded false",
+        "dosage": {
+          "asNeededBoolean": false,
+          "text": "x"
+        },
+        "expect": true
+      },
+      {
+        "name": "kein Anlass, asNeeded fehlt",
+        "dosage": {
+          "text": "x"
+        },
+        "expect": true
+      },
+      {
+        "name": "fremde Extension",
+        "dosage": {
+          "extension": [
+            {
+              "url": "http://example.org/x",
+              "valueString": "x"
+            }
+          ],
+          "text": "x"
+        },
+        "expect": true
+      }
+    ]
+  },
+  {
+    "invariant": "AsNeededForRequiresAsNeeded",
+    "context": "Dosage",
+    "cases": [
+      {
+        "name": "Anlass, asNeeded true",
+        "dosage": {
+          "asNeededBoolean": true,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-Dosage.asNeededFor",
+              "valueCodeableConcept": {
+                "text": "Kopfschmerzen"
+              }
+            }
+          ],
+          "text": "x"
+        },
+        "expect": true
+      },
+      {
+        "name": "Anlass, asNeeded false",
+        "dosage": {
+          "asNeededBoolean": false,
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-Dosage.asNeededFor",
+              "valueCodeableConcept": {
+                "text": "Kopfschmerzen"
+              }
+            }
+          ],
+          "text": "x"
+        },
+        "expect": false
+      },
+      {
+        "name": "Anlass, asNeeded fehlt",
+        "dosage": {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-Dosage.asNeededFor",
+              "valueCodeableConcept": {
+                "text": "Kopfschmerzen"
+              }
+            }
+          ],
+          "text": "x"
+        },
+        "expect": false
+      },
+      {
+        "name": "zwei Anlässe, asNeeded fehlt",
+        "dosage": {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-Dosage.asNeededFor",
+              "valueCodeableConcept": {
+                "text": "A"
+              }
+            },
+            {
+              "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-Dosage.asNeededFor",
+              "valueCodeableConcept": {
+                "text": "B"
+              }
+            }
+          ],
+          "text": "x"
+        },
+        "expect": false
+      },
+      {
+        "name": "kein Anlass, asNeeded false",
+        "dosage": {
+          "asNeededBoolean": false,
+          "text": "x"
+        },
+        "expect": true
+      },
+      {
+        "name": "kein Anlass, asNeeded fehlt",
+        "dosage": {
+          "text": "x"
+        },
+        "expect": true
+      },
+      {
+        "name": "fremde Extension",
+        "dosage": {
+          "extension": [
+            {
+              "url": "http://example.org/x",
+              "valueString": "x"
+            }
+          ],
+          "text": "x"
+        },
+        "expect": true
+      }
+    ]
+  }
+]

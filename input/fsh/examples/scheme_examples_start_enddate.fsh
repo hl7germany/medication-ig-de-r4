@@ -59,6 +59,22 @@ Description: "Dieses Beispiel stellt einen Startzeitpunkt mit Zeitzone dar, der 
 * dosageInstruction[+]
   * timing.repeat
     * boundsPeriod
+      * start = "2026-06-05T04:30:45Z"
+    * when[+] = #MORN
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
+
+Instance: Example-MR-Dosage-1000-startdatetime-daychange
+InstanceOf: MedicationRequestDgMP
+Usage: #example
+Title: "Example-MR-Dosage-1000-startdatetime-daychange"
+Description: "Dieses Beispiel stellt einen Startzeitpunkt mit Zeitzone dar, bei dem durch die Umrechnung nach Europe/Berlin ein Tageswechsel entsteht (05.06. 23:30 UTC → 06.06. 01:30 Uhr)."
+* subject.display = "Patient"
+* status = #active
+* intent = #order
+* medicationCodeableConcept.text = "Ibuprofen 400mg"
+* dosageInstruction[+]
+  * timing.repeat
+    * boundsPeriod
       * start = "2026-06-05T23:30:45Z"
     * when[+] = #MORN
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"

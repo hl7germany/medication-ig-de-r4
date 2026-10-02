@@ -4,8 +4,8 @@ Die Seite beschreibt die hierfür geltenden technischen Anforderungen im dgMP-Ko
 
 | Information | Beschreibung | FHIR-Modellierung | Datentyp |
 | -------- | ------- | ------- | ------- |
-| Startdatum | Das Startdatum beziehungsweise der Startzeitpunkt legt fest, ab wann das Dosierschema anzuwenden ist.| `Timing.repeat.boundsPeriod.start` | [dateTime](https://hl7.org/fhir/R4/datatypes.html#dateTime) |
-| Enddatum | Das Enddatum beziehungsweise der Endzeitpunkt legt fest, bis wann das Dosierschema anzuwenden ist.| `Timing.repeat.boundsPeriod.end` | [dateTime](https://hl7.org/fhir/R4/datatypes.html#dateTime) |
+| Startdatum | Das Startdatum beziehungsweise der Startzeitpunkt legt fest, ab wann das Dosierschema anzuwenden ist. Ein Startzeitpunkt mit Uhrzeit bezeichnet die erste Gabe.| `Timing.repeat.boundsPeriod.start` | [dateTime](https://hl7.org/fhir/R4/datatypes.html#dateTime) |
+| Enddatum | Das Enddatum beziehungsweise der Endzeitpunkt legt fest, bis wann das Dosierschema anzuwenden ist. Ein Endzeitpunkt mit Uhrzeit bezeichnet die letzte Gabe.| `Timing.repeat.boundsPeriod.end` | [dateTime](https://hl7.org/fhir/R4/datatypes.html#dateTime) |
 
 Die Angabe von Start- und Enddatum definiert den zeitlichen Gültigkeitsbereich einer Dosieranweisung. Sie kann nicht mit der Dauer einer Anwendung (`.boundsDuration`) kombiniert werden.
 
@@ -21,6 +21,11 @@ Folgende weitere Beispiele sind in diesem IG dargestellt:
 | Dosierung mit Startzeitpunkt und Zeitzone | [Example-MR-Dosage-1000-startdatetime](MedicationRequest-Example-MR-Dosage-1000-startdatetime.html) |
 
 *Hinweis:* Für eine gute UI eignet es sich das Start-Datum in Kombination mit dem Uhrzeiten- oder Tageszeitenschema entsprechend der Eingabe des Nutzers vorzuschlagen.
+
+**Uhrzeit von Start und Ende im Uhrzeiten- und Tageszeitenschema**
+
+- Im Uhrzeitenschema (`timeOfDay`) muss eine Uhrzeit in `boundsPeriod.start` oder `boundsPeriod.end` einer der angegebenen Uhrzeiten entsprechen ([TimingBoundsPeriodMatchesTime](./dosierung-constraints.html#timingboundsperiodmatchestime)). Die Uhrzeit wird so verglichen, wie sie angegeben ist; sie ist daher in Ortszeit mit dem passenden Zeitzonenversatz anzugeben, z. B. `2026-06-05T08:00:00+02:00` zu `timeOfDay = 08:00:00`.
+- Im Tageszeitenschema (`when`) dürfen `boundsPeriod.start` und `boundsPeriod.end` nur ein Datum ohne Uhrzeit enthalten ([TimingBoundsPeriodNotForWhen](./dosierung-constraints.html#timingboundsperiodnotforwhen)). Tagesabschnitte wie „morgens“ haben keine feste Uhrzeit, mit der ein Startzeitpunkt abgeglichen werden könnte.
 
 ### Beispiel
 

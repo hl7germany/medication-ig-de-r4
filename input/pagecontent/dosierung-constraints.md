@@ -316,6 +316,30 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-TimingBoundsUnitMatchesCode-examples.md%}
 
+##### TimingBoundsPeriodMatchesTime
+
+**Beschreibung:**  
+Wird `timeOfDay` verwendet und enthält `boundsPeriod.start` oder `boundsPeriod.end` eine Uhrzeit, bezeichnet `start` die erste und `end` die letzte Gabe. Diese Uhrzeit muss deshalb in der Menge der Uhrzeiten (`timeOfDay`) aller `Dosage`-Elemente der Ressource enthalten sein. Verglichen wird die Uhrzeit so, wie sie angegeben ist; sie ist daher in Ortszeit mit passendem Zeitzonenversatz anzugeben. Ein reines Datum ist immer zulässig.
+
+**Warum?**  
+Ein Startzeitpunkt „ab 09:00 Uhr“ zu den Einnahmezeiten 08:00 und 20:00 Uhr lässt offen, ob die erste Gabe um 09:00 oder erst um 20:00 Uhr erfolgt. Liegt der Zeitpunkt auf einer Einnahmezeit, ist die erste beziehungsweise letzte Gabe eindeutig bestimmt. Siehe [Angabe von Start- und Enddatum](./schema-start-end-datum.html).
+
+Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
+
+{% include dosage-constraint-TimingBoundsPeriodMatchesTime-examples.md%}
+
+##### TimingBoundsPeriodNotForWhen
+
+**Beschreibung:**  
+Wird `when` verwendet, dürfen `boundsPeriod.start` und `boundsPeriod.end` nur ein Datum ohne Uhrzeit enthalten.
+
+**Warum?**  
+Tagesabschnitte wie „morgens“ (`MORN`) haben keine feste Uhrzeit. Ein Startzeitpunkt wie „ab 08:00 Uhr“ lässt sich ihnen nicht eindeutig zuordnen, sodass unklar bliebe, ob die Gabe am Starttag noch erfolgt. Siehe [Angabe von Start- und Enddatum](./schema-start-end-datum.html).
+
+Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
+
+{% include dosage-constraint-TimingBoundsPeriodNotForWhen-examples.md%}
+
 ##### TimingIntervalOnlyOneFrequency
 
 **Beschreibung:**  

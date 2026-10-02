@@ -1,5 +1,5 @@
 // Invalid examples for AsNeededForRequiresAsNeeded (error)
-// Ein Einnahmeanlass (extension[asNeededFor]) darf nur bei asNeededBoolean=true angegeben werden.
+// Ein Anlass (extension[asNeededFor]) darf nur bei asNeededBoolean=true angegeben werden.
 // Hier ist asNeededFor gesetzt, asNeededBoolean fehlt jedoch -> Verstoß.
 
 Instance: INV-C-AsNeededForRequiresAsNeeded-Request-01-of-03

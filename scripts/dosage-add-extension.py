@@ -91,13 +91,12 @@ def has_dosages(resource):
     return False
 
 def should_skip_extension_generation(filename: str) -> bool:
-    """Detect instances where extensions should NOT be generated at all (e.g., constraint test examples)."""
+    """Constraint-Beispiele, deren Extensions im FSH festgelegt sind (keine oder nur eine davon)."""
     name = os.path.basename(filename)
-    # Skip generation for constraint test examples that intentionally lack extensions
     skip_markers = (
         "Invalid-Dosage-C-DosageRequiresGeneratedText",
         "Invalid-Dosage-C-DosageStructuredRequiresGeneratedText",
-        "INV-C-DosageStructuredRequiresGeneratedText",
+        "INV-C-DosageRequiresGeneratedText",
     )
     return any(marker in name for marker in skip_markers)
 
@@ -151,14 +150,8 @@ def process_file(input_path, output_path, script_path, algorithm_version):
             json.dump(resource, f, indent=2, ensure_ascii=False)
         return
 
-    # Skip extension generation for constraint test examples
+    # Constraint-Beispiele unverändert übernehmen: weder Extensions erzeugen noch im FSH angegebene entfernen
     if should_skip_extension_generation(input_path):
-        # Remove any existing extensions (renderedDosageInstruction and GeneratedDosageInstructionsMeta)
-        if "extension" in resource:
-            resource["extension"] = filter_rendered_dosage_extensions(resource["extension"], resource_type)
-            if not resource["extension"]:
-                del resource["extension"]
-        # Write the file without extensions
         with open(output_path, 'w', encoding='utf-8') as f:
             json.dump(resource, f, indent=2, ensure_ascii=False)
         return

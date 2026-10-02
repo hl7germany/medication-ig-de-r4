@@ -1,7 +1,7 @@
 {
   "_comment": "Je erwartetem Constraint-Key: weitere Constraints, die dessen -C-Beispiele zusätzlich auslösen dürfen. Erzeugt mit --write-baseline; Änderungen im Review prüfen.",
   "AsNeededSingleDosageOnly": [
-    "DosageStructuredRequiresGeneratedText"
+    "DosageRequiresGeneratedText"
   ],
   "DosageDoseQuantityAllowedFractions": [
     "DosageDoseValueDecimalNotation"
@@ -14,63 +14,71 @@
   ],
   "DosageDoseValuePositive": [
     "DosageDoseValueDecimalNotation",
-    "DosageStructuredRequiresGeneratedText"
+    "DosageRequiresGeneratedText"
+  ],
+  "DosageRequiresGeneratedText": [
+    "FreeTextMatchesRenderedText"
   ],
   "DosageStructuredOrFreeText": [
+    "DosageRequiresGeneratedText",
     "DosageStructuredRequiresBoth"
   ],
+  "DosageStructuredRequiresBoth": [
+    "DosageRequiresGeneratedText"
+  ],
   "DoseRangeHighRequiredWhenLowPresent": [
-    "DosageStructuredRequiresGeneratedText"
+    "DosageRequiresGeneratedText"
   ],
   "DoseRangeLowAndHighSameUnit": [
     "DosageDoseUnitSameCode",
-    "DosageStructuredRequiresGeneratedText",
+    "DosageRequiresGeneratedText",
     "rng-2"
   ],
   "FreeTextSingleDosageOnly": [
     "FreeTextMatchesRenderedText"
   ],
   "MaxDoseOnlyPureAsNeeded": [
-    "DosageStructuredRequiresGeneratedText"
+    "DosageRequiresGeneratedText"
   ],
   "MaxDosePerPeriodOnly24hOr1d": [
-    "DosageStructuredRequiresGeneratedText"
+    "DosageRequiresGeneratedText"
   ],
   "MinimumIntervalOnlyPureAsNeeded": [
+    "DosageRequiresGeneratedText",
     "DosageStructuredRequiresBoth"
   ],
   "TimingOnlyOneDayOfWeek": [
-    "DosageStructuredRequiresGeneratedText"
+    "DosageRequiresGeneratedText"
   ],
   "TimingOnlyOnePeriodForDayOfWeek": [
-    "DosageStructuredRequiresGeneratedText",
+    "DosageRequiresGeneratedText",
     "TimingFrequencyCount",
     "TimingOnlyOneType",
     "TimingPeriodUnit"
   ],
   "TimingOnlyOneTimeForInterval": [
-    "DosageStructuredRequiresGeneratedText",
+    "DosageRequiresGeneratedText",
     "TimingOnlyOneType"
   ],
   "TimingOnlyOneTimeOfDay": [
-    "DosageStructuredRequiresGeneratedText",
+    "DosageRequiresGeneratedText",
     "TimingOnlyOneTimeForInterval"
   ],
   "TimingOnlyOneType": [
-    "DosageStructuredRequiresGeneratedText",
+    "DosageRequiresGeneratedText",
     "TimingIntervalOnlyOneFrequency",
     "TimingOnlyOneTimeForInterval"
   ],
   "TimingOnlyOneWhen": [
-    "DosageStructuredRequiresGeneratedText",
+    "DosageRequiresGeneratedText",
     "TimingFrequencyCount",
     "TimingOnlyOneTimeForInterval"
   ],
   "TimingOnlyWhenOrTimeOfDay": [
-    "DosageStructuredRequiresGeneratedText"
+    "DosageRequiresGeneratedText"
   ],
   "TimingPeriodUnit": [
-    "DosageStructuredRequiresGeneratedText",
+    "DosageRequiresGeneratedText",
     "TimingOnlyOneType"
   ]
 }

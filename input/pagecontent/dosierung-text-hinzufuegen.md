@@ -8,11 +8,11 @@ Eine zentrale fachliche und technische Herausforderung im digital gestützten Me
 
 ### Zielsetzung
 
-Um Missverständnisse und Abweichungen bei der Darstellung von Dosierungsanweisungen zu vermeiden, wird der Text zur strukturierten Dosierung **nach einem einheitlichen, standardisierten Algorithmus erzeugt**. Dabei sind die Primärsysteme verpflichtet, den Dosierungstext einer strukturierten Dosierung lokal zu generieren und in das entsprechende Feld ([Dosage.extension[GeneratedDosageInstructionsMeta]](./StructureDefinition-GeneratedDosageInstructionsMeta.html)) einzutragen. Die zentralen Dienste validieren dann, ob der generierte Text korrekt ist.
+Um Missverständnisse und Abweichungen bei der Darstellung von Dosierungsanweisungen zu vermeiden, wird der Text zur strukturierten Dosierung **nach einem einheitlichen, standardisierten Algorithmus erzeugt**. Dabei sind die Primärsysteme verpflichtet, den Dosierungstext lokal zu generieren und in der Extension `renderedDosageInstruction` der Ressource einzutragen; Sprache und Algorithmus-Version stehen in der Extension [GeneratedDosageInstructionsMeta](./StructureDefinition-GeneratedDosageInstructionsMeta.html). Die zentralen Dienste validieren dann, ob der generierte Text korrekt ist.
 
 ### Technische Umsetzung und Ablauf
 
-Sofern keine Freitextdosierung angegeben wird, erfolgt die Generierung und Bereitstellung des Dosierungstextes im Verordnungsprozess in folgenden Schritten:
+Die Generierung und Bereitstellung des Dosierungstextes erfolgt im Verordnungsprozess in den folgenden Schritten. Bei einer Freitextdosierung übernimmt die Textgenerierung den Freitext unverändert; `renderedDosageInstruction` und `GeneratedDosageInstructionsMeta` sind auch dann anzugeben.
 
 1. **Erstellung der Verordnung:**
    - Erfassende Systeme erzeugen die Verordnung mit vollständig strukturierten Dosierungsdaten.

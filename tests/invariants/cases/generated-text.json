@@ -1,0 +1,1066 @@
+[
+  {
+    "invariant": "DosageRequiresGeneratedText",
+    "context": "Dosage",
+    "cases": [
+      {
+        "name": "strukturiert, beide",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true,
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-{{resourceType}}.renderedDosageInstruction",
+            "valueMarkdown": "Morgens 1 Stück"
+          },
+          {
+            "url": "http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta",
+            "extension": [
+              {
+                "url": "algorithmVersion",
+                "valueString": "x"
+              },
+              {
+                "url": "language",
+                "valueCode": "de-DE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "strukturiert, keine",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": false
+      },
+      {
+        "name": "strukturiert, nur rendered",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": false,
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-{{resourceType}}.renderedDosageInstruction",
+            "valueMarkdown": "Morgens 1 Stück"
+          }
+        ]
+      },
+      {
+        "name": "strukturiert, nur Meta",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": false,
+        "extension": [
+          {
+            "url": "http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta",
+            "extension": [
+              {
+                "url": "algorithmVersion",
+                "valueString": "x"
+              },
+              {
+                "url": "language",
+                "valueCode": "de-DE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "strukturiert, beide, Text abweichend",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true,
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-{{resourceType}}.renderedDosageInstruction",
+            "valueMarkdown": "Abends 2 Stück"
+          },
+          {
+            "url": "http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta",
+            "extension": [
+              {
+                "url": "algorithmVersion",
+                "valueString": "x"
+              },
+              {
+                "url": "language",
+                "valueCode": "de-DE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "reiner Bedarf, beide",
+        "dosage": {
+          "asNeededBoolean": true,
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true,
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-{{resourceType}}.renderedDosageInstruction",
+            "valueMarkdown": "Morgens 1 Stück"
+          },
+          {
+            "url": "http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta",
+            "extension": [
+              {
+                "url": "algorithmVersion",
+                "valueString": "x"
+              },
+              {
+                "url": "language",
+                "valueCode": "de-DE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "reiner Bedarf, keine",
+        "dosage": {
+          "asNeededBoolean": true,
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": false
+      },
+      {
+        "name": "reiner Bedarf, nur rendered",
+        "dosage": {
+          "asNeededBoolean": true,
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": false,
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-{{resourceType}}.renderedDosageInstruction",
+            "valueMarkdown": "Morgens 1 Stück"
+          }
+        ]
+      },
+      {
+        "name": "reiner Bedarf, nur Meta",
+        "dosage": {
+          "asNeededBoolean": true,
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": false,
+        "extension": [
+          {
+            "url": "http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta",
+            "extension": [
+              {
+                "url": "algorithmVersion",
+                "valueString": "x"
+              },
+              {
+                "url": "language",
+                "valueCode": "de-DE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "reiner Bedarf, beide, Text abweichend",
+        "dosage": {
+          "asNeededBoolean": true,
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true,
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-{{resourceType}}.renderedDosageInstruction",
+            "valueMarkdown": "Abends 2 Stück"
+          },
+          {
+            "url": "http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta",
+            "extension": [
+              {
+                "url": "algorithmVersion",
+                "valueString": "x"
+              },
+              {
+                "url": "language",
+                "valueCode": "de-DE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Freitext, beide",
+        "dosage": {
+          "text": "Morgens 1 Stück"
+        },
+        "expect": true,
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-{{resourceType}}.renderedDosageInstruction",
+            "valueMarkdown": "Morgens 1 Stück"
+          },
+          {
+            "url": "http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta",
+            "extension": [
+              {
+                "url": "algorithmVersion",
+                "valueString": "x"
+              },
+              {
+                "url": "language",
+                "valueCode": "de-DE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Freitext, keine",
+        "dosage": {
+          "text": "Morgens 1 Stück"
+        },
+        "expect": false
+      },
+      {
+        "name": "Freitext, nur rendered",
+        "dosage": {
+          "text": "Morgens 1 Stück"
+        },
+        "expect": false,
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-{{resourceType}}.renderedDosageInstruction",
+            "valueMarkdown": "Morgens 1 Stück"
+          }
+        ]
+      },
+      {
+        "name": "Freitext, nur Meta",
+        "dosage": {
+          "text": "Morgens 1 Stück"
+        },
+        "expect": false,
+        "extension": [
+          {
+            "url": "http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta",
+            "extension": [
+              {
+                "url": "algorithmVersion",
+                "valueString": "x"
+              },
+              {
+                "url": "language",
+                "valueCode": "de-DE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Freitext, beide, Text abweichend",
+        "dosage": {
+          "text": "Morgens 1 Stück"
+        },
+        "expect": true,
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-{{resourceType}}.renderedDosageInstruction",
+            "valueMarkdown": "Abends 2 Stück"
+          },
+          {
+            "url": "http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta",
+            "extension": [
+              {
+                "url": "algorithmVersion",
+                "valueString": "x"
+              },
+              {
+                "url": "language",
+                "valueCode": "de-DE"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "invariant": "FreeTextMatchesRenderedText",
+    "context": "Dosage",
+    "cases": [
+      {
+        "name": "strukturiert, beide",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true,
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-{{resourceType}}.renderedDosageInstruction",
+            "valueMarkdown": "Morgens 1 Stück"
+          },
+          {
+            "url": "http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta",
+            "extension": [
+              {
+                "url": "algorithmVersion",
+                "valueString": "x"
+              },
+              {
+                "url": "language",
+                "valueCode": "de-DE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "strukturiert, keine",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "strukturiert, nur rendered",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true,
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-{{resourceType}}.renderedDosageInstruction",
+            "valueMarkdown": "Morgens 1 Stück"
+          }
+        ]
+      },
+      {
+        "name": "strukturiert, nur Meta",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true,
+        "extension": [
+          {
+            "url": "http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta",
+            "extension": [
+              {
+                "url": "algorithmVersion",
+                "valueString": "x"
+              },
+              {
+                "url": "language",
+                "valueCode": "de-DE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "strukturiert, beide, Text abweichend",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true,
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-{{resourceType}}.renderedDosageInstruction",
+            "valueMarkdown": "Abends 2 Stück"
+          },
+          {
+            "url": "http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta",
+            "extension": [
+              {
+                "url": "algorithmVersion",
+                "valueString": "x"
+              },
+              {
+                "url": "language",
+                "valueCode": "de-DE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "reiner Bedarf, beide",
+        "dosage": {
+          "asNeededBoolean": true,
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true,
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-{{resourceType}}.renderedDosageInstruction",
+            "valueMarkdown": "Morgens 1 Stück"
+          },
+          {
+            "url": "http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta",
+            "extension": [
+              {
+                "url": "algorithmVersion",
+                "valueString": "x"
+              },
+              {
+                "url": "language",
+                "valueCode": "de-DE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "reiner Bedarf, keine",
+        "dosage": {
+          "asNeededBoolean": true,
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "reiner Bedarf, nur rendered",
+        "dosage": {
+          "asNeededBoolean": true,
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true,
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-{{resourceType}}.renderedDosageInstruction",
+            "valueMarkdown": "Morgens 1 Stück"
+          }
+        ]
+      },
+      {
+        "name": "reiner Bedarf, nur Meta",
+        "dosage": {
+          "asNeededBoolean": true,
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true,
+        "extension": [
+          {
+            "url": "http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta",
+            "extension": [
+              {
+                "url": "algorithmVersion",
+                "valueString": "x"
+              },
+              {
+                "url": "language",
+                "valueCode": "de-DE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "reiner Bedarf, beide, Text abweichend",
+        "dosage": {
+          "asNeededBoolean": true,
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true,
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-{{resourceType}}.renderedDosageInstruction",
+            "valueMarkdown": "Abends 2 Stück"
+          },
+          {
+            "url": "http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta",
+            "extension": [
+              {
+                "url": "algorithmVersion",
+                "valueString": "x"
+              },
+              {
+                "url": "language",
+                "valueCode": "de-DE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Freitext, beide",
+        "dosage": {
+          "text": "Morgens 1 Stück"
+        },
+        "expect": true,
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-{{resourceType}}.renderedDosageInstruction",
+            "valueMarkdown": "Morgens 1 Stück"
+          },
+          {
+            "url": "http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta",
+            "extension": [
+              {
+                "url": "algorithmVersion",
+                "valueString": "x"
+              },
+              {
+                "url": "language",
+                "valueCode": "de-DE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Freitext, keine",
+        "dosage": {
+          "text": "Morgens 1 Stück"
+        },
+        "expect": false
+      },
+      {
+        "name": "Freitext, nur rendered",
+        "dosage": {
+          "text": "Morgens 1 Stück"
+        },
+        "expect": true,
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-{{resourceType}}.renderedDosageInstruction",
+            "valueMarkdown": "Morgens 1 Stück"
+          }
+        ]
+      },
+      {
+        "name": "Freitext, nur Meta",
+        "dosage": {
+          "text": "Morgens 1 Stück"
+        },
+        "expect": false,
+        "extension": [
+          {
+            "url": "http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta",
+            "extension": [
+              {
+                "url": "algorithmVersion",
+                "valueString": "x"
+              },
+              {
+                "url": "language",
+                "valueCode": "de-DE"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Freitext, beide, Text abweichend",
+        "dosage": {
+          "text": "Morgens 1 Stück"
+        },
+        "expect": false,
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-{{resourceType}}.renderedDosageInstruction",
+            "valueMarkdown": "Abends 2 Stück"
+          },
+          {
+            "url": "http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta",
+            "extension": [
+              {
+                "url": "algorithmVersion",
+                "valueString": "x"
+              },
+              {
+                "url": "language",
+                "valueCode": "de-DE"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "invariant": "DosageRequiresGeneratedText",
+    "context": "Dosage",
+    "resourceTypes": [
+      "MedicationRequest",
+      "MedicationDispense"
+    ],
+    "cases": [
+      {
+        "name": "strukturiert, rendered von MedicationStatement",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-MedicationStatement.renderedDosageInstruction",
+            "valueMarkdown": "Morgens 1 Stück"
+          },
+          {
+            "url": "http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta",
+            "extension": [
+              {
+                "url": "algorithmVersion",
+                "valueString": "x"
+              },
+              {
+                "url": "language",
+                "valueCode": "de-DE"
+              }
+            ]
+          }
+        ],
+        "expect": true
+      },
+      {
+        "name": "reiner Bedarf, rendered von MedicationStatement",
+        "dosage": {
+          "asNeededBoolean": true,
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-MedicationStatement.renderedDosageInstruction",
+            "valueMarkdown": "Morgens 1 Stück"
+          },
+          {
+            "url": "http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta",
+            "extension": [
+              {
+                "url": "algorithmVersion",
+                "valueString": "x"
+              },
+              {
+                "url": "language",
+                "valueCode": "de-DE"
+              }
+            ]
+          }
+        ],
+        "expect": true
+      },
+      {
+        "name": "Freitext, rendered von MedicationStatement",
+        "dosage": {
+          "text": "Morgens 1 Stück"
+        },
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-MedicationStatement.renderedDosageInstruction",
+            "valueMarkdown": "Morgens 1 Stück"
+          },
+          {
+            "url": "http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta",
+            "extension": [
+              {
+                "url": "algorithmVersion",
+                "valueString": "x"
+              },
+              {
+                "url": "language",
+                "valueCode": "de-DE"
+              }
+            ]
+          }
+        ],
+        "expect": true
+      }
+    ]
+  },
+  {
+    "invariant": "FreeTextMatchesRenderedText",
+    "context": "Dosage",
+    "resourceTypes": [
+      "MedicationRequest",
+      "MedicationDispense"
+    ],
+    "cases": [
+      {
+        "name": "strukturiert, rendered von MedicationStatement",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-MedicationStatement.renderedDosageInstruction",
+            "valueMarkdown": "Morgens 1 Stück"
+          },
+          {
+            "url": "http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta",
+            "extension": [
+              {
+                "url": "algorithmVersion",
+                "valueString": "x"
+              },
+              {
+                "url": "language",
+                "valueCode": "de-DE"
+              }
+            ]
+          }
+        ],
+        "expect": true
+      },
+      {
+        "name": "reiner Bedarf, rendered von MedicationStatement",
+        "dosage": {
+          "asNeededBoolean": true,
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-MedicationStatement.renderedDosageInstruction",
+            "valueMarkdown": "Morgens 1 Stück"
+          },
+          {
+            "url": "http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta",
+            "extension": [
+              {
+                "url": "algorithmVersion",
+                "valueString": "x"
+              },
+              {
+                "url": "language",
+                "valueCode": "de-DE"
+              }
+            ]
+          }
+        ],
+        "expect": true
+      },
+      {
+        "name": "Freitext, rendered von MedicationStatement",
+        "dosage": {
+          "text": "Morgens 1 Stück"
+        },
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-MedicationStatement.renderedDosageInstruction",
+            "valueMarkdown": "Morgens 1 Stück"
+          },
+          {
+            "url": "http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta",
+            "extension": [
+              {
+                "url": "algorithmVersion",
+                "valueString": "x"
+              },
+              {
+                "url": "language",
+                "valueCode": "de-DE"
+              }
+            ]
+          }
+        ],
+        "expect": false
+      }
+    ]
+  }
+]

@@ -5,6 +5,7 @@ Thumbs.db
 /input-cache
 /output
 /temp
+_temp/
 /template
 /medication-no-sushi/
 __pycache__

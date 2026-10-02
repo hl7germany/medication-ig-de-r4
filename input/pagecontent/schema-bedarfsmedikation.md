@@ -41,6 +41,8 @@ Folgende FHIRPath Expression auf Ebene von `Dosage` liefert die Angabe, ob es si
 asNeeded.ofType(boolean) = true and timing.empty()
 ```
 
+Eine reine Bedarfsdosierung erlaubt genau ein `Dosage`-Element in der Ressource (siehe Constraint [AsNeededSingleDosageOnly](./dosierung-constraints.html#asneededsingledosageonly)). Liegt eine reine Bedarfsdosierung vor, dürfen keine weiteren `Dosage`-Elemente vorhanden sein, da sich mehrere Bedarfsdosen ohne zeitliche Zuordnung nicht eindeutig zu einer gemeinsamen Dosierungsanweisung aggregieren lassen.
+
 Für eine Bedarfsmedikation ist `asNeededBoolean = true` verpflichtend. Der Anlass `asNeededFor` ist optional; umgekehrt darf `asNeededFor` nur bei `asNeededBoolean = true` angegeben werden.
 
 Der Anlass wird als Freitext in `extension[asNeededFor].valueCodeableConcept.text` angegeben. Mehrere `asNeededFor`-Extensions können verwendet werden; sie sind fachlich als ODER-Verknüpfung zu interpretieren.
@@ -57,7 +59,7 @@ Für die konkrete Interpretation der Dosierung gelten in diesem Fall die Regeln 
 
 Die einzunehmende Menge wird wie in den anderen strukturierten Dosierschemata über `doseAndRate.doseQuantity` angegeben.
 
-Bei einer reinen Bedarfsdosierung wird `timing` nicht befüllt.
+Bei einer reinen Bedarfsdosierung wird `timing` nicht befüllt (folglich ist hierfür auch kein Anwendungszeitraum über `bounds[x]` vorgesehen).
 
 Der Mindestabstand zwischen zwei Gaben wird über die Modifier Extension `modifierExtension[MinimumIntervalBetweenAdministrations].valueDuration` angegeben.
 

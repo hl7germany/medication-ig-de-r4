@@ -83,6 +83,8 @@ pages:
     title: Angabe der Anwendungsdauer
   dosierung-beispiele.md:
     title: Beispielliste Dosierung
+  migration-1.0.7-2.0.0.md:
+    title: Migration von Dosierungen 1.0.7 auf 2.0.0
   artifacts.html:
     title: FHIR Summary
   downloads.md:
@@ -122,6 +124,7 @@ menu:
     dgMP Rahmenvorgaben: dosierung-dgmp.html
     Dosis Textgenerierung: dosierung-textgenerierung.html
     Bereitstellung des Dosierungstextes: dosierung-text-hinzufuegen.html
+    Migration v1 zu v2: migration-1.0.7-2.0.0.html
     Übersicht der Timing & Dosierungs-Invarianten: dosierung-constraints.html
   Dosierschemata:
     Freitext-Dosierung: schema-freitext.html

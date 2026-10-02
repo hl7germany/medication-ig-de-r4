@@ -1,0 +1,8 @@
+| File | doseQuantity | duration | durationUnit | frequency | period | periodUnit | Day<br>of<br>Week | Time<br>Of<br>Day | when | bounds[x] |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| [MedicationDispense-INV-C-TimingBoundsPeriodNotForWhen-MD-01-of-02](./MedicationDispense-INV-C-TimingBoundsPeriodNotForWhen-MD-01-of-02.html) | 1 Stück |  |  |  |  |  |  |  | MORN | Period = 2026-06-05T08:00:00+02:00 - |
+| [MedicationDispense-INV-C-TimingBoundsPeriodNotForWhen-MD-02-of-02](./MedicationDispense-INV-C-TimingBoundsPeriodNotForWhen-MD-02-of-02.html) | 1 Stück |  |  |  |  |  |  |  | MORN | Period = 2026-06-05 - 2026-07-05T08:00:00+02:00 |
+| [MedicationRequest-INV-C-TimingBoundsPeriodNotForWhen-MR-01-of-02](./MedicationRequest-INV-C-TimingBoundsPeriodNotForWhen-MR-01-of-02.html) | 1 Stück |  |  |  |  |  |  |  | MORN | Period = 2026-06-05T08:00:00+02:00 - |
+| [MedicationRequest-INV-C-TimingBoundsPeriodNotForWhen-MR-02-of-02](./MedicationRequest-INV-C-TimingBoundsPeriodNotForWhen-MR-02-of-02.html) | 1 Stück |  |  |  |  |  |  |  | MORN | Period = 2026-06-05 - 2026-07-05T08:00:00+02:00 |
+| [MedicationStatement-INV-C-TimingBoundsPeriodNotForWhen-MS-01-of-02](./MedicationStatement-INV-C-TimingBoundsPeriodNotForWhen-MS-01-of-02.html) | 1 Stück |  |  |  |  |  |  |  | MORN | Period = 2026-06-05T08:00:00+02:00 - |
+| [MedicationStatement-INV-C-TimingBoundsPeriodNotForWhen-MS-02-of-02](./MedicationStatement-INV-C-TimingBoundsPeriodNotForWhen-MS-02-of-02.html) | 1 Stück |  |  |  |  |  |  |  | MORN | Period = 2026-06-05 - 2026-07-05T08:00:00+02:00 |

@@ -4,6 +4,11 @@
 
 - **`AsNeededForRequiresAsNeededWarning` (`DosageDE`) — neu** (HDB-924)
   - Warnt, wenn ein Anlass (`extension[asNeededFor]`) ohne `asNeededBoolean = true` angegeben ist. `dos-1` lässt einen Anlass ohne `asNeeded` wie in FHIR R5 weiterhin zu; lesende Systeme werten ihn als Bedarfsdosierung. In den dgMP-Profilen bleibt der Fall über `AsNeededForRequiresAsNeeded` ein Fehler.
+- **`TimingBoundsPeriodMatchesTime` (`TimingDgMP`) — neu**
+  - Im Uhrzeitenschema (`timeOfDay`) muss eine Uhrzeit in `boundsPeriod.start` oder `boundsPeriod.end` einer der angegebenen Uhrzeiten entsprechen.
+- **`TimingBoundsPeriodNotForWhen` (`TimingDgMP`) — neu**
+  - Im Tageszeitenschema (`when`) dürfen `boundsPeriod.start` und `boundsPeriod.end` keine Uhrzeit enthalten.
+  - Das Beispiel `Example-MR-Dosage-1000-startdatetime` verwendet deshalb jetzt das Uhrzeitenschema.
 
 ### Release: 2.0.0-ballot
 

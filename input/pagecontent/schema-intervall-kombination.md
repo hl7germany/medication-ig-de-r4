@@ -10,10 +10,10 @@ Folgende weitere Beispiele sind in diesem IG dargestellt:
 
 | Beispiel    | Beipspiel Datei |
 | -------- | ------- |
-| Jeden 2. Tag 1 Stück um 08:00 Uhr und 2 Stück um 18:00 Uhr  | [Example-MR-Dosage-comb-interval-1](./MedicationRequest-Example-MR-Dosage-comb-interval-1.html)    |  |
-| Wöchentlich 1 Stück morgens  | [Example-MR-Dosage-comb-interval-2](./MedicationRequest-Example-MR-Dosage-comb-interval-2.html)    |
-| Jeden 2. Tag 1 Stück um 08:00 Uhr und jeden 2. Tag 1 Stück um 08:00 Uhr  | [Example-MR-Dosage-comb-interval-3](./MedicationRequest-Example-MR-Dosage-comb-interval-3.html)    |
-| Jeden 2. Tag 1 Stück um 08:00 und 20:00 Uhr sowie 2 Stück um 10:00, 14:00 und 22:00 Uhr (ohne `frequency`)  | [Example-MR-Dosage-comb-interval-4](./MedicationRequest-Example-MR-Dosage-comb-interval-4.html)    |
+| alle 2 Tage: 08:00 Uhr — je 1 Stück, 18:00 Uhr — je 2 Stück  | [Example-MR-Dosage-comb-interval-1](./MedicationRequest-Example-MR-Dosage-comb-interval-1.html)    |  |
+| wöchentlich: morgens — je 1 Stück  | [Example-MR-Dosage-comb-interval-2](./MedicationRequest-Example-MR-Dosage-comb-interval-2.html)    |
+| alle 2 Tage: 08:00 Uhr — je 1 Stück, 20:00 Uhr — je 2 Stück  | [Example-MR-Dosage-comb-interval-3](./MedicationRequest-Example-MR-Dosage-comb-interval-3.html)    |
+| alle 2 Tage: 08:00 Uhr — je 1 Stück, 10:00 Uhr — je 2 Stück, 14:00 Uhr — je 2 Stück, 20:00 Uhr — je 1 Stück, 22:00 Uhr — je 2 Stück | [Example-MR-Dosage-comb-interval-4](./MedicationRequest-Example-MR-Dosage-comb-interval-4.html)    |
 
 ### Angabe und Erkennung der Dosierart 
 

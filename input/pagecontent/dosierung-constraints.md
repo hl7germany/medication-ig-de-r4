@@ -173,6 +173,8 @@ Bei einer reinen Intervallangabe darf von Frequenz und Periode nur **eine** grö
 **Warum?**  
 Eine Angabe, in der beide größer als `1` sind, ist sprachlich schwer auszudrücken und fachlich nicht erforderlich: „6 x innerhalb von 3 Stunden" lässt sich als „alle 30 Minuten" formulieren, „2 x alle 8 Stunden" als „alle 4 Stunden". Die Periode wird dazu entsprechend angepasst.
 
+Damit ist auch die Kombination aus variabler Frequenz und variabler Periode ausgeschlossen, etwa „1 bis 3 x alle 2 bis 3 Tage". `frequencyMax` ist stets größer als `frequency` und damit mindestens `2`, `periodMax` ebenso. Zwei Bereiche zugleich ergeben eine Gesamtspanne – hier von einer Gabe in drei Tagen bis zu drei Gaben in zwei Tagen –, die sich weder eindeutig formulieren noch in einen Einnahmeplan überführen lässt. Einer der beiden Bereiche genügt: „1 bis 3 x täglich" oder „alle 2 bis 3 Tage".
+
 Bei `when`, `timeOfDay` oder `dayOfWeek` greift die Regel nicht. Dort legen die konkreten Zeitpunkte die Zahl der Gaben fest, und eine Periode größer als `1` beschreibt den Abstand der Anwendungstage — „alle 2 Tage: morgens, abends" ist zulässig.
 
 Im generischen Profil `TimingDE` gilt die Regel als Warnung (`TimingFreqOrPeriodGtOneWarning`).

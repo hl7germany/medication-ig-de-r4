@@ -184,7 +184,7 @@ Expression: "bounds.ofType(Duration).exists().not() or (
 Severity: #warning
 
 Invariant: TimingFreqOrPeriodGtOneWarning
-Description: "If frequency and period are given together, only one of them may exceed 1 - either the frequency including frequencyMax or the period including periodMax. A statement in which both exceed 1, such as 'six times within three hours', is hard to express in language and is not needed: the same meaning can be conveyed by adapting the period, e.g. 'every 30 minutes'."
+Description: "If frequency and period are given together, only one of them may exceed 1 - either the frequency including frequencyMax or the period including periodMax. A statement in which both exceed 1, such as 'six times within three hours', is hard to express in language and is not needed: the same meaning can be conveyed by adapting the period, e.g. 'every 30 minutes'. This also rules out combining a variable frequency with a variable period, such as '1 to 3 times every 2 to 3 days', because frequencyMax and periodMax are then both greater than 1."
 Severity: #warning
 Expression: "/* Detect Interval only */
 (

@@ -1,0 +1,70 @@
+name: IG-Build und Invariantentests
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  invariant-tests:
+    name: Invariantentests (fhirpath.js)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: tests/invariants
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: tests/invariants/package-lock.json
+      - run: npm ci
+      - run: npm test
+
+  ig-build:
+    name: IG-Build und Prüfung der Beispiele
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+      - name: SUSHI und Jekyll installieren
+        run: |
+          npm install -g fsh-sushi@3.20.1
+          gem install jekyll --no-document
+      - name: FHIR-Paketcache
+        uses: actions/cache@v4
+        with:
+          path: ~/.fhir/packages
+          key: fhir-packages-${{ hashFiles('sushi-config.yaml') }}
+      - name: IG Publisher laden
+        run: |
+          mkdir -p input-cache
+          curl -fsSL -o input-cache/publisher.jar https://github.com/HL7/fhir-ig-publisher/releases/latest/download/publisher.jar
+          java -jar input-cache/publisher.jar -v
+      - name: Build und Prüfung der Beispiele
+        run: bash scripts/build-ig.sh
+      - name: Erzeugte Includes entsprechen dem Repo-Stand
+        run: git diff --exit-code -- input/
+      - name: QA-Bericht sichern
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa
+          path: |
+            output/qa.html
+            output/qa.xml
+          if-no-files-found: ignore

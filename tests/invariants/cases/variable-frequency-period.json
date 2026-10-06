@@ -1,0 +1,252 @@
+[
+  {
+    "invariant": "TimingVarFreqGtMin",
+    "context": "Timing.repeat",
+    "cases": [
+      {
+        "name": "1 bis 2",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "periodUnit": "d",
+              "frequency": 1,
+              "frequencyMax": 2,
+              "period": 1
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "9 bis 10 (mehrstellig)",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "periodUnit": "d",
+              "frequency": 9,
+              "frequencyMax": 10,
+              "period": 1
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "2 bis 2",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "periodUnit": "d",
+              "frequency": 2,
+              "frequencyMax": 2,
+              "period": 1
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": false
+      },
+      {
+        "name": "10 bis 9",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "periodUnit": "d",
+              "frequency": 10,
+              "frequencyMax": 9,
+              "period": 1
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": false
+      },
+      {
+        "name": "ohne frequencyMax",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "periodUnit": "d",
+              "frequency": 3,
+              "period": 1
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      }
+    ]
+  },
+  {
+    "invariant": "TimingVarPeriodGtMin",
+    "context": "Timing.repeat",
+    "cases": [
+      {
+        "name": "4 bis 6",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "periodUnit": "d",
+              "frequency": 1,
+              "period": 4,
+              "periodMax": 6
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "9 bis 10 (mehrstellig)",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "periodUnit": "d",
+              "frequency": 1,
+              "period": 9,
+              "periodMax": 10
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "6 bis 6",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "periodUnit": "d",
+              "frequency": 1,
+              "period": 6,
+              "periodMax": 6
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": false
+      },
+      {
+        "name": "6 bis 4",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "periodUnit": "d",
+              "frequency": 1,
+              "period": 6,
+              "periodMax": 4
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": false
+      },
+      {
+        "name": "ohne periodMax",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "periodUnit": "d",
+              "frequency": 1,
+              "period": 2
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      }
+    ]
+  }
+]

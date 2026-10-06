@@ -1,4 +1,5 @@
 import os
+import sys
 import xml.etree.ElementTree as ET
 import re
 import json
@@ -6,6 +7,10 @@ import json
 # Path to qa.xml (relative to script)
 xml_path = os.path.join(os.path.dirname(__file__), "../output/qa.xml")
 resources_dir = os.path.join(os.path.dirname(__file__), "../fsh-generated/resources")
+qa_html_path = os.path.join(os.path.dirname(__file__), "../output/qa.html")
+# Zusätzliche Constraints, die ein -C-Beispiel neben dem erwarteten auslösen darf (siehe unten)
+baseline_path = os.path.join(os.path.dirname(__file__), "expected-additional-constraints.json")
+WRITE_BASELINE = "--write-baseline" in sys.argv
 
 # FHIR namespace
 FHIR_NS = {'fhir': 'http://hl7.org/fhir'}
@@ -286,3 +291,96 @@ if warning_missing_coverage:
     for key, missing_types, covered_types in warning_missing_coverage:
         covered_text = ", ".join(covered_types) if covered_types else "<none>"
         print(f"- {key}: missing {', '.join(missing_types)} (covered: {covered_text})")
+
+
+# --- Isolierte Negativbeispiele ---------------------------------------------------------
+# Ein -C-Beispiel soll nur seinen eigenen Constraint verletzen. Löst es weitere aus, kann es
+# eine zu lockere Regel verdecken: So lösten die dos-1-Beispiele auf den dgMP-Profilen immer
+# auch den strengeren dgMP-Fehler aus, und dass dos-1 selbst zu locker war, fiel nicht auf.
+# Bekannte, fachlich unvermeidbare Nebeneffekte stehen je erwartetem Key in
+# scripts/expected-additional-constraints.json. Neue Nebeneffekte schlagen fehl, bis sie dort
+# bewusst eingetragen sind (python3 scripts/ig-expected-error-check.py --write-baseline).
+print("\n==Isolation Check (zusätzliche Fehler in -C-Beispielen)==")
+baseline = {}
+if os.path.isfile(baseline_path):
+    with open(baseline_path, "r", encoding="utf-8") as f:
+        baseline = {k: set(v) for k, v in json.load(f).items() if not k.startswith("_")}
+observed_extra = {}
+isolation_violations = []
+for filename, observed in sorted(error_constraint_keys_by_file.items()):
+    candidates = extract_expected_constraint_keys(filename, "-C-")
+    if not candidates:
+        continue
+    expected = next((c for c in candidates if c in observed), candidates[-1])
+    extra = observed - set(candidates)
+    if not extra:
+        continue
+    observed_extra.setdefault(expected, set()).update(extra)
+    not_allowed = extra - baseline.get(expected, set())
+    if not_allowed:
+        isolation_violations.append((filename, expected, sorted(not_allowed)))
+if WRITE_BASELINE:
+    data = {"_comment": "Je erwartetem Constraint-Key: weitere Constraints, die dessen -C-Beispiele zusätzlich auslösen dürfen. Erzeugt mit --write-baseline; Änderungen im Review prüfen."}
+    data.update({k: sorted(v) for k, v in sorted(observed_extra.items())})
+    with open(baseline_path, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2, ensure_ascii=False)
+        f.write("\n")
+    print(f"Baseline geschrieben: {len(observed_extra)} Keys mit zusätzlichen Constraints")
+    isolation_violations = []
+print(f"{len(isolation_violations)} Beispiele mit nicht eingetragenen zusätzlichen Constraints")
+for filename, expected, extra in isolation_violations:
+    print(f"- {filename}: erwartet {expected}, zusätzlich {', '.join(extra)}")
+
+# --- Fehlerbeispiele für DE-Regeln auf DE-Profilen -----------------------------------------
+# Ein Fehler, den DosageDE/TimingDE definieren, muss auf einem DE-Profil getestet werden.
+# Auf einem dgMP-Profil greift zusätzlich die strengere dgMP-Regel und verdeckt die DE-Regel.
+print("\n==DE-Fehler auf DE-Profilen==")
+de_error_keys = set()
+for name in os.listdir(resources_dir):
+    if name.startswith("StructureDefinition-") and name.endswith(".json"):
+        with open(os.path.join(resources_dir, name), "r", encoding="utf-8") as f:
+            sd = json.load(f)
+        if sd.get("name") in ("DosageDE", "TimingDE"):
+            for element in sd.get("differential", {}).get("element", []):
+                for constraint in element.get("constraint") or []:
+                    if constraint.get("severity") == "error":
+                        de_error_keys.add(constraint.get("key"))
+profile_violations = []
+for filename in sorted(os.listdir(resources_dir)):
+    candidates = extract_expected_constraint_keys(filename, "-C-")
+    if not candidates or not any(c in de_error_keys for c in candidates):
+        continue
+    with open(os.path.join(resources_dir, filename), "r", encoding="utf-8") as f:
+        profiles = json.load(f).get("meta", {}).get("profile", [])
+    if not any(p.endswith("DE") for p in profiles):
+        profile_violations.append((filename, profiles))
+print(f"{len(profile_violations)} Fehlerbeispiele für DE-Regeln ohne DE-Profil")
+for filename, profiles in profile_violations:
+    print(f"- {filename}: {', '.join(profiles) or '<kein Profil>'}")
+
+# --- Links ---------------------------------------------------------------------------------
+print("\n==Broken Links==")
+broken_links = 0
+if os.path.isfile(qa_html_path):
+    with open(qa_html_path, "r", encoding="utf-8") as f:
+        match = re.search(r"broken links = (\d+)", f.read())
+    broken_links = int(match.group(1)) if match else 0
+print(f"{broken_links} Broken Links (Details in output/qa.html)")
+
+# --- Ergebnis ------------------------------------------------------------------------------
+failed = {
+    "unerwartete Fehler": unexpected_errors,
+    "False Positives": len(false_positive_files),
+    "Beispiele ohne erwarteten Fehler-Key": len(constraint_missing_expected),
+    "Beispiele ohne erwarteten Warn-Key": len(warning_missing_expected),
+    "Fehler-Constraints ohne Abdeckung aller Ressourcentypen": len(missing_coverage),
+    "Warn-Constraints ohne Abdeckung aller Ressourcentypen": len(warning_missing_coverage),
+    "nicht isolierte Negativbeispiele": len(isolation_violations),
+    "DE-Fehlerbeispiele ohne DE-Profil": len(profile_violations),
+    "Broken Links": broken_links,
+}
+problems = {k: v for k, v in failed.items() if v}
+if problems:
+    print("\nFEHLGESCHLAGEN: " + "; ".join(f"{v} {k}" for k, v in problems.items()))
+    sys.exit(1)
+print("\nAlle Prüfungen bestanden.")

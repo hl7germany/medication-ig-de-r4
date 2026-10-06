@@ -10,6 +10,7 @@ Description: "Gibt an, wie das Medikament eingenommen oder verabreicht wurde bzw
 * obeys DosageStructuredRequiresBothWarning
 * obeys DosageDoseUnitSameCodeWarning
 * obeys DosageDoseValuePositiveWarning
+* obeys DosageLimitsPositiveWarning
 * obeys DosageFourSlotPatternInTextWarning
 * obeys FreeTextSingleDosageOnlyWarning
 * obeys AsNeededForRequiresAsNeededWarning
@@ -156,3 +157,12 @@ Invariant: AsNeededForRequiresAsNeededWarning
 Description: "A reason for use (asNeededFor) should only be given together with asNeededBoolean = true."
 Severity: #warning
 Expression: "extension.where(url='http://hl7.org/fhir/5.0/StructureDefinition/extension-Dosage.asNeededFor').exists() implies asNeeded.ofType(boolean) = true"
+
+Invariant: DosageLimitsPositiveWarning
+Description: "The minimum interval between administrations (valueDuration.value) and maxDosePerPeriod (numerator.value, denominator.value) should be greater than 0."
+Expression: "modifierExtension.where(
+  url = 'http://ig.fhir.de/igs/medication/StructureDefinition/MinimumIntervalBetweenAdministrations'
+).value.ofType(Duration).value.all($this > 0) and
+maxDosePerPeriod.numerator.value.all($this > 0) and
+maxDosePerPeriod.denominator.value.all($this > 0)"
+Severity: #warning

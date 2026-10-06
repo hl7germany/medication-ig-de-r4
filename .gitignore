@@ -5,6 +5,7 @@ Thumbs.db
 /input-cache
 /output
 /temp
+/_temp
 /template
 /medication-no-sushi/
 __pycache__
@@ -24,3 +25,6 @@ wrangler.jsonc
 /DOSIERUNG-*.md
 /PDF-*.md
 /ERPCHANGES-*
+
+# Abhängigkeiten der Invariantentests
+node_modules/

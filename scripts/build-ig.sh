@@ -34,8 +34,9 @@ if [[ ! -f output/qa.xml ]]; then
     exit 1
 fi
 
-# Run Error checks
-python3 scripts/ig-expected-error-check.py
+# Run Error checks (Ergebnis nach dem Hinweis unten zurückgeben)
+check_status=0
+python3 scripts/ig-expected-error-check.py || check_status=$?
 
 # Am Ende, damit der Hinweis nicht im Build-Log verschwindet
 if [[ -f "$MARKER" ]]; then
@@ -49,3 +50,5 @@ if [[ -f "$MARKER" ]]; then
     printf '  scripts/dosage-algorithm.lock nachziehen.\n' >&2
     printf '%s\n\n' "$LINE" >&2
 fi
+
+exit "$check_status"

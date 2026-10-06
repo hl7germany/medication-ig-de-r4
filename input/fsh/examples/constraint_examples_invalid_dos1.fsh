@@ -2,7 +2,7 @@
 // AsNeededFor can only be set if AsNeeded is empty or true
 
 Instance: INV-C-dos-1-Request-01-of-03
-InstanceOf: MedicationRequestDgMP
+InstanceOf: MedicationRequestDE
 Usage: #example
 Title: "Invalid: dos-1 (asNeededFor with asNeeded=false)"
 Description: "CAVE: Validation example - asNeededFor is populated while asNeededBoolean is false."
@@ -16,7 +16,7 @@ Description: "CAVE: Validation example - asNeededFor is populated while asNeeded
   * extension[asNeededFor].valueCodeableConcept.text = "Kopfschmerzen"
 
 Instance: INV-C-dos-1-Dispense-02-of-03
-InstanceOf: MedicationDispenseDgMP
+InstanceOf: MedicationDispenseDE
 Usage: #example
 Title: "Invalid: dos-1 (asNeededFor with asNeeded=false)"
 Description: "CAVE: Validation example - asNeededFor is populated while asNeededBoolean is false."
@@ -29,7 +29,7 @@ Description: "CAVE: Validation example - asNeededFor is populated while asNeeded
   * extension[asNeededFor].valueCodeableConcept.text = "Kopfschmerzen"
 
 Instance: INV-C-dos-1-Statement-03-of-03
-InstanceOf: MedicationStatementDgMP
+InstanceOf: MedicationStatementDE
 Usage: #example
 Title: "Invalid: dos-1 (asNeededFor with asNeeded=false)"
 Description: "CAVE: Validation example - asNeededFor is populated while asNeededBoolean is false."

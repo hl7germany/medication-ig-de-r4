@@ -1,0 +1,76 @@
+{
+  "_comment": "Je erwartetem Constraint-Key: weitere Constraints, die dessen -C-Beispiele zusätzlich auslösen dürfen. Erzeugt mit --write-baseline; Änderungen im Review prüfen.",
+  "AsNeededSingleDosageOnly": [
+    "DosageStructuredRequiresGeneratedText"
+  ],
+  "DosageDoseQuantityAllowedFractions": [
+    "DosageDoseValueDecimalNotation"
+  ],
+  "DosageDoseUnitSameCode": [
+    "TimingSingleDosageForWhen"
+  ],
+  "DosageDoseValueDecimalNotation": [
+    "DosageDoseQuantityAllowedFractions"
+  ],
+  "DosageDoseValuePositive": [
+    "DosageDoseValueDecimalNotation",
+    "DosageStructuredRequiresGeneratedText"
+  ],
+  "DosageStructuredOrFreeText": [
+    "DosageStructuredRequiresBoth"
+  ],
+  "DoseRangeHighRequiredWhenLowPresent": [
+    "DosageStructuredRequiresGeneratedText"
+  ],
+  "DoseRangeLowAndHighSameUnit": [
+    "DosageDoseUnitSameCode",
+    "DosageStructuredRequiresGeneratedText",
+    "rng-2"
+  ],
+  "FreeTextSingleDosageOnly": [
+    "FreeTextMatchesRenderedText"
+  ],
+  "MaxDoseOnlyPureAsNeeded": [
+    "DosageStructuredRequiresGeneratedText"
+  ],
+  "MaxDosePerPeriodOnly24hOr1d": [
+    "DosageStructuredRequiresGeneratedText"
+  ],
+  "MinimumIntervalOnlyPureAsNeeded": [
+    "DosageStructuredRequiresBoth"
+  ],
+  "TimingOnlyOneDayOfWeek": [
+    "DosageStructuredRequiresGeneratedText"
+  ],
+  "TimingOnlyOnePeriodForDayOfWeek": [
+    "DosageStructuredRequiresGeneratedText",
+    "TimingFrequencyCount",
+    "TimingOnlyOneType",
+    "TimingPeriodUnit"
+  ],
+  "TimingOnlyOneTimeForInterval": [
+    "DosageStructuredRequiresGeneratedText",
+    "TimingOnlyOneType"
+  ],
+  "TimingOnlyOneTimeOfDay": [
+    "DosageStructuredRequiresGeneratedText",
+    "TimingOnlyOneTimeForInterval"
+  ],
+  "TimingOnlyOneType": [
+    "DosageStructuredRequiresGeneratedText",
+    "TimingIntervalOnlyOneFrequency",
+    "TimingOnlyOneTimeForInterval"
+  ],
+  "TimingOnlyOneWhen": [
+    "DosageStructuredRequiresGeneratedText",
+    "TimingFrequencyCount",
+    "TimingOnlyOneTimeForInterval"
+  ],
+  "TimingOnlyWhenOrTimeOfDay": [
+    "DosageStructuredRequiresGeneratedText"
+  ],
+  "TimingPeriodUnit": [
+    "DosageStructuredRequiresGeneratedText",
+    "TimingOnlyOneType"
+  ]
+}

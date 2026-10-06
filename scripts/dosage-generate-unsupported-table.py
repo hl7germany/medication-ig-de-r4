@@ -18,14 +18,15 @@ def extract_dosages(resource):
 
 def process_files(input_folder):
     unsupported_rows = []
-    all_files = [
+    # Sortiert, damit die Tabelle unabhängig von der Reihenfolge des Dateisystems ist
+    all_files = sorted(
         f for f in os.listdir(input_folder)
         if (
             f.startswith("MedicationRequest-") or
             f.startswith("MedicationDispense-") or
             f.startswith("MedicationStatement-")
         ) and f.endswith('.json') and os.path.isfile(os.path.join(input_folder, f))
-    ]
+    )
     for filename in all_files:
         if "Unsupported" not in filename:
             continue

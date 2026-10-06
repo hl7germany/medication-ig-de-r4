@@ -28,12 +28,16 @@ Eine variable Einzeldosis wird über `Dosage.doseAndRate.doseRange` modelliert. 
 
 **Untergrenze benötigt immer Obergrenze**
 
+Invariante [DoseRangeHighRequiredWhenLowPresent](./dosierung-constraints.html#doserangehighrequiredwhenlowpresent):
+
 ```fhirpath
 doseAndRate.dose.ofType(Range).low.empty()
 or doseAndRate.dose.ofType(Range).high.exists()
 ```
 
 **Unter- und Obergrenze müssen dieselbe Maßeinheit verwenden (`system`, `code`, `unit`)**
+
+Invariante [DoseRangeLowAndHighSameUnit](./dosierung-constraints.html#doserangelowandhighsameunit):
 
 ```fhirpath
 doseAndRate.dose.ofType(Range).low.empty()
@@ -63,24 +67,23 @@ Eine variable Frequenz wird über `Timing.repeat.frequency` als Untergrenze und 
 
 **Variable Frequenz und variable Periode dürfen nicht gemeinsam verwendet werden**
 
-```fhirpath
-repeat.frequencyMax.empty() or repeat.periodMax.empty()
-```
+Durchgesetzt über [TimingFreqOrPeriodGtOne](./dosierung-constraints.html#timingfreqorperiodgtone): Bei einer reinen Intervallangabe darf nur die Frequenz einschließlich `frequencyMax` oder die Periode einschließlich `periodMax` größer als `1` sein. Da `frequencyMax` und `periodMax` stets größer als `1` sind, schließt das die Kombination aus, etwa „1 bis 3 x alle 2 bis 3 Tage".
 
 **Bei variabler Frequenz muss die maximale Frequenz größer als die minimale Frequenz sein**
 
+Invariante [TimingVarFreqGtMin](./dosierung-constraints.html#timingvarfreqgtmin) auf `Timing.repeat`:
+
 ```fhirpath
-repeat.frequencyMax.empty()
-or repeat.frequency.empty()
-or repeat.frequency < repeat.frequencyMax
+frequencyMax.empty() or frequency.empty() or
+  frequency.value.toInteger() < frequencyMax.value.toInteger()
 ```
 
 **Variable Frequenz und maximale Dosis pro Zeitraum dürfen nicht gemeinsam verwendet werden**
 
-Constraint auf Ebene von `Dosage`:
+Durchgesetzt über [MaxDoseOnlyPureAsNeeded](./dosierung-constraints.html#maxdoseonlypureasneeded) auf `Dosage`: Eine Maximalmenge ist nur bei einer reinen Bedarfsdosierung ohne `timing` zulässig, also nie zusammen mit einer Frequenz.
 
 ```fhirpath
-timing.repeat.frequencyMax.empty() or maxDosePerPeriod.empty()
+maxDosePerPeriod.exists() implies (asNeeded.ofType(boolean) = true and timing.empty())
 ```
 
 Folgende Beispiele sind nicht valide, da sie diese Constraints brechen:
@@ -88,6 +91,8 @@ Folgende Beispiele sind nicht valide, da sie diese Constraints brechen:
 {% include dosage-constraint-TimingFreqOrPeriodGtOne-examples.md%}
 
 {% include dosage-constraint-TimingVarFreqGtMin-examples.md%}
+
+{% include dosage-constraint-MaxDoseOnlyPureAsNeeded-examples.md%}
 
 
 ### Variable Periode
@@ -102,15 +107,18 @@ Eine variable Periode wird über `Timing.repeat.period` als Untergrenze und `Tim
 
 **Bei variabler Periode muss die maximale Periode größer als die minimale Periode sein**
 
+Invariante [TimingVarPeriodGtMin](./dosierung-constraints.html#timingvarperiodgtmin) auf `Timing.repeat`:
+
 ```fhirpath
-repeat.periodMax.empty() or repeat.period.empty() or repeat.period < repeat.periodMax
+periodMax.empty() or period.empty() or period < periodMax
 ```
 
 **Variable Periode und Mindestabstand zwischen zwei Einzelgaben dürfen nicht gemeinsam verwendet werden**
 
+Durchgesetzt über [MinimumIntervalOnlyPureAsNeeded](./dosierung-constraints.html#minimumintervalonlypureasneeded) auf `Dosage`: Ein Mindestabstand ist nur bei einer reinen Bedarfsdosierung ohne `timing` zulässig, also nie zusammen mit einer Periode.
+
 ```fhirpath
-timing.repeat.periodMax.empty()
-or modifierExtension.where(url='http://ig.fhir.de/igs/medication/StructureDefinition/MinimumIntervalBetweenAdministrations').empty()
+modifierExtension.where(url='http://ig.fhir.de/igs/medication/StructureDefinition/MinimumIntervalBetweenAdministrations').exists() implies (asNeeded.ofType(boolean) = true and timing.empty())
 ```
 
 Folgende Beispiele sind nicht valide, da sie diese Constraints brechen:

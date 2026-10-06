@@ -2,6 +2,6 @@
 
 {% include dosage-summary-matrix.md %}
 
-### Zukünftig unterstützte Dosierkonfigurationen
+### Aktuell nicht unterstützte Dosierkonfigurationen
 
 {% include unsupported-schema-beispiele.md %}

@@ -2,7 +2,7 @@ Instance: Example-MR-Dosage-Bedarfsmedikation-Kopfschmerzen
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-Bedarfsmedikation-Kopfschmerzen"
-Description: "Dieses Beispiel stellt eine Bedarfsmedikation mit Einnahmeanlass, Menge, Mindestabstand zwischen Gaben und Maximalgabe pro 24 Stunden dar."
+Description: "Dieses Beispiel stellt eine Bedarfsmedikation mit Anlass, Menge, Mindestabstand zwischen Gaben und Maximalgabe pro 24 Stunden dar."
 * subject.display = "Patient"
 * status = #active
 * intent = #order

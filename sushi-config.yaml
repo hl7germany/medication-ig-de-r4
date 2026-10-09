@@ -83,6 +83,24 @@ pages:
     title: Angabe der Anwendungsdauer
   dosierung-beispiele.md:
     title: Beispielliste Dosierung
+  migration-1.0.7-2.0.0.md:
+    title: Migration von Dosierungen 1.0.7 auf 2.0.0
+    migration-m01-dosisbruchteil.md:
+      title: M01 - Dosisbruchteil nicht erlaubt
+    migration-m02-exponentialnotation.md:
+      title: M02 - Exponentialschreibweise
+    migration-freitext-fallback.md:
+      title: Archivverfahren für nicht migrierbare Dosierungen
+    migration-m04-viererschema-freitext.md:
+      title: M04 - 4-Schema im Freitext
+    migration-m05-boundsduration.md:
+      title: M05 - Gebrochene Behandlungsdauer
+    migration-m06-period.md:
+      title: M06 - Gebrochene Periode
+    migration-m07-frequenz-periode.md:
+      title: M07 - Frequenz und Periode größer als eins
+    migration-m18-einheitenanzeige.md:
+      title: M18 - Anzeigeeinheit passt nicht zum UCUM-Code
   artifacts.html:
     title: FHIR Summary
   downloads.md:
@@ -122,6 +140,7 @@ menu:
     dgMP Rahmenvorgaben: dosierung-dgmp.html
     Dosis Textgenerierung: dosierung-textgenerierung.html
     Bereitstellung des Dosierungstextes: dosierung-text-hinzufuegen.html
+    Migration v1 zu v2: migration-1.0.7-2.0.0.html
     Übersicht der Timing & Dosierungs-Invarianten: dosierung-constraints.html
   Dosierschemata:
     Freitext-Dosierung: schema-freitext.html

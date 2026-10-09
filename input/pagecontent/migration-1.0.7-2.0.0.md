@@ -1,108 +1,160 @@
-Diese Seite beschreibt die Überführung von Dosierungsangaben aus Version 1.0.7 in die Profile der Version 2.0.0. Sie ist systemneutral und legt keine konkrete Ablage- oder Transaktionsschnittstelle fest.
+Diese Seite beschreibt, wie Dosierungen aus dem dgMP-Profilstand 1.0.7 in den Zielprofilstand 2.0.0 überführt werden. Die Fallseiten erläutern einzelne Änderungen; der hier beschriebene Ablauf ist für ihre Kombination maßgeblich.
 
-Die Migration MUSS die lesbare Dosierungsaussage erhalten. Die ursprünglichen 1.0.7-Daten MÜSSEN unverändert und versioniert archiviert bleiben. Die Migration DARF keine Dosis runden und keine medizinische Bedeutung aus fehlenden oder mehrdeutigen Daten ableiten.
+**Grundregel:** Die klinische Aussage MUSS erhalten bleiben. Die Migration DARF weder Zahlen runden noch fehlende Dosen, Einheiten oder Zeitangaben erraten. Lässt sich keine bedeutungstreue Zielrepräsentation nachweisen, bleibt die Quelle im Archiv; es wird keine verwendbare 2.0.0-Dosierung erzeugt.
 
 ### Geltungsbereich
 
-Das Verfahren gilt für Dosierungsangaben in `MedicationRequest.dosageInstruction`, `MedicationDispense.dosageInstruction` und `MedicationStatement.dosage`, die nach dem DosageDgMP-/TimingDgMP-Modell von Version 1.0.7 gespeichert wurden.
+Das Verfahren gilt für Dosierungen nach dem `DosageDgMP`-/`TimingDgMP`-Modell von Version 1.0.7:
 
-Jede archivierte Ressourcenfassung wird unabhängig migriert. Das gilt auch für historische und als gelöscht gekennzeichnete Fassungen, sofern sie im Archiv erhalten und abrufbar sind. Eine Migration darf eine gelöschte Fassung nicht wieder als aktuelle Ressource aktivieren. Die Originalfassung bleibt mit ihrem ursprünglichen Profil, Inhalt und Versionskontext wiederherstellbar; die Zielrepräsentation erhält eine nachvollziehbare Zuordnung zur Quelle.
-
-Fehlt eine Dosierungsangabe vollständig, wird keine Dosierung ergänzt. Neue 2.0.0-Felder, die in 1.0.7 nicht vorhanden waren, werden nicht aus Text oder anderen Feldern erraten.
-
-### Implementierbarer Migrationsablauf
-
-Die Migration verarbeitet eine Quellressource mit genau einem bekannten Profilstand 1.0.7 und erzeugt daraus eine Zielressource für 2.0.0. Ressourcenhistorie, Löschbehandlung, Ziel-IDs und Transaktionsprotokoll sind Eigenschaften des ausführenden Systems und nicht Teil der Dosierungsabbildung. Für jede verarbeitete Quellfassung muss die Zuordnung zur unveränderten Quelle erhalten bleiben.
-
-Die Dosierungsfelder sind abhängig vom Ressourcentyp:
-
-| Ressourcentyp | Quell-/Zielfeld |
+| Ressourcentyp | Dosierungsfeld |
 |---|---|
 | `MedicationRequest` | `dosageInstruction` |
 | `MedicationDispense` | `dosageInstruction` |
 | `MedicationStatement` | `dosage` |
 
-Implementierungen MÜSSEN pro Ressource in dieser Reihenfolge vorgehen:
+Die ursprüngliche Ressourcenfassung MUSS unverändert, versioniert und wiederherstellbar archiviert werden. Jede Fassung wird unabhängig behandelt, auch eine historische oder als gelöscht gekennzeichnete Fassung, sofern ihr Inhalt noch abrufbar ist. Historische und gelöschte Fassungen dürfen durch die Migration nicht zu aktuellen Ressourcen werden.
 
-1. Den Eingabestand als 1.0.7 klassifizieren und unverändert archivieren. Eine Ressource ohne Dosierung unverändert übernehmen; keine Dosierung erzeugen.
-2. Die Dosierungs-Liste des oben genannten Felds lesen. Andere Ressourcenelemente und nicht dosierungsbezogene Extensions unverändert übernehmen.
-3. Für jedes `Dosage.text`, das den M04-Constraint-Ausdruck erfüllt, exakt `täglich: ` vor den unveränderten Text setzen. Das Muster wird nicht geparst und die Dosierung nicht strukturiert umgewandelt.
-4. Exakte, strukturerhaltende Normalisierungen M02 und M18 anwenden. Keine Rundung. Eine Einheit darf nur umgerechnet werden, wenn eine explizite, versionierte Codezuordnung Quell- und Zieleinheit verbindet, die Umrechnung mathematisch exakt ist und Zielcode sowie Zieleinheit im 2.0.0-Profil zulässig sind. Wirkstärken dürfen nicht aus referenzierten Medication-Ressourcen abgeleitet werden.
-5. Den Kandidaten gegen die Zielprofile 2.0.0 validieren. Ist er gültig und strukturiert, den gepinnten Renderer ausführen. Ist der Aufruf erfolgreich und nichtleer, die strukturierte Dosierung sowie neu erzeugte `renderedDosageInstruction`- und `GeneratedDosageInstructionsMeta`-Extensions übernehmen. Rendererfehler führen zum Archiv-Fallback.
-6. Ist der Kandidat ungültig, den Renderer ausschließlich gemäß der unten definierten Allowlist ausführen. Rendererfehler oder ein Fall außerhalb der Allowlist führen direkt zum Archiv-Fallback.
-7. Eine reine Freitext-Quellangabe unverändert übernehmen, sofern sie gegen 2.0.0 validiert. Eine vorhandene `renderedDosageInstruction` nur behalten, wenn sie exakt `Dosage.text` entspricht. Andernfalls `renderedDosageInstruction` und zugehörige Metadaten entfernen.
-8. Die resultierende Ressource gegen 2.0.0 validieren. Bei Fehlschlag der strukturierten oder gerenderten Migration den Archiv-Fallback erzeugen und erneut validieren. Schlägt auch dieser fehl, den Lauf für diese Ressource als technischen Fehler markieren; Quelldaten bleiben erhalten.
-9. Migrationsstatus, Fall-IDs, verwendete Regel-/Renderer-/Terminologieversionen sowie Validierungsergebnisse protokollieren.
+Fehlt die Dosierung vollständig, wird keine ergänzt. Neue 2.0.0-Felder werden nicht aus Freitext oder anderen Angaben abgeleitet. Ablage, Ziel-IDs, Ressourcenhistorie und Transaktionen legt das ausführende System fest; die Zuordnung jeder Zielrepräsentation zur Quelle MUSS erhalten bleiben.
 
-### Verbindliche Einheiten- und Versionsregeln
+### Mögliche Ergebnisse
 
-Vor dem Lauf MUSS die Implementierung die konkrete Ziel-IG-Paketversion, Validatorversion, Renderer-Version, UCUM-Version, Terminologiepaketversion und Version der nachfolgenden Mappingtabelle festlegen. Fehlt eine Abhängigkeit oder stimmt ihre Version nicht mit dem Migrationsmanifest überein, MUSS der Lauf vor der Datenänderung abbrechen.
+| Ergebnis | Bedeutung | Beispiel |
+|---|---|---|
+| **Unveränderte Dosierung** | Die vorhandenen Dosierungsangaben erfüllen bereits die Zielregeln. Profilkennzeichnung und gegebenenfalls erzeugte Text-Extensions werden separat geprüft. | Dosis `1.25 Stück` mit vollständigem Timing |
+| **Strukturiert migriert** | Nur eine nachgewiesen bedeutungstreue Normalisierung oder Korrektur war erforderlich. | `5e-1` wird `0.5` (M02) |
+| **Regulärer Freitext** | Die vollständige Dosierung wird bedeutungstreu in genau einem `Dosage.text` dargestellt; die strukturierte Darstellung entfällt. | `täglich: je 1,2 Stück` (M01) |
+| **Nur archiviert** | Es gibt keine sicher verwendbare Zielrepräsentation. Die unveränderte 1.0.7-Quelle bleibt erhalten; die automatische Migration ist für diese Fassung nicht erfolgreich. | Fehlende Dosis (M16) |
 
-Für `Timing.repeat.boundsDuration.code` ist `unit` auf die deutsche Designation der Ziel-ValueSet-Version zu setzen:
+**Archivdaten sind keine Freitext-Dosierung.** Ein JSON-Archivinhalt oder ein Warnpräfix in `Dosage.text` schützt nicht davor, dass ein Empfänger den Inhalt als Einnahmeanweisung behandelt. Das [gemeinsame Archivverfahren](./migration-freitext-fallback.html) erzeugt deshalb keine solche Zielressource.
 
-| UCUM-Code | Kanonischer Wert für `unit` |
+### Entscheidung auf einen Blick
+
+Die Entscheidungen gelten für die gesamte Dosierungs-Liste einer Ressourcenfassung, nicht nur für ein fehlerhaftes Element.
+
+| Prüfung | Weiteres Vorgehen |
+|---|---|
+| Keine Dosierung vorhanden? | Keine ergänzen; übrige Zielanforderungen prüfen. |
+| Reiner Freitext vorhanden? | Unverändert prüfen; nacktes Viererschema nach M04 behandeln. Vorhandene Text-Extensions vorher abgleichen. |
+| Struktur nach zulässigen Normalisierungen verwendbar? | Regulären Dosierungstext erzeugen und die vollständige Zielressource validieren. |
+| Nur eine für Renderer-Freitext zugelassene Verletzung übrig? | Vollständigkeit und Bedeutungstreue prüfen, rendern und als einzelnen Freitext validieren. |
+| Eine Voraussetzung oder Abschlussprüfung nicht erfüllt? | Keine Zielressource freigeben; Quelle archivieren und Ursache protokollieren. |
+
+### Fallübersicht
+
+Die Fall-IDs sind stabile Referenzen für Implementierung und Migrationsbericht. Ein Fall kann zusammen mit anderen Fällen auftreten; eine einzelne passende Fall-ID reicht nicht aus, um einen Rendereraufruf zu erlauben.
+
+### Fallregeln
+
+Die Fall-IDs dienen als stabile Referenzen für die unten festgelegten Migrationsregeln.
+
+| Fall | Anlass | Bevorzugte Behandlung | Details |
+|---|---|---|---|
+| M01 | Dosisbruchteil im Ziel nicht erlaubt | Regulärer Freitext, sofern vollständig darstellbar | [M01](./migration-m01-dosisbruchteil.html) |
+| M02 | Exponentialschreibweise im Quellpayload | Exakte Dezimalnormalisierung | [M02](./migration-m02-exponentialnotation.html) |
+| M03 | Dosiswert null oder negativ | Nur archivieren | [Archivverfahren](./migration-freitext-fallback.html) |
+| M04 | Nacktes Viererschema im Freitext | Ohne belegte Bedeutung nur archivieren | [M04](./migration-m04-viererschema-freitext.html) |
+| M05 | Gebrochene Behandlungsdauer | Zulässige exakte Umrechnung, sonst geprüfter Freitext | [M05](./migration-m05-boundsduration.html) |
+| M06 | Gebrochene Periode | Zulässige exakte Umrechnung, sonst geprüfter Freitext | [M06](./migration-m06-period.html) |
+| M07 | Frequenz und Periode beide größer als eins | Geprüfter Freitext ohne algebraische Umdeutung | [M07](./migration-m07-frequenz-periode.html) |
+| M08–M17 | Fehlende, widersprüchliche oder nicht sicher vereinheitlichbare Angaben | Nur archivieren | [Betroffene Fälle](./migration-freitext-fallback.html) |
+| M18 | Anzeigeeinheit passt nicht zum Code | Anzeige korrigieren, sofern der Code nachweislich maßgeblich ist | [M18](./migration-m18-einheitenanzeige.html) |
+| M19–M21 | Neue Felder, Warnungen und Lockerungen | Keine Änderung allein wegen dieser Regeln | Siehe Referenz unten |
+
+### Verbindlicher Migrationsablauf
+
+Implementierungen MÜSSEN pro Ressourcenfassung in dieser Reihenfolge vorgehen:
+
+1. **Quelle sichern:** Den Eingabestand als 1.0.7 klassifizieren, die vollständige Quelle unverändert archivieren und alle verwendeten Versionen festlegen. Bereits migrierte 2.0.0-Ziele nicht erneut als Quellen behandeln.
+2. **Dosierungsart feststellen:** Die gesamte Dosierungs-Liste lesen. Andere Ressourcenelemente und nicht dosierungsbezogene Extensions unverändert übernehmen, sofern sie die Zielanforderungen erfüllen. Die Zielprofilkennzeichnung MUSS dem tatsächlichen Zielstand entsprechen; Quellprofil und Quellversion bleiben im Archiv nachvollziehbar.
+3. **Freitext behandeln:** Bei reinem Freitext vorhandene `renderedDosageInstruction` und Metadaten vor der Validierung abgleichen. Eine widersprüchliche Text-Extension mit ihren Metadaten entfernen. M04 nur nach seiner belegten Quellkonvention behandeln; ansonsten den vorhandenen Text unverändert lassen. Danach direkt zur Abschlussprüfung gehen.
+4. **Struktur normalisieren:** M02 und M18 anwenden. Für M01, M05 oder M06 eine strukturierte Umrechnung nur mit der unten beschriebenen freigegebenen Zuordnung versuchen. Alle Änderungen auf exakte Werte beschränken.
+5. **Kandidaten prüfen:** Die Zielanforderungen prüfen, zunächst ohne die Pflicht zur neu zu erzeugenden `renderedDosageInstruction` und `GeneratedDosageInstructionsMeta` (`DosageStructuredRequiresGeneratedText`). Ausschließlich diese noch nicht erfüllte Generierungspflicht verhindert die reguläre Textgenerierung nicht. Andere Fehler einzeln nach Constraint-Key klassifizieren.
+6. **Darstellung wählen:** Hat die Struktur keine anderen Fehler, den regulären Renderer verwenden und Struktur sowie neu erzeugte Text-Extensions übernehmen. Bleiben ausschließlich die unten zugelassenen M01-/M05-/M06-/M07-Verletzungen, nach erfolgreicher Vollständigkeitsprüfung rendern und die ganze Liste durch genau ein `Dosage` mit ausschließlich `text` ersetzen. Bei diesem Freitextziel keine Renderer-Metadaten einer nicht mehr vorhandenen Zielstruktur behaupten; die Rendererherkunft im Migrationsbericht festhalten.
+7. **Abschlussprüfung durchführen:** Die vollständige Zielressource einschließlich aller Extensions gegen das festgelegte Zielprofil validieren. Zusätzlich die Bedeutungstreue des Textes prüfen. Erst bei Erfolg freigeben.
+8. **Ergebnis protokollieren:** Ergebnisart, Fall-IDs, Quell-/Zielzuordnung, Regel- und Abhängigkeitsversionen sowie Prüfresultate festhalten. Bei fehlender fachlicher Voraussetzung, Rendererfehler oder ungültigem Ziel das [Archivverfahren](./migration-freitext-fallback.html) anwenden; technische Ausführungsfehler zusätzlich gesondert melden.
+
+Eine Ressource ohne Dosierung durchläuft keine Dosierungsabbildung, muss aber vor einer Freigabe als 2.0.0-Ressource die übrigen Zielanforderungen erfüllen. Das Löschen einer vorhandenen Dosierung ist kein zulässiger Ersatz für eine fehlgeschlagene Migration.
+
+### Textgenerierung und Bedeutungstreue
+
+#### Reguläre Textgenerierung
+
+Für bereits verwendbare strukturierte Dosierungen wird der Dosierungstext regulär neu erzeugt, auch nach M02 oder M18. Die nachfolgende Allowlist beschränkt nur die Umwandlung einer noch profilwidrigen Struktur in Freitext, nicht diese reguläre Generierung.
+
+Die Beispiele wurden mit der Referenzimplementierung `2.0.0-ballot` geprüft. Für den tatsächlichen Lauf MUSS die konkrete zugelassene Algorithmus- und Implementierungsversion festgelegt werden; die normative Algorithmusspezifikation bleibt maßgeblich. Ein erfolgreicher Rendereraufruf ersetzt weder Profilvalidierung noch eine Prüfung auf Informationsverlust.
+
+#### Allowlist für Renderer-Freitext
+
+Dieser Pfad setzt genau ein vollständiges `Dosage`-Element mit positiver `doseQuantity`, vollständig belegter Einheit und unterstütztem Timing-Schema voraus. Nach den Normalisierungen dürfen neben der noch fehlenden Generierungspflicht ausschließlich diese Fehler verbleiben:
+
+| Fall | Zulässige verbleibende Zielverletzung | Zusätzliche Voraussetzung |
+|---|---|---|
+| M01 | `DosageDoseQuantityAllowedFractions`, gegebenenfalls `DosageDoseValueDecimalNotation` wegen der Nachkommastellenzahl | Der exakte positive Dosiswert wird unverändert dargestellt. |
+| M05 | `TimingBoundsDurationOnlyWholeNumber` | Der vollständige Behandlungszeitraum wird dargestellt. |
+| M06 | `TimingPeriodOnlyWholeNumber` | Die vollständige Periode wird dargestellt. |
+| M07 | `TimingFreqOrPeriodGtOne` | Reines Intervall mit `frequency`, `period`, `periodUnit`; keine `when`, `timeOfDay` oder `dayOfWeek`. |
+
+Mehrere dieser Fälle dürfen nur gemeinsam behandelt werden, wenn alle Voraussetzungen erfüllt sind. M03 und M08–M17 sperren diesen Pfad. M04 verwendet keinen Renderer für die Interpretation des Quelltextes; M18 muss vor dem Rendern geklärt sein.
+
+#### Verbindliche Vollständigkeitsprüfung
+
+Die Implementierung MUSS vor der Textübernahme mit einer versionierten, feldbezogenen Prüfung nachweisen:
+
+- Jede klinisch relevante Quellangabe ist im Ziel erhalten oder eindeutig im Text dargestellt. Nicht unterstützte Felder, Extensions und Modifier-Extensions dürfen nicht stillschweigend entfallen. Eine bloße nichtleere Ausgabe oder ein Teilstringvergleich reicht nicht aus.
+- Alle dargestellten Dosis-, Dauer- und Periodenwerte stimmen dezimalgenau mit der Quelle beziehungsweise der freigegebenen exakten Umrechnung überein. Dazu die ausgegebenen Zahlen feldbezogen wieder mit Dezimalarithmetik einlesen und vergleichen. Gleitkommaänderungen dürfen nicht als Normalisierung akzeptiert werden.
+- Alle Zeitpunkte und Zeitrahmen bleiben in ihrer Bedeutung erhalten. Mit dem geprüften Renderer sind Uhrzeiten nur zulässig, wenn Sekunden und Sekundenbruchteile fehlen oder null sind. Für `boundsPeriod` sind unvollständige Datumsangaben oder nichtnull Sekunden und Sekundenbruchteile ohne nachgewiesen verlustfreie Darstellung ausgeschlossen.
+- Häufigkeit, Reihenfolge und Zuordnung von Dosen zu Zeitangaben bleiben erhalten. Aus `2` pro `8 h` darf nicht automatisch `1` pro `4 h` werden. Unterschiedliche Anzeigeeinheiten dürfen nicht unbemerkt durch die Einheit des ersten Elements ersetzt werden.
+
+Kann diese Prüfung für die verwendete Renderer-Version oder einen Quellinhalt nicht durchgeführt werden, wird kein Renderertext freigegeben. Das gilt auch für regulär erzeugten Text einer ansonsten gültigen Struktur.
+
+Beispiele für den Freitextpfad:
+
+| Vollständige Quelle | Regulärer Zieltext |
+|---|---|
+| `1.2 Stück`, einmal täglich | `täglich: je 1,2 Stück` |
+| `1 Stück` täglich für `1.5 d` | `für 1,5 Tage täglich: je 1 Stück` |
+| `1 Stück`, einmal alle `1.5 d` | `alle 1,5 Tage: je 1 Stück` |
+| `1 Stück`, zweimal pro `8 h` | `2 x alle 8 Stunden: je 1 Stück` |
+
+Eine Ausgabe wie `1,2000000000000002` für den Quellwert `1.2000000000000001` oder `08:00 Uhr` für `08:00:30` ist nicht bedeutungstreu und darf nicht übernommen werden.
+
+### Einheiten- und Versionsreferenz
+
+Vor dem Lauf MUSS ein Migrationsmanifest Quell- und Ziel-IG-Paketversion, Validatorversion, Algorithmusversion, Prüfsumme der Rendererimplementierung, UCUM- und Terminologieversion sowie die Versionen der Migrationsregeln und Vollständigkeitsprüfung festlegen. Fehlt eine benötigte Abhängigkeit oder stimmt ihre Version nicht, MUSS der Lauf vor einer Zieländerung abbrechen.
+
+Diese Anleitung liefert **keine freigegebene Zahlen- oder Codeumrechnungstabelle**. Ohne zusätzlich freigegebene Tabelle finden keine solchen Umrechnungen statt. Eine solche Tabelle MUSS Quell- und Zielsystem, Codes, exakten Faktor, Anwendungskontext, Terminologieversion und Gültigkeit enthalten und mit dem Manifest versioniert werden. Nach jeder Umrechnung sind sämtliche Zielregeln erneut zu prüfen; insbesondere kann eine Periodenumrechnung zusätzlich M07 auslösen.
+
+Wirkstärken dürfen nicht aus referenzierten Medication-Ressourcen abgeleitet werden. Anzeigen allein bestimmen weder Zahlenwerte noch Codes. `mo` und `a` dürfen nicht automatisch in andere Zeiteinheiten umgerechnet werden; eine pauschale Kalenderdefinition ist nicht zulässig.
+
+Für M18 ist folgende Anzeigezuordnung festgelegt, sofern der UCUM-Code nachweislich maßgeblich ist:
+
+| `boundsDuration.code` | Kanonischer Wert für `unit` |
 |---|---|
 | `d` | `Tag(e)` |
 | `wk` | `Woche(n)` |
 | `mo` | `Monat(e)` |
 | `a` | `Jahr(e)` |
 
-Für `Timing.repeat.periodUnit` gilt das Ziel-ValueSet `PeriodUnitsOfTimeDgMPVS`: `min`, `h`, `d`, `wk` und `mo`. Die kanonischen deutschen Designations sind `Minute(n)`, `Stunde(n)`, `Tag(e)`, `Woche(n)` und `Monat(e)`. Eine Konvertierung von `mo` oder `a` in eine andere Kalendereinheit ist nicht exakt definiert und DARF nicht automatisch erfolgen.
+Bereits zulässige deutsche Varianten müssen nicht normalisiert werden. Für `periodUnit` erlaubt das Ziel-ValueSet `min`, `h`, `d`, `wk` und `mo`; dieses Codefeld besitzt kein separates `unit`-Anzeigefeld.
 
-Für Dosisangaben gilt als Default: Haben alle betroffenen Mengen denselben `system`- und `code`-Wert, bleiben diese Codes erhalten; die Display-Einheit wird nicht zur Änderung des Zahlenwerts verwendet. Unterscheiden sich Codes, DARF keine Umrechnung stattfinden. M17 wechselt dann in den Archiv-Fallback. Eine spätere freigegebene Umrechnungstabelle muss Quellcode, Zielcode, exakten Umrechnungsfaktor, Terminologieversion und Gültigkeit enthalten und ist versioniert mit der Migration auszuliefern.
+Für Dosisangaben bleiben `system` und `code` ohne freigegebene Umrechnung unverändert. Unterschiedliche Codes führen bei M17 zum Archivverfahren. Gleiche Codes allein belegen nicht, dass unterschiedliche Systeme oder Anzeigen beim Rendern austauschbar sind.
 
-Für M04 werden weder Dosiswerte noch Einheiten geparst oder umcodiert. Der ursprüngliche `Dosage.text` bleibt nach dem Präfix bytegetreu erhalten.
+Derselbe Quellinhalt mit denselben Regel-, Abhängigkeits- und Serialisierungsversionen MUSS dieselbe Zielrepräsentation liefern. Laufzeitabhängige Protokollangaben gehören nicht in diesen Vergleich. Die Verarbeitung erfolgt ohne heuristische klinische Entscheidungen.
 
-Die Verarbeitung ist Dunkelverarbeitung. Mehrdeutige klinische Bedeutungen werden nicht erraten; sie führen deterministisch zum Archiv-Fallback. Derselbe Quellinhalt mit denselben Regel- und Abhängigkeitsversionen MUSS bytegleich denselben Zielinhalt erzeugen. Ein bereits migrierter 2.0.0-Zieldatensatz wird nicht erneut als 1.0.7-Quelle verarbeitet.
+### Warum M19–M21 keine Datenmigration auslösen
 
-### Textgenerierung und Fallback
+Diese Fälle sind Teil des Umfangs, damit ein implementierendes System weiß, welche Änderungen es ausdrücklich **nicht** vornehmen soll.
 
-#### Gepinnter Renderer
-
-Für die in diesem Guide geprüften Fälle wurde die Referenzimplementierung des Dosierungstext-Algorithmus in Version `2.0.0-ballot` verwendet. Die normative Algorithmusspezifikation bleibt maßgeblich; die Beispielimplementierung ist kein allgemeiner Ersatz für Profilvalidierung oder Migration.
-
-Der geprüfte Renderer kann folgende für diese Migration freigegebene Fälle vollständig in Text ausdrücken:
-
-- Eine strukturierte Dosis `1.2 Stück` wird beispielsweise als `täglich: je 1,2 Stück` gerendert.
-- Eine Dauer `boundsDuration = 1.5 d` wird als `für 1,5 Tage ...` gerendert.
-- Eine Periode `period = 1.5 d` wird als `alle 1,5 Tage ...` gerendert.
-- Eine Frequenz `2` bei einer Periode von `8 h` wird als `2 x alle 8 Stunden ...` gerendert. Der Renderer normalisiert diese Angabe nicht zu „alle 4 Stunden“.
-- Mehrere unterschiedliche Dosen zu derselben Uhrzeit werden jeweils ausgegeben, zum Beispiel `08:00 Uhr — je 1 Stück, 08:00 Uhr — je 2 Stück`.
-
-Der Renderer wird nur in folgenden Fällen aufgerufen:
-
-- **M01:** genau ein vollständiges `Dosage`-Element mit positiver Dosis, unterstütztem Timing-Schema und erfolgreicher Vollständigkeitsprüfung. Renderer-Freitext muss gegen alle 2.0.0-Textinvarianten validiert werden.
-- **M05/M06:** genau ein vollständiges `Dosage`-Element mit `doseAndRate` und unterstütztem Timing-Schema.
-- **M07:** genau ein reines Intervallschema (`frequency`, `period`, `periodUnit`, keine `when`, `timeOfDay` oder `dayOfWeek`) mit `doseAndRate`.
-- **M18:** nur nach erfolgreicher Korrektur der Anzeigeeinheit und erfolgreicher Validierung der gesamten strukturierten Zielressource.
-
-M03 und M08–M17 verwenden den gemeinsamen [Freitext-Fallback](./migration-freitext-fallback.html). Auch wenn eine der strukturierten Migrationen M01, M05, M06, M07 oder M18 an ihrer festgelegten Vorbedingung, am Renderer oder an der Zielvalidierung scheitert, wird dieses einheitliche Fallback-Verfahren verwendet. M19–M21 erfordern keine Datenänderung.
-
-Das Ergebnis wird ausschließlich dann als Renderertext übernommen, wenn der Aufruf erfolgreich ist, eine nichtleere Zeichenkette liefert, die Eingabe vollständig zur Allowlist passt und die resultierende Freitext-Dosierung gegen das Zielprofil validiert. Es gibt keine heuristische Prüfung anhand von Teilstrings. M04 verwendet den Renderer nicht.
-
-#### Gemeinsamer Freitext-Fallback
-
-Fälle ohne sichere strukturierte Zielabbildung werden nicht jeweils anders behandelt. Es gilt das einheitliche Verfahren auf der Seite [Gemeinsamer Freitext-Fallback](./migration-freitext-fallback.html). Dort sind das Serialisierungsformat, die technische Erkennung und alle betroffenen M-Fälle zusammengefasst.
-
-### Fallregeln
-
-Die Fall-IDs dienen als stabile Referenzen für die unten festgelegten Migrationsregeln.
-
-| Fall | Constraint(s) | Einordnung | Beschreibung |
-|---|---|---|---|
-| M01 – Dosisbruchteil nicht erlaubt | `DosageDoseQuantityAllowedFractions` | Konvertierung möglich | [M01](./migration-m01-dosisbruchteil.html) |
-| M02 – Exponentialschreibweise | `DosageDoseValueDecimalNotation` | Strukturierte Normalisierung | [M02](./migration-m02-exponentialnotation.html) |
-| M03 – Dosiswert null oder negativ | `DosageDoseValuePositive` | Gemeinsamer Freitext-Fallback | [M03](./migration-freitext-fallback.html) |
-| M04 – 4-Schema im Freitext | `DosageFourSlotPatternInText` | Textmigration möglich | [M04](./migration-m04-viererschema-freitext.html) |
-| M05 – Gebrochene `boundsDuration` | `TimingBoundsDurationOnlyWholeNumber` | Konvertierung möglich | [M05](./migration-m05-boundsduration.html) |
-| M06 – Gebrochene `period` | `TimingPeriodOnlyWholeNumber` | Konvertierung möglich | [M06](./migration-m06-period.html) |
-| M07 – `frequency > 1` und `period > 1` | `TimingFreqOrPeriodGtOne` | Konvertierung möglich | [M07](./migration-m07-frequenz-periode.html) |
-| M08–M17 – Fehlende, widersprüchliche oder nicht sicher umrechenbare Informationen | jeweiliger Constraint siehe Fallbackseite | Gemeinsamer Freitext-Fallback | [Betroffene Fälle und Ablauf](./migration-freitext-fallback.html) |
-| M18 – Anzeigeeinheit passt nicht zum Code | `TimingBoundsUnitMatchesCode` | Strukturierte Korrektur möglich | [M18](./migration-m18-einheitenanzeige.html) |
-| M19–M21 – Neue Felder, reine Warnungen und Lockerungen | — | Keine Datenmigration | Es werden keine Dosierungsdaten geändert. |
+| Fall | Betroffene Constraints | Begründung und Verhalten |
+|---|---|---|
+| M19 – Neue 2.0.0-Felder | `AsNeededForIdentical`, `AsNeededForRequiresAsNeeded`, `AsNeededIdentical`, `AsNeededSingleDosageOnly`, `DoseRangeHighRequiredWhenLowPresent`, `DoseRangeLowAndHighSameUnit`, `DoseRangeNoVarPeriod`, `MaxDoseOnlyPureAsNeeded`, `MaxDosePerPeriodOnly24hOr1d`, `MaxDoseSameUnitAsDose`, `MinimumIntervalOnlyPureAsNeeded`, `MinimumIntervalUnitMatchesCode`, `PatientInstructionIdentical`, `TimingVarFreqGtMin`, `TimingVarPeriodGtMin`, `dos-1` | Diese Regeln prüfen Elemente, die in 1.0.7 nicht strukturiert vorhanden waren, zum Beispiel `doseRange`, `asNeededBoolean`, `periodMax` oder `patientInstruction`. Die Migration befüllt diese Felder nicht durch Vermutungen. Vorhandene 1.0.7-Felder werden trotzdem nach den übrigen Regeln validiert. |
+| M20 – Warnungen ohne neue harte Zielverletzung | `DosageDoseUnitSameCodeWarning`, `DosageDoseValuePositiveWarning`, `DosageFourSlotPatternInTextWarning`, `DosageStructuredRequiresBothWarning`, `AsNeededForRequiresAsNeededWarning`, `TimingBoundsUnitMatchesCodeWarning`, `TimingFreqOrPeriodGtOneWarning`, `TimingSingleDosageForTimeOfDayWarning`, `TimingSingleDosageForWhenWarning` | Eine reine Warnung macht eine Ressource nicht ungültig und löst allein keine Umschreibung aus. Sie wird im Bericht gezählt. Wenn dieselbe Bedingung im dgMP-Zielprofil ein Fehler ist, gilt stattdessen die zugehörige Regel M03, M04, M07, M13, M14, M16, M17 oder M18. |
+| M21 – Lockerungen, unveränderte Regeln und Key-Rename | `TimingOnlyOneType`, `TimingPeriodUnit`, `TimingFrequencyCount`, `TimingVarFreqGtMin`, `DosageStructuredRequiresBoth`, `DosageStructuredRequiresGeneratedText`, `TimingOnlyOnePeriodForDayOfWeek`, `DosageWarnungViererschemaInText` → `DosageFourSlotPatternInTextWarning` | Diese Änderungen lösen für zuvor gültige 1.0.7-Dosierungen allein keine Änderung der Dosierungsdaten aus. Zielvalidierung und gegebenenfalls neue Text-Extensions bleiben erforderlich. Validatoren und Monitoring müssen beim Key-Rename den neuen Namen auswerten. Verschärfte Änderungen sind separat in M08–M15 beschrieben. |
 
 ### Abschlussprüfung
 
 Jede migrierte Zielressource MUSS gegen das festgelegte 2.0.0-Profil validiert werden. Die Prüfung MUSS mindestens folgende Invarianten umfassen: zulässige Dosisbruchteile und Dezimalschreibweise, positive strukturierte Dosiswerte, Freitextregel für 4-Schemata, ganzzahlige Dauer und Periode, Intervallregel, Eindeutigkeit der Zeit-/Wochentagsangaben, vollständige und einheitliche Zeitrahmen sowie Vollständigkeit der strukturierten Dosierung.
 
-Der Migrationslauf MUSS pro Ressourcenfassung Ausgangsversion, Zielversion, angewandte Fall-IDs, Renderer-/Serializer-Version und Validierungsergebnis protokollieren. Eine Ressourcenfassung gilt als migriert, wenn sie entweder strukturiert 2.0.0-konform ist oder eine valide einzelne Freitext-Dosierung mit gekennzeichnetem Archiv-Fallback enthält. Die Originalfassung muss weiterhin abrufbar bleiben.
+Eine Ressourcenfassung gilt als erfolgreich migriert, wenn die vollständige Zielressource valide ist und die Dosierung entweder unverändert, strukturiert normalisiert oder als bedeutungstreuer regulärer Freitext erhalten bleibt. Auch bei strukturierter Darstellung ist die Bedeutungstreue der erzeugten Text-Extensions erforderlich.
+
+Das Ergebnis `Nur archiviert` ist keine erfolgreiche 2.0.0-Migration. Der Bericht MUSS es von erfolgreichen Migrationen und technischen Ausführungsfehlern unterscheiden. Die unveränderte Originalfassung bleibt in allen Fällen abrufbar.

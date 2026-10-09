@@ -12,10 +12,10 @@ Der Fall liegt vor, wenn ein strukturierter `doseQuantity.value` den Constraint 
 
 ## Verbindliche Migration
 
-1. Prüfen, ob eine explizite, versionierte Dosisumrechnung den Quellcode in einen zulässigen Zielcode mit mathematisch exakt gleichem Wert überführt. Ohne eine solche Umrechnung darf keine Einheit oder Wirkstärke geraten werden.
-2. Ist keine exakte strukturierte Umrechnung verfügbar, den Renderer nur für genau ein vollständiges `Dosage`-Element mit positiver Dosis und unterstütztem Schema aufrufen.
-3. Das Renderergebnis als einzige reine Freitext-Dosierung übernehmen, wenn es nichtleer ist und alle Zielinvarianten besteht. `timing` und `doseAndRate` entfallen; die ursprüngliche Ressource bleibt archiviert.
-4. Bei Rendererfehler, mehreren Dosage-Elementen oder nicht konformer Textausgabe den deterministischen Archiv-Fallback der Übersicht verwenden.
+1. Eine strukturierte Umrechnung nur mit einer explizit freigegebenen, versionierten Tabelle gemäß der Übersicht versuchen. Diese Anleitung liefert keine Dosisumrechnungstabelle. Ohne sie bleiben Zahlenwert, System und Code unverändert; keine Einheit oder Wirkstärke raten.
+2. Ist keine exakte strukturierte Abbildung verfügbar, die [Renderer-Allowlist und Vollständigkeitsprüfung](./migration-1.0.7-2.0.0.html) anwenden. Genau ein vollständiges `Dosage`-Element mit positiver `doseQuantity` und unterstütztem Schema ist erforderlich. Alle gleichzeitig vorliegenden Zielverletzungen prüfen.
+3. Das Renderergebnis nur bei nachgewiesener Bedeutungstreue als einzige reine Freitext-Dosierung übernehmen. Das neue Dosage-Element enthält ausschließlich `text`; alte Text-Extensions und Struktur-Metadaten nicht übernehmen. Den vollständigen Zielzustand validieren und die Rendererherkunft im Migrationsbericht festhalten.
+4. Bei Informationsverlust, Rendererfehler, mehreren Dosage-Elementen oder ungültigem Ziel das [Archivverfahren](./migration-freitext-fallback.html) verwenden. Eine nichtleere, profilkonforme Textausgabe allein reicht nicht aus.
 5. Nie auf- oder abrunden.
 
 ## Beispiel
@@ -30,9 +30,15 @@ Dosage.text = "täglich: je 1,2 Stück"
 
 Im Ziel werden `timing` und `doseAndRate` nicht parallel zu diesem Freitext gesetzt. Die Quellressource mit `value = 1.2` bleibt für die Wiederherstellung erhalten.
 
+## Was bleibt erhalten?
+
+Die vollständige Einnahmeangabe einschließlich des exakten Dosiswerts bleibt im Zieltext erhalten; die strukturierte Darstellung entfällt. Scheitert dieser Nachweis, bleibt nur die unveränderte Quelle im Archiv erhalten und es wird keine Ziel-Dosierung freigegeben.
+
 ## Prüffälle
 
 - `1.25` besteht den Bruchteils-Constraint und bleibt strukturiert.
 - `1.2` löst M01 aus; kein Zahlenwert darf gerundet werden.
 - `0` oder ein negativer Wert gehört zu M03, nicht zu dieser Renderer-Allowlist.
+- `1.2000000000000001` darf nicht als `1,2000000000000002` übernommen werden; die Dezimalvergleichsprüfung muss die Änderung erkennen.
+- Eine Uhrzeit `08:00:30` darf nicht zu `08:00 Uhr` verkürzt werden.
 - Eine Renderer-Ausgabe, die nur ein nacktes 4-Schema enthält, darf nicht übernommen werden.

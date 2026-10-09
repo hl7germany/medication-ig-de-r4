@@ -90,7 +90,7 @@ pages:
     migration-m02-exponentialnotation.md:
       title: M02 - Exponentialschreibweise
     migration-freitext-fallback.md:
-      title: Gemeinsamer Freitext-Fallback für M03 und M08-M17
+      title: Archivverfahren für nicht migrierbare Dosierungen
     migration-m04-viererschema-freitext.md:
       title: M04 - 4-Schema im Freitext
     migration-m05-boundsduration.md:

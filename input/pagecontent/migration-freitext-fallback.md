@@ -1,8 +1,10 @@
-# Gemeinsamer Freitext-Fallback
+# Gemeinsames Archivverfahren bei nicht migrierbaren Dosierungen
 
 [Zur Migrationsübersicht](./migration-1.0.7-2.0.0.html)
 
-Diese Regel wird verwendet, wenn die 1.0.7-Dosierung wegen fehlender, widersprüchlicher oder nicht sicher umrechenbarer Angaben nicht als klinisch belastbare 2.0.0-Struktur oder reguläre Renderer-Freitextangabe dargestellt werden kann. Sie erhält den vollständigen Quellinhalt, erzeugt aber **keine ausführbare oder fachlich bestätigte Einnahmeanweisung**.
+Dieses Verfahren wird verwendet, wenn keine bedeutungstreue, valide 2.0.0-Dosierung nachgewiesen werden kann. Das Ergebnis lautet **Nur archiviert**: Die vollständige 1.0.7-Quelle bleibt unverändert erhalten; es wird keine 2.0.0-Zielressource mit einer verwendbaren Dosierung freigegeben.
+
+Der bisher als Freitext-Fallback bezeichnete Ansatz, Quell-JSON mit einem Warnpräfix in `Dosage.text` abzulegen, wird nicht verwendet. Lesende Systeme erkennen dieses Feld als Freitext-Dosierung. Weder der Präfix noch eine erfolgreiche Profilvalidierung verhindert zuverlässig seine Verwendung als Einnahmeanweisung.
 
 ## Betroffene Fälle
 
@@ -20,66 +22,44 @@ Diese Regel wird verwendet, wenn die 1.0.7-Dosierung wegen fehlender, widersprü
 | M16 | `DosageStructuredRequiresBoth` | `timing` oder `doseAndRate` fehlt; es darf kein Wert erfunden werden. |
 | M17 | `DosageDoseUnitSameCode` | Unterschiedliche Dosis-Codes können ohne versionierte exakte Umrechnung nicht vereinheitlicht werden. |
 
-Der Fallback wird außerdem verwendet, wenn eine der strukturierten Migrationen M01, M05, M06, M07 oder M18 ihre festgelegte Vorbedingung nicht erfüllt, der Renderer fehlschlägt oder die Zielvalidierung nicht besteht. Die Einzelfallseiten beschreiben diese Übergänge.
+Das Verfahren gilt außerdem, wenn bei M01, M02, M04, M05, M06, M07 oder M18 eine erforderliche Voraussetzung fehlt, die Vollständigkeitsprüfung scheitert, der Renderer einen Fehler liefert oder das Ziel ungültig bleibt. Auch ein nicht durch die Falltabelle abgedeckter Zielverstoß darf nicht durch eine erfundene Transformation umgangen werden.
 
-M19–M21 lösen diesen Fallback nicht aus: Bei ihnen ist keine Datenänderung erforderlich.
+M19–M21 lösen allein keine Archiventscheidung aus. Andere gleichzeitig vorliegende Fehler sind trotzdem zu behandeln.
 
 ## Verbindlicher Ablauf
 
-Die Migration wendet den Fallback auf die gesamte Dosierungs-Liste einer einzelnen Ressourcenfassung an. Sie darf nicht nur das fehlerhafte Element auslagern und andere Dosage-Elemente strukturiert daneben stehen lassen.
+Die Entscheidung gilt für die gesamte Dosierungs-Liste einer Ressourcenfassung. Fehlerhafte Elemente dürfen nicht entfernt werden, um die übrigen Elemente als scheinbar vollständige Ziel-Dosierung freizugeben.
 
-1. Die Quellressource und ihre Version unverändert archivieren.
-2. Das zum Ressourcentyp gehörende Feld lesen: `MedicationRequest.dosageInstruction`, `MedicationDispense.dosageInstruction` oder `MedicationStatement.dosage`.
-3. Die Dosage-Elemente in ihrer ursprünglichen Array-Reihenfolge vollständig kanonisch serialisieren.
-4. Alle Elemente der Dosierungsliste durch genau ein neues `Dosage`-Element ersetzen. Darin ausschließlich `text` mit folgendem Aufbau setzen:
+1. Die vollständige Originalressource mit ursprünglicher Profilkennzeichnung, Inhalt und Versionskontext unverändert archivieren. Auch Dosage-Reihenfolge, Extensions und ursprüngliche Zahlenschreibweisen erhalten.
+2. Einen gegebenenfalls erzeugten Zielkandidaten nicht als erfolgreich migrierte Ressource veröffentlichen. Keine Dosierung löschen, keinen Warntext als Einnahmeanweisung einsetzen und keinen klinischen Ressourcenstatus erfinden.
+3. Im getrennten Migrationsbericht das Ergebnis `Nur archiviert`, die Quellreferenz, betroffene Fall-IDs und konkrete Prüfursachen festhalten. Dieser Ergebniswert ist ein Migrationsstatus, kein FHIR-Ressourcenstatus.
+4. Technische Fehler, etwa einen nicht ausführbaren Validator oder Renderer, zusätzlich als solche protokollieren. Die Quelle auch bei technischen Fehlern erhalten.
+5. Eine fachliche Klärung außerhalb der automatischen Migration ermöglichen. Eine später bestätigte Dosierung ist eine eigene, nachvollziehbar dokumentierte Entscheidung; sie wird nicht durch dieses Archivverfahren erzeugt.
 
-   ```text
-   [ARCHIV-MIGRATION 1.0.7->2.0.0; NICHT ALS EINNAHMEANWEISUNG VERWENDEN] <kanonisches JSON-Array>
-   ```
+## Trennung von Archiv und Versorgung
 
-5. `timing`, `doseAndRate` und alle anderen Dosage-Felder im neuen Element leer lassen. Keine Dose, Einheit oder Timing-Angabe zusätzlich ableiten.
-6. Resource-level `renderedDosageInstruction` und `GeneratedDosageInstructionsMeta` entfernen. Der Archivtext ist keine Ausgabe des Dosierungstext-Renderers. Alle nicht dosierungsbezogenen Extensions unverändert erhalten.
-7. Die Zielressource gegen das 2.0.0-Profil validieren. Bei erfolgreicher Validierung Status `Archiv-Fallback` setzen und die betroffenen M-Fall-IDs protokollieren. Bei Fehlschlag die Quelle erhalten und einen technischen Fehler melden; keine alternative Transformation erraten.
+Das ausführende System MUSS Archiv und freigegebene Zielressourcen technisch getrennt behandeln. Archivfassungen dürfen nicht als erfolgreich migrierte aktive 2.0.0-Dosierungen ausgeliefert werden. Die konkrete Archivschnittstelle ist nicht Teil dieser Anleitung; sie MUSS die unveränderte Quelle wiederherstellbar und ausdrücklich als Originalfassung zugänglich machen.
 
-## Kanonische Serialisierung
-
-Das JSON-Array MUSS die kompletten Quellobjekte enthalten, nicht nur die Felder, die den Constraint ausgelöst haben. Dadurch bleiben auch Codes, Systeme, Einheiten, Extensions und nicht für die Migration ausgewertete Informationen verfügbar.
-
-Die Serialisierung MUSS:
-
-- UTF-8 verwenden;
-- Objekt-Schlüssel rekursiv lexikografisch nach Unicode-Codepoint sortieren;
-- keine optionalen Leerzeichen oder Zeilenumbrüche ausgeben;
-- Strings standardkonform als JSON escapen;
-- Array-Reihenfolge erhalten;
-- Zahlen dezimalgenau, ohne Exponentialnotation und ohne Rundung darstellen;
-- `null` und vorhandene Extensions erhalten.
-
-Fehlende JSON-Felder bleiben fehlend und werden nicht mit `null` ergänzt. Das unveränderte archivierte Quellobjekt bleibt maßgeblich für die Wiederherstellung der ursprünglichen Zahlenschreibweise und Bytefolge.
-
-## Erkennung und Verwendung
-
-Ein empfangendes System MUSS den Präfix `ARCHIV-MIGRATION 1.0.7->2.0.0; NICHT ALS EINNAHMEANWEISUNG VERWENDEN` erkennen. Es DARF den nachfolgenden JSON-Inhalt nicht als normale Dosierungsanweisung anzeigen, ausführen oder als fachlich geprüften Text weitergeben. Die Ressource ist eine 2.0.0-konforme Archiv-Repräsentation; sie ist nicht automatisch für eine aktive Therapieentscheidung geeignet.
+Dieses Verfahren entscheidet nicht, ob eine bestehende 1.0.7-Ressource im Quellsystem weiterverwendet werden darf. Es erzeugt weder eine Absetzung noch eine neue Einnahmeanweisung. Ein System, das ausschließlich 2.0.0 akzeptiert, muss die fehlende migrierte Dosierung als offenen Migrationsfall behandeln, nicht als fehlenden Therapiebedarf.
 
 ## Fallbeispiele
 
 ### M03 – Nichtpositive Dosis
 
-Quelle: `doseQuantity.value = 0`. Der Wert bleibt im serialisierten Originalobjekt erhalten. Die Migration behauptet weder „keine Gabe“ noch korrigiert sie den Wert.
+Quelle: `doseQuantity.value = 0`. Der Wert bleibt in der Originalressource erhalten. Es gibt kein freigegebenes Ziel; die Migration behauptet weder „keine Gabe“ noch korrigiert sie den Wert.
 
 ### M12 – Gemischtes Timing
 
-Quelle: Ein Dosage-Element hat `when = MORN`, ein anderes `timeOfDay = 08:00`. Beide Objekte werden vollständig serialisiert; `MORN` wird nicht in `08:00` umgewandelt.
+Quelle: Ein Dosage-Element hat `when = MORN`, ein anderes `timeOfDay = 08:00`. Beide Objekte bleiben im Archiv erhalten; `MORN` wird nicht in `08:00` umgewandelt.
 
 ### M16 – Fehlende Dosis
 
-Quelle: `timing` ist vorhanden, `doseAndRate` fehlt. Die Migration ergänzt keine angenommene Dosis, sondern archiviert das vollständige Dosage-Objekt im Fallback.
+Quelle: `timing` ist vorhanden, `doseAndRate` fehlt. Die Migration ergänzt keine angenommene Dosis und gibt keine unvollständige Ziel-Dosierung frei.
 
 ## Prüffälle
 
-- Zwei oder mehr Dosage-Elemente ergeben genau ein Ziel-Dosage-Element.
-- Die Array-Reihenfolge und alle Felder der Quelldosages bleiben im JSON erhalten.
-- Es gibt im Ziel-Fallback weder `timing` noch `doseAndRate`.
-- Gerenderte Text-Extensions und deren Metadaten sind entfernt.
-- Der Fallback-Präfix ist exakt und maschinenlesbar.
-- Ein wiederholter Lauf über eine als migriert markierte Zielressource verarbeitet sie nicht erneut als 1.0.7-Quelle.
+- Die vollständige Quelle einschließlich Array-Reihenfolge und Extensions bleibt unverändert wiederherstellbar.
+- Es wird weder eine Teil-Dosierung noch eine Zielressource mit Archiv-JSON in `Dosage.text` freigegeben.
+- Der Migrationsbericht unterscheidet `Nur archiviert`, erfolgreiche Migration und technischen Fehler.
+- Historische und gelöschte Fassungen werden nicht als aktuelle Ressourcen aktiviert.
+- Eine erneute Verarbeitung derselben Quelle mit denselben Regeln trifft dieselbe Archiventscheidung.

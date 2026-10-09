@@ -8,14 +8,14 @@
 
 ## Auslöser
 
-Die Regel gilt, wenn `when`, `timeOfDay` und `dayOfWeek` leer sind und sowohl `frequency` (oder `frequencyMax`) als auch `period` (oder `periodMax`) die verbotene Kombination bilden.
+Die Regel gilt bei vorhandenem `frequency` und `period`, wenn `when`, `timeOfDay` und `dayOfWeek` leer sind und Frequenz und Periode die verbotene Kombination bilden. Variable Obergrenzen werden im Ziel ebenfalls berücksichtigt, waren in einer gültigen dgMP-Quelle 1.0.7 aber ausgeschlossen.
 
 ## Verbindliche Migration
 
 1. Die Zahlen nicht algebraisch normalisieren. Aus `2` pro `8 h` darf nicht automatisch „alle 4 Stunden“ werden, da das FHIR-Paar allein keine gleichmäßige Verteilung belegt.
-2. Den gepinnten Renderer nur bei genau einem vollständigen reinen Intervallschema mit `doseAndRate` ausführen.
-3. Den erzeugten Text vollständig und unverändert übernehmen, wenn er nichtleer ist und alle 2.0.0-Textinvarianten besteht.
-4. Bei Rendererfehler oder nicht abgebildeten Feldern den Archiv-Fallback verwenden.
+2. Die [Renderer-Allowlist und Vollständigkeitsprüfung](./migration-1.0.7-2.0.0.html) anwenden. Genau ein vollständiges reines Intervallschema mit positiver `doseQuantity` ist erforderlich. Alle gleichzeitig vorliegenden Fehler prüfen; M03 und M08–M17 sperren den Pfad.
+3. Den erzeugten Text nur bei nachgewiesener Bedeutungstreue übernehmen. Die gesamte Liste durch genau ein Dosage-Element mit ausschließlich `text` ersetzen; alte Text-Extensions und Struktur-Metadaten nicht übernehmen. Das vollständige Ziel gegen 2.0.0 validieren und die Rendererherkunft im Migrationsbericht festhalten.
+4. Bei Rendererfehler, Informationsverlust oder ungültigem Ziel das [Archivverfahren](./migration-freitext-fallback.html) verwenden.
 
 ## Beispiel
 
@@ -29,6 +29,10 @@ doseQuantity = 1 Stück
 ```
 
 Rendererziel: `2 x alle 8 Stunden: je 1 Stück`. Der Text erhält die vorhandenen Werte; er behauptet keine Gabe exakt alle vier Stunden.
+
+## Was bleibt erhalten?
+
+Frequenz, Periode, Einheit und Dosis bleiben im Text erhalten; die strukturierte Darstellung entfällt. Der Text übernimmt die belegte Intervallangabe, bestätigt aber keine gleichmäßige Verteilung innerhalb dieses Intervalls. Die Originalressource bleibt archiviert.
 
 ## Prüffälle
 

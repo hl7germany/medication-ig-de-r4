@@ -4,7 +4,7 @@
 
 ## Anlass
 
-`DosageFourSlotPatternInText` verbietet in 2.0.0 einen Freitext, der vollständig einem 4-Schema entspricht, zum Beispiel `1-0-0-0`. Die Regel ist am Anfang und Ende verankert und lässt optionale Werte, Bruchteile, Teilungsverhältnisse und eine Einheit zu.
+`DosageFourSlotPatternInText` verbietet in 2.0.0 einen Freitext, der vollständig einem 4-Schema entspricht, zum Beispiel `1-0-0-0`. Die Erkennung verlangt vier Zahlen-Slots; diese dürfen Dezimalwerte oder Teilungsverhältnisse enthalten. Ein Einheitstext ist optional. Der Ausdruck erkennt die Schreibform, nicht die belegte klinische Bedeutung.
 
 ## Auslöser
 
@@ -16,27 +16,27 @@ Für jedes befüllte `Dosage.text` wird genau der Constraint-Ausdruck des Zielpr
 
 ## Verbindliche Migration
 
-Wenn der vollständige Text dem Ausdruck entspricht, MUSS die Migration exakt `täglich: ` voranstellen. Der bestehende Text einschließlich Einheiten, Leerzeichen, Dezimal- und Teilungsschreibweise sowie Bindestrichart bleibt unverändert. Werte werden nicht interpretiert und nicht in `when`, `doseQuantity` oder andere strukturierte Felder überführt.
+1. Ohne eine explizite, versionierte Quellkonvention den Text nicht automatisch interpretieren. Insbesondere nicht pauschal `täglich:` voranstellen: Der Regex-Treffer allein belegt keine tägliche Wiederholung.
+2. Eine zusätzliche Quellkonvention muss Slot-Bedeutung, Wiederholungsfrequenz, Zahlen- und Teilungsschreibweise sowie Dosis-System und -Code eindeutig festlegen. Diese Anleitung liefert keine solche Konvention. Eine Arzneimittelreferenz oder ein angezeigter Einheitenname allein reicht nicht aus.
+3. Nur bei vollständig belegter Bedeutung eine exakte strukturierte Abbildung nach dieser Konvention erzeugen. Null-Slots bedeuten dabei nur dann keine Gabe, wenn die Konvention dies festlegt; es werden keine strukturierten Null-Dosen erzeugt. Anschließend den regulären Text erzeugen und sämtliche Zielregeln sowie die Vollständigkeitsprüfung der Übersicht anwenden.
+4. Ist die Bedeutung nicht belegt oder die strukturierte Abbildung nicht zulässig, das [Archivverfahren](./migration-freitext-fallback.html) verwenden. Keine bloße Textumformulierung zur Umgehung des Constraints vornehmen.
 
-Die Zielressource MUSS anschließend die übrigen 2.0.0-Constraints bestehen. Da der Text geändert wurde, müssen `renderedDosageInstruction` und `GeneratedDosageInstructionsMeta` auf Ressourcenebene entfernt werden, damit kein veralteter Text oder eine falsche Rendererprovenienz verbleibt. Die Originalressource bleibt unverändert archiviert.
+Die ursprüngliche Ressourcenfassung bleibt unverändert archiviert. Alte Renderer-Extensions dürfen nicht als Herkunft der neu erzeugten Darstellung übernommen werden.
 
 ## Beispiel
 
 ```text
-Quelle:  Dosage.text = "1-0-0-0"
-Ziel:    Dosage.text = "täglich: 1-0-0-0"
+Quelle:   Dosage.text = "1-0-0-0 Stück"
+Nachweis: Keine versionierte Quellkonvention vorhanden
+Ergebnis: Nur archiviert; keine 2.0.0-Dosierung freigegeben
 ```
 
-Auch ein optionaler Einheitstext bleibt erhalten:
-
-```text
-Quelle:  1-0-0-0 Stück
-Ziel:    täglich: 1-0-0-0 Stück
-```
+Wenn eine freigegebene Quellkonvention dagegen ausdrücklich „morgens, mittags, abends, nachts; jeden Tag; Stück mit festgelegtem System und Code“ festlegt, kann die Quelle als Dosis `1` mit `when = MORN` abgebildet werden. Diese Bedeutung stammt dann aus der dokumentierten Quellkonvention, nicht aus dem Regex.
 
 ## Prüffälle
 
-- Vorher matcht der Constraint; nach dem Präfix matcht er nicht mehr.
+- `1-0-0-0` ohne Quellkonvention wird nur archiviert; es wird kein `täglich:` ergänzt.
+- Eine belegte Quellkonvention erlaubt nur eine exakte Abbildung ohne Rundung oder geratenen Einheiten-Code.
 - `1-0-0` matcht nicht, weil nur drei Slots vorhanden sind; M04 ändert den Text nicht.
 - Ein Text mit weiterem Zusatz, der den vollständigen Ausdruck nicht erfüllt, wird nicht geändert.
-- Ein zweiter Migrationslauf fügt kein zweites Präfix hinzu, weil der Zieltext nicht mehr matcht.
+- Eine erzeugte strukturierte Dosierung muss einschließlich neuer Text-Extensions gegen das Zielprofil validieren.

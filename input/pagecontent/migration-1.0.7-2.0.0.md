@@ -26,7 +26,7 @@ Implementierungen MÜSSEN pro Ressource in dieser Reihenfolge vorgehen:
 
 1. Den Eingabestand als 1.0.7 klassifizieren und unverändert archivieren. Eine Ressource ohne Dosierung unverändert übernehmen; keine Dosierung erzeugen.
 2. Die Dosierungs-Liste des oben genannten Felds lesen. Andere Ressourcenelemente und nicht dosierungsbezogene Extensions unverändert übernehmen.
-3. M04-Parsing anwenden, wenn `Dosage.text` ein vollständiges Viererschema ist. Sonst die Dosierungsliste unverändert als Kandidat übernehmen.
+3. Für jedes `Dosage.text`, das den M04-Constraint-Ausdruck erfüllt, exakt `täglich: ` vor den unveränderten Text setzen. Das Muster wird nicht geparst und die Dosierung nicht strukturiert umgewandelt.
 4. Exakte, strukturerhaltende Normalisierungen M02 und M18 anwenden. Keine Rundung. Eine Einheit darf nur umgerechnet werden, wenn eine explizite, versionierte Codezuordnung Quell- und Zieleinheit verbindet, die Umrechnung mathematisch exakt ist und Zielcode sowie Zieleinheit im 2.0.0-Profil zulässig sind. Wirkstärken dürfen nicht aus referenzierten Medication-Ressourcen abgeleitet werden.
 5. Den Kandidaten gegen die Zielprofile 2.0.0 validieren. Ist er gültig und strukturiert, den gepinnten Renderer ausführen. Ist der Aufruf erfolgreich und nichtleer, die strukturierte Dosierung sowie neu erzeugte `renderedDosageInstruction`- und `GeneratedDosageInstructionsMeta`-Extensions übernehmen. Rendererfehler führen zum Archiv-Fallback.
 6. Ist der Kandidat ungültig, den Renderer ausschließlich gemäß der unten definierten Allowlist ausführen. Rendererfehler oder ein Fall außerhalb der Allowlist führen direkt zum Archiv-Fallback.
@@ -51,7 +51,7 @@ Für `Timing.repeat.periodUnit` gilt das Ziel-ValueSet `PeriodUnitsOfTimeDgMPVS`
 
 Für Dosisangaben gilt als Default: Haben alle betroffenen Mengen denselben `system`- und `code`-Wert, bleiben diese Codes erhalten; die Display-Einheit wird nicht zur Änderung des Zahlenwerts verwendet. Unterscheiden sich Codes, DARF keine Umrechnung stattfinden. M17 wechselt dann in den Archiv-Fallback. Eine spätere freigegebene Umrechnungstabelle muss Quellcode, Zielcode, exakten Umrechnungsfaktor, Terminologieversion und Gültigkeit enthalten und ist versioniert mit der Migration auszuliefern.
 
-Für M04 wird die Einheit mit einer versionierten Expansion des Ziel-ValueSets `kbv-dosiereinheit-vs` abgeglichen. Der Parser trimmt äußere Leerzeichen und normalisiert Unicode nach NFKC; danach muss die Einheit exakt einer `display`- oder `designation`-Zeichenfolge genau eines Concepts entsprechen. Es werden keine unscharfen Treffer, Abkürzungen oder frei erfundenen Synonyme akzeptiert. Kein Treffer, mehrere Treffer oder fehlende Einheit ohne explizite Quellsystem-Defaultregel bedeuten Archiv-Fallback.
+Für M04 werden weder Dosiswerte noch Einheiten geparst oder umcodiert. Der ursprüngliche `Dosage.text` bleibt nach dem Präfix bytegetreu erhalten.
 
 Die Verarbeitung ist Dunkelverarbeitung. Mehrdeutige klinische Bedeutungen werden nicht erraten; sie führen deterministisch zum Archiv-Fallback. Derselbe Quellinhalt mit denselben Regel- und Abhängigkeitsversionen MUSS bytegleich denselben Zielinhalt erzeugen. Ein bereits migrierter 2.0.0-Zieldatensatz wird nicht erneut als 1.0.7-Quelle verarbeitet.
 
@@ -71,15 +71,14 @@ Der geprüfte Renderer kann folgende für diese Migration freigegebene Fälle vo
 
 Der Renderer wird nur in folgenden Fällen aufgerufen:
 
-Der Renderer wird nur in folgenden Fällen aufgerufen:
-- **M05/M06:** genau ein unterstütztes Intervall-/Timing-Schema mit `doseAndRate`, sofern M05-Zeitrahmen entweder in allen Elementen fehlen oder identisch sind.
+- **M01:** genau ein vollständiges `Dosage`-Element mit positiver Dosis, unterstütztem Timing-Schema und erfolgreicher Vollständigkeitsprüfung. Renderer-Freitext muss gegen alle 2.0.0-Textinvarianten validiert werden.
+- **M05/M06:** genau ein vollständiges `Dosage`-Element mit `doseAndRate` und unterstütztem Timing-Schema.
+- **M07:** genau ein reines Intervallschema (`frequency`, `period`, `periodUnit`, keine `when`, `timeOfDay` oder `dayOfWeek`) mit `doseAndRate`.
+- **M18:** nur nach erfolgreicher Korrektur der Anzeigeeinheit und erfolgreicher Validierung der gesamten strukturierten Zielressource.
 
-**M18:** nur nach erfolgreicher Korrektur der Anzeigeeinheit und erfolgreicher Validierung der gesamten strukturierten Zielressource.
 Alle übrigen M-Fälle verwenden den Archiv-Fallback. Insbesondere DARF der Renderer nicht für mehrere `Dosage`-Elemente aus einer ungültigen Quellressource, `doseQuantity.value <= 0`, fehlendes `doseAndRate`, doppelte `when`, gemischte `when`-/`timeOfDay`-Schemata oder unterschiedliche Zeitrahmen über Dosage-Elemente verwendet werden. Bei M15 unterschlägt er sonst Zeitrahmen nach dem ersten Element. Für doppelte `timeOfDay`-Werte, doppelte `dayOfWeek`-Werte und Wiederholungen mit uneindeutigen Dosen gibt es keine freigegebene Allowlist; sie fallen ebenfalls auf den Archiv-Fallback zurück.
 
-Das Ergebnis wird ausschließlich dann als Renderertext übernommen, wenn der Aufruf erfolgreich ist, eine nichtleere Zeichenkette liefert und die Eingabe vollständig zur Allowlist passt. Es gibt keine heuristische Prüfung anhand von Teilstrings. Ein Renderertext für ein 4-Schema, der nach `Dosage.text` geschrieben wird, ist unzulässig; M04 muss zuvor strukturiert migriert sein.
-Das Ergebnis wird ausschließlich dann als Renderertext übernommen, wenn der Aufruf erfolgreich ist, eine nichtleere Zeichenkette liefert und die Eingabe vollständig zur Allowlist passt. Es gibt keine heuristische Prüfung anhand von Teilstrings. Für Renderer-Fallbacks ist die Ausgabe zusätzlich als einzelne reine Freitext-Dosierung gegen das Zielprofil zu validieren. Ein Renderertext für ein 4-Schema, der nach `Dosage.text` geschrieben wird, ist unzulässig; M04 muss zuvor strukturiert migriert sein. Besteht die Renderer-Ausgabe die Invariante `DosageFourSlotPatternInText` nicht, folgt Archiv-Fallback.
-| M01 – Dosisbruchteil nicht erlaubt | Exakte, explizit versionierte Dosisumrechnung versuchen. Fehlt sie, Renderer nur für genau ein `Dosage`-Element mit positiver Dosis und wenn der resultierende Text die Freitext-Zielinvarianten besteht. Sonst Archiv-Fallback. Nie runden. |
+Das Ergebnis wird ausschließlich dann als Renderertext übernommen, wenn der Aufruf erfolgreich ist, eine nichtleere Zeichenkette liefert, die Eingabe vollständig zur Allowlist passt und die resultierende Freitext-Dosierung gegen das Zielprofil validiert. Es gibt keine heuristische Prüfung anhand von Teilstrings. M04 verwendet den Renderer nicht.
 
 #### Deterministischer Freitext-Fallback
 
@@ -99,28 +98,29 @@ Wird Text mit dem festgelegten Dosierungstext-Algorithmus generiert, muss der We
 
 Die Fall-IDs dienen als stabile Referenzen für die unten festgelegten Migrationsregeln.
 
-| Fall | Migrationsregel |
-|---|---|
-| M02 – Exponentialschreibweise | Mit dezimalgenauer Arithmetik in einfache Dezimalschreibweise umwandeln. Bei zulässigem Dosiswert Struktur beibehalten. Verletzt der Wert eine andere Dosisregel, M01 anwenden. |
-| M03 – Dosiswert null oder negativ | Nicht mit dem Standardrenderer verarbeiten. Deterministischen Archiv-Fallback verwenden; den Wert als historischen Rohwert kennzeichnen und nicht als klinische „keine Gabe“-Aussage interpretieren. |
-| M04 – 4-Schema im Freitext | Mit Python-`re.fullmatch` und folgendem Muster parsen: `r"\s*(?P<morn>(?:0|[1-9][0-9]*)(?:[.,][0-9]{1,2})?)\s*-\s*(?P<noon>(?:0|[1-9][0-9]*)(?:[.,][0-9]{1,2})?)\s*-\s*(?P<eve>(?:0|[1-9][0-9]*)(?:[.,][0-9]{1,2})?)\s*-\s*(?P<night>(?:0|[1-9][0-9]*)(?:[.,][0-9]{1,2})?)(?:\s+(?P<unit>[^\r\n]+?))?\s*"`. Capture-Gruppen sind morgens, mittags, abends, nachts und optionale Einheit. Komma wird vor Decimal-Konvertierung zu Punkt. Einheit MUSS nach `strip()` exakt über eine versionierte Mappingtabelle einem erlaubten Dosiscode zugeordnet sein; leere Einheit ist nur zulässig, wenn eine explizite Quellsystemregel eine Standardeinheit festlegt. Jeder positive Slot wird ein eigenes `Dosage`-Element mit `timing.repeat.when` `MORN`, `NOON`, `EVE` bzw. `NIGHT` und entsprechender `doseQuantity`; Null-Slots werden ausgelassen. Das Ergebnis danach gegen 2.0.0 validieren. Kein positiver Slot, unbekannte Einheit, ungültiges Dezimalformat oder fehlgeschlagene Zielvalidierung führt zum Archiv-Fallback. |
-| M05 – Gebrochene `boundsDuration` | Nur exakte Umrechnung in ein ganzzahliges `boundsDuration` mit zulässigem Code. Ist das nicht möglich, Renderer nur für genau ein Dosage-Element und unterstütztes Schema verwenden; sonst Archiv-Fallback. Kalenderperioden nicht umrechnen. |
-| M06 – Gebrochene `period` | Exakte Umrechnung auf ganzzahliges `period` und zulässige `periodUnit` versuchen. Nur exakte UCUM-Umrechnungen, zum Beispiel `1.5 d` zu `36 h`; Monate nicht umrechnen. Sonst Renderer nur für genau ein Dosage-Element und unterstütztes Schema, andernfalls Archiv-Fallback. |
-| M07 – `frequency > 1` und `period > 1` | Keine Gleichverteilung unterstellen und nicht normalisieren. Das reine Intervall mit `doseAndRate` vom gepinnten Renderer als Text erzeugen; bei Fehler Archiv-Fallback. |
-| M08 – Unvollständige oder widersprüchliche Intervallangabe | Keine Werte ableiten. Immer Archiv-Fallback. |
-| M09 – Doppelte `when`-Werte | Nicht deduplizieren; immer Archiv-Fallback. |
-| M10 – Doppelte `timeOfDay`-Werte | Nicht deduplizieren; immer Archiv-Fallback. |
-| M11 – Doppelte `dayOfWeek`-Werte | Nicht deduplizieren; immer Archiv-Fallback. |
-| M12 – Gemischte `when`- und `timeOfDay`-Schemata | Keine Angaben verwerfen oder umdeuten; immer Archiv-Fallback. |
-| M13 – Wiederholte Tageszeiten mit nicht eindeutiger Dosis | Keine Dosiszuordnung zusammenführen; immer Archiv-Fallback. |
-| M14 – Wiederholte `when`-Angaben mit nicht eindeutiger Dosis | Keine Dosiszuordnung zusammenführen; immer Archiv-Fallback. |
-| M15 – Zeitrahmen nur teilweise oder unterschiedlich belegt | Rahmen nicht kopieren, vereinheitlichen oder verwerfen; immer Archiv-Fallback. |
-| M16 – Nur `timing` oder nur `doseAndRate` vorhanden | Keine Felder ergänzen; immer Archiv-Fallback. |
-| M17 – Unterschiedliche Dosis-Codes/Einheiten | Ohne bereitgestellte exakte, versionierte Umrechnungstabelle keine Codekonvertierung durchführen; Archiv-Fallback verwenden. Bei identischem `system` und `code` bleibt die Struktur erhalten. |
-| M18 – Anzeigeeinheit passt nicht zum Code | `unit` gemäß der verbindlichen UCUM-Tabelle oben aktualisieren, `value` und `code` erhalten, gesamte Ressource validieren und Text mit dem gepinnten Renderer neu erzeugen. Unbekannter Code oder fehlgeschlagene Validierung: Archiv-Fallback. |
-| M19 – Neue 2.0.0-Felder ohne 1.0.7-Quelle | Nicht künstlich befüllen. Bereits vorhandene Quellangaben bleiben erhalten, soweit sie im Zielprofil zulässig sind. |
-| M20 – Reine Warnungen | Keine Datenänderung allein zur Beseitigung einer Warnung. Eine Bedingung, die im konkreten Zielprofil ein Fehler ist, wird nach der zugehörigen M-Fallregel behandelt. |
-| M21 – Lockerungen, Bugfixes und Constraint-Key-Änderungen | Keine Dosierungsdaten ändern. Konsumenten von Constraint-Keys müssen den neuen Namen verarbeiten, soweit sie solche Meldungen auswerten. |
+| Fall | Constraint(s) | Migrationsregel | Vertiefung |
+|---|---|---|---|
+| M01 – Dosisbruchteil nicht erlaubt | `DosageDoseQuantityAllowedFractions` | Exakte, explizit versionierte Dosisumrechnung versuchen. Fehlt sie, Renderer nur für genau ein `Dosage`-Element mit positiver Dosis und wenn der resultierende Text die Freitext-Zielinvarianten besteht. Sonst Archiv-Fallback. Nie runden. | [M01](./migration-m01-dosisbruchteil.html) |
+| M02 – Exponentialschreibweise | `DosageDoseValueDecimalNotation` | Mit dezimalgenauer Arithmetik in einfache Dezimalschreibweise umwandeln. Bei zulässigem Dosiswert Struktur beibehalten. Verletzt der Wert eine andere Dosisregel, M01 anwenden. | [M02](./migration-m02-exponentialnotation.html) |
+| M03 – Dosiswert null oder negativ | `DosageDoseValuePositive` | Nicht mit dem Standardrenderer verarbeiten. Deterministischen Archiv-Fallback verwenden; den Wert als historischen Rohwert kennzeichnen und nicht als klinische „keine Gabe“-Aussage interpretieren. | [M03](./migration-m03-nichtpositive-dosis.html) |
+| M04 – 4-Schema im Freitext | `DosageFourSlotPatternInText` | Bei Constraint-Match `täglich: ` vor den unveränderten Text setzen; nicht parsen oder strukturieren. | [M04](./migration-m04-viererschema-freitext.html) |
+| M05 – Gebrochene `boundsDuration` | `TimingBoundsDurationOnlyWholeNumber` | Exakt umrechnen; sonst Renderer nur bei vollständiger Abdeckung, andernfalls Archiv-Fallback. Kalenderperioden nicht umrechnen. | [M05](./migration-m05-boundsduration.html) |
+| M06 – Gebrochene `period` | `TimingPeriodOnlyWholeNumber` | Exakt auf zulässige ganzzahlige Periode umrechnen; sonst geprüfter Renderer oder Archiv-Fallback. Monate nicht umrechnen. | [M06](./migration-m06-period.html) |
+| M07 – `frequency > 1` und `period > 1` | `TimingFreqOrPeriodGtOne` | Nicht normalisieren oder Gleichverteilung unterstellen; vollständig rendern, sonst Archiv-Fallback. | [M07](./migration-m07-frequenz-periode.html) |
+| M08 – Unvollständige oder widersprüchliche Intervallangabe | `TimingOnlyOneTimeForInterval` | Keine Werte ableiten; Archiv-Fallback. | [M08](./migration-m08-unvollstaendiges-intervall.html) |
+| M09 – Doppelte `when`-Werte | `TimingOnlyOneWhen` | Nicht deduplizieren; Archiv-Fallback. | [M09](./migration-m09-doppelte-when.html) |
+| M10 – Doppelte `timeOfDay`-Werte | `TimingOnlyOneTimeOfDay` | Nicht deduplizieren; Archiv-Fallback. | [M10](./migration-m10-doppelte-uhrzeit.html) |
+| M11 – Doppelte `dayOfWeek`-Werte | `TimingOnlyOneDayOfWeek` | Nicht deduplizieren; Archiv-Fallback. | [M11](./migration-m11-doppelte-wochentage.html) |
+| M12 – Gemischte `when`- und `timeOfDay`-Schemata | `TimingOnlyWhenOrTimeOfDay` | Keine Angaben verwerfen oder umdeuten; Archiv-Fallback. | [M12](./migration-m12-mischschema.html) |
+| M13 – Wiederholte Tageszeiten mit nicht eindeutiger Dosis | `TimingSingleDosageForTimeOfDay` | Keine Dosiszuordnung zusammenführen; Archiv-Fallback. | [M13](./migration-m13-zeitpunkte-dosis.html) |
+| M14 – Wiederholte `when`-Angaben mit nicht eindeutiger Dosis | `TimingSingleDosageForWhen` | Keine Dosiszuordnung zusammenführen; Archiv-Fallback. | [M14](./migration-m14-when-dosis.html) |
+| M15 – Zeitrahmen nur teilweise oder unterschiedlich belegt | `TimingOnlyOneBounds` | Zeitrahmen nicht kopieren oder vereinheitlichen; Archiv-Fallback. | [M15](./migration-m15-zeitrahmen.html) |
+| M16 – Nur `timing` oder nur `doseAndRate` vorhanden | `DosageStructuredRequiresBoth` | Keine Felder ergänzen; Archiv-Fallback. | [M16](./migration-m16-unvollstaendige-struktur.html) |
+| M17 – Unterschiedliche Dosis-Codes/Einheiten | `DosageDoseUnitSameCode` | Ohne exakte, versionierte Umrechnung keine Codekonvertierung; Archiv-Fallback. | [M17](./migration-m17-dosiseinheiten.html) |
+| M18 – Anzeigeeinheit passt nicht zum Code | `TimingBoundsUnitMatchesCode` | Kanonische `unit` setzen, `value` und `code` erhalten, validieren und Text neu generieren. | [M18](./migration-m18-einheitenanzeige.html) |
+| M19 – Neue 2.0.0-Felder ohne 1.0.7-Quelle | — | Nicht künstlich befüllen. | [M19](./migration-m19-neue-felder.html) |
+| M20 – Reine Warnungen | — | Keine Datenänderung allein zur Warnungsbeseitigung. | [M20](./migration-m20-warnungen.html) |
+| M21 – Lockerungen, Bugfixes und Constraint-Key-Änderungen | — | Keine Dosierungsdaten ändern; Constraint-Key-Verbraucher aktualisieren. | [M21](./migration-m21-lockerungen.html) |
 
 ### Abschlussprüfung
 

@@ -41,6 +41,8 @@ Folgende FHIRPath Expression auf Ebene von `Dosage` liefert die Angabe, ob es si
 asNeeded.ofType(boolean) = true and timing.empty()
 ```
 
+Eine reine Bedarfsdosierung erlaubt genau ein `Dosage`-Element in der Ressource (siehe Constraint [AsNeededSingleDosageOnly](./dosierung-constraints.html#asneededsingledosageonly)). Liegt eine reine Bedarfsdosierung vor, dürfen keine weiteren `Dosage`-Elemente vorhanden sein, da sich mehrere Bedarfsdosen ohne zeitliche Zuordnung nicht eindeutig zu einer gemeinsamen Dosierungsanweisung aggregieren lassen.
+
 Für eine Bedarfsmedikation ist `asNeededBoolean = true` verpflichtend. Der Anlass `asNeededFor` ist optional; umgekehrt darf `asNeededFor` nur bei `asNeededBoolean = true` angegeben werden.
 
 Der Anlass wird als Freitext in `extension[asNeededFor].valueCodeableConcept.text` angegeben. Mehrere `asNeededFor`-Extensions können verwendet werden; sie sind fachlich als ODER-Verknüpfung zu interpretieren.
@@ -57,10 +59,10 @@ Für die konkrete Interpretation der Dosierung gelten in diesem Fall die Regeln 
 
 Die einzunehmende Menge wird wie in den anderen strukturierten Dosierschemata über `doseAndRate.doseQuantity` angegeben.
 
-Bei einer reinen Bedarfsdosierung wird `timing` nicht befüllt.
+Bei einer reinen Bedarfsdosierung wird `timing` nicht befüllt (folglich ist hierfür auch kein Anwendungszeitraum über `bounds[x]` vorgesehen).
 
 Der Mindestabstand zwischen zwei Gaben wird über die Modifier Extension `modifierExtension[MinimumIntervalBetweenAdministrations].valueDuration` angegeben.
 
-`maxDosePerPeriod` kann optional verwendet werden, um eine maximale Menge je Zeitraum anzugeben. Wie der Mindestabstand ist die Angabe der reinen Bedarfsdosierung vorbehalten: Ein strukturierter Rhythmus legt bereits fest, wie viel im Bezugszeitraum angewendet wird. Dabei muss die Einheit im `numerator` der Einheit von `doseAndRate.doseQuantity` entsprechen. Als Bezugszeitraum (`denominator`) ist ausschließlich **24 Stunden** (`24 h`) oder **1 Tag** (`1 d`) zulässig; andere Perioden sind nicht erlaubt. Die Auswahl wird eingabetreu wiedergegeben: `24 h` ergibt „in 24 Stunden", `1 d` ergibt „pro Tag".
+`maxDosePerPeriod` kann optional verwendet werden, um eine maximale Menge je Zeitraum anzugeben. Wie der Mindestabstand ist die Angabe der reinen Bedarfsdosierung vorbehalten: Ein strukturierter Rhythmus legt bereits fest, wie viel im Bezugszeitraum angewendet wird. Dabei muss die Einheit im `numerator` der Einheit von `doseAndRate.doseQuantity` entsprechen, und der Wert darf nicht kleiner als die Einzeldosis sein (bei `doseRange`: als die Obergrenze). Als Bezugszeitraum (`denominator`) ist ausschließlich **24 Stunden** (`24 h`) oder **1 Tag** (`1 d`) zulässig; andere Perioden sind nicht erlaubt. Die Auswahl wird eingabetreu wiedergegeben: `24 h` ergibt „in 24 Stunden", `1 d` ergibt „pro Tag".
 
 Lesende Systeme werten `asNeededBoolean`, `extension[asNeededFor]`, `modifierExtension[MinimumIntervalBetweenAdministrations]` und `maxDosePerPeriod` aus. Sie müssen dem Nutzer insbesondere Anlass, Mindestabstand und Maximalgabe verständlich darstellen.

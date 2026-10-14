@@ -19,6 +19,7 @@ Folgende weitere Beispiele sind in diesem IG dargestellt:
 | Dosierung mit Enddatum | [Example-MR-Dosage-1000-enddate](MedicationRequest-Example-MR-Dosage-1000-enddate.html) |
 | Dosierung mit Start und Enddatum | [Example-MR-Dosage-1000-startandenddate](MedicationRequest-Example-MR-Dosage-1000-startandenddate.html) |
 | Dosierung mit Startzeitpunkt und Zeitzone | [Example-MR-Dosage-1000-startdatetime](MedicationRequest-Example-MR-Dosage-1000-startdatetime.html) |
+| Dosierung mit Startzeitpunkt und Tageswechsel durch Zeitzonenumrechnung | [Example-MR-Dosage-1000-startdatetime-daychange](MedicationRequest-Example-MR-Dosage-1000-startdatetime-daychange.html) |
 
 *Hinweis:* Für eine gute UI eignet es sich das Start-Datum in Kombination mit dem Uhrzeiten- oder Tageszeitenschema entsprechend der Eingabe des Nutzers vorzuschlagen.
 

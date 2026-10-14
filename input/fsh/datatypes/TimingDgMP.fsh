@@ -24,6 +24,7 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * obeys TimingBoundsDurationOnlyWholeNumber
   * obeys TimingBoundsPeriodMatchesTime
   * obeys TimingBoundsPeriodNotForWhen
+  * obeys TimingValuesPositive
   * obeys TimingFreqOrPeriodGtOne
   * obeys TimingVarFreqGtMin
   * obeys TimingVarPeriodGtMin
@@ -808,4 +809,11 @@ Invariant: TimingBoundsPeriodNotForWhen
 Description: "If when is used, boundsPeriod.start and boundsPeriod.end may only state a date, not a time."
 Expression: "when.empty() or
 (bounds.ofType(Period).start | bounds.ofType(Period).end).all(toString().length() <= 10)"
+Severity: #error
+
+Invariant: TimingValuesPositive
+Description: "period, periodMax and boundsDuration.value must be greater than 0."
+Expression: "(period.exists() implies period > 0) and
+(periodMax.exists() implies periodMax > 0) and
+bounds.ofType(Duration).value.all($this > 0)"
 Severity: #error

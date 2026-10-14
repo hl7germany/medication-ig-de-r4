@@ -806,8 +806,8 @@ Expression: "timeOfDay.empty() or
 Severity: #error
 
 Invariant: TimingBoundsPeriodNotForWhen
-Description: "If when is used, boundsPeriod.start and boundsPeriod.end may only state a date, not a time."
-Expression: "when.empty() or
+Description: "If when is used, or dayOfWeek without timeOfDay, boundsPeriod.start and boundsPeriod.end may only state a date, not a time."
+Expression: "(when.empty() and (dayOfWeek.empty() or timeOfDay.exists())) or
 (bounds.ofType(Period).start | bounds.ofType(Period).end).all(toString().length() <= 10)"
 Severity: #error
 

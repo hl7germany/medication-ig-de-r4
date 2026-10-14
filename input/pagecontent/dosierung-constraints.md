@@ -367,10 +367,10 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 ##### TimingBoundsPeriodNotForWhen
 
 **Beschreibung:**  
-Wird `when` verwendet, dürfen `boundsPeriod.start` und `boundsPeriod.end` nur ein Datum ohne Uhrzeit enthalten.
+Wird `when` oder `dayOfWeek` ohne `timeOfDay` verwendet, dürfen `boundsPeriod.start` und `boundsPeriod.end` nur ein Datum ohne Uhrzeit enthalten.
 
 **Warum?**  
-Tagesabschnitte wie „morgens“ (`MORN`) haben keine feste Uhrzeit. Ein Startzeitpunkt wie „ab 08:00 Uhr“ lässt sich ihnen nicht eindeutig zuordnen, sodass unklar bliebe, ob die Gabe am Starttag noch erfolgt. Siehe [Angabe von Start- und Enddatum](./schema-start-end-datum.html).
+Tagesabschnitte wie „morgens“ (`MORN`) haben keine feste Uhrzeit. Ein Startzeitpunkt wie „ab 08:00 Uhr“ lässt sich ihnen nicht eindeutig zuordnen, sodass unklar bliebe, ob die Gabe am Starttag noch erfolgt. Dasselbe gilt für Wochentage ohne Uhrzeit wie „montags“. Siehe [Angabe von Start- und Enddatum](./schema-start-end-datum.html).
 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 

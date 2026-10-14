@@ -96,7 +96,7 @@ Description: "CAVE: This MedicationStatement is for validation purposes and does
 
 // TimingBoundsPeriodNotForWhen
 
-Instance: INV-C-TimingBoundsPeriodNotForWhen-MR-01-of-02
+Instance: INV-C-TimingBoundsPeriodNotForWhen-MR-01-of-03
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid Dosage"
@@ -111,7 +111,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * boundsPeriod.start = "2026-06-05T08:00:00+02:00"
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-C-TimingBoundsPeriodNotForWhen-MR-02-of-02
+Instance: INV-C-TimingBoundsPeriodNotForWhen-MR-02-of-03
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid Dosage"
@@ -127,7 +127,22 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * boundsPeriod.end = "2026-07-05T08:00:00+02:00"
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-C-TimingBoundsPeriodNotForWhen-MD-01-of-02
+Instance: INV-C-TimingBoundsPeriodNotForWhen-MR-03-of-03
+InstanceOf: MedicationRequestDgMP
+Usage: #example
+Title: "Invalid Dosage"
+Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for invalid Permutations"
+* subject.display = "Patient"
+* status = #active
+* intent = #order
+* medicationCodeableConcept.text = "Ibuprofen 400mg"
+* dosageInstruction[+]
+  * timing.repeat
+    * dayOfWeek[+] = #mon
+    * boundsPeriod.start = "2026-06-05T08:00:00+02:00"
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
+
+Instance: INV-C-TimingBoundsPeriodNotForWhen-MD-01-of-03
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
 Title: "Invalid Dosage"
@@ -141,7 +156,7 @@ Description: "CAVE: This MedicationDispense is for validation purposes and does 
     * boundsPeriod.start = "2026-06-05T08:00:00+02:00"
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-C-TimingBoundsPeriodNotForWhen-MD-02-of-02
+Instance: INV-C-TimingBoundsPeriodNotForWhen-MD-02-of-03
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
 Title: "Invalid Dosage"
@@ -156,7 +171,21 @@ Description: "CAVE: This MedicationDispense is for validation purposes and does 
     * boundsPeriod.end = "2026-07-05T08:00:00+02:00"
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-C-TimingBoundsPeriodNotForWhen-MS-01-of-02
+Instance: INV-C-TimingBoundsPeriodNotForWhen-MD-03-of-03
+InstanceOf: MedicationDispenseDgMP
+Usage: #example
+Title: "Invalid Dosage"
+Description: "CAVE: This MedicationDispense is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for invalid Permutations"
+* subject.display = "Patient"
+* status = #completed
+* medicationCodeableConcept.text = "Ibuprofen 400mg"
+* dosageInstruction[+]
+  * timing.repeat
+    * dayOfWeek[+] = #mon
+    * boundsPeriod.start = "2026-06-05T08:00:00+02:00"
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
+
+Instance: INV-C-TimingBoundsPeriodNotForWhen-MS-01-of-03
 InstanceOf: MedicationStatementDgMP
 Usage: #example
 Title: "Invalid Dosage"
@@ -170,7 +199,7 @@ Description: "CAVE: This MedicationStatement is for validation purposes and does
     * boundsPeriod.start = "2026-06-05T08:00:00+02:00"
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-C-TimingBoundsPeriodNotForWhen-MS-02-of-02
+Instance: INV-C-TimingBoundsPeriodNotForWhen-MS-02-of-03
 InstanceOf: MedicationStatementDgMP
 Usage: #example
 Title: "Invalid Dosage"
@@ -183,4 +212,18 @@ Description: "CAVE: This MedicationStatement is for validation purposes and does
     * when[+] = #MORN
     * boundsPeriod.start = "2026-06-05"
     * boundsPeriod.end = "2026-07-05T08:00:00+02:00"
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
+
+Instance: INV-C-TimingBoundsPeriodNotForWhen-MS-03-of-03
+InstanceOf: MedicationStatementDgMP
+Usage: #example
+Title: "Invalid Dosage"
+Description: "CAVE: This MedicationStatement is for validation purposes and does NOT represent a valid dosage. It only checks for invalid Permutations"
+* subject.display = "Patient"
+* status = #active
+* medicationCodeableConcept.text = "Ibuprofen 400mg"
+* dosage[+]
+  * timing.repeat
+    * dayOfWeek[+] = #mon
+    * boundsPeriod.start = "2026-06-05T08:00:00+02:00"
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"

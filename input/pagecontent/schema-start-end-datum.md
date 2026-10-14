@@ -23,10 +23,10 @@ Folgende weitere Beispiele sind in diesem IG dargestellt:
 
 *Hinweis:* Für eine gute UI eignet es sich das Start-Datum in Kombination mit dem Uhrzeiten- oder Tageszeitenschema entsprechend der Eingabe des Nutzers vorzuschlagen.
 
-**Uhrzeit von Start und Ende im Uhrzeiten- und Tageszeitenschema**
+**Uhrzeit von Start und Ende im Uhrzeiten-, Tageszeiten- und Wochentagsschema**
 
 - Im Uhrzeitenschema (`timeOfDay`) muss eine Uhrzeit in `boundsPeriod.start` oder `boundsPeriod.end` einer der angegebenen Uhrzeiten entsprechen ([TimingBoundsPeriodMatchesTime](./dosierung-constraints.html#timingboundsperiodmatchestime)). Die Uhrzeit wird so verglichen, wie sie angegeben ist; sie ist daher in Ortszeit mit dem passenden Zeitzonenversatz anzugeben, z. B. `2026-06-05T08:00:00+02:00` zu `timeOfDay = 08:00:00`.
-- Im Tageszeitenschema (`when`) dürfen `boundsPeriod.start` und `boundsPeriod.end` nur ein Datum ohne Uhrzeit enthalten ([TimingBoundsPeriodNotForWhen](./dosierung-constraints.html#timingboundsperiodnotforwhen)). Tagesabschnitte wie „morgens“ haben keine feste Uhrzeit, mit der ein Startzeitpunkt abgeglichen werden könnte.
+- Im Tageszeitenschema (`when`) und im Wochentagsschema ohne `timeOfDay` dürfen `boundsPeriod.start` und `boundsPeriod.end` nur ein Datum ohne Uhrzeit enthalten ([TimingBoundsPeriodNotForWhen](./dosierung-constraints.html#timingboundsperiodnotforwhen)). Tagesabschnitte wie „morgens“ und Wochentage wie „montags“ haben keine feste Uhrzeit, mit der ein Startzeitpunkt abgeglichen werden könnte.
 
 ### Beispiel
 

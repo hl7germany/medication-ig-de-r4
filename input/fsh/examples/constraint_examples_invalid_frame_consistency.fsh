@@ -1,5 +1,5 @@
 // Invalid examples for the frame-consistency constraints in DosageDgMP.
-// Die Textgenerierung liest Bedarfskennzeichen, Einnahmeanlass, Mindestabstand und
+// Die Textgenerierung liest Bedarfskennzeichen, Anlass, Mindestabstand und
 // Maximalmenge ausschließlich aus dem ersten Dosage-Element. Weichen weitere Elemente
 // ab, entfiele die Angabe unbemerkt — diese Beispiele decken die Prüfung dagegen ab.
 // Coverage target: Request, Dispense, Statement for each constraint
@@ -65,7 +65,7 @@ Instance: INV-C-AsNeededForIdentical-Request-01-of-03
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid: asNeededFor differs between dosages"
-Description: "CAVE: Validation example - der Einnahmeanlass ist nur im ersten Dosage-Element angegeben und ginge im erzeugten Text verloren."
+Description: "CAVE: Validation example - der Anlass ist nur im ersten Dosage-Element angegeben und ginge im erzeugten Text verloren."
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -84,7 +84,7 @@ Instance: INV-C-AsNeededForIdentical-Dispense-02-of-03
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
 Title: "Invalid: asNeededFor differs between dosages"
-Description: "CAVE: Validation example - der Einnahmeanlass ist nur im ersten Dosage-Element angegeben und ginge im erzeugten Text verloren."
+Description: "CAVE: Validation example - der Anlass ist nur im ersten Dosage-Element angegeben und ginge im erzeugten Text verloren."
 * subject.display = "Patient"
 * status = #completed
 * medicationCodeableConcept.text = "Ibuprofen 400mg"
@@ -102,7 +102,7 @@ Instance: INV-C-AsNeededForIdentical-Statement-03-of-03
 InstanceOf: MedicationStatementDgMP
 Usage: #example
 Title: "Invalid: asNeededFor differs between dosages"
-Description: "CAVE: Validation example - der Einnahmeanlass ist nur im ersten Dosage-Element angegeben und ginge im erzeugten Text verloren."
+Description: "CAVE: Validation example - der Anlass ist nur im ersten Dosage-Element angegeben und ginge im erzeugten Text verloren."
 * subject.display = "Patient"
 * status = #active
 * medicationCodeableConcept.text = "Ibuprofen 400mg"

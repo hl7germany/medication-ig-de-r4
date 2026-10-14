@@ -429,7 +429,7 @@ Severity: #error
 Expression: "maxDosePerPeriod.exists() implies (asNeeded.ofType(boolean) = true and timing.empty())"
 
 // --- Konsistenz der Rahmen-Angaben über mehrere Dosage-Elemente ---
-// Die Textgenerierung liest Bedarfskennzeichen, Einnahmeanlass, Mindestabstand und
+// Die Textgenerierung liest Bedarfskennzeichen, Anlass, Mindestabstand und
 // Maximalmenge ausschließlich aus dem ersten Dosage-Element. Ohne die folgenden
 // Invarianten könnten abweichende Angaben in weiteren Elementen unbemerkt entfallen.
 

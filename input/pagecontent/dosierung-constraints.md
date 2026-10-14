@@ -68,6 +68,18 @@ Folgende Beispiele lösen eine Warnung aus:
 
 {% include dosage-constraint-DosageDoseValuePositiveWarning-examples.md%}
 
+##### DosageLimitsPositiveWarning
+
+**Beschreibung:**
+Warnung in `DosageDE`, wenn der Mindestabstand zwischen zwei Gaben (`modifierExtension[MinimumIntervalBetweenAdministrations].valueDuration.value`) oder die Maximalmenge (`maxDosePerPeriod.numerator.value`, `maxDosePerPeriod.denominator.value`) nicht größer als `0` ist.
+
+**Warum?**
+Ein Mindestabstand von `0` beschreibt keinen Abstand, eine Maximalmenge von `0` verbietet jede Anwendung, und ein Bezugszeitraum von `0` ist nicht definiert; negative Werte sind in keinem der Felder interpretierbar. In den dgMP-Profilen gilt für denselben Sachverhalt der Fehler [DosageLimitsPositive](#dosagelimitspositive).
+
+Folgende Beispiele lösen eine Warnung aus:
+
+{% include dosage-constraint-DosageLimitsPositiveWarning-examples.md%}
+
 ##### DosageFourSlotPatternInTextWarning
 
 **Beschreibung:**  
@@ -129,6 +141,18 @@ Widersprüchliche Angaben wie `code='wk'` mit `unit='Tag(e)'` sind fast immer ei
 Folgende Beispiele lösen eine Warnung aus:
 
 {% include dosage-constraint-TimingBoundsUnitMatchesCodeWarning-examples.md%}
+
+##### TimingValuesPositiveWarning
+
+**Beschreibung:**
+Warnung in `TimingDE`, wenn `period`, `periodMax`, `boundsDuration.value` oder `boundsRange.high.value` nicht größer als `0` ist oder wenn `boundsRange.low.value` negativ ist.
+
+**Warum?**
+FHIR R4 verlangt über `tim-5` lediglich `period >= 0`; `periodMax` und `boundsDuration` sind in der Basis gar nicht eingeschränkt. Eine Periode von `0` („alle 0 Tage“) ist nicht definiert, auch nicht als Untergrenze eines Bereichs wie „alle 0 bis 3 Tage“, der offenlässt, ob „spätestens“ oder „höchstens alle 3 Tage“ gemeint ist. Eine Dauer von `0` („für 0 Tage“) beschreibt keine Anwendung. `boundsRange` ist nur im DE-Profil zulässig; wie beim Dosisbereich bleibt `0` als Untergrenze erlaubt („bis zu 5 Tage“). In den dgMP-Profilen gilt für denselben Sachverhalt der Fehler [TimingValuesPositive](#timingvaluespositive).
+
+Folgende Beispiele lösen eine Warnung aus:
+
+{% include dosage-constraint-TimingValuesPositiveWarning-examples.md%}
 
 #### Fehler
 
@@ -303,6 +327,18 @@ Verhindert unklare oder technisch nicht sinnvolle Angaben einer Behandlungsdauer
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-TimingBoundsDurationOnlyWholeNumber-examples.md%}
+
+##### TimingValuesPositive
+
+**Beschreibung:**
+`period`, `periodMax` und `boundsDuration.value` müssen größer als `0` sein.
+
+**Warum?**
+`tim-5` aus FHIR R4 lässt `period = 0` zu, `periodMax` und `boundsDuration` sind in der Basis nicht eingeschränkt. Eine Periode von `0` ist nicht definiert, auch nicht als Untergrenze eines Bereichs: „alle 0 bis 3 Tage“ lässt offen, ob „spätestens“ oder „höchstens alle 3 Tage“ gemeint ist. Für einen Bereich ist eine echte Untergrenze anzugeben („alle 1 bis 3 Tage“), für einen einzuhaltenden Abstand bei Bedarfsmedikation der Mindestabstand. Eine Dauer von `0` beschreibt keine Anwendung; die Textgenerierung weist sie ab.
+
+Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
+
+{% include dosage-constraint-TimingValuesPositive-examples.md%}
 
 ##### TimingBoundsUnitMatchesCode
 
@@ -516,6 +552,18 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-DosageDoseValuePositive-examples.md%}
 
+##### DosageLimitsPositive
+
+**Beschreibung:**
+Der Mindestabstand zwischen zwei Gaben (`modifierExtension[MinimumIntervalBetweenAdministrations].valueDuration.value`) und die Maximalmenge (`maxDosePerPeriod.numerator.value`, `maxDosePerPeriod.denominator.value`) müssen größer als `0` sein.
+
+**Warum?**
+Ein Mindestabstand von `0` beschreibt keinen Abstand; ist keiner einzuhalten, entfällt die Extension. Eine Maximalmenge von `0` verbietet jede Anwendung und widerspricht damit der Bedarfsmedikation, zu der sie gehört. Negative Werte sind nicht interpretierbar. Die Textgenerierung weist einen Mindestabstand von `0` ab, erzeugt für eine Maximalmenge von `0` oder weniger aber einen Text („nicht mehr als 0 Stück in 24 Stunden“).
+
+Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
+
+{% include dosage-constraint-DosageLimitsPositive-examples.md%}
+
 ##### DoseRangeHighRequiredWhenLowPresent
 
 **Beschreibung:**  
@@ -588,6 +636,18 @@ Nur bei gleicher Einheit lässt sich die Maximalmenge fachlich korrekt zur Einze
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-MaxDoseSameUnitAsDose-examples.md%}
+
+##### MaxDoseNotBelowDose
+
+**Beschreibung:**
+`maxDosePerPeriod.numerator.value` darf nicht kleiner als die Einzeldosis sein: nicht kleiner als `doseQuantity.value` beziehungsweise bei einer variablen Dosis nicht kleiner als `doseRange.high.value`. Gleichheit ist zulässig.
+
+**Warum?**
+Eine Maximalmenge unterhalb der Einzeldosis widerspricht sich selbst: „je 2 Stück — nicht mehr als 1 Stück in 24 Stunden“ lässt sich nicht befolgen. Bei einem Dosisbereich muss auch die Obergrenze einmal gegeben werden können. Der Vergleich der Werte setzt dieselbe Einheit voraus, die [MaxDoseSameUnitAsDose](#maxdosesameunitasdose) sicherstellt.
+
+Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
+
+{% include dosage-constraint-MaxDoseNotBelowDose-examples.md%}
 
 ##### MaxDosePerPeriodOnly24hOr1d
 

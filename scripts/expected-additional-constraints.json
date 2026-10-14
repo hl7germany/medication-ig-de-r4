@@ -16,6 +16,11 @@
     "DosageDoseValueDecimalNotation",
     "DosageRequiresGeneratedText"
   ],
+  "DosageLimitsPositive": [
+    "DosageRequiresGeneratedText",
+    "MaxDoseNotBelowDose",
+    "MaxDosePerPeriodOnly24hOr1d"
+  ],
   "DosageRequiresGeneratedText": [
     "FreeTextMatchesRenderedText"
   ],
@@ -80,5 +85,9 @@
   "TimingPeriodUnit": [
     "DosageRequiresGeneratedText",
     "TimingOnlyOneType"
+  ],
+  "TimingValuesPositive": [
+    "DosageRequiresGeneratedText",
+    "TimingVarPeriodGtMin"
   ]
 }

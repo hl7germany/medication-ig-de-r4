@@ -10,6 +10,13 @@
 - **`FreeTextMatchesRenderedText` (`DosageDgMP`)** (HDB-947)
   - Bei einer Freitext-Dosierung muss `renderedDosageInstruction` vorhanden sein und `Dosage.text` exakt entsprechen. Zuvor wurde nur verglichen, wenn die Extension vorhanden war.
 - `DosageRequiresGeneratedText` und `FreeTextMatchesRenderedText` entsprechen damit wieder dem Stand von 1.0.1. In 1.0.2 waren sie aus Gründen der Rückwärtskompatibilität zurückgenommen worden, da 1.0.1 ein Patch-Release war; mit 2.0.0 als Major-Release gelten sie wieder.
+- **`TimingValuesPositive` (`TimingDgMP`) und `TimingValuesPositiveWarning` (`TimingDE`) — neu** (HDB-971)
+  - `period`, `periodMax` und `boundsDuration.value` müssen größer als 0 sein. FHIR R4 verlangt über `tim-5` nur `period >= 0`; `periodMax` und `boundsDuration` waren ungeprüft.
+  - In `TimingDE` zusätzlich `boundsRange`: `low` nicht negativ, `high` größer als 0.
+- **`DosageLimitsPositive` (`DosageDgMP`) und `DosageLimitsPositiveWarning` (`DosageDE`) — neu** (HDB-971)
+  - Mindestabstand (`valueDuration.value`) und `maxDosePerPeriod` (`numerator.value`, `denominator.value`) müssen größer als 0 sein.
+- **`MaxDoseNotBelowDose` (`DosageDgMP`) — neu** (HDB-971)
+  - `maxDosePerPeriod.numerator.value` darf nicht kleiner als `doseQuantity.value` beziehungsweise `doseRange.high.value` sein. Zuvor wurde nur die Einheit verglichen (`MaxDoseSameUnitAsDose`).
 
 ### Release: 2.0.0-ballot
 

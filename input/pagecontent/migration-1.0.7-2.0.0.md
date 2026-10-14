@@ -12,6 +12,15 @@ Das Verfahren gilt für Dosierungen nach dem `DosageDgMP`-/`TimingDgMP`-Modell v
 | `MedicationDispense` | `dosageInstruction` |
 | `MedicationStatement` | `dosage` |
 
+Es umfasst auch Bestandsdaten, die bereits gegen 1.0.7 verstoßen. Einige Fälle treten nur bei solchen Quellen auf, weil die zugehörige Regel für gültige 1.0.7-Daten nicht strenger geworden ist:
+
+| Fall | Constraint | Änderung gegenüber 1.0.7 |
+|---|---|---|
+| M15 | `TimingOnlyOneBounds` | Nur um `boundsPeriod` erweitert, das 1.0.7 ausschloss (`bounds[x] only Duration`). |
+| M16 | `DosageStructuredRequiresBoth` | Gelockert: `doseAndRate` ohne `timing` ist bei Bedarfsangaben zulässig, die 1.0.7 ausschloss. |
+| M17 | `DosageDoseUnitSameCode` | Unverändert. |
+| M18 | `TimingBoundsUnitMatchesCode` | Unverändert. |
+
 Die ursprüngliche Ressourcenfassung MUSS unverändert, versioniert und wiederherstellbar archiviert werden. Jede Fassung wird unabhängig behandelt, auch eine historische oder als gelöscht gekennzeichnete Fassung, sofern ihr Inhalt noch abrufbar ist. Historische und gelöschte Fassungen dürfen durch die Migration nicht zu aktuellen Ressourcen werden.
 
 Fehlt die Dosierung vollständig, wird keine ergänzt. Neue 2.0.0-Felder werden nicht aus Freitext oder anderen Angaben abgeleitet. Ablage, Ziel-IDs, Ressourcenhistorie und Transaktionen legt das ausführende System fest; die Zuordnung jeder Zielrepräsentation zur Quelle MUSS erhalten bleiben.
@@ -151,7 +160,7 @@ Diese Fälle sind Teil des Umfangs, damit ein implementierendes System weiß, we
 |---|---|---|
 | M19 – Neue 2.0.0-Felder | `AsNeededForIdentical`, `AsNeededForRequiresAsNeeded`, `AsNeededIdentical`, `AsNeededSingleDosageOnly`, `DosageLimitsPositive`, `DoseRangeHighRequiredWhenLowPresent`, `DoseRangeLowAndHighSameUnit`, `DoseRangeNoVarPeriod`, `MaxDoseNotBelowDose`, `MaxDoseOnlyPureAsNeeded`, `MaxDosePerPeriodOnly24hOr1d`, `MaxDoseSameUnitAsDose`, `MinimumIntervalOnlyPureAsNeeded`, `MinimumIntervalUnitMatchesCode`, `PatientInstructionIdentical`, `TimingBoundsPeriodMatchesTime`, `TimingBoundsPeriodNotForWhen`, `TimingVarFreqGtMin`, `TimingVarPeriodGtMin`, `dos-1` | Diese Regeln prüfen Elemente, die in 1.0.7 nicht strukturiert vorhanden waren, zum Beispiel `doseRange`, `asNeededBoolean`, `maxDosePerPeriod`, `periodMax`, `boundsPeriod` oder `patientInstruction`. Die Migration befüllt diese Felder nicht durch Vermutungen. Vorhandene 1.0.7-Felder werden trotzdem nach den übrigen Regeln validiert. |
 | M20 – Warnungen ohne neue harte Zielverletzung | `DosageDoseUnitSameCodeWarning`, `DosageDoseValuePositiveWarning`, `DosageFourSlotPatternInTextWarning`, `DosageLimitsPositiveWarning`, `DosageStructuredRequiresBothWarning`, `AsNeededForRequiresAsNeededWarning`, `TimingBoundsUnitMatchesCodeWarning`, `TimingFreqOrPeriodGtOneWarning`, `TimingSingleDosageForTimeOfDayWarning`, `TimingSingleDosageForWhenWarning`, `TimingValuesPositiveWarning` | Eine reine Warnung macht eine Ressource nicht ungültig und löst allein keine Umschreibung aus. Sie wird im Bericht gezählt. Wenn dieselbe Bedingung im dgMP-Zielprofil ein Fehler ist, gilt stattdessen die zugehörige Regel M03, M04, M07, M13, M14, M16, M17, M18, M19 oder M22. |
-| M21 – Lockerungen, Text-Extensions und Key-Renames | `TimingOnlyOneType`, `TimingPeriodUnit`, `TimingFrequencyCount`, `DosageStructuredRequiresBoth`, `TimingOnlyOnePeriodForDayOfWeek`, `FreeTextMatchesRenderedText`, `DosageStructuredRequiresGeneratedText` → `DosageRequiresGeneratedText`, `DosageWarnungViererschemaInText` → `DosageFourSlotPatternInTextWarning` | Diese Änderungen lösen für zuvor gültige 1.0.7-Dosierungen allein keine Änderung der Dosierungsdaten aus. `DosageRequiresGeneratedText` und `FreeTextMatchesRenderedText` verlangen die Text-Extensions jetzt auch bei Freitext; sie werden in Schritt 6 für jede Zielressource erzeugt. Validatoren und Monitoring müssen bei den Key-Renames den neuen Namen auswerten. Verschärfte Änderungen sind separat in M08–M15 beschrieben. |
+| M21 – Lockerungen, Text-Extensions und Key-Renames | `TimingOnlyOneType`, `TimingPeriodUnit`, `TimingFrequencyCount`, `DosageStructuredRequiresBoth`, `TimingOnlyOnePeriodForDayOfWeek`, `FreeTextMatchesRenderedText`, `DosageStructuredRequiresGeneratedText` → `DosageRequiresGeneratedText`, `DosageWarnungViererschemaInText` → `DosageFourSlotPatternInTextWarning` | Diese Änderungen lösen für zuvor gültige 1.0.7-Dosierungen allein keine Änderung der Dosierungsdaten aus. `DosageRequiresGeneratedText` und `FreeTextMatchesRenderedText` verlangen die Text-Extensions jetzt auch bei Freitext; sie werden in Schritt 6 für jede Zielressource erzeugt. Validatoren und Monitoring müssen bei den Key-Renames den neuen Namen auswerten. Zielverstöße bestehender Felder sind in M01–M18 und M22 beschrieben. |
 
 ### Abschlussprüfung
 

@@ -52,10 +52,6 @@ Die Entscheidungen gelten für die gesamte Dosierungs-Liste einer Ressourcenfass
 
 Die Fall-IDs sind stabile Referenzen für Implementierung und Migrationsbericht. Ein Fall kann zusammen mit anderen Fällen auftreten; eine einzelne passende Fall-ID reicht nicht aus, um einen Rendereraufruf zu erlauben.
 
-### Fallregeln
-
-Die Fall-IDs dienen als stabile Referenzen für die unten festgelegten Migrationsregeln.
-
 | Fall | Anlass | Bevorzugte Behandlung | Details |
 |---|---|---|---|
 | M01 | Dosisbruchteil im Ziel nicht erlaubt | Regulärer Freitext, sofern vollständig darstellbar | [M01](./migration-m01-dosisbruchteil.html) |

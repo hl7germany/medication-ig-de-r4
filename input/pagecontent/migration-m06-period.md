@@ -15,7 +15,7 @@ M06 gilt, wenn `period` oder `periodMax` numerisch nicht ganzzahlig ist. Ein num
 1. Eine mathematisch exakte Umrechnung in eine ganzzahlige Periode nur mit einer freigegebenen Tabelle gemäß der Übersicht versuchen. Diese Anleitung liefert keine Zahlenumrechnungstabelle. Die Ziel-ValueSet-Einheiten sind `min`, `h`, `d`, `wk` und `mo`; nach der Umrechnung sämtliche Zielregeln erneut prüfen, auch M07.
 2. `mo` nicht in Tage umrechnen; die Länge eines Monats ist kalenderabhängig.
 3. Wenn keine exakte strukturierte Abbildung möglich ist, die [Renderer-Allowlist und Vollständigkeitsprüfung](./migration-1.0.7-2.0.0.html) anwenden. Genau ein vollständiges `Dosage`-Element mit positiver `doseQuantity` und unterstütztem Timing-Schema ist erforderlich.
-4. Nur bedeutungstreuen Renderertext übernehmen: die gesamte Liste durch genau ein Dosage-Element mit ausschließlich `text` ersetzen, alte Text-Extensions und Struktur-Metadaten nicht übernehmen und das vollständige Ziel validieren. Bei Fehler oder Informationsverlust das [Archivverfahren](./migration-freitext-fallback.html) verwenden.
+4. Nur bedeutungstreuen Renderertext übernehmen: die gesamte Liste durch genau ein Dosage-Element mit ausschließlich `text` ersetzen, alte Text-Extensions nicht übernehmen, sondern für den Freitext neu erzeugen, und das vollständige Ziel validieren. Bei Fehler oder Informationsverlust das [Archivverfahren](./migration-freitext-fallback.html) verwenden.
 5. Keine Frequenz, Periode oder Einheit runden oder weglassen.
 
 ## Beispiel

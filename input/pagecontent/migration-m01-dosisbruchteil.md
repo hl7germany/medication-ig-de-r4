@@ -14,7 +14,7 @@ Der Fall liegt vor, wenn ein strukturierter `doseQuantity.value` den Constraint 
 
 1. Eine strukturierte Umrechnung nur mit einer explizit freigegebenen, versionierten Tabelle gemäß der Übersicht versuchen. Diese Anleitung liefert keine Dosisumrechnungstabelle. Ohne sie bleiben Zahlenwert, System und Code unverändert; keine Einheit oder Wirkstärke raten.
 2. Ist keine exakte strukturierte Abbildung verfügbar, die [Renderer-Allowlist und Vollständigkeitsprüfung](./migration-1.0.7-2.0.0.html) anwenden. Genau ein vollständiges `Dosage`-Element mit positiver `doseQuantity` und unterstütztem Schema ist erforderlich. Alle gleichzeitig vorliegenden Zielverletzungen prüfen.
-3. Das Renderergebnis nur bei nachgewiesener Bedeutungstreue als einzige reine Freitext-Dosierung übernehmen. Das neue Dosage-Element enthält ausschließlich `text`; alte Text-Extensions und Struktur-Metadaten nicht übernehmen. Den vollständigen Zielzustand validieren und die Rendererherkunft im Migrationsbericht festhalten.
+3. Das Renderergebnis nur bei nachgewiesener Bedeutungstreue als einzige reine Freitext-Dosierung übernehmen. Das neue Dosage-Element enthält ausschließlich `text`. Alte Text-Extensions nicht übernehmen, sondern für den Freitext neu erzeugen (Schritt 6 der Übersicht). Den vollständigen Zielzustand validieren und die Rendererherkunft im Migrationsbericht festhalten.
 4. Bei Informationsverlust, Rendererfehler, mehreren Dosage-Elementen oder ungültigem Ziel das [Archivverfahren](./migration-freitext-fallback.html) verwenden. Eine nichtleere, profilkonforme Textausgabe allein reicht nicht aus.
 5. Nie auf- oder abrunden.
 
@@ -25,7 +25,8 @@ Quelle: strukturierte Dosis `1.2 Stück`, einmal täglich.
 Exakte Codeumrechnung nicht vorhanden; der gepinnte Renderer kann den einzelnen vollständigen Fall darstellen:
 
 ```text
-Dosage.text = "täglich: je 1,2 Stück"
+Dosage.text                = "täglich: je 1,2 Stück"
+renderedDosageInstruction  = "täglich: je 1,2 Stück"
 ```
 
 Im Ziel werden `timing` und `doseAndRate` nicht parallel zu diesem Freitext gesetzt. Die Quellressource mit `value = 1.2` bleibt für die Wiederherstellung erhalten.

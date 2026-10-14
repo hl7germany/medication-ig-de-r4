@@ -19,8 +19,6 @@ Folgende weitere Beispiele sind in diesem IG dargestellt:
 | Variable Periode ab 1 | alle 1 bis 2 Wochen: je 1 Stück | [Example-MR-Dosage-variable-period-1-2wk](MedicationRequest-Example-MR-Dosage-variable-period-1-2wk.html) |
 | Variable Periode ab 1 | alle 1 bis 2 Monate: je 1 Stück | [Example-MR-Dosage-variable-period-1-2mo](MedicationRequest-Example-MR-Dosage-variable-period-1-2mo.html) |
 
-Hinweis: Der Algorithmus zur Textgenerierung in Version `2.0.0-ballot` gibt eine variable Periode mit `period = 1` in `d`, `wk` und `mo` fälschlich als „täglich“, „wöchentlich“ bzw. „monatlich“ aus ([dgMP-DosageTextgenerierung-Skript#20](https://github.com/hl7germany/dgMP-DosageTextgenerierung-Skript/issues/20)). Der in diesen Beispielen hinterlegte `renderedDosageInstruction` zeigt diesen Fehler bis zur Korrektur des Algorithmus.
-
 ### Variable Einzeldosis
 
 Eine variable Einzeldosis wird über `Dosage.doseAndRate.doseRange` modelliert. Dabei beschreibt `low` die Untergrenze und `high` die Obergrenze des zulässigen Dosisbereichs.

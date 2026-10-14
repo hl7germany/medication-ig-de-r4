@@ -10,7 +10,7 @@ Die textuelle Angabe von Dosierungen wird in diesem Projekt in zwei Varianten un
 
 Softwaresysteme müssen Dosierungsangaben stets strukturiert erfassen, sofern eine strukturierte Abbildung möglich ist. Eine Erfassung als Freitext in Dosage.text ist in diesem Fall nicht zulässig. Das System soll den Nutzenden durch geeignete Eingabemasken bei der strukturierten Erfassung unterstützen.
 
-Das Feld `Dosage.text` ist **ausschließlich** für vom Menschen erstelleten Freitext vorgesehen. Es darf nicht gleichzeitig mit einer strukturierten Angabe verwendet werden, um widersprüchliche Informationen zu vermeiden.
+Das Feld `Dosage.text` ist **ausschließlich** für vom Menschen erstellten Freitext vorgesehen. Es darf nicht gleichzeitig mit einer strukturierten Angabe verwendet werden, um widersprüchliche Informationen zu vermeiden.
 
 Im Kontext des dgMP sorgt die [Infrastruktur zur Bereitstellung des Dosierungstextes](./dosierung-text-hinzufuegen.html) dafür, dass zu jeder strukturierten Dosierung auch eine einheitliche, maschinell generierte textuelle Repräsentation bereitgestellt wird. Dieser Text wird in der Extension `Dosage.extension[GeneratedDosageInstructionsMeta]` hinterlegt.
 
@@ -66,7 +66,7 @@ Eigene Profile leiten daher entweder von dem jeweils passenden abstrakten dgMP-P
 
 #### Generierten Dosierungstext ergänzen
 
-Zu jeder strukturierten Dosierung ist der Dosierungstext lokal nach der [Spezifikation der Dosis-Textgenerierung](https://github.com/hl7germany/dgMP-DosageTextgenerierung-Skript) zu erzeugen und in der Extension `renderedDosageInstruction` der Ressource zu hinterlegen. Sprache und verwendete Algorithmus-Version sind in der Extension [GeneratedDosageInstructionsMeta](./StructureDefinition-GeneratedDosageInstructionsMeta.html) anzugeben. Der Constraint `DosageStructuredRequiresGeneratedText` prüft, dass diese Angaben zu einer strukturierten Dosierung vorliegen; der Gesamtablauf ist unter [Bereitstellung des Dosierungstextes](./dosierung-text-hinzufuegen.html) beschrieben.
+Zu jeder Dosierung ist der Dosierungstext lokal nach der [Spezifikation der Dosis-Textgenerierung](https://github.com/hl7germany/dgMP-DosageTextgenerierung-Skript) zu erzeugen und in der Extension `renderedDosageInstruction` der Ressource zu hinterlegen; bei einer Freitext-Dosierung übernimmt die Textgenerierung den Freitext unverändert. Sprache und verwendete Algorithmus-Version sind in der Extension [GeneratedDosageInstructionsMeta](./StructureDefinition-GeneratedDosageInstructionsMeta.html) anzugeben. Die Constraints `DosageRequiresGeneratedText` und `FreeTextMatchesRenderedText` prüfen diese Angaben; der Gesamtablauf ist unter [Bereitstellung des Dosierungstextes](./dosierung-text-hinzufuegen.html) beschrieben.
 
 ### Ausbaustufen
 

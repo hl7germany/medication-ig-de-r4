@@ -5,7 +5,7 @@ Title: "Dosage dgMP"
 Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenommen wird/wurde oder eingenommen werden soll."
 * obeys DosageStructuredOrFreeText
 * obeys DosageStructuredRequiresBoth
-* obeys DosageStructuredRequiresGeneratedText
+* obeys DosageRequiresGeneratedText
 * obeys FreeTextSingleDosageOnly
 * obeys FreeTextMatchesRenderedText
 * obeys DosageDoseQuantityAllowedFractions
@@ -116,20 +116,9 @@ Expression: "(%resource.ofType(MedicationRequest).dosageInstruction |
 )"
 Severity: #error
 
-Invariant: DosageStructuredRequiresGeneratedText
-Description: "If a structured dosage is present (doseAndRate populated, text empty, plus timing or a pure as-needed dosage), the GeneratedDosageInstructionsMeta extension must be present."
-Expression: "(
-  (%resource.ofType(MedicationRequest).dosageInstruction |
-   %resource.ofType(MedicationDispense).dosageInstruction |
-   %resource.ofType(MedicationStatement).dosage
-  ).exists(
-    text.empty() and doseAndRate.exists() and
-    (timing.exists() or asNeeded.ofType(boolean) = true)
-  )
-)
-implies
-(
-%resource.extension.where(
+Invariant: DosageRequiresGeneratedText
+Description: "Regardless of the kind of dosage (structured or free text), the GeneratedDosageInstructionsMeta and renderedDosageInstruction extensions must be present."
+Expression: "%resource.extension.where(
   url = 'http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta'
 ).exists() and
 (
@@ -142,7 +131,6 @@ implies
   %resource.extension.where(
     url = 'http://hl7.org/fhir/5.0/StructureDefinition/extension-MedicationStatement.renderedDosageInstruction'
   ).exists()
-)
 )"
 Severity: #error
 
@@ -169,7 +157,7 @@ implies
 Severity: #error
 
 Invariant: FreeTextMatchesRenderedText
-Description: "If a dosage is given as pure free text (text present, timing and doseAndRate empty) AND the renderedDosageInstruction extension is populated, the value in dosageInstruction.text must match the value in the extension."
+Description: "If a dosage is given as pure free text (text present, timing and doseAndRate empty), the value in dosageInstruction.text must match the value in the renderedDosageInstruction extension."
 Expression: "(
   (%resource.ofType(MedicationRequest).dosageInstruction |
    %resource.ofType(MedicationDispense).dosageInstruction |
@@ -180,36 +168,21 @@ implies
 (
   (
     %resource.ofType(MedicationRequest).exists() and
-    (
-      %resource.extension.where(
-        url = 'http://hl7.org/fhir/5.0/StructureDefinition/extension-MedicationRequest.renderedDosageInstruction'
-      ).empty() or
-      %resource.extension.where(
-        url = 'http://hl7.org/fhir/5.0/StructureDefinition/extension-MedicationRequest.renderedDosageInstruction'
-      ).value = %resource.dosageInstruction.text
-    )
+    %resource.extension.where(
+      url = 'http://hl7.org/fhir/5.0/StructureDefinition/extension-MedicationRequest.renderedDosageInstruction'
+    ).value = %resource.dosageInstruction.text
   ) or
   (
     %resource.ofType(MedicationDispense).exists() and
-    (
-      %resource.extension.where(
-        url = 'http://hl7.org/fhir/5.0/StructureDefinition/extension-MedicationDispense.renderedDosageInstruction'
-      ).empty() or
-      %resource.extension.where(
-        url = 'http://hl7.org/fhir/5.0/StructureDefinition/extension-MedicationDispense.renderedDosageInstruction'
-      ).value = %resource.dosageInstruction.text
-    )
+    %resource.extension.where(
+      url = 'http://hl7.org/fhir/5.0/StructureDefinition/extension-MedicationDispense.renderedDosageInstruction'
+    ).value = %resource.dosageInstruction.text
   ) or
   (
     %resource.ofType(MedicationStatement).exists() and
-    (
-      %resource.extension.where(
-        url = 'http://hl7.org/fhir/5.0/StructureDefinition/extension-MedicationStatement.renderedDosageInstruction'
-      ).empty() or
-      %resource.extension.where(
-        url = 'http://hl7.org/fhir/5.0/StructureDefinition/extension-MedicationStatement.renderedDosageInstruction'
-      ).value = %resource.dosage.text
-    )
+    %resource.extension.where(
+      url = 'http://hl7.org/fhir/5.0/StructureDefinition/extension-MedicationStatement.renderedDosageInstruction'
+    ).value = %resource.dosage.text
   )
 )"
 Severity: #error

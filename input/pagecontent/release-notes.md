@@ -4,6 +4,12 @@
 
 - **`AsNeededForRequiresAsNeededWarning` (`DosageDE`) — neu** (HDB-924)
   - Warnt, wenn ein Anlass (`extension[asNeededFor]`) ohne `asNeededBoolean = true` angegeben ist. `dos-1` lässt einen Anlass ohne `asNeeded` wie in FHIR R5 weiterhin zu; lesende Systeme werten ihn als Bedarfsdosierung. In den dgMP-Profilen bleibt der Fall über `AsNeededForRequiresAsNeeded` ein Fehler.
+- **`DosageRequiresGeneratedText` (`DosageDgMP`) — ersetzt `DosageStructuredRequiresGeneratedText`** (HDB-947)
+  - `GeneratedDosageInstructionsMeta` und `renderedDosageInstruction` sind unabhängig von der Art der Dosierung anzugeben, also auch bei Freitext. Zuvor galt die Pflicht nur für strukturierte Dosierungen.
+  - Der Schlüssel erscheint in Validierungsmeldungen; Werkzeuge, die auf `DosageStructuredRequiresGeneratedText` abstellen, müssen angepasst werden.
+- **`FreeTextMatchesRenderedText` (`DosageDgMP`)** (HDB-947)
+  - Bei einer Freitext-Dosierung muss `renderedDosageInstruction` vorhanden sein und `Dosage.text` exakt entsprechen. Zuvor wurde nur verglichen, wenn die Extension vorhanden war.
+- `DosageRequiresGeneratedText` und `FreeTextMatchesRenderedText` entsprechen damit wieder dem Stand von 1.0.1. In 1.0.2 waren sie aus Gründen der Rückwärtskompatibilität zurückgenommen worden, da 1.0.1 ein Patch-Release war; mit 2.0.0 als Major-Release gelten sie wieder.
 
 ### Release: 2.0.0-ballot
 

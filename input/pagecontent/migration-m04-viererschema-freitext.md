@@ -8,10 +8,10 @@
 
 ## Auslöser
 
-Für jedes befüllte `Dosage.text` wird genau der Constraint-Ausdruck des Zielprofils verwendet:
+Für jedes befüllte `Dosage.text` wird der reguläre Ausdruck aus `DosageFourSlotPatternInText` verwendet. Er steht hier ohne das String-Escaping des FHIRPath-Ausdrucks:
 
 ```text
-^\\s*\\d+([.,]\\d+)?(\\s*/\\s*\\d+)?(\\s*[-–]\\s*\\d+([.,]\\d+)?(\\s*/\\s*\\d+)?){3}(\\s*[A-Za-zÄÖÜäöüß().]+)?\\s*$
+^\s*\d+([.,]\d+)?(\s*/\s*\d+)?(\s*[-–]\s*\d+([.,]\d+)?(\s*/\s*\d+)?){3}(\s*[A-Za-zÄÖÜäöüß().]+)?\s*$
 ```
 
 ## Verbindliche Migration

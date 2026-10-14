@@ -18,6 +18,16 @@
 - **`MaxDoseNotBelowDose` (`DosageDgMP`) — neu** (HDB-971)
   - `maxDosePerPeriod.numerator.value` darf nicht kleiner als `doseQuantity.value` beziehungsweise `doseRange.high.value` sein. Zuvor wurde nur die Einheit verglichen (`MaxDoseSameUnitAsDose`).
 
+**Fachliche Informationsmodelle**
+
+- **`dosierungsdetails.anlass`**
+  - In den Modellen der Zeitschemata (`TimeSchemeLogical`, `WhenSchemeLogical`, `WeekdaySchemeLogical`, `IntervalSchemeLogical`, `IntervalCombinationSchemeLogical`, `WeekdayCombinationSchemeLogical`) heißt `dosierungsdetails.einnahmeanlass` jetzt `dosierungsdetails.anlass`, wie bereits in `PRNSchemeLogical`.
+  - In allen Modellen gilt `0..*` statt `0..1`. Mehrere Anlässe sind fachlich ODER-verknüpft, entsprechend `asNeededFor` `0..*`.
+- **`PRNSchemeLogical`**
+  - Enthält keinen `zeitrahmen` mehr: Eine reine Bedarfsdosierung hat kein `timing` und damit keinen Anwendungszeitraum über `bounds[x]`.
+  - `zeitangaben.mindestabstand.einheit` ist an `MindestabstandUnitsOfTimeDgMP` gebunden (required), wie in `DosageDgMP`.
+  - Die Seite [Schema für Bedarfsmedikation](./schema-bedarfsmedikation.html) erläutert, dass eine reine Bedarfsdosierung genau ein `Dosage`-Element erlaubt (`AsNeededSingleDosageOnly`).
+
 ### Release: 2.0.0-ballot
 
 Diese Version erweitert das dgMP-Dosiermodell erheblich: Dosierungen, die bisher

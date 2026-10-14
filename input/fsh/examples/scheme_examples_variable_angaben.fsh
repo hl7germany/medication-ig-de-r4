@@ -51,3 +51,51 @@ Description: "Dieses Beispiel stellt eine variable Periode von 4 bis 6 Tagen zwi
   * timing.repeat.periodMax = 6
   * timing.repeat.periodUnit = #d
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
+
+Instance: Example-MR-Dosage-variable-period-1-3d
+InstanceOf: MedicationRequestDgMP
+Usage: #example
+Title: "Example-MR-Dosage-variable-period-1-3d"
+Description: "Dieses Beispiel stellt eine variable Periode von 1 bis 3 Tagen zwischen den Gaben dar (period = 1 mit periodMax)."
+* subject.display = "Patient"
+* status = #active
+* intent = #order
+* medicationCodeableConcept.text = "Ibuprofen 400mg"
+* dosageInstruction[+]
+  * timing.repeat.frequency = 1
+  * timing.repeat.period = 1
+  * timing.repeat.periodMax = 3
+  * timing.repeat.periodUnit = #d
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
+
+Instance: Example-MR-Dosage-variable-period-1-2wk
+InstanceOf: MedicationRequestDgMP
+Usage: #example
+Title: "Example-MR-Dosage-variable-period-1-2wk"
+Description: "Dieses Beispiel stellt eine variable Periode von 1 bis 2 Wochen zwischen den Gaben dar (period = 1 mit periodMax)."
+* subject.display = "Patient"
+* status = #active
+* intent = #order
+* medicationCodeableConcept.text = "Ibuprofen 400mg"
+* dosageInstruction[+]
+  * timing.repeat.frequency = 1
+  * timing.repeat.period = 1
+  * timing.repeat.periodMax = 2
+  * timing.repeat.periodUnit = #wk
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
+
+Instance: Example-MR-Dosage-variable-period-1-2mo
+InstanceOf: MedicationRequestDgMP
+Usage: #example
+Title: "Example-MR-Dosage-variable-period-1-2mo"
+Description: "Dieses Beispiel stellt eine variable Periode von 1 bis 2 Monaten zwischen den Gaben dar (period = 1 mit periodMax)."
+* subject.display = "Patient"
+* status = #active
+* intent = #order
+* medicationCodeableConcept.text = "Ibuprofen 400mg"
+* dosageInstruction[+]
+  * timing.repeat.frequency = 1
+  * timing.repeat.period = 1
+  * timing.repeat.periodMax = 2
+  * timing.repeat.periodUnit = #mo
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"

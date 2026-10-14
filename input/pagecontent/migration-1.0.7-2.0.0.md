@@ -33,7 +33,7 @@ Die Entscheidungen gelten für die gesamte Dosierungs-Liste einer Ressourcenfass
 
 | Prüfung | Weiteres Vorgehen |
 |---|---|
-| Keine Dosierung vorhanden? | Keine ergänzen; übrige Zielanforderungen prüfen. |
+| Keine Dosierung vorhanden? | Keine ergänzen; übrige Zielanforderungen prüfen. Text-Extensions ohne Dosierung nach M23 behandeln. |
 | Reiner Freitext vorhanden? | Text unverändert übernehmen und Text-Extensions neu erzeugen; nacktes Viererschema nach M04 behandeln. |
 | Struktur nach zulässigen Normalisierungen verwendbar? | Regulären Dosierungstext erzeugen und die vollständige Zielressource validieren. |
 | Nur eine für Renderer-Freitext zugelassene Verletzung übrig? | Vollständigkeit und Bedeutungstreue prüfen, rendern und als einzelnen Freitext validieren. |
@@ -59,6 +59,8 @@ Die Fall-IDs dienen als stabile Referenzen für die unten festgelegten Migration
 | M08–M17 | Fehlende, widersprüchliche oder nicht sicher vereinheitlichbare Angaben | Nur archivieren | [Betroffene Fälle](./migration-freitext-fallback.html) |
 | M18 | Anzeigeeinheit passt nicht zum Code | Anzeige korrigieren, sofern der Code nachweislich maßgeblich ist | [M18](./migration-m18-einheitenanzeige.html) |
 | M19–M21 | Neue Felder, Warnungen und Lockerungen | Keine Änderung allein wegen dieser Regeln | Siehe Referenz unten |
+| M22 | Periode oder Behandlungsdauer null oder negativ | Nur archivieren | [Archivverfahren](./migration-freitext-fallback.html) |
+| M23 | Text-Extension ohne Dosierung | Nur archivieren | [Archivverfahren](./migration-freitext-fallback.html) |
 
 ### Verbindlicher Migrationsablauf
 
@@ -94,7 +96,7 @@ Dieser Pfad setzt genau ein vollständiges `Dosage`-Element mit positiver `doseQ
 | M06 | `TimingPeriodOnlyWholeNumber` | Die vollständige Periode wird dargestellt. |
 | M07 | `TimingFreqOrPeriodGtOne` | Reines Intervall mit `frequency`, `period`, `periodUnit`; keine `when`, `timeOfDay` oder `dayOfWeek`. |
 
-Mehrere dieser Fälle dürfen nur gemeinsam behandelt werden, wenn alle Voraussetzungen erfüllt sind. M03 und M08–M17 sperren diesen Pfad. M04 verwendet keinen Renderer für die Interpretation des Quelltextes; M18 muss vor dem Rendern geklärt sein.
+Mehrere dieser Fälle dürfen nur gemeinsam behandelt werden, wenn alle Voraussetzungen erfüllt sind. M03, M08–M17 und M22 sperren diesen Pfad. M04 verwendet keinen Renderer für die Interpretation des Quelltextes; M18 muss vor dem Rendern geklärt sein.
 
 #### Verbindliche Vollständigkeitsprüfung
 
@@ -147,13 +149,13 @@ Diese Fälle sind Teil des Umfangs, damit ein implementierendes System weiß, we
 
 | Fall | Betroffene Constraints | Begründung und Verhalten |
 |---|---|---|
-| M19 – Neue 2.0.0-Felder | `AsNeededForIdentical`, `AsNeededForRequiresAsNeeded`, `AsNeededIdentical`, `AsNeededSingleDosageOnly`, `DoseRangeHighRequiredWhenLowPresent`, `DoseRangeLowAndHighSameUnit`, `DoseRangeNoVarPeriod`, `MaxDoseOnlyPureAsNeeded`, `MaxDosePerPeriodOnly24hOr1d`, `MaxDoseSameUnitAsDose`, `MinimumIntervalOnlyPureAsNeeded`, `MinimumIntervalUnitMatchesCode`, `PatientInstructionIdentical`, `TimingVarFreqGtMin`, `TimingVarPeriodGtMin`, `dos-1` | Diese Regeln prüfen Elemente, die in 1.0.7 nicht strukturiert vorhanden waren, zum Beispiel `doseRange`, `asNeededBoolean`, `periodMax` oder `patientInstruction`. Die Migration befüllt diese Felder nicht durch Vermutungen. Vorhandene 1.0.7-Felder werden trotzdem nach den übrigen Regeln validiert. |
-| M20 – Warnungen ohne neue harte Zielverletzung | `DosageDoseUnitSameCodeWarning`, `DosageDoseValuePositiveWarning`, `DosageFourSlotPatternInTextWarning`, `DosageStructuredRequiresBothWarning`, `AsNeededForRequiresAsNeededWarning`, `TimingBoundsUnitMatchesCodeWarning`, `TimingFreqOrPeriodGtOneWarning`, `TimingSingleDosageForTimeOfDayWarning`, `TimingSingleDosageForWhenWarning` | Eine reine Warnung macht eine Ressource nicht ungültig und löst allein keine Umschreibung aus. Sie wird im Bericht gezählt. Wenn dieselbe Bedingung im dgMP-Zielprofil ein Fehler ist, gilt stattdessen die zugehörige Regel M03, M04, M07, M13, M14, M16, M17 oder M18. |
-| M21 – Lockerungen, Text-Extensions und Key-Renames | `TimingOnlyOneType`, `TimingPeriodUnit`, `TimingFrequencyCount`, `TimingVarFreqGtMin`, `DosageStructuredRequiresBoth`, `TimingOnlyOnePeriodForDayOfWeek`, `FreeTextMatchesRenderedText`, `DosageStructuredRequiresGeneratedText` → `DosageRequiresGeneratedText`, `DosageWarnungViererschemaInText` → `DosageFourSlotPatternInTextWarning` | Diese Änderungen lösen für zuvor gültige 1.0.7-Dosierungen allein keine Änderung der Dosierungsdaten aus. `DosageRequiresGeneratedText` und `FreeTextMatchesRenderedText` verlangen die Text-Extensions jetzt auch bei Freitext; sie werden in Schritt 6 für jede Zielressource erzeugt. Validatoren und Monitoring müssen bei den Key-Renames den neuen Namen auswerten. Verschärfte Änderungen sind separat in M08–M15 beschrieben. |
+| M19 – Neue 2.0.0-Felder | `AsNeededForIdentical`, `AsNeededForRequiresAsNeeded`, `AsNeededIdentical`, `AsNeededSingleDosageOnly`, `DosageLimitsPositive`, `DoseRangeHighRequiredWhenLowPresent`, `DoseRangeLowAndHighSameUnit`, `DoseRangeNoVarPeriod`, `MaxDoseNotBelowDose`, `MaxDoseOnlyPureAsNeeded`, `MaxDosePerPeriodOnly24hOr1d`, `MaxDoseSameUnitAsDose`, `MinimumIntervalOnlyPureAsNeeded`, `MinimumIntervalUnitMatchesCode`, `PatientInstructionIdentical`, `TimingBoundsPeriodMatchesTime`, `TimingBoundsPeriodNotForWhen`, `TimingVarFreqGtMin`, `TimingVarPeriodGtMin`, `dos-1` | Diese Regeln prüfen Elemente, die in 1.0.7 nicht strukturiert vorhanden waren, zum Beispiel `doseRange`, `asNeededBoolean`, `maxDosePerPeriod`, `periodMax`, `boundsPeriod` oder `patientInstruction`. Die Migration befüllt diese Felder nicht durch Vermutungen. Vorhandene 1.0.7-Felder werden trotzdem nach den übrigen Regeln validiert. |
+| M20 – Warnungen ohne neue harte Zielverletzung | `DosageDoseUnitSameCodeWarning`, `DosageDoseValuePositiveWarning`, `DosageFourSlotPatternInTextWarning`, `DosageLimitsPositiveWarning`, `DosageStructuredRequiresBothWarning`, `AsNeededForRequiresAsNeededWarning`, `TimingBoundsUnitMatchesCodeWarning`, `TimingFreqOrPeriodGtOneWarning`, `TimingSingleDosageForTimeOfDayWarning`, `TimingSingleDosageForWhenWarning`, `TimingValuesPositiveWarning` | Eine reine Warnung macht eine Ressource nicht ungültig und löst allein keine Umschreibung aus. Sie wird im Bericht gezählt. Wenn dieselbe Bedingung im dgMP-Zielprofil ein Fehler ist, gilt stattdessen die zugehörige Regel M03, M04, M07, M13, M14, M16, M17, M18, M19 oder M22. |
+| M21 – Lockerungen, Text-Extensions und Key-Renames | `TimingOnlyOneType`, `TimingPeriodUnit`, `TimingFrequencyCount`, `DosageStructuredRequiresBoth`, `TimingOnlyOnePeriodForDayOfWeek`, `FreeTextMatchesRenderedText`, `DosageStructuredRequiresGeneratedText` → `DosageRequiresGeneratedText`, `DosageWarnungViererschemaInText` → `DosageFourSlotPatternInTextWarning` | Diese Änderungen lösen für zuvor gültige 1.0.7-Dosierungen allein keine Änderung der Dosierungsdaten aus. `DosageRequiresGeneratedText` und `FreeTextMatchesRenderedText` verlangen die Text-Extensions jetzt auch bei Freitext; sie werden in Schritt 6 für jede Zielressource erzeugt. Validatoren und Monitoring müssen bei den Key-Renames den neuen Namen auswerten. Verschärfte Änderungen sind separat in M08–M15 beschrieben. |
 
 ### Abschlussprüfung
 
-Jede migrierte Zielressource MUSS gegen das festgelegte 2.0.0-Profil validiert werden. Die Prüfung MUSS mindestens folgende Invarianten umfassen: zulässige Dosisbruchteile und Dezimalschreibweise, positive strukturierte Dosiswerte, Freitextregel für 4-Schemata, ganzzahlige Dauer und Periode, Intervallregel, Eindeutigkeit der Zeit-/Wochentagsangaben, vollständige und einheitliche Zeitrahmen, Vollständigkeit der strukturierten Dosierung sowie Vorhandensein und Übereinstimmung der Text-Extensions.
+Jede migrierte Zielressource MUSS gegen das festgelegte 2.0.0-Profil validiert werden. Die Prüfung MUSS mindestens folgende Invarianten umfassen: zulässige Dosisbruchteile und Dezimalschreibweise, positive strukturierte Dosiswerte, positive Perioden und Behandlungsdauern, Freitextregel für 4-Schemata, ganzzahlige Dauer und Periode, Intervallregel, Eindeutigkeit der Zeit-/Wochentagsangaben, vollständige und einheitliche Zeitrahmen, Vollständigkeit der strukturierten Dosierung sowie Vorhandensein und Übereinstimmung der Text-Extensions.
 
 Eine Ressourcenfassung gilt als erfolgreich migriert, wenn die vollständige Zielressource valide ist und die Dosierung entweder unverändert, strukturiert normalisiert oder als bedeutungstreuer regulärer Freitext erhalten bleibt. Auch bei strukturierter Darstellung ist die Bedeutungstreue der erzeugten Text-Extensions erforderlich.
 

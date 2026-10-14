@@ -13,7 +13,7 @@ Die Regel gilt bei vorhandenem `frequency` und `period`, wenn `when`, `timeOfDay
 ## Verbindliche Migration
 
 1. Die Zahlen nicht algebraisch normalisieren. Aus `2` pro `8 h` darf nicht automatisch „alle 4 Stunden“ werden, da das FHIR-Paar allein keine gleichmäßige Verteilung belegt.
-2. Die [Renderer-Allowlist und Vollständigkeitsprüfung](./migration-1.0.7-2.0.0.html) anwenden. Genau ein vollständiges reines Intervallschema mit positiver `doseQuantity` ist erforderlich. Alle gleichzeitig vorliegenden Fehler prüfen; M03 und M08–M17 sperren den Pfad.
+2. Die [Renderer-Allowlist und Vollständigkeitsprüfung](./migration-1.0.7-2.0.0.html) anwenden. Genau ein vollständiges reines Intervallschema mit positiver `doseQuantity` ist erforderlich. Alle gleichzeitig vorliegenden Fehler prüfen; M03, M08–M17 und M22 sperren den Pfad.
 3. Den erzeugten Text nur bei nachgewiesener Bedeutungstreue übernehmen. Die gesamte Liste durch genau ein Dosage-Element mit ausschließlich `text` ersetzen; alte Text-Extensions nicht übernehmen, sondern für den Freitext neu erzeugen. Das vollständige Ziel gegen 2.0.0 validieren und die Rendererherkunft im Migrationsbericht festhalten.
 4. Bei Rendererfehler, Informationsverlust oder ungültigem Ziel das [Archivverfahren](./migration-freitext-fallback.html) verwenden.
 

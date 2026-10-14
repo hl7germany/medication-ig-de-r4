@@ -31,4 +31,4 @@ RuleSet: Zeitangaben
 
 RuleSet: Bedarf
 * dosierungsdetails.bedarfsmedikation 0..1 boolean "Kennzeichen, dass die Anwendung nur bei tatsächlichem Bedarf erfolgen soll."
-* dosierungsdetails.einnahmeanlass 0..1 string "Anlass oder Bedingung, bei der das Arzneimittel im Bedarfsfall angewendet werden soll (z.B. „bei Schmerzen“ oder „bei Fieber über 38,5 °C“)."
+* dosierungsdetails.anlass 0..1 string "Anlass oder Bedingung, bei der das Arzneimittel im Bedarfsfall angewendet werden soll (z.B. „bei Schmerzen“ oder „bei Fieber über 38,5 °C“)."

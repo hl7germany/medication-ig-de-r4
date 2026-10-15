@@ -35,7 +35,7 @@
 - **`MinimumIntervalOnlyPureAsNeeded` und `MaxDoseOnlyPureAsNeeded` (`DosageDgMP`)**
   - Verlangen zusätzlich `doseAndRate`: Mindestabstand und Maximalmenge sind nur an einer strukturierten reinen Bedarfsdosierung zulässig. An einer Freitext-Dosierung mit `asNeededBoolean = true` waren sie bisher gültig, konnten aber nie im Dosierungstext erscheinen, weil der Freitext unverändert übernommen wird.
 - **`maxDosePerPeriod.numerator.comparator` und `.denominator.comparator` sind `0..0`**
-  - Bereiche und Obergrenzen haben eigene Elemente (`doseRange`, `maxDosePerPeriod`); ein Vergleichsoperator ist daneben nicht vorgesehen, und der Dosierungstext hat keine Darstellung dafür. Bei der Dosis schließt `SimpleQuantity` den `comparator` bereits aus.
+  - Bereiche und Obergrenzen haben eigene Elemente (`doseRange`, `maxDosePerPeriod`); ein Vergleichsoperator ist daneben nicht vorgesehen; die Textgenerierung definiert für ihn keine Darstellung. Bei der Dosis schließt `SimpleQuantity` den `comparator` bereits aus.
 - **`TimingBoundsPeriodNotForWhen` (`TimingDgMP`) — neu**
   - Im Tageszeitenschema (`when`) und im Wochentagsschema ohne `timeOfDay` dürfen `boundsPeriod.start` und `boundsPeriod.end` keine Uhrzeit enthalten.
   - Das Beispiel `Example-MR-Dosage-1000-startdatetime` verwendet deshalb jetzt das Uhrzeitenschema, `Example-MR-Dosage-1000-startdatetime-daychange` ein reines Intervall.

@@ -6,24 +6,81 @@
       {
         "name": "Startdatum ohne Uhrzeit",
         "dosage": {
-          "timing": { "repeat": { "timeOfDay": ["08:00:00"], "boundsPeriod": { "start": "2026-06-05" } } },
-          "doseAndRate": [{ "doseQuantity": { "value": 1, "unit": "Stück", "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT", "code": "1" } }]
+          "timing": {
+            "repeat": {
+              "timeOfDay": [
+                "08:00:00"
+              ],
+              "boundsPeriod": {
+                "start": "2026-06-05"
+              }
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
         },
         "expect": true
       },
       {
         "name": "Startzeit entspricht timeOfDay",
         "dosage": {
-          "timing": { "repeat": { "timeOfDay": ["08:00:00", "20:00:00"], "boundsPeriod": { "start": "2026-06-05T20:00:00+02:00" } } },
-          "doseAndRate": [{ "doseQuantity": { "value": 1, "unit": "Stück", "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT", "code": "1" } }]
+          "timing": {
+            "repeat": {
+              "timeOfDay": [
+                "08:00:00",
+                "20:00:00"
+              ],
+              "boundsPeriod": {
+                "start": "2026-06-05T20:00:00+02:00"
+              }
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
         },
         "expect": true
       },
       {
         "name": "Start- und Endzeit entsprechen timeOfDay, Sekundenbruchteile",
         "dosage": {
-          "timing": { "repeat": { "timeOfDay": ["08:00:00", "20:00:00"], "boundsPeriod": { "start": "2026-06-05T08:00:00.000+02:00", "end": "2026-06-12T20:00:00+02:00" } } },
-          "doseAndRate": [{ "doseQuantity": { "value": 1, "unit": "Stück", "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT", "code": "1" } }]
+          "timing": {
+            "repeat": {
+              "timeOfDay": [
+                "08:00:00",
+                "20:00:00"
+              ],
+              "boundsPeriod": {
+                "start": "2026-06-05T08:00:00.000+02:00",
+                "end": "2026-06-12T20:00:00+02:00"
+              }
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
         },
         "expect": true
       },
@@ -31,12 +88,48 @@
         "name": "Startzeit in timeOfDay eines anderen Dosage-Elements",
         "dosages": [
           {
-            "timing": { "repeat": { "timeOfDay": ["08:00:00"], "boundsPeriod": { "start": "2026-06-05T20:00:00+02:00" } } },
-            "doseAndRate": [{ "doseQuantity": { "value": 1, "unit": "Stück", "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT", "code": "1" } }]
+            "timing": {
+              "repeat": {
+                "timeOfDay": [
+                  "08:00:00"
+                ],
+                "boundsPeriod": {
+                  "start": "2026-06-05T20:00:00+02:00"
+                }
+              }
+            },
+            "doseAndRate": [
+              {
+                "doseQuantity": {
+                  "value": 1,
+                  "unit": "Stück",
+                  "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                  "code": "1"
+                }
+              }
+            ]
           },
           {
-            "timing": { "repeat": { "timeOfDay": ["20:00:00"], "boundsPeriod": { "start": "2026-06-05T20:00:00+02:00" } } },
-            "doseAndRate": [{ "doseQuantity": { "value": 2, "unit": "Stück", "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT", "code": "1" } }]
+            "timing": {
+              "repeat": {
+                "timeOfDay": [
+                  "20:00:00"
+                ],
+                "boundsPeriod": {
+                  "start": "2026-06-05T20:00:00+02:00"
+                }
+              }
+            },
+            "doseAndRate": [
+              {
+                "doseQuantity": {
+                  "value": 2,
+                  "unit": "Stück",
+                  "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                  "code": "1"
+                }
+              }
+            ]
           }
         ],
         "expect": true
@@ -44,40 +137,132 @@
       {
         "name": "Startzeit nicht in timeOfDay",
         "dosage": {
-          "timing": { "repeat": { "timeOfDay": ["08:00:00", "20:00:00"], "boundsPeriod": { "start": "2026-06-05T09:00:00+02:00" } } },
-          "doseAndRate": [{ "doseQuantity": { "value": 1, "unit": "Stück", "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT", "code": "1" } }]
+          "timing": {
+            "repeat": {
+              "timeOfDay": [
+                "08:00:00",
+                "20:00:00"
+              ],
+              "boundsPeriod": {
+                "start": "2026-06-05T09:00:00+02:00"
+              }
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
         },
         "expect": false
       },
       {
         "name": "Endzeit nicht in timeOfDay",
         "dosage": {
-          "timing": { "repeat": { "timeOfDay": ["08:00:00"], "boundsPeriod": { "start": "2026-06-05", "end": "2026-06-12T12:00:00+02:00" } } },
-          "doseAndRate": [{ "doseQuantity": { "value": 1, "unit": "Stück", "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT", "code": "1" } }]
+          "timing": {
+            "repeat": {
+              "timeOfDay": [
+                "08:00:00"
+              ],
+              "boundsPeriod": {
+                "start": "2026-06-05",
+                "end": "2026-06-12T12:00:00+02:00"
+              }
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
         },
         "expect": false
       },
       {
         "name": "UTC-Uhrzeit weicht als String von timeOfDay ab",
         "dosage": {
-          "timing": { "repeat": { "timeOfDay": ["08:00:00"], "boundsPeriod": { "start": "2026-06-05T06:00:00Z" } } },
-          "doseAndRate": [{ "doseQuantity": { "value": 1, "unit": "Stück", "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT", "code": "1" } }]
+          "timing": {
+            "repeat": {
+              "timeOfDay": [
+                "08:00:00"
+              ],
+              "boundsPeriod": {
+                "start": "2026-06-05T06:00:00Z"
+              }
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
         },
         "expect": false
       },
       {
         "name": "Bekannte Grenze: UTC-Uhrzeit entspricht timeOfDay als String, Offset ungeprüft",
         "dosage": {
-          "timing": { "repeat": { "timeOfDay": ["06:00:00"], "boundsPeriod": { "start": "2026-06-05T06:00:00Z" } } },
-          "doseAndRate": [{ "doseQuantity": { "value": 1, "unit": "Stück", "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT", "code": "1" } }]
+          "timing": {
+            "repeat": {
+              "timeOfDay": [
+                "06:00:00"
+              ],
+              "boundsPeriod": {
+                "start": "2026-06-05T06:00:00Z"
+              }
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
         },
         "expect": true
       },
       {
         "name": "Intervall ohne timeOfDay mit Startzeit",
         "dosage": {
-          "timing": { "repeat": { "frequency": 1, "period": 8, "periodUnit": "h", "boundsPeriod": { "start": "2026-06-05T09:15:00+02:00" } } },
-          "doseAndRate": [{ "doseQuantity": { "value": 1, "unit": "Stück", "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT", "code": "1" } }]
+          "timing": {
+            "repeat": {
+              "frequency": 1,
+              "period": 8,
+              "periodUnit": "h",
+              "boundsPeriod": {
+                "start": "2026-06-05T09:15:00+02:00"
+              }
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
         },
         "expect": true
       }
@@ -90,98 +275,453 @@
       {
         "name": "when mit Start- und Enddatum",
         "dosage": {
-          "timing": { "repeat": { "when": ["MORN"], "boundsPeriod": { "start": "2026-06-05", "end": "2026-07-05" } } },
-          "doseAndRate": [{ "doseQuantity": { "value": 1, "unit": "Stück", "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT", "code": "1" } }]
+          "timing": {
+            "repeat": {
+              "when": [
+                "MORN"
+              ],
+              "boundsPeriod": {
+                "start": "2026-06-05",
+                "end": "2026-07-05"
+              }
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
         },
         "expect": true
       },
       {
         "name": "when ohne boundsPeriod",
         "dosage": {
-          "timing": { "repeat": { "when": ["MORN"] } },
-          "doseAndRate": [{ "doseQuantity": { "value": 1, "unit": "Stück", "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT", "code": "1" } }]
+          "timing": {
+            "repeat": {
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
         },
         "expect": true
       },
       {
         "name": "when mit Startzeitpunkt",
         "dosage": {
-          "timing": { "repeat": { "when": ["MORN"], "boundsPeriod": { "start": "2026-06-05T08:00:00+02:00" } } },
-          "doseAndRate": [{ "doseQuantity": { "value": 1, "unit": "Stück", "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT", "code": "1" } }]
+          "timing": {
+            "repeat": {
+              "when": [
+                "MORN"
+              ],
+              "boundsPeriod": {
+                "start": "2026-06-05T08:00:00+02:00"
+              }
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
         },
         "expect": false
       },
       {
         "name": "when mit Endzeitpunkt",
         "dosage": {
-          "timing": { "repeat": { "when": ["MORN"], "boundsPeriod": { "start": "2026-06-05", "end": "2026-07-05T08:00:00Z" } } },
-          "doseAndRate": [{ "doseQuantity": { "value": 1, "unit": "Stück", "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT", "code": "1" } }]
+          "timing": {
+            "repeat": {
+              "when": [
+                "MORN"
+              ],
+              "boundsPeriod": {
+                "start": "2026-06-05",
+                "end": "2026-07-05T08:00:00Z"
+              }
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
         },
         "expect": false
       },
       {
         "name": "dayOfWeek ohne Uhrzeit mit Start- und Enddatum",
         "dosage": {
-          "timing": { "repeat": { "dayOfWeek": ["mon"], "boundsPeriod": { "start": "2026-06-05", "end": "2026-07-05" } } },
-          "doseAndRate": [{ "doseQuantity": { "value": 1, "unit": "Stück", "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT", "code": "1" } }]
+          "timing": {
+            "repeat": {
+              "dayOfWeek": [
+                "mon"
+              ],
+              "boundsPeriod": {
+                "start": "2026-06-05",
+                "end": "2026-07-05"
+              }
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
         },
         "expect": true
       },
       {
         "name": "dayOfWeek ohne boundsPeriod",
         "dosage": {
-          "timing": { "repeat": { "dayOfWeek": ["mon"] } },
-          "doseAndRate": [{ "doseQuantity": { "value": 1, "unit": "Stück", "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT", "code": "1" } }]
+          "timing": {
+            "repeat": {
+              "dayOfWeek": [
+                "mon"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
         },
         "expect": true
       },
       {
         "name": "dayOfWeek ohne Uhrzeit mit Startzeitpunkt",
         "dosage": {
-          "timing": { "repeat": { "dayOfWeek": ["mon"], "boundsPeriod": { "start": "2026-06-05T08:00:00+02:00" } } },
-          "doseAndRate": [{ "doseQuantity": { "value": 1, "unit": "Stück", "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT", "code": "1" } }]
+          "timing": {
+            "repeat": {
+              "dayOfWeek": [
+                "mon"
+              ],
+              "boundsPeriod": {
+                "start": "2026-06-05T08:00:00+02:00"
+              }
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
         },
         "expect": false
       },
       {
         "name": "dayOfWeek ohne Uhrzeit mit Endzeitpunkt",
         "dosage": {
-          "timing": { "repeat": { "dayOfWeek": ["mon"], "boundsPeriod": { "start": "2026-06-05", "end": "2026-07-05T08:00:00+02:00" } } },
-          "doseAndRate": [{ "doseQuantity": { "value": 1, "unit": "Stück", "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT", "code": "1" } }]
+          "timing": {
+            "repeat": {
+              "dayOfWeek": [
+                "mon"
+              ],
+              "boundsPeriod": {
+                "start": "2026-06-05",
+                "end": "2026-07-05T08:00:00+02:00"
+              }
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
         },
         "expect": false
       },
       {
         "name": "dayOfWeek mit when und Startzeitpunkt",
         "dosage": {
-          "timing": { "repeat": { "dayOfWeek": ["mon"], "when": ["MORN"], "boundsPeriod": { "start": "2026-06-05T08:00:00+02:00" } } },
-          "doseAndRate": [{ "doseQuantity": { "value": 1, "unit": "Stück", "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT", "code": "1" } }]
+          "timing": {
+            "repeat": {
+              "dayOfWeek": [
+                "mon"
+              ],
+              "when": [
+                "MORN"
+              ],
+              "boundsPeriod": {
+                "start": "2026-06-05T08:00:00+02:00"
+              }
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
         },
         "expect": false
       },
       {
         "name": "dayOfWeek mit timeOfDay und Start- und Endzeitpunkt",
         "dosage": {
-          "timing": { "repeat": { "dayOfWeek": ["mon"], "timeOfDay": ["08:00:00"], "boundsPeriod": { "start": "2026-06-08T08:00:00+02:00", "end": "2026-07-06T08:00:00+02:00" } } },
-          "doseAndRate": [{ "doseQuantity": { "value": 1, "unit": "Stück", "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT", "code": "1" } }]
+          "timing": {
+            "repeat": {
+              "dayOfWeek": [
+                "mon"
+              ],
+              "timeOfDay": [
+                "08:00:00"
+              ],
+              "boundsPeriod": {
+                "start": "2026-06-08T08:00:00+02:00",
+                "end": "2026-07-06T08:00:00+02:00"
+              }
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
         },
         "expect": true
       },
       {
         "name": "Reines Intervall mit UTC-Startzeitpunkt",
         "dosage": {
-          "timing": { "repeat": { "frequency": 1, "period": 8, "periodUnit": "h", "boundsPeriod": { "start": "2026-06-05T23:30:45Z" } } },
-          "doseAndRate": [{ "doseQuantity": { "value": 1, "unit": "Stück", "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT", "code": "1" } }]
+          "timing": {
+            "repeat": {
+              "frequency": 1,
+              "period": 8,
+              "periodUnit": "h",
+              "boundsPeriod": {
+                "start": "2026-06-05T23:30:45Z"
+              }
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
         },
         "expect": true
       },
       {
         "name": "timeOfDay mit Startzeitpunkt",
         "dosage": {
-          "timing": { "repeat": { "timeOfDay": ["08:00:00"], "boundsPeriod": { "start": "2026-06-05T08:00:00+02:00" } } },
-          "doseAndRate": [{ "doseQuantity": { "value": 1, "unit": "Stück", "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT", "code": "1" } }]
+          "timing": {
+            "repeat": {
+              "timeOfDay": [
+                "08:00:00"
+              ],
+              "boundsPeriod": {
+                "start": "2026-06-05T08:00:00+02:00"
+              }
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
         },
         "expect": true
+      }
+    ]
+  },
+  {
+    "invariant": "TimingBoundsPeriodFullDate",
+    "context": "Timing.repeat",
+    "cases": [
+      {
+        "name": "volles Datum",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "when": [
+                "MORN"
+              ],
+              "boundsPeriod": {
+                "start": "2026-06-05"
+              }
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "Datum mit Uhrzeit",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "timeOfDay": [
+                "08:00:00"
+              ],
+              "boundsPeriod": {
+                "start": "2026-06-05T08:00:00+02:00"
+              }
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "ohne boundsPeriod",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "nur Jahr und Monat",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "when": [
+                "MORN"
+              ],
+              "boundsPeriod": {
+                "start": "2026-06"
+              }
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": false
+      },
+      {
+        "name": "nur Jahr im Ende",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "when": [
+                "MORN"
+              ],
+              "boundsPeriod": {
+                "start": "2026-06-05",
+                "end": "2026"
+              }
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": false
       }
     ]
   }

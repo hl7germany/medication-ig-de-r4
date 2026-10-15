@@ -2,6 +2,7 @@
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | [MedicationDispense-INV-C-MinimumIntervalOnlyPureAsNeeded-Dispense-02-of-03](./MedicationDispense-INV-C-MinimumIntervalOnlyPureAsNeeded-Dispense-02-of-03.html) | 1 Stück |  |  | 1 | 4-6 | h |  |  |  |  |
 | [MedicationDispense-INV-noan-C-MinimumIntervalOnlyPureAsNeeded-MD](./MedicationDispense-INV-noan-C-MinimumIntervalOnlyPureAsNeeded-MD.html) | 1 Stück |  |  |  |  |  |  |  |  |  |
+| [MedicationRequest-INV-C-MinimumIntervalOnlyPureAsNeeded-MR-04-of-04](./MedicationRequest-INV-C-MinimumIntervalOnlyPureAsNeeded-MR-04-of-04.html) |  |  |  |  |  |  |  |  |  |  |
 | [MedicationRequest-INV-C-MinimumIntervalOnlyPureAsNeeded-Request-01-of-03](./MedicationRequest-INV-C-MinimumIntervalOnlyPureAsNeeded-Request-01-of-03.html) | 1 Stück |  |  | 1 | 4-6 | h |  |  |  |  |
 | [MedicationRequest-INV-noan-C-MinimumIntervalOnlyPureAsNeeded-MR](./MedicationRequest-INV-noan-C-MinimumIntervalOnlyPureAsNeeded-MR.html) | 1 Stück |  |  |  |  |  |  |  |  |  |
 | [MedicationStatement-INV-C-MinimumIntervalOnlyPureAsNeeded-Statement-03-of-03](./MedicationStatement-INV-C-MinimumIntervalOnlyPureAsNeeded-Statement-03-of-03.html) | 1 Stück |  |  | 1 | 4-6 | h |  |  |  |  |

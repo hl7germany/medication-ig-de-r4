@@ -1,9 +1,37 @@
 import os
+import re
 import sys
 import json
 import subprocess
 import shutil
 import ast
+import uuid
+from decimal import Decimal
+
+# FHIR verlangt, die Genauigkeit eines decimal einschliesslich nachfolgender
+# Nullen zu erhalten (2.50 ist nicht 2.5). json.load mit float verwirft sie
+# bereits beim Einlesen; json.dump kann Decimal nicht als Zahl schreiben.
+# Deshalb: mit Decimal lesen und beim Schreiben jeden Decimal ueber einen
+# Marker-String als rohe Zahl ausgeben.
+
+
+def load_resource(handle):
+    return json.load(handle, parse_float=Decimal)
+
+
+def dump_resource(resource, handle):
+    # Marker pro Aufruf zufaellig, damit kein Freitext der Ressource mit ihm
+    # kollidieren kann.
+    marker = f"decimal-{uuid.uuid4().hex}:"
+
+    def mark_decimal(value):
+        if isinstance(value, Decimal):
+            return f"{marker}{value}"
+        raise TypeError(f"Object of type {type(value).__name__} is not JSON serializable")
+
+    text = json.dumps(resource, indent=2, ensure_ascii=False, default=mark_decimal)
+    # Den markierten String samt Anfuehrungszeichen durch die rohe Zahl ersetzen.
+    handle.write(re.sub(f'"{re.escape(marker)}([^"]+)"', r"\1", text))
 
 # Extension URLs for different resource types
 EXTENSION_URLS = {
@@ -139,7 +167,7 @@ def run_consolidated_dosage_to_text(script_path, resource_file_path):
 def process_file(input_path, output_path, script_path, algorithm_version):
     """Process a single medication resource file to add consolidated dosage text."""
     with open(input_path, 'r', encoding='utf-8') as f:
-        resource = json.load(f)
+        resource = load_resource(f)
 
     resource_type = resource.get("resourceType")
     
@@ -147,19 +175,19 @@ def process_file(input_path, output_path, script_path, algorithm_version):
     if resource_type not in EXTENSION_URLS:
         # Just copy the file unchanged
         with open(output_path, 'w', encoding='utf-8') as f:
-            json.dump(resource, f, indent=2, ensure_ascii=False)
+            dump_resource(resource, f)
         return
 
     # Constraint-Beispiele unverändert übernehmen: weder Extensions erzeugen noch im FSH angegebene entfernen
     if should_skip_extension_generation(input_path):
         with open(output_path, 'w', encoding='utf-8') as f:
-            json.dump(resource, f, indent=2, ensure_ascii=False)
+            dump_resource(resource, f)
         return
 
     # Proceed only if the resource actually has any dosage entries
     if not has_dosages(resource):
         with open(output_path, 'w', encoding='utf-8') as f:
-            json.dump(resource, f, indent=2, ensure_ascii=False)
+            dump_resource(resource, f)
         return
 
     changed = False
@@ -200,7 +228,7 @@ def process_file(input_path, output_path, script_path, algorithm_version):
 
     # Write to output folder
     with open(output_path, 'w', encoding='utf-8') as f:
-        json.dump(resource, f, indent=2, ensure_ascii=False)
+        dump_resource(resource, f)
 
 def main():
     if len(sys.argv) != 4:

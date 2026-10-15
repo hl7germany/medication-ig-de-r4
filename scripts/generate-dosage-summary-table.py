@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import json
+from decimal import Decimal
 import os
 import sys
 import subprocess
@@ -39,7 +40,8 @@ def find_medication_resources(resources_dir):
             
         try:
             with open(file_path, 'r', encoding='utf-8') as f:
-                resource = json.load(f)
+                # Decimal erhält die Genauigkeit (2.50); float verwirft die Null.
+                resource = json.load(f, parse_float=Decimal)
                 resource_type = resource.get('resourceType', '')
                 
                 if resource_type in ['MedicationRequest', 'MedicationDispense', 'MedicationStatement']:
@@ -211,6 +213,12 @@ def main():
     
     print(f"Suche nach Medication-Ressourcen in: {resources_dir}")
     resources = find_medication_resources(resources_dir)
+    # Von Hand gepflegte JSON-Beispiele (nicht als FSH darstellbar, siehe
+    # check-json-examples.py) gehören ebenfalls in die Übersicht.
+    examples_dir = project_root / "input" / "examples"
+    if examples_dir.exists():
+        resources = sorted(resources + find_medication_resources(examples_dir),
+                           key=lambda x: x['file_name'])
     print(f"Gefunden: {len(resources)} Ressourcen")
     
     if not resources:

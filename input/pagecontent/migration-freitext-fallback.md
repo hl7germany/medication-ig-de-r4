@@ -22,6 +22,7 @@ Der bisher als Freitext-Fallback bezeichnete Ansatz, Quell-JSON mit einem Warnpr
 | M16 | `DosageStructuredRequiresBoth` | `timing` oder `doseAndRate` fehlt; es darf kein Wert erfunden werden. |
 | M17 | `DosageDoseUnitSameCode` | Unterschiedliche Dosis-Codes können ohne versionierte exakte Umrechnung nicht vereinheitlicht werden. |
 | M22 | `TimingValuesPositive` | `period`, `periodMax` oder `boundsDuration.value` ist null oder negativ; eine sichere Wiederholung beziehungsweise Behandlungsdauer lässt sich daraus nicht ableiten. |
+| M23 | `ExtRequiresDosage-MR`, `ExtRequiresDosage-MD`, `ExtRequiresDosage-MS` | `renderedDosageInstruction` oder `GeneratedDosageInstructionsMeta` ist ohne Dosierung vorhanden. Der Text darf weder verworfen noch als neue Dosierung übernommen werden. |
 
 M15–M17 behandeln bereits 1.0.7-widrige Bestandsdaten, nicht neue Zielverschärfungen für gültige Quellen; siehe [Geltungsbereich](./migration-1.0.7-2.0.0.html). Für M22 konnte `period = 0` in 1.0.7 zulässig sein (`tim-5` verlangt nur `period >= 0`), ebenso eine nichtpositive `boundsDuration.value`. Negative Perioden waren dagegen bereits unzulässig; `periodMax` war im dgMP-Quellprofil ausgeschlossen.
 

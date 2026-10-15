@@ -42,7 +42,7 @@ Die Entscheidungen gelten für die gesamte Dosierungs-Liste einer Ressourcenfass
 
 | Prüfung | Weiteres Vorgehen |
 |---|---|
-| Keine Dosierung vorhanden? | Keine ergänzen; übrige Zielanforderungen prüfen. |
+| Keine Dosierung vorhanden? | Keine ergänzen; übrige Zielanforderungen prüfen. Text-Extensions ohne Dosierung nach M23 behandeln. |
 | Reiner Freitext vorhanden? | Text unverändert prüfen; nacktes Viererschema nach M04 behandeln. Beide Text-Extensions bereitstellen und exakte Textgleichheit prüfen. |
 | Struktur nach zulässigen Normalisierungen verwendbar? | Regulären Dosierungstext erzeugen und die vollständige Zielressource validieren. |
 | Nur eine für Renderer-Freitext zugelassene Verletzung übrig? | Vollständigkeit und Bedeutungstreue prüfen, rendern und als einzelnen Freitext validieren. |
@@ -69,6 +69,7 @@ Die Fall-IDs dienen als stabile Referenzen für die unten festgelegten Migration
 | M18 | Anzeigeeinheit passt nicht zum Code | Anzeige korrigieren, sofern der Code nachweislich maßgeblich ist | [M18](./migration-m18-einheitenanzeige.html) |
 | M19–M21 | Neue Felder, Warnungen und Lockerungen | Keine Änderung allein wegen dieser Regeln | Siehe Referenz unten |
 | M22 | Periode oder Behandlungsdauer null oder negativ | Nur archivieren; keine Umdeutung als Freitext | [Archivverfahren](./migration-freitext-fallback.html) |
+| M23 | Text-Extension ohne Dosierung | Nur archivieren | [Archivverfahren](./migration-freitext-fallback.html) |
 
 ### Verbindlicher Migrationsablauf
 

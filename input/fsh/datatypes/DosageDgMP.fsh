@@ -142,7 +142,7 @@ Expression: "%resource.extension.where(
 Severity: #error
 
 Invariant: DosageFourSlotPatternInText
-Description: "A bare four-slot dosing schema (Viererschema, e.g. 1-0-1-0 or 1-0-1-0 Stück) must not be given as free text in Dosage.text; it has to be represented structurally."
+Description: "A bare four-slot dosing schema (Viererschema, e.g. 1-0-1-0 or 1-0-1-0 Stück) must not be given as free text in Dosage.text; it has to be represented structurally. A schema embedded in further text, including the generated form 'täglich: 1-0-1-0 Stück', only triggers the warning DosageFourSlotPatternInTextWarning."
 Expression: "text.exists() implies text.matches('^\\\\s*\\\\d+([.,]\\\\d+)?(\\\\s*/\\\\s*\\\\d+)?(\\\\s*[-–]\\\\s*\\\\d+([.,]\\\\d+)?(\\\\s*/\\\\s*\\\\d+)?){3}(\\\\s*[A-Za-zÄÖÜäöüß().]+)?\\\\s*$').not()"
 Severity: #error
 

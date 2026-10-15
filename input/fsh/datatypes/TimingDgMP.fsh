@@ -647,7 +647,7 @@ Expression: "( /* Detect DayOfWeek and Time/4-Schema */
 Severity: #error
 
 Invariant: TimingOnlyOneTimeForInterval
-Description: "In a schema that combines an interval with timeOfDay or when, all Dosage elements of a resource must use the same period and periodUnit, and each timeOfDay or when value must be unique across them."
+Description: "In a schema that combines an interval with timeOfDay or when, all Dosage elements of a resource must use the same period, periodMax and periodUnit (periodMax either in all elements or in none), and each timeOfDay or when value must be unique across them."
 Expression: "/* Detect Interval and Time/4-Schema */
 (
   %resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)
@@ -673,6 +673,11 @@ Expression: "/* Detect Interval and Time/4-Schema */
       %resource.dosageInstruction.all(timing.repeat.period.exists() and timing.repeat.periodUnit.exists())
       and %resource.dosageInstruction.timing.repeat.period.distinct().count() = 1
       and %resource.dosageInstruction.timing.repeat.periodUnit.distinct().count() = 1
+      and (
+        %resource.dosageInstruction.all(timing.repeat.periodMax.exists())
+        or %resource.dosageInstruction.all(timing.repeat.periodMax.empty())
+      )
+      and %resource.dosageInstruction.timing.repeat.periodMax.distinct().count() <= 1
     )
     and
     (
@@ -690,6 +695,11 @@ Expression: "/* Detect Interval and Time/4-Schema */
         %resource.dosage.all(timing.repeat.period.exists() and timing.repeat.periodUnit.exists())
         and %resource.dosage.timing.repeat.period.distinct().count() = 1
         and %resource.dosage.timing.repeat.periodUnit.distinct().count() = 1
+        and (
+          %resource.dosage.all(timing.repeat.periodMax.exists())
+          or %resource.dosage.all(timing.repeat.periodMax.empty())
+        )
+        and %resource.dosage.timing.repeat.periodMax.distinct().count() <= 1
       )
       and
       (

@@ -37,6 +37,7 @@
   - Mit `dayOfWeek` ist nur `period = 1` und `periodUnit = wk` zulässig, wie beschrieben; bisher wurde jede Periode in Wochen akzeptiert (der Fall war über `TimingOnlyOneType` bereits ausgeschlossen).
 - **`TimingOnlyOneTimeForInterval` (`TimingDgMP`)**
   - Alle Elemente einer Intervall-Kombination müssen `period` und `periodUnit` tragen; ein Element ohne `period` wurde übergangen (der Fall war über `TimingOnlyOneType` bereits ausgeschlossen).
+  - `periodMax` muss in allen Elementen gleich sein oder in allen fehlen; bisher wurde es nicht verglichen. Die Textgenerierung liest den Rhythmus nur aus dem ersten Element.
 - **`TimingSingleDosageForWhen`, `TimingSingleDosageForTimeOfDay` (`TimingDgMP`) und die Warnungen in `TimingDE`**
   - Beschreibung an den Ausdruck angeglichen: Die Regel gilt bei täglicher Gabe und in einer Intervall-Kombination, nicht nur bei täglicher Gabe.
 - **`TimingBoundsPeriodFullDate` (`TimingDgMP`) — neu**

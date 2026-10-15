@@ -419,10 +419,10 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 ##### TimingOnlyOneTimeForInterval
 
 **Beschreibung:**  
-Bei Intervallangaben mit Zeitpunkten (`when` oder `timeOfDay`) dürfen die Zeitangaben nicht mehrfach vorkommen und die Periodenangaben müssen eindeutig sein.
+Bei Intervallangaben mit Zeitpunkten (`when` oder `timeOfDay`) dürfen die Zeitangaben nicht mehrfach vorkommen, und alle `Dosage`-Elemente tragen denselben Einnahmerhythmus: dieselben Werte für `period` und `periodUnit` sowie `periodMax` entweder in allen Elementen mit demselben Wert oder in keinem.
 
 **Warum?**  
-Damit wird verhindert, dass für ein Intervall mehrere widersprüchliche Zeitpunkte oder Perioden definiert werden.
+Damit wird verhindert, dass für ein Intervall mehrere widersprüchliche Zeitpunkte oder Perioden definiert werden. Die Textgenerierung liest den Einnahmerhythmus nur aus dem ersten Element; ein abweichender Rhythmus in einem weiteren Element entfiele im erzeugten Text.
 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 

@@ -1,6 +1,6 @@
-## Hinweise zur Verwendung
+### Hinweise zur Verwendung
 
-### Legacy-Angaben
+#### Legacy-Angaben
 
 In früheren Fassungen dieses Guide waren `frequency`, `period` und
 `periodUnit` in allen Dosierschemata verpflichtend — auch dort, wo sie nur

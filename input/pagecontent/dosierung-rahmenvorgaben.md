@@ -1,6 +1,6 @@
 Diese Seite beschreibt fachliche Aspekte und Entscheidungen zur Handhabung von strukturierten Dosierungen.
 
-## Nutzung des Feldes `.text`
+### Nutzung des Feldes `.text`
 
 Die textuelle Angabe von Dosierungen wird im Dosierungsusecase in zwei Varianten unterschieden:
 - Vom Menschen beschriebene Dosierung (Freitext)
@@ -12,7 +12,7 @@ Das Feld `Dosage.text` wird für vom Menschen erstellten Freitext vorgesehen. Es
 
 Die Extension [GeneratedDosageInstructionsMeta](./StructureDefinition-GeneratedDosageInstructionsMeta.html) dient der Speicherung von Dosieranweisungen, die automatisch aus strukturierten Dosierangaben generiert wurden.
 
-## Verwendung des Dosage Elements
+### Verwendung des Dosage Elements
 
 
 - **Konstante Dosierung:** Bei gleichbleibender Dosierungsstärke innerhalb eines Schemas ist eine einzige `Dosage`-Instanz ausreichend.
@@ -45,6 +45,6 @@ Für eine Dosierung (z.B. 1 Stück) kann ein komplexes Zeitschema angegeben werd
 
 wird in der selben Dosage Instanz abgebildet.
 
-## Strukturierte Angabe der Einheit
+### Strukturierte Angabe der Einheit
 
 Für die Berechnung der Reichweite einer Medikation ist es erforderlich, dass Dosierungseinheiten (z.B. „1 Stück“) strukturiert und semantisch kodiert angegeben werden. Hierfür wurde das  ValueSet `DosageDoseQuantityDEVS` erstellt.

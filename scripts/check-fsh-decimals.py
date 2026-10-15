@@ -11,7 +11,8 @@ Die Folge wäre eine stille Abweichung zwischen Quelle und Ausgabe: Wer im FSH
 `1.0` schreibt, bekommt im IG den Dosierungstext `je 1 Stück`, nicht
 `je 1,0 Stück`. Diese Prüfung meldet solche Werte, damit FSH und erzeugtes
 JSON übereinstimmen. Ein Beispiel, das eine nachfolgende Null tatsächlich
-zeigen soll, muss als JSON unter input/resources gepflegt werden.
+zeigen soll, muss als JSON unter input/examples gepflegt werden; siehe
+check-json-examples.py.
 """
 
 import os
@@ -62,7 +63,7 @@ def main():
             print(f"{YELLOW}  {path}:{number}  {literal}{RESET}", file=sys.stderr)
             print(f"    {line.strip()}", file=sys.stderr)
         print("  Schreibe den Wert ohne nachfolgende Null (1.0 -> 1, 2.50 -> 2.5). Soll die\n"
-              "  Null im Beispiel sichtbar sein, pflege es als JSON unter input/resources.",
+              "  Null im Beispiel sichtbar sein, pflege es als JSON unter input/examples.",
               file=sys.stderr)
         sys.exit(1)
 

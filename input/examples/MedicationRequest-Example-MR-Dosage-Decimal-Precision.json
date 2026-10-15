@@ -1,0 +1,58 @@
+{
+  "resourceType": "MedicationRequest",
+  "id": "Example-MR-Dosage-Decimal-Precision",
+  "meta": {
+    "profile": [
+      "http://ig.fhir.de/igs/medication/StructureDefinition/MedicationRequestDgMP"
+    ]
+  },
+  "extension": [
+    {
+      "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-MedicationRequest.renderedDosageInstruction",
+      "valueMarkdown": "täglich: 2,50-0-2,50-0 Stück"
+    },
+    {
+      "url": "http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta",
+      "extension": [
+        {
+          "url": "algorithmVersion",
+          "valueString": "2.0.0-rc.1"
+        },
+        {
+          "url": "language",
+          "valueCode": "de-DE"
+        }
+      ]
+    }
+  ],
+  "status": "active",
+  "intent": "order",
+  "medicationCodeableConcept": {
+    "text": "Ibuprofen 400mg"
+  },
+  "subject": {
+    "display": "Patient"
+  },
+  "dosageInstruction": [
+    {
+      "timing": {
+        "repeat": {
+          "when": [
+            "MORN",
+            "EVE"
+          ]
+        }
+      },
+      "doseAndRate": [
+        {
+          "doseQuantity": {
+            "value": 2.50,
+            "unit": "Stück",
+            "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+            "code": "1"
+          }
+        }
+      ]
+    }
+  ]
+}

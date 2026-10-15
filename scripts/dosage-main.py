@@ -44,6 +44,13 @@ def main():
     version_check_script = os.path.join(base_dir, "check-documented-version.py")
     subprocess.run(['python3', version_check_script, medication_dosage_script], check=True)
 
+    # 1d. JSON-Beispiele unter input/examples tragen Text und Version fest in
+    #     sich (sie laufen nicht durch dosage-add-extension.py). Sie muessen zum
+    #     gepinnten Algorithmus passen.
+    print("Checking hand-maintained JSON examples...")
+    json_examples_script = os.path.join(base_dir, "check-json-examples.py")
+    subprocess.run(['python3', json_examples_script, medication_dosage_script], check=True)
+
     # 2. Generate the supported/unsupported table
     print("Generating unsupported table...")
     unsupported_table_script = os.path.join(base_dir, "dosage-generate-unsupported-table.py")

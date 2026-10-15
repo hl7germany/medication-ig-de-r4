@@ -1,4 +1,4 @@
-## Verwendung
+### Verwendung
 
 Dieses Profil beschreibt eine technisch streng validierte Ausprägung der FHIR-Ressource `Dosage` für den deutschen Kontext und ist speziell für den Einsatz im dgMP-Prozess entwickelt worden. Das Profil enthält gezielte Einschränkungen und Vorgaben, um die technische Überprüfbarkeit und Konsistenz von Dosierungsangaben sicherzustellen. 
 

@@ -1,4 +1,4 @@
-## Hinweise zur Verwendung
+### Hinweise zur Verwendung
 
 <div style="border-left:4px solid #f2c200; padding:10px; background:#fff9d6; margin:1em 0;">
   <p>

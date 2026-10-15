@@ -1,4 +1,4 @@
-## Verwendung
+### Verwendung
 
 Dieses Profil beschreibt die Verwendung der FHIR-Ressource `Dosage` im deutschen Kontext und ist für die allgemeine Interoperabilität konzipiert. Das Profil ist offen gehalten und setzt keine spezifischen Dosierschemata voraus, sondern legt ein „Must Support“ auf alle relevanten Felder. Ziel ist es, eine flexible und breit einsetzbare Abbildung von Dosierungsangaben zu ermöglichen, wie sie in unterschiedlichen Primärsystemen und Anwendungsfällen benötigt wird. 
 

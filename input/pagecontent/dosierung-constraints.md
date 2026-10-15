@@ -357,6 +357,8 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 **Beschreibung:**  
 Wird `timeOfDay` verwendet und enthält `boundsPeriod.start` oder `boundsPeriod.end` eine Uhrzeit, bezeichnet `start` die erste und `end` die letzte Gabe. Diese Uhrzeit muss deshalb in der Menge der Uhrzeiten (`timeOfDay`) aller `Dosage`-Elemente der Ressource enthalten sein. Verglichen wird die Uhrzeit so, wie sie angegeben ist; sie ist daher in Ortszeit mit passendem Zeitzonenversatz anzugeben. Ein reines Datum ist immer zulässig.
 
+**Bekannte Einschränkung:** Die Invariante vergleicht nur den Uhrzeitanteil als String, ohne den Zeitzonenversatz zu prüfen oder nach `Europe/Berlin` umzurechnen. Beispielsweise erfüllt `2026-06-05T06:00:00Z` mit `timeOfDay = 06:00:00` die Invariante, obwohl die Textgenerierung den Start als 08:00 Uhr in `Europe/Berlin` ausgibt. Eine erfolgreiche FHIRPath-Prüfung belegt daher nicht die Zeitzonenkonsistenz. Anwendungen MÜSSEN den Versatz für Start und Ende zusätzlich anhand der Zeitzonenregeln von `Europe/Berlin` prüfen, einschließlich der Zeitumstellungen. Eine pauschale Monatszuordnung für `+01:00` und `+02:00` ersetzt diese Prüfung nicht.
+
 **Warum?**  
 Ein Startzeitpunkt „ab 09:00 Uhr“ zu den Einnahmezeiten 08:00 und 20:00 Uhr lässt offen, ob die erste Gabe um 09:00 oder erst um 20:00 Uhr erfolgt. Liegt der Zeitpunkt auf einer Einnahmezeit, ist die erste beziehungsweise letzte Gabe eindeutig bestimmt. Siehe [Angabe von Start- und Enddatum](./schema-start-end-datum.html).
 
@@ -367,10 +369,10 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 ##### TimingBoundsPeriodNotForWhen
 
 **Beschreibung:**  
-Wird `when` verwendet, dürfen `boundsPeriod.start` und `boundsPeriod.end` nur ein Datum ohne Uhrzeit enthalten.
+Wird `when` verwendet oder `dayOfWeek` ohne `timeOfDay` angegeben, dürfen `boundsPeriod.start` und `boundsPeriod.end` nur ein Datum ohne Uhrzeit enthalten. Ein Wochentagsschema mit expliziten Uhrzeiten (`dayOfWeek` und `timeOfDay`) bleibt zulässig; dafür gilt `TimingBoundsPeriodMatchesTime`.
 
 **Warum?**  
-Tagesabschnitte wie „morgens“ (`MORN`) haben keine feste Uhrzeit. Ein Startzeitpunkt wie „ab 08:00 Uhr“ lässt sich ihnen nicht eindeutig zuordnen, sodass unklar bliebe, ob die Gabe am Starttag noch erfolgt. Siehe [Angabe von Start- und Enddatum](./schema-start-end-datum.html).
+Tagesabschnitte wie „morgens“ (`MORN`) und reine Wochentagsangaben wie „montags“ haben keine feste Uhrzeit. Ein Startzeitpunkt wie „ab 08:00 Uhr“ lässt sich ihnen nicht eindeutig zuordnen, sodass unklar bliebe, ob die Gabe am Starttag noch erfolgt. Siehe [Angabe von Start- und Enddatum](./schema-start-end-datum.html).
 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 

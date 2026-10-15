@@ -46,10 +46,10 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
     * ^definition = "Beschreibt die Gültigkeit einer Dosieranweisung mit einem konkreten Start- und/oder Endzeitpunkt. Neben einem Datum kann eine Uhrzeit mit Zeitzone angegeben werden."
     * start MS
       * ^short = "Startdatum mit optionaler Uhrzeit und Zeitzone"
-      * ^comment = "Enthält der Startzeitpunkt eine Uhrzeit, bezeichnet er die erste Gabe. Im Uhrzeitenschema muss die Uhrzeit daher einer der angegebenen Uhrzeiten entsprechen; im Tageszeitenschema ist keine Uhrzeit zulässig."
+      * ^comment = "Enthält der Startzeitpunkt eine Uhrzeit, bezeichnet er die erste Gabe. Im Uhrzeitenschema muss die Uhrzeit daher einer der angegebenen Uhrzeiten entsprechen; im Tageszeitenschema und im reinen Wochentagsschema ohne timeOfDay ist keine Uhrzeit zulässig."
     * end MS
       * ^short = "Enddatum mit optionaler Uhrzeit und Zeitzone"
-      * ^comment = "Enthält der Endzeitpunkt eine Uhrzeit, bezeichnet er die letzte Gabe. Im Uhrzeitenschema muss die Uhrzeit daher einer der angegebenen Uhrzeiten entsprechen; im Tageszeitenschema ist keine Uhrzeit zulässig."
+      * ^comment = "Enthält der Endzeitpunkt eine Uhrzeit, bezeichnet er die letzte Gabe. Im Uhrzeitenschema muss die Uhrzeit daher einer der angegebenen Uhrzeiten entsprechen; im Tageszeitenschema und im reinen Wochentagsschema ohne timeOfDay ist keine Uhrzeit zulässig."
   * frequency 0..1 MS
   * frequencyMax MS
   * period 0..1 MS
@@ -792,7 +792,7 @@ Expression: "bounds.ofType(Duration).value.empty() or bounds.ofType(Duration).va
 Severity: #error
 
 Invariant: TimingBoundsPeriodMatchesTime
-Description: "If timeOfDay is used and boundsPeriod.start or boundsPeriod.end states a time, it denotes the first or last administration and must therefore be one of the timeOfDay values of the resource. The time is compared as stated, so it has to be given in local time with the matching offset."
+Description: "If timeOfDay is used and boundsPeriod.start or boundsPeriod.end states a time, it denotes the first or last administration and must therefore be one of the timeOfDay values of the resource. The time is compared as stated, so it has to be given in Europe/Berlin local time with the matching offset. Known limitation: this invariant does not validate the offset or convert time zones; applications must check consistency with Europe/Berlin separately."
 Expression: "timeOfDay.empty() or
 (bounds.ofType(Period).start | bounds.ofType(Period).end)
   .where(toString().length() > 10)
@@ -806,8 +806,8 @@ Expression: "timeOfDay.empty() or
 Severity: #error
 
 Invariant: TimingBoundsPeriodNotForWhen
-Description: "If when is used, boundsPeriod.start and boundsPeriod.end may only state a date, not a time."
-Expression: "when.empty() or
+Description: "If when is used, or dayOfWeek is used without timeOfDay, boundsPeriod.start and boundsPeriod.end may only state a date, not a time."
+Expression: "(when.empty() and (dayOfWeek.empty() or timeOfDay.exists())) or
 (bounds.ofType(Period).start | bounds.ofType(Period).end).all(toString().length() <= 10)"
 Severity: #error
 

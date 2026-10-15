@@ -19,8 +19,9 @@
   - `maxDosePerPeriod.numerator.value` darf nicht kleiner als `doseQuantity.value` beziehungsweise `doseRange.high.value` sein. Zuvor wurde nur die Einheit verglichen (`MaxDoseSameUnitAsDose`).
 - **`TimingBoundsPeriodMatchesTime` (`TimingDgMP`) — neu**
   - Im Uhrzeitenschema (`timeOfDay`) muss eine Uhrzeit in `boundsPeriod.start` oder `boundsPeriod.end` einer der angegebenen Uhrzeiten entsprechen.
+  - Bekannte Einschränkung: Der FHIRPath-Ausdruck prüft nur den Uhrzeitanteil, nicht den Zeitzonenversatz. Die Übereinstimmung mit `Europe/Berlin` muss die Anwendung zusätzlich prüfen.
 - **`TimingBoundsPeriodNotForWhen` (`TimingDgMP`) — neu**
-  - Im Tageszeitenschema (`when`) dürfen `boundsPeriod.start` und `boundsPeriod.end` keine Uhrzeit enthalten.
+  - Im Tageszeitenschema (`when`) und im Wochentagsschema ohne `timeOfDay` dürfen `boundsPeriod.start` und `boundsPeriod.end` keine Uhrzeit enthalten.
   - Das Beispiel `Example-MR-Dosage-1000-startdatetime` verwendet deshalb jetzt das Uhrzeitenschema, `Example-MR-Dosage-1000-startdatetime-daychange` ein reines Intervall.
 
 **Fachliche Informationsmodelle**

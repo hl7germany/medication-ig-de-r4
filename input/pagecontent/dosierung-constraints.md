@@ -538,7 +538,7 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 In den dgMP-Profilen müssen alle Dosierungsinstanzen innerhalb derselben Ressource dieselbe Dosiereinheit (Code) verwenden.
 
 **Warum?**  
-Die Textgenerierung übernimmt die gemeinsame Dosis-Einheit aus der ersten auswertbaren Dosis; unterschiedliche Einheiten würden im erzeugten Text stillschweigend verlorengehen. Zudem setzt der dgMP auf durchgängig maschinell vergleichbare Dosierungen.
+Die Textgenerierung stellt 4‑Schema und Wochentagsschemata mit einer gemeinsamen Dosis-Einheit dar; bei abweichender Anzeigeeinheit eines weiteren Elements bricht sie ab, statt eine Einheit zu unterschlagen. Zudem setzt der dgMP auf durchgängig maschinell vergleichbare Dosierungen.
 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
@@ -720,7 +720,7 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 Eine reine Bedarfsdosierung (`asNeededBoolean = true` ohne `timing`) darf nur als einziges `Dosage`-Element der Ressource angegeben werden.
 
 **Warum?**
-Ohne zeitliche Zuordnung lassen sich mehrere Bedarfsdosen nicht eindeutig zu einer gemeinsamen Dosierungsanweisung aggregieren. Die Beschränkung verhindert, dass die Textgenerierung nur das erste Element ausgibt und weitere Dosen unbemerkt entfallen.
+Ohne zeitliche Zuordnung lassen sich mehrere Bedarfsdosen nicht eindeutig zu einer gemeinsamen Dosierungsanweisung aggregieren; die Textgenerierung bricht in diesem Fall ab.
 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 

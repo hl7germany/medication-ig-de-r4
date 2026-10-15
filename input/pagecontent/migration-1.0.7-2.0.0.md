@@ -34,7 +34,7 @@ Fehlt die Dosierung vollständig, wird keine ergänzt. Neue 2.0.0-Felder werden 
 | **Regulärer Freitext** | Die vollständige Dosierung wird bedeutungstreu in genau einem `Dosage.text` dargestellt; die strukturierte Darstellung entfällt. Die erforderlichen Text-Extensions stehen auf Ressourcenebene. | `täglich: je 1,2 Stück` (M01) |
 | **Nur archiviert** | Es gibt keine sicher verwendbare Zielrepräsentation. Die unveränderte 1.0.7-Quelle bleibt erhalten; die automatische Migration ist für diese Fassung nicht erfolgreich. | Fehlende Dosis (M16) |
 
-**Archivdaten sind keine Freitext-Dosierung.** Ein JSON-Archivinhalt oder ein Warnpräfix in `Dosage.text` schützt nicht davor, dass ein Empfänger den Inhalt als Einnahmeanweisung behandelt. Das [gemeinsame Archivverfahren](./migration-freitext-fallback.html) erzeugt deshalb keine solche Zielressource.
+**Archivdaten sind keine Freitext-Dosierung.** Ein JSON-Archivinhalt oder ein Warnpräfix in `Dosage.text` schützt nicht davor, dass ein Empfänger den Inhalt als Einnahmeanweisung behandelt. Das [gemeinsame Archivverfahren](./migration-archivverfahren.html) erzeugt deshalb keine solche Zielressource.
 
 ### Entscheidung auf einen Blick
 
@@ -42,7 +42,7 @@ Die Entscheidungen gelten für die gesamte Dosierungs-Liste einer Ressourcenfass
 
 | Prüfung | Weiteres Vorgehen |
 |---|---|
-| Keine Dosierung vorhanden? | Keine ergänzen; übrige Zielanforderungen prüfen. |
+| Keine Dosierung vorhanden? | Keine ergänzen; übrige Zielanforderungen prüfen. Text-Extensions ohne Dosierung nach M23 behandeln. |
 | Reiner Freitext vorhanden? | Text unverändert prüfen; nacktes Viererschema nach M04 behandeln. Beide Text-Extensions bereitstellen und exakte Textgleichheit prüfen. |
 | Struktur nach zulässigen Normalisierungen verwendbar? | Regulären Dosierungstext erzeugen und die vollständige Zielressource validieren. |
 | Nur eine für Renderer-Freitext zugelassene Verletzung übrig? | Vollständigkeit und Bedeutungstreue prüfen, rendern und als einzelnen Freitext validieren. |
@@ -52,23 +52,20 @@ Die Entscheidungen gelten für die gesamte Dosierungs-Liste einer Ressourcenfass
 
 Die Fall-IDs sind stabile Referenzen für Implementierung und Migrationsbericht. Ein Fall kann zusammen mit anderen Fällen auftreten; eine einzelne passende Fall-ID reicht nicht aus, um einen Rendereraufruf zu erlauben.
 
-### Fallregeln
-
-Die Fall-IDs dienen als stabile Referenzen für die unten festgelegten Migrationsregeln.
-
 | Fall | Anlass | Bevorzugte Behandlung | Details |
 |---|---|---|---|
 | M01 | Dosisbruchteil im Ziel nicht erlaubt | Regulärer Freitext, sofern vollständig darstellbar | [M01](./migration-m01-dosisbruchteil.html) |
 | M02 | Exponentialschreibweise im Quellpayload | Exakte Dezimalnormalisierung | [M02](./migration-m02-exponentialnotation.html) |
-| M03 | Dosiswert null oder negativ | Nur archivieren | [Archivverfahren](./migration-freitext-fallback.html) |
+| M03 | Dosiswert null oder negativ | Nur archivieren | [Archivverfahren](./migration-archivverfahren.html) |
 | M04 | Nacktes Viererschema im Freitext | Ohne belegte Bedeutung nur archivieren | [M04](./migration-m04-viererschema-freitext.html) |
 | M05 | Gebrochene Behandlungsdauer | Zulässige exakte Umrechnung, sonst geprüfter Freitext | [M05](./migration-m05-boundsduration.html) |
 | M06 | Gebrochene Periode | Zulässige exakte Umrechnung, sonst geprüfter Freitext | [M06](./migration-m06-period.html) |
 | M07 | Frequenz und Periode beide größer als eins | Geprüfter Freitext ohne algebraische Umdeutung | [M07](./migration-m07-frequenz-periode.html) |
-| M08–M17 | Fehlende, widersprüchliche oder nicht sicher vereinheitlichbare Angaben | Nur archivieren | [Betroffene Fälle](./migration-freitext-fallback.html) |
+| M08–M17 | Fehlende, widersprüchliche oder nicht sicher vereinheitlichbare Angaben | Nur archivieren | [Betroffene Fälle](./migration-archivverfahren.html) |
 | M18 | Anzeigeeinheit passt nicht zum Code | Anzeige korrigieren, sofern der Code nachweislich maßgeblich ist | [M18](./migration-m18-einheitenanzeige.html) |
 | M19–M21 | Neue Felder, Warnungen und Lockerungen | Keine Änderung allein wegen dieser Regeln | Siehe Referenz unten |
-| M22 | Periode oder Behandlungsdauer null oder negativ | Nur archivieren; keine Umdeutung als Freitext | [Archivverfahren](./migration-freitext-fallback.html) |
+| M22 | Periode oder Behandlungsdauer null oder negativ | Nur archivieren; keine Umdeutung als Freitext | [Archivverfahren](./migration-archivverfahren.html) |
+| M23 | Text-Extension ohne Dosierung | Nur archivieren | [Archivverfahren](./migration-archivverfahren.html) |
 
 ### Verbindlicher Migrationsablauf
 
@@ -81,7 +78,7 @@ Implementierungen MÜSSEN pro Ressourcenfassung in dieser Reihenfolge vorgehen:
 5. **Kandidaten prüfen:** Die Zielanforderungen prüfen, zunächst ohne die Pflicht zur neu zu erzeugenden `renderedDosageInstruction` und `GeneratedDosageInstructionsMeta` (`DosageRequiresGeneratedText`). Ausschließlich diese noch nicht erfüllte Generierungspflicht verhindert die reguläre Textgenerierung nicht. Andere Fehler einzeln nach Constraint-Key klassifizieren.
 6. **Darstellung wählen:** Hat die Struktur keine anderen Fehler, den regulären Renderer verwenden und Struktur sowie neu erzeugte Text-Extensions übernehmen. Bleiben ausschließlich die unten zugelassenen M01-/M05-/M06-/M07-Verletzungen, nach erfolgreicher Vollständigkeitsprüfung rendern und die ganze Liste durch genau ein `Dosage` mit `text`, ohne `timing` und ohne `doseAndRate` ersetzen. Anschließend die Textgenerierung auf das Freitextziel anwenden: Auf Ressourcenebene `renderedDosageInstruction` mit exakt diesem `Dosage.text` sowie `GeneratedDosageInstructionsMeta` mit Sprache und tatsächlich verwendeter Algorithmusversion erzeugen. Alte Struktur-Metadaten nicht übernehmen; die Herkunft der Struktur-zu-Freitext-Umwandlung zusätzlich im Migrationsbericht festhalten.
 7. **Abschlussprüfung durchführen:** Die vollständige Zielressource einschließlich aller Extensions gegen das festgelegte Zielprofil validieren. Zusätzlich die Bedeutungstreue des Textes prüfen. Erst bei Erfolg freigeben.
-8. **Ergebnis protokollieren:** Ergebnisart, Fall-IDs, Quell-/Zielzuordnung, Regel- und Abhängigkeitsversionen sowie Prüfresultate festhalten. Bei fehlender fachlicher Voraussetzung, Rendererfehler oder ungültigem Ziel das [Archivverfahren](./migration-freitext-fallback.html) anwenden; technische Ausführungsfehler zusätzlich gesondert melden.
+8. **Ergebnis protokollieren:** Ergebnisart, Fall-IDs, Quell-/Zielzuordnung, Regel- und Abhängigkeitsversionen sowie Prüfresultate festhalten. Bei fehlender fachlicher Voraussetzung, Rendererfehler oder ungültigem Ziel das [Archivverfahren](./migration-archivverfahren.html) anwenden; technische Ausführungsfehler zusätzlich gesondert melden.
 
 Eine Ressource ohne Dosierung durchläuft keine Dosierungsabbildung, muss aber vor einer Freigabe als 2.0.0-Ressource die übrigen Zielanforderungen erfüllen. Das Löschen einer vorhandenen Dosierung ist kein zulässiger Ersatz für eine fehlgeschlagene Migration.
 
@@ -157,9 +154,9 @@ Diese Fälle sind Teil des Umfangs, damit ein implementierendes System weiß, we
 
 | Fall | Betroffene Constraints | Begründung und Verhalten |
 |---|---|---|
-| M19 – Neue 2.0.0-Felder | `AsNeededForIdentical`, `AsNeededForRequiresAsNeeded`, `AsNeededIdentical`, `AsNeededSingleDosageOnly`, `DoseRangeHighRequiredWhenLowPresent`, `DoseRangeLowAndHighSameUnit`, `DoseRangeNoVarPeriod`, `MaxDoseOnlyPureAsNeeded`, `MaxDosePerPeriodOnly24hOr1d`, `MaxDoseSameUnitAsDose`, `MinimumIntervalOnlyPureAsNeeded`, `MinimumIntervalUnitMatchesCode`, `PatientInstructionIdentical`, `TimingVarFreqGtMin`, `TimingVarPeriodGtMin`, `dos-1` | Diese Regeln prüfen Elemente, die in 1.0.7 nicht strukturiert vorhanden waren, zum Beispiel `doseRange`, `asNeededBoolean`, `periodMax` oder `patientInstruction`. Die Migration befüllt diese Felder nicht durch Vermutungen. Vorhandene 1.0.7-Felder werden trotzdem nach den übrigen Regeln validiert. |
-| M20 – Warnungen ohne neue harte Zielverletzung | `DosageDoseUnitSameCodeWarning`, `DosageDoseValuePositiveWarning`, `DosageFourSlotPatternInTextWarning`, `DosageStructuredRequiresBothWarning`, `AsNeededForRequiresAsNeededWarning`, `TimingBoundsUnitMatchesCodeWarning`, `TimingFreqOrPeriodGtOneWarning`, `TimingSingleDosageForTimeOfDayWarning`, `TimingSingleDosageForWhenWarning` | Eine reine Warnung macht eine Ressource nicht ungültig und löst allein keine Umschreibung aus. Sie wird im Bericht gezählt. Wenn dieselbe Bedingung im dgMP-Zielprofil ein Fehler ist, gilt stattdessen die zugehörige Regel M03, M04, M07, M13, M14, M16, M17 oder M18. |
-| M21 – Lockerungen, unveränderte Regeln und Key-Rename | `TimingOnlyOneType`, `TimingPeriodUnit`, `TimingFrequencyCount`, `TimingVarFreqGtMin`, `DosageStructuredRequiresBoth`, `TimingOnlyOnePeriodForDayOfWeek`, `DosageWarnungViererschemaInText` → `DosageFourSlotPatternInTextWarning` | Diese Änderungen lösen für zuvor gültige 1.0.7-Dosierungen allein keine Änderung der Dosierungsdaten aus. Zielvalidierung bleibt erforderlich. Validatoren und Monitoring müssen beim Key-Rename den neuen Namen auswerten. Verschärfte Änderungen sind separat in M08–M14 beschrieben. |
+| M19 – Neue 2.0.0-Felder | `AsNeededForIdentical`, `AsNeededForRequiresAsNeeded`, `AsNeededIdentical`, `AsNeededSingleDosageOnly`, `DosageLimitsPositive`, `DoseRangeHighRequiredWhenLowPresent`, `DoseRangeLowAndHighSameUnit`, `DoseRangeNoVarPeriod`, `MaxDoseNotBelowDose`, `MaxDoseOnlyPureAsNeeded`, `MaxDosePerPeriodOnly24hOr1d`, `MaxDoseSameUnitAsDose`, `MinimumIntervalOnlyPureAsNeeded`, `MinimumIntervalUnitMatchesCode`, `PatientInstructionIdentical`, `TimingBoundsPeriodMatchesTime`, `TimingBoundsPeriodNotForWhen`, `TimingVarFreqGtMin`, `TimingVarPeriodGtMin`, `dos-1` | Diese Regeln prüfen Elemente, die in 1.0.7 nicht strukturiert vorhanden waren, zum Beispiel `doseRange`, `asNeededBoolean`, `maxDosePerPeriod`, `periodMax`, `boundsPeriod` oder `patientInstruction`. Die Migration befüllt diese Felder nicht durch Vermutungen. Vorhandene 1.0.7-Felder werden trotzdem nach den übrigen Regeln validiert. |
+| M20 – Warnungen ohne neue harte Zielverletzung | `DosageDoseUnitSameCodeWarning`, `DosageDoseValuePositiveWarning`, `DosageFourSlotPatternInTextWarning`, `DosageLimitsPositiveWarning`, `DosageStructuredRequiresBothWarning`, `AsNeededForRequiresAsNeededWarning`, `TimingBoundsUnitMatchesCodeWarning`, `TimingFreqOrPeriodGtOneWarning`, `TimingSingleDosageForTimeOfDayWarning`, `TimingSingleDosageForWhenWarning`, `TimingValuesPositiveWarning` | Eine reine Warnung macht eine Ressource nicht ungültig und löst allein keine Umschreibung aus. Sie wird im Bericht gezählt. Wenn dieselbe Bedingung im dgMP-Zielprofil ein Fehler ist, gilt stattdessen die zugehörige Regel M03, M04, M07, M13, M14, M16, M17, M18, M19 oder M22. |
+| M21 – Lockerungen, unveränderte Regeln und Key-Rename | `TimingOnlyOneType`, `TimingPeriodUnit`, `TimingFrequencyCount`, `DosageStructuredRequiresBoth`, `TimingOnlyOnePeriodForDayOfWeek`, `DosageWarnungViererschemaInText` → `DosageFourSlotPatternInTextWarning` | Diese Änderungen lösen für zuvor gültige 1.0.7-Dosierungen allein keine Änderung der Dosierungsdaten aus. Zielvalidierung bleibt erforderlich. Validatoren und Monitoring müssen beim Key-Rename den neuen Namen auswerten. Verschärfte Änderungen sind separat in M08–M14 beschrieben. |
 
 Die Umstellung von `DosageStructuredRequiresGeneratedText` auf `DosageRequiresGeneratedText` ist nicht nur ein Key-Rename: Auch Freitext benötigt nun beide Text-Extensions; `FreeTextMatchesRenderedText` verlangt die vorhandene, exakt übereinstimmende `renderedDosageInstruction`. Bestehende Freitext-Dosierungen durchlaufen deshalb Schritt 3, auch wenn `Dosage.text` unverändert bleibt.
 

@@ -1,26 +1,24 @@
-# M06 – Gebrochene Periode
-
 [Zur Migrationsübersicht](./migration-1.0.7-2.0.0.html)
 
-## Anlass
+### Anlass
 
 `TimingPeriodOnlyWholeNumber` verlangt ganzzahlige Werte für `Timing.repeat.period` und `periodMax`. Eine gebrochene Periode wie `1.5 d` ist strukturiert nicht mehr zulässig.
 
-## Auslöser
+### Auslöser
 
 M06 gilt, wenn `period` oder `periodMax` numerisch nicht ganzzahlig ist. Ein numerischer Wert `4.00` ist ganzzahlig und löst den Fall nicht aus. `periodMax` ist in 2.0.0 mitzuprüfen, war in einer gültigen dgMP-Quelle 1.0.7 jedoch ausgeschlossen; sein Vorhandensein erfordert daher zusätzlich eine Klärung des Quellprofilstands.
 
 Unabhängig davon MÜSSEN vorhandene Periodenwerte positiv sein (`TimingValuesPositive`). Insbesondere `period = 0` fällt unter M22 und sperrt den Renderer-Freitextpfad, obwohl der Wert ganzzahlig ist.
 
-## Verbindliche Migration
+### Verbindliche Migration
 
 1. Eine mathematisch exakte Umrechnung in eine ganzzahlige Periode nur mit einer freigegebenen Tabelle gemäß der Übersicht versuchen. Diese Anleitung liefert keine Zahlenumrechnungstabelle. Die Ziel-ValueSet-Einheiten sind `min`, `h`, `d`, `wk` und `mo`; nach der Umrechnung sämtliche Zielregeln erneut prüfen, auch M07.
 2. `mo` nicht in Tage umrechnen; die Länge eines Monats ist kalenderabhängig.
 3. Wenn keine exakte strukturierte Abbildung möglich ist, die [Renderer-Allowlist und Vollständigkeitsprüfung](./migration-1.0.7-2.0.0.html) anwenden. Genau ein vollständiges `Dosage`-Element mit positiver `doseQuantity` und unterstütztem Timing-Schema ist erforderlich.
-4. Nur bedeutungstreuen Renderertext übernehmen: die gesamte Liste durch genau ein Dosage-Element mit `text`, ohne `timing` und ohne `doseAndRate` ersetzen. Auf Ressourcenebene `renderedDosageInstruction` mit exakt demselben Text und `GeneratedDosageInstructionsMeta` für die Freitextübernahme gemäß Schritt 6 der Übersicht erzeugen; alte Text-Extensions und Struktur-Metadaten nicht übernehmen. Das vollständige Ziel validieren. Bei Fehler oder Informationsverlust das [Archivverfahren](./migration-freitext-fallback.html) verwenden.
+4. Nur bedeutungstreuen Renderertext übernehmen: die gesamte Liste durch genau ein Dosage-Element mit `text`, ohne `timing` und ohne `doseAndRate` ersetzen. Auf Ressourcenebene `renderedDosageInstruction` mit exakt demselben Text und `GeneratedDosageInstructionsMeta` für die Freitextübernahme gemäß Schritt 6 der Übersicht erzeugen; alte Text-Extensions und Struktur-Metadaten nicht übernehmen. Das vollständige Ziel validieren. Bei Fehler oder Informationsverlust das [Archivverfahren](./migration-archivverfahren.html) verwenden.
 5. Keine Frequenz, Periode oder Einheit runden oder weglassen.
 
-## Beispiel
+### Beispiel
 
 Quelle: `frequency = 1`, `period = 1.5`, `periodUnit = d`, Dosis `1 Stück`.
 
@@ -28,11 +26,11 @@ Als UCUM-Zeitdauer entsprechen `1.5 d` exakt `36 h`. Eine strukturierte Umrechnu
 
 Ohne eine solche Tabelle bleibt der Renderer-Freitextpfad: `alle 1,5 Tage: je 1 Stück`, sofern dessen Voraussetzungen erfüllt sind.
 
-## Was bleibt erhalten?
+### Was bleibt erhalten?
 
 Die exakte Periode und ihre Zuordnung zur Dosis bleiben erhalten. Bei geprüfter Umrechnung bleibt die Darstellung strukturiert; im Freitextpfad entfällt die Struktur und die vollständige Dosierung steht in `text`. Die Quelle bleibt unverändert archiviert.
 
-## Prüffälle
+### Prüffälle
 
 - `period = 2 d` bleibt strukturiert.
 - `period = 1.5 d` wird nicht zu `1 d` oder `2 d` gerundet.

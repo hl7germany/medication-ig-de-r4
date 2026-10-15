@@ -11,6 +11,7 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * obeys TimingSingleDosageForWhenWarning
   * obeys TimingBoundsUnitMatchesCodeWarning
   * obeys TimingFreqOrPeriodGtOneWarning
+  * obeys TimingValuesPositiveWarning
 * repeat.bounds[x] MS
   * ^short = "Länge/Bereich der Längen oder (Start- und/oder End-)Grenzen"
   * ^definition = "Entweder eine Dauer für die Länge des Zeitplans, ein Bereich möglicher Längen oder äußere Begrenzungen für Start- und/oder Endgrenzen des Zeitplans."
@@ -213,3 +214,12 @@ Expression: "/* Detect Interval only */
     )
   )
 )"
+
+Invariant: TimingValuesPositiveWarning
+Description: "period, periodMax, boundsDuration.value and boundsRange.high.value should be greater than 0; boundsRange.low.value should not be negative."
+Expression: "(period.exists() implies period > 0) and
+(periodMax.exists() implies periodMax > 0) and
+bounds.ofType(Duration).value.all($this > 0) and
+bounds.ofType(Range).low.value.all($this >= 0) and
+bounds.ofType(Range).high.value.all($this > 0)"
+Severity: #warning

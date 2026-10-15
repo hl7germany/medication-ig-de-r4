@@ -15,10 +15,11 @@ Um Missverständnisse und Abweichungen bei der Darstellung von Dosierungsanweisu
 Die Generierung und Bereitstellung des Dosierungstextes erfolgt im Verordnungsprozess in den folgenden Schritten. Bei einer Freitextdosierung übernimmt die Textgenerierung den Freitext unverändert; `renderedDosageInstruction` und `GeneratedDosageInstructionsMeta` sind auch dann anzugeben.
 
 1. **Erstellung der Verordnung:**
-   - Erfassende Systeme erzeugen die Verordnung mit vollständig strukturierten Dosierungsdaten.
-   - Zusätzlich wird der Dosierungstext lokal anhand des festgelegten Algorithmus generiert und im Datensatz eingetragen.
+   - Erfassende Systeme erzeugen die Verordnung mit vollständig strukturierten Dosierungsdaten und validieren sie gegen das Profil.
+   - Zusätzlich wird der Dosierungstext lokal anhand des festgelegten Algorithmus generiert und im Datensatz eingetragen. Die Textgenerierung setzt die profilkonforme Ressource voraus (siehe [Vorbedingung](./dosierung-textgenerierung.html#vorbedingung-validierte-ressource)).
 
 2. **Einstellen der Verordnung:**
+   - Validierende Systeme validieren die Ressource zunächst gegen das Profil. Erst eine profilkonforme Ressource wird der Textgenerierung übergeben; der Algorithmus prüft keine Profilregeln.
    - Validierende Systeme generieren den Dosierungstext mittels des festgelegten Algorithmus erneut und vergleichen ihn mit dem von den Erfassenden Systemen übermittelten Text, um Regelkonformität und Konsistenz sicherzustellen.
 
 3. **Anzeige und Weitergabe:**
@@ -29,6 +30,7 @@ Die Generierung und Bereitstellung des Dosierungstextes erfolgt im Verordnungspr
 
 - **Erfassende Systeme** müssen in der Lage sein, strukturierte Dosierungsdaten zu verarbeiten und den zugehörigen Dosierungstext lokal, regelkonform und standardisiert zu generieren.
 - **Validierende Systeme** prüfen die Regelkonformität des generierten Dosierungstextes.
+- Die Profilvalidierung ist Vorbedingung der Textgenerierung. Ein erzeugter Text ersetzt sie nicht und belegt keine Profilkonformität.
 - **Darstellende Systeme** greifen auf den generierten Dosierungstext zurück, wenn sie strukturierte Daten nicht interpretieren können.
 - Die zentrale Validierung und ggf. Generierung des Dosierungstextes stellt die Einheitlichkeit der Information im gesamten dgMP-Prozess sicher.
 - Der zugrundeliegende Algorithmus zur Textgenerierung ist standardisiert und muss von allen relevanten Systemen identisch implementiert werden.

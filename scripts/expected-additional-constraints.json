@@ -1,5 +1,9 @@
 {
   "_comment": "Je erwartetem Constraint-Key: weitere Constraints, die dessen -C-Beispiele zusätzlich auslösen dürfen. Erzeugt mit --write-baseline; Änderungen im Review prüfen.",
+  "AsNeededForRequiresAsNeeded": [
+    "DosageRequiresGeneratedText",
+    "FreeTextMatchesRenderedText"
+  ],
   "AsNeededSingleDosageOnly": [
     "DosageRequiresGeneratedText"
   ],
@@ -50,9 +54,13 @@
   ],
   "MinimumIntervalOnlyPureAsNeeded": [
     "DosageRequiresGeneratedText",
-    "DosageStructuredRequiresBoth"
+    "DosageStructuredRequiresBoth",
+    "FreeTextMatchesRenderedText"
   ],
   "TimingBoundsPeriodFullDate": [
+    "DosageRequiresGeneratedText"
+  ],
+  "TimingIntervalOnlyOneFrequency": [
     "DosageRequiresGeneratedText"
   ],
   "TimingOnlyOneDayOfWeek": [

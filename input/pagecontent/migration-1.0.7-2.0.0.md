@@ -34,7 +34,7 @@ Fehlt die Dosierung vollständig, wird keine ergänzt. Neue 2.0.0-Felder werden 
 | **Regulärer Freitext** | Die vollständige Dosierung wird bedeutungstreu in genau einem `Dosage.text` dargestellt; die strukturierte Darstellung entfällt. Die erforderlichen Text-Extensions stehen auf Ressourcenebene. | `täglich: je 1,2 Stück` (M01) |
 | **Nur archiviert** | Es gibt keine sicher verwendbare Zielrepräsentation. Die unveränderte 1.0.7-Quelle bleibt erhalten; die automatische Migration ist für diese Fassung nicht erfolgreich. | Fehlende Dosis (M16) |
 
-**Archivdaten sind keine Freitext-Dosierung.** Ein JSON-Archivinhalt oder ein Warnpräfix in `Dosage.text` schützt nicht davor, dass ein Empfänger den Inhalt als Einnahmeanweisung behandelt. Das [gemeinsame Archivverfahren](./migration-freitext-fallback.html) erzeugt deshalb keine solche Zielressource.
+**Archivdaten sind keine Freitext-Dosierung.** Ein JSON-Archivinhalt oder ein Warnpräfix in `Dosage.text` schützt nicht davor, dass ein Empfänger den Inhalt als Einnahmeanweisung behandelt. Das [gemeinsame Archivverfahren](./migration-archivverfahren.html) erzeugt deshalb keine solche Zielressource.
 
 ### Entscheidung auf einen Blick
 
@@ -56,16 +56,16 @@ Die Fall-IDs sind stabile Referenzen für Implementierung und Migrationsbericht.
 |---|---|---|---|
 | M01 | Dosisbruchteil im Ziel nicht erlaubt | Regulärer Freitext, sofern vollständig darstellbar | [M01](./migration-m01-dosisbruchteil.html) |
 | M02 | Exponentialschreibweise im Quellpayload | Exakte Dezimalnormalisierung | [M02](./migration-m02-exponentialnotation.html) |
-| M03 | Dosiswert null oder negativ | Nur archivieren | [Archivverfahren](./migration-freitext-fallback.html) |
+| M03 | Dosiswert null oder negativ | Nur archivieren | [Archivverfahren](./migration-archivverfahren.html) |
 | M04 | Nacktes Viererschema im Freitext | Ohne belegte Bedeutung nur archivieren | [M04](./migration-m04-viererschema-freitext.html) |
 | M05 | Gebrochene Behandlungsdauer | Zulässige exakte Umrechnung, sonst geprüfter Freitext | [M05](./migration-m05-boundsduration.html) |
 | M06 | Gebrochene Periode | Zulässige exakte Umrechnung, sonst geprüfter Freitext | [M06](./migration-m06-period.html) |
 | M07 | Frequenz und Periode beide größer als eins | Geprüfter Freitext ohne algebraische Umdeutung | [M07](./migration-m07-frequenz-periode.html) |
-| M08–M17 | Fehlende, widersprüchliche oder nicht sicher vereinheitlichbare Angaben | Nur archivieren | [Betroffene Fälle](./migration-freitext-fallback.html) |
+| M08–M17 | Fehlende, widersprüchliche oder nicht sicher vereinheitlichbare Angaben | Nur archivieren | [Betroffene Fälle](./migration-archivverfahren.html) |
 | M18 | Anzeigeeinheit passt nicht zum Code | Anzeige korrigieren, sofern der Code nachweislich maßgeblich ist | [M18](./migration-m18-einheitenanzeige.html) |
 | M19–M21 | Neue Felder, Warnungen und Lockerungen | Keine Änderung allein wegen dieser Regeln | Siehe Referenz unten |
-| M22 | Periode oder Behandlungsdauer null oder negativ | Nur archivieren; keine Umdeutung als Freitext | [Archivverfahren](./migration-freitext-fallback.html) |
-| M23 | Text-Extension ohne Dosierung | Nur archivieren | [Archivverfahren](./migration-freitext-fallback.html) |
+| M22 | Periode oder Behandlungsdauer null oder negativ | Nur archivieren; keine Umdeutung als Freitext | [Archivverfahren](./migration-archivverfahren.html) |
+| M23 | Text-Extension ohne Dosierung | Nur archivieren | [Archivverfahren](./migration-archivverfahren.html) |
 
 ### Verbindlicher Migrationsablauf
 
@@ -78,7 +78,7 @@ Implementierungen MÜSSEN pro Ressourcenfassung in dieser Reihenfolge vorgehen:
 5. **Kandidaten prüfen:** Die Zielanforderungen prüfen, zunächst ohne die Pflicht zur neu zu erzeugenden `renderedDosageInstruction` und `GeneratedDosageInstructionsMeta` (`DosageRequiresGeneratedText`). Ausschließlich diese noch nicht erfüllte Generierungspflicht verhindert die reguläre Textgenerierung nicht. Andere Fehler einzeln nach Constraint-Key klassifizieren.
 6. **Darstellung wählen:** Hat die Struktur keine anderen Fehler, den regulären Renderer verwenden und Struktur sowie neu erzeugte Text-Extensions übernehmen. Bleiben ausschließlich die unten zugelassenen M01-/M05-/M06-/M07-Verletzungen, nach erfolgreicher Vollständigkeitsprüfung rendern und die ganze Liste durch genau ein `Dosage` mit `text`, ohne `timing` und ohne `doseAndRate` ersetzen. Anschließend die Textgenerierung auf das Freitextziel anwenden: Auf Ressourcenebene `renderedDosageInstruction` mit exakt diesem `Dosage.text` sowie `GeneratedDosageInstructionsMeta` mit Sprache und tatsächlich verwendeter Algorithmusversion erzeugen. Alte Struktur-Metadaten nicht übernehmen; die Herkunft der Struktur-zu-Freitext-Umwandlung zusätzlich im Migrationsbericht festhalten.
 7. **Abschlussprüfung durchführen:** Die vollständige Zielressource einschließlich aller Extensions gegen das festgelegte Zielprofil validieren. Zusätzlich die Bedeutungstreue des Textes prüfen. Erst bei Erfolg freigeben.
-8. **Ergebnis protokollieren:** Ergebnisart, Fall-IDs, Quell-/Zielzuordnung, Regel- und Abhängigkeitsversionen sowie Prüfresultate festhalten. Bei fehlender fachlicher Voraussetzung, Rendererfehler oder ungültigem Ziel das [Archivverfahren](./migration-freitext-fallback.html) anwenden; technische Ausführungsfehler zusätzlich gesondert melden.
+8. **Ergebnis protokollieren:** Ergebnisart, Fall-IDs, Quell-/Zielzuordnung, Regel- und Abhängigkeitsversionen sowie Prüfresultate festhalten. Bei fehlender fachlicher Voraussetzung, Rendererfehler oder ungültigem Ziel das [Archivverfahren](./migration-archivverfahren.html) anwenden; technische Ausführungsfehler zusätzlich gesondert melden.
 
 Eine Ressource ohne Dosierung durchläuft keine Dosierungsabbildung, muss aber vor einer Freigabe als 2.0.0-Ressource die übrigen Zielanforderungen erfüllen. Das Löschen einer vorhandenen Dosierung ist kein zulässiger Ersatz für eine fehlgeschlagene Migration.
 

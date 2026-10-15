@@ -15,7 +15,7 @@ Die Regel galt bereits unverändert in 1.0.7. M18 ist daher eine Behandlung bere
 1. `system` muss UCUM sein und `code` muss im Ziel-ValueSet enthalten sein. Eine explizite, versionierte Quellkonvention muss belegen, dass der Code die maßgebliche Einheit ist und `unit` nur deren Anzeige. Bei widersprüchlichen Angaben darf die Migration nicht selbst entscheiden, welcher Wert klinisch gemeint war.
 2. Nur mit diesem Nachweis ausschließlich `unit` auf die kanonische deutsche Designation der festgelegten Ziel-ValueSet-Version setzen. `value`, `system` und `code` nicht ändern. Bereits zulässige Anzeigevarianten nicht allein für eine kosmetische Vereinheitlichung ändern.
 3. Die Struktur nach dem [Ablauf der Übersicht](./migration-1.0.7-2.0.0.html) prüfen, regulären Text und Text-Extensions neu erzeugen und die Vollständigkeitsprüfung durchführen. Anschließend die gesamte Zielressource einschließlich der Extensions validieren.
-4. Bei fehlendem Nachweis, ungültigem/mehrdeutigem Code, Informationsverlust oder nicht behebbaren Zielverletzungen das [Archivverfahren](./migration-freitext-fallback.html) verwenden. Gleichzeitig vorliegende M-Fälle nach der Übersicht behandeln.
+4. Bei fehlendem Nachweis, ungültigem/mehrdeutigem Code, Informationsverlust oder nicht behebbaren Zielverletzungen das [Archivverfahren](./migration-archivverfahren.html) verwenden. Gleichzeitig vorliegende M-Fälle nach der Übersicht behandeln.
 
 ### Zuordnung
 

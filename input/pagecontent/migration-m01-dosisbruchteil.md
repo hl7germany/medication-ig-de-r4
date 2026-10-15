@@ -13,7 +13,7 @@ Der Fall liegt vor, wenn ein strukturierter `doseQuantity.value` den Constraint 
 1. Eine strukturierte Umrechnung nur mit einer explizit freigegebenen, versionierten Tabelle gemäß der Übersicht versuchen. Diese Anleitung liefert keine Dosisumrechnungstabelle. Ohne sie bleiben Zahlenwert, System und Code unverändert; keine Einheit oder Wirkstärke raten.
 2. Ist keine exakte strukturierte Abbildung verfügbar, die [Renderer-Allowlist und Vollständigkeitsprüfung](./migration-1.0.7-2.0.0.html) anwenden. Genau ein vollständiges `Dosage`-Element mit positiver `doseQuantity` und unterstütztem Schema ist erforderlich. Alle gleichzeitig vorliegenden Zielverletzungen prüfen.
 3. Das Renderergebnis nur bei nachgewiesener Bedeutungstreue als einzige reine Freitext-Dosierung übernehmen: `Dosage.text` ohne `timing` und ohne `doseAndRate`. Auf Ressourcenebene `renderedDosageInstruction` mit exakt demselben Text und `GeneratedDosageInstructionsMeta` mit Sprache und tatsächlich verwendeter Algorithmusversion für die Freitextübernahme erzeugen (Schritt 6 der Übersicht). Alte Text-Extensions und Struktur-Metadaten nicht übernehmen. Den vollständigen Zielzustand validieren und die Rendererherkunft im Migrationsbericht festhalten.
-4. Bei Informationsverlust, Rendererfehler, mehreren Dosage-Elementen oder ungültigem Ziel das [Archivverfahren](./migration-freitext-fallback.html) verwenden. Eine nichtleere, profilkonforme Textausgabe allein reicht nicht aus.
+4. Bei Informationsverlust, Rendererfehler, mehreren Dosage-Elementen oder ungültigem Ziel das [Archivverfahren](./migration-archivverfahren.html) verwenden. Eine nichtleere, profilkonforme Textausgabe allein reicht nicht aus.
 5. Nie auf- oder abrunden.
 
 ### Beispiel

@@ -16,7 +16,7 @@ Ein numerischer Dosiswert ist im unveränderten Quellpayload mit Exponent serial
 2. Den Wert in kanonischer einfacher Dezimalschreibweise serialisieren: Exponent entfernen, Nachkommastellen nur so weit wie für den exakten Wert erforderlich schreiben, keine Rundung.
 3. Danach sämtliche Zielregeln für Zahlenwerte prüfen, insbesondere `DosageDoseValueDecimalNotation`, `DosageDoseQuantityAllowedFractions` und `DosageDoseValuePositive`.
 4. Bei gültigem Wert die strukturierte Dosierung erhalten. Regulären Text und Text-Extensions nach dem [Ablauf und der Vollständigkeitsprüfung der Übersicht](./migration-1.0.7-2.0.0.html) erzeugen; anschließend die vollständige Zielressource validieren.
-5. Verletzt der exakt normalisierte Wert einen anderen Dosis-Constraint, M01 oder M03 anwenden. Andere verbleibende Fehler ebenfalls behandeln; bei fehlendem Nachweis das [Archivverfahren](./migration-freitext-fallback.html) verwenden.
+5. Verletzt der exakt normalisierte Wert einen anderen Dosis-Constraint, M01 oder M03 anwenden. Andere verbleibende Fehler ebenfalls behandeln; bei fehlendem Nachweis das [Archivverfahren](./migration-archivverfahren.html) verwenden.
 
 ### Beispiel
 

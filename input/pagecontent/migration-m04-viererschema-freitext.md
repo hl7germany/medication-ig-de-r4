@@ -17,7 +17,7 @@ Für jedes befüllte `Dosage.text` wird der reguläre Ausdruck aus `DosageFourSl
 1. Ohne eine explizite, versionierte Quellkonvention den Text nicht automatisch interpretieren. Insbesondere nicht pauschal `täglich:` voranstellen: Der Regex-Treffer allein belegt keine tägliche Wiederholung.
 2. Eine zusätzliche Quellkonvention muss Slot-Bedeutung, Wiederholungsfrequenz, Zahlen- und Teilungsschreibweise sowie Dosis-System und -Code eindeutig festlegen. Diese Anleitung liefert keine solche Konvention. Eine Arzneimittelreferenz oder ein angezeigter Einheitenname allein reicht nicht aus.
 3. Nur bei vollständig belegter Bedeutung eine exakte strukturierte Abbildung nach dieser Konvention erzeugen. Null-Slots bedeuten dabei nur dann keine Gabe, wenn die Konvention dies festlegt; es werden keine strukturierten Null-Dosen erzeugt. Anschließend den regulären Text erzeugen und sämtliche Zielregeln sowie die Vollständigkeitsprüfung der Übersicht anwenden.
-4. Ist die Bedeutung nicht belegt oder die strukturierte Abbildung nicht zulässig, das [Archivverfahren](./migration-freitext-fallback.html) verwenden. Keine bloße Textumformulierung zur Umgehung des Constraints vornehmen.
+4. Ist die Bedeutung nicht belegt oder die strukturierte Abbildung nicht zulässig, das [Archivverfahren](./migration-archivverfahren.html) verwenden. Keine bloße Textumformulierung zur Umgehung des Constraints vornehmen.
 
 Die ursprüngliche Ressourcenfassung bleibt unverändert archiviert. Alte Renderer-Extensions dürfen nicht als Herkunft der neu erzeugten Darstellung übernommen werden.
 

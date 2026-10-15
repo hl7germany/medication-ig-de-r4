@@ -81,7 +81,7 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
     * code from MindestabstandUnitsOfTimeDgMPVS (required)
     * unit 1..1 MS
     * comparator 0..0
-      * ^comment = "Begründung Einschränkung Kardinalität: Ein Komparator würde den Mindestabstand unbestimmt machen (z. B. '> 4 Stunden'); die Textgenerierung stellt ausschließlich den exakten Wert dar."
+      * ^comment = "Begründung Einschränkung Kardinalität: Ein Komparator würde den Mindestabstand unbestimmt machen (z. B. '> 4 Stunden')."
 * site 0..0
   * ^comment = "Begründung Einschränkung Kardinalität: Eine Verabreichungsstelle ist in der aktuellen Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
 * route 0..0
@@ -90,8 +90,8 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
   * ^comment = "Begründung Einschränkung Kardinalität: Eine Verabreichungsmethode ist in der aktuellen Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
 * maxDosePerPeriod
   // Ein comparator veraendert die Bedeutung des Wertes ("< 6" ist nicht "6");
-  // die Textgenerierung hat dafuer keine Form. Bei der Dosis schliesst ihn
-  // SimpleQuantity bereits aus, bei Ratio ist er sonst erlaubt.
+  // der Dosierungstext kennt keinen Vergleichsoperator. Bei der Dosis schliesst
+  // ihn SimpleQuantity bereits aus, bei Ratio ist er sonst erlaubt.
   * numerator.comparator 0..0
   * denominator.comparator 0..0
 * maxDosePerAdministration 0..0
@@ -240,10 +240,8 @@ Severity: #error
 
 // TODO: Nur code wird verglichen, nicht unit und system. Zwei Dosage-Elemente
 // mit Code #1, aber den Anzeigeeinheiten "Stück" und "Tablette" sind damit
-// gueltig; die Textgenerierung zeigt dann jede Einheit in ihrem Segment
-// ("morgens — je 1 Stück, abends — je 2 Tablette"). MaxDoseSameUnitAsDose
-// vergleicht dagegen system, code und unit. Zu klaeren, ob code-gleich genuegt
-// oder der Vergleich angeglichen wird.
+// gueltig. MaxDoseSameUnitAsDose vergleicht dagegen system, code und unit.
+// Zu klaeren, ob code-gleich genuegt oder der Vergleich angeglichen wird.
 Invariant: DosageDoseUnitSameCode
 Description: "The dose unit must be the same across all dosages."
 Expression: "(%resource.ofType(MedicationRequest).dosageInstruction | %resource.ofType(MedicationDispense).dosageInstruction | %resource.ofType(MedicationStatement).dosage).all(

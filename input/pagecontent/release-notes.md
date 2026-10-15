@@ -30,6 +30,12 @@
 - **`TimingBoundsPeriodMatchesTime` (`TimingDgMP`) — neu**
   - Im Uhrzeitenschema (`timeOfDay`) muss eine Uhrzeit in `boundsPeriod.start` oder `boundsPeriod.end` einer der angegebenen Uhrzeiten entsprechen.
   - Bekannte Einschränkung: Der FHIRPath-Ausdruck prüft nur den Uhrzeitanteil, nicht den Zeitzonenversatz. Die Übereinstimmung mit `Europe/Berlin` muss die Anwendung zusätzlich prüfen.
+- **`TimingBoundsPeriodFullDate` (`TimingDgMP`) — neu**
+  - `boundsPeriod.start` und `boundsPeriod.end` müssen ein vollständiges Kalenderdatum enthalten. FHIR `dateTime` erlaubt auch `JJJJ` und `JJJJ-MM`; die Textgenerierung kann ein Teildatum nicht darstellen und bricht ab.
+- **`MinimumIntervalOnlyPureAsNeeded` und `MaxDoseOnlyPureAsNeeded` (`DosageDgMP`)**
+  - Verlangen zusätzlich `doseAndRate`: Mindestabstand und Maximalmenge sind nur an einer strukturierten reinen Bedarfsdosierung zulässig. An einer Freitext-Dosierung mit `asNeededBoolean = true` waren sie bisher gültig, konnten aber nie im Dosierungstext erscheinen, weil der Freitext unverändert übernommen wird.
+- **`maxDosePerPeriod.numerator.comparator` und `.denominator.comparator` sind `0..0`**
+  - Ein Vergleichsoperator verändert die Bedeutung des Wertes; die Textgenerierung hat dafür keine Form. Bei der Dosis schließt `SimpleQuantity` den `comparator` bereits aus.
 - **`TimingBoundsPeriodNotForWhen` (`TimingDgMP`) — neu**
   - Im Tageszeitenschema (`when`) und im Wochentagsschema ohne `timeOfDay` dürfen `boundsPeriod.start` und `boundsPeriod.end` keine Uhrzeit enthalten.
   - Das Beispiel `Example-MR-Dosage-1000-startdatetime` verwendet deshalb jetzt das Uhrzeitenschema, `Example-MR-Dosage-1000-startdatetime-daychange` ein reines Intervall.

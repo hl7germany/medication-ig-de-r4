@@ -250,7 +250,7 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 Es darf pro Ressource nur eines der unterstützten Timing-Schemata verwendet werden: Tagesabschnitt/Uhrzeit, Wochentag, reines Intervall, Wochentag mit Tagesabschnitt/Uhrzeit oder eine [Kombination aus Zeitintervall und Tagesabschnitt/Uhrzeit](./schema-intervall-kombination.html). Redundante `frequency`-, `period`- und `periodUnit`-Angaben bleiben bei Wochentagsschemata sowie in den dafür vorgesehenen zeitbezogenen Schemata optional zulässig; sie machen aus einem Wochentagsschema kein Intervallschema. Eine variable Frequenz über `frequencyMax` ist ausschließlich in der reinen Intervallangabe zulässig.
 
 **Warum?**  
-Diese Einschränkung verhindert Mehrdeutigkeiten und sorgt dafür, dass die Dosierungszeitpunkte eindeutig interpretierbar bleiben. Konkrete Zeitpunkte in `when` oder `timeOfDay` sowie Wochentage in `dayOfWeek` legen die Zahl der Gaben bereits abschließend fest. Ein zusätzliches `frequencyMax` würde dieser Aufzählung widersprechen und in der Textgenerierung ersatzlos entfallen — aus `morgens, frequency 1, frequencyMax 3` entstünde `1-0-0-0 Stück`, ohne dass die Obergrenze im Text erschiene.
+Diese Einschränkung verhindert Mehrdeutigkeiten und sorgt dafür, dass die Dosierungszeitpunkte eindeutig interpretierbar bleiben. Konkrete Zeitpunkte in `when` oder `timeOfDay` sowie Wochentage in `dayOfWeek` legen die Zahl der Gaben bereits abschließend fest. Ein zusätzliches `frequencyMax` würde dieser Aufzählung widersprechen; die Textgenerierung bricht ab (keine Schema-Regel greift), statt die Obergrenze im Text zu unterschlagen.
 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
@@ -379,6 +379,18 @@ Tagesabschnitte wie „morgens“ (`MORN`) und reine Wochentagsangaben wie „mo
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-TimingBoundsPeriodNotForWhen-examples.md%}
+
+##### TimingBoundsPeriodFullDate
+
+**Beschreibung:**  
+`boundsPeriod.start` und `boundsPeriod.end` müssen ein vollständiges Kalenderdatum (`JJJJ-MM-TT`, optional mit Uhrzeit) enthalten. FHIR `dateTime` erlaubt auch `JJJJ` und `JJJJ-MM`; im dgMP sind diese Teildaten nicht zulässig.
+
+**Warum?**  
+Die Textgenerierung stellt Start und Ende als `TT.MM.JJJJ` dar und kann ein Teildatum nicht wiedergeben; sie bricht ab. Siehe [Angabe von Start- und Enddatum](./schema-start-end-datum.html).
+
+Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
+
+{% include dosage-constraint-TimingBoundsPeriodFullDate-examples.md%}
 
 ##### TimingIntervalOnlyOneFrequency
 
@@ -538,7 +550,7 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 In den dgMP-Profilen müssen alle Dosierungsinstanzen innerhalb derselben Ressource dieselbe Dosiereinheit (Code) verwenden.
 
 **Warum?**  
-Die Textgenerierung stellt 4‑Schema und Wochentagsschemata mit einer gemeinsamen Dosis-Einheit dar; bei abweichender Anzeigeeinheit eines weiteren Elements bricht sie ab, statt eine Einheit zu unterschlagen. Zudem setzt der dgMP auf durchgängig maschinell vergleichbare Dosierungen.
+Die Textgenerierung stellt 4‑Schema und Wochentagsschemata kompakt mit einer gemeinsamen Dosis-Einheit dar; bei abweichender Anzeigeeinheit eines weiteren Elements wechselt sie in die ausgeschriebene Form, in der jedes Segment seine Einheit trägt, statt eine Einheit zu unterschlagen. Zudem setzt der dgMP auf durchgängig maschinell vergleichbare Dosierungen.
 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
@@ -574,7 +586,7 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 `doseQuantity.value` und `doseRange.high.value` müssen größer als `0` sein. Für `doseRange.low.value` ist zusätzlich der Wert `0` zulässig. Die Regel prüft damit alle im dgMP zulässigen Varianten der Einzeldosis.
 
 **Warum?**
-Eine negative Dosis beschreibt keine verabreichbare Arzneimittelmenge und kann nicht sinnvoll in eine Dosierungsanweisung überführt werden. Dasselbe gilt für den Wert `0` als Einzeldosis oder als Obergrenze eines Bereichs: Beides ergäbe eine Anweisung, nach der nichts anzuwenden ist („0-0-0-0 Stück“ beziehungsweise „je bis zu 0 Stück“). Benötigt wird `0` ausschließlich als Untergrenze einer variablen Dosis, zum Beispiel für „0 bis 2 Tabletten“. Die Textgenerierung prüft den Wertebereich nicht — sie gibt `je 0 Stück` wieder, wie es in der Ressource steht; nur dieser Constraint verhindert eine solche Anweisung.
+Eine negative Dosis beschreibt keine verabreichbare Arzneimittelmenge und kann nicht sinnvoll in eine Dosierungsanweisung überführt werden. Dasselbe gilt für den Wert `0` als Einzeldosis oder als Obergrenze eines Bereichs: Beides ergäbe eine Anweisung, nach der nichts anzuwenden ist („täglich: 0-0-0-0 Stück“ beziehungsweise „je bis zu 0 Stück“). Benötigt wird `0` ausschließlich als Untergrenze einer variablen Dosis, zum Beispiel für „0 bis 2 Tabletten“. Die Textgenerierung prüft den Wertebereich nicht — sie gibt `je 0 Stück` wieder, wie es in der Ressource steht; nur dieser Constraint verhindert eine solche Anweisung.
 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
@@ -620,10 +632,10 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 ##### MinimumIntervalOnlyPureAsNeeded
 
 **Beschreibung:**  
-`modifierExtension[MinimumIntervalBetweenAdministrations]` ist ausschließlich bei einer reinen Bedarfsmedikation zulässig, also zusammen mit `asNeededBoolean = true` und ohne `timing`.
+`modifierExtension[MinimumIntervalBetweenAdministrations]` ist ausschließlich bei einer strukturierten reinen Bedarfsmedikation zulässig, also zusammen mit `asNeededBoolean = true` und `doseAndRate`, ohne `timing`. An einer Freitext-Dosierung ist der Mindestabstand nicht zulässig.
 
 **Warum?**  
-Ein strukturierter Rhythmus legt den Abstand zwischen zwei Gaben bereits fest. Ein zusätzlicher, schwächerer Mindestabstand daneben ergibt eine widersprüchliche Anweisung — etwa „alle 8 Stunden, mindestens 6 Stunden Abstand", bei der offenbleibt, welche Angabe gilt. Beim Bedarfsfall ohne Rhythmus ist der Mindestabstand dagegen die einzige zeitliche Schranke und damit sinnvoll.
+Eine Freitext-Dosierung wird unverändert in den Dosierungstext übernommen (`FreeTextMatchesRenderedText`); ein Mindestabstand daneben könnte darin nie erscheinen und ginge als `modifierExtension` stillschweigend verloren. Ein strukturierter Rhythmus legt den Abstand zwischen zwei Gaben bereits fest. Ein zusätzlicher, schwächerer Mindestabstand daneben ergibt eine widersprüchliche Anweisung — etwa „alle 8 Stunden, mindestens 6 Stunden Abstand", bei der offenbleibt, welche Angabe gilt. Beim Bedarfsfall ohne Rhythmus ist der Mindestabstand dagegen die einzige zeitliche Schranke und damit sinnvoll.
 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
@@ -692,10 +704,10 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 ##### MaxDoseOnlyPureAsNeeded
 
 **Beschreibung:**  
-Eine Maximalmenge (`maxDosePerPeriod`) darf nur bei einer reinen Bedarfsdosierung (`asNeededBoolean = true` ohne `timing`) angegeben werden.
+Eine Maximalmenge (`maxDosePerPeriod`) darf nur bei einer strukturierten reinen Bedarfsdosierung (`asNeededBoolean = true` mit `doseAndRate`, ohne `timing`) angegeben werden; an einer Freitext-Dosierung ist sie nicht zulässig.
 
 **Warum?**  
-Ein strukturierter Rhythmus legt bereits fest, wie viel im Bezugszeitraum angewendet wird; eine Maximalmenge daneben wäre eine zweite, konkurrierende Angabe. Die Textgenerierung bricht in diesem Fall ab, statt die Maximalmenge stillschweigend zu übergehen.
+Ein strukturierter Rhythmus legt bereits fest, wie viel im Bezugszeitraum angewendet wird; eine Maximalmenge daneben wäre eine zweite, konkurrierende Angabe. Eine Freitext-Dosierung wird unverändert in den Dosierungstext übernommen (`FreeTextMatchesRenderedText`); eine Maximalmenge daneben könnte darin nie erscheinen. Die Textgenerierung bricht in beiden Fällen ab, statt die Maximalmenge stillschweigend zu übergehen.
 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 

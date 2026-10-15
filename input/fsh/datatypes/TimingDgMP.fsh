@@ -24,6 +24,7 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * obeys TimingBoundsDurationOnlyWholeNumber
   * obeys TimingBoundsPeriodMatchesTime
   * obeys TimingBoundsPeriodNotForWhen
+  * obeys TimingBoundsPeriodFullDate
   * obeys TimingValuesPositive
   * obeys TimingFreqOrPeriodGtOne
   * obeys TimingVarFreqGtMin
@@ -803,6 +804,11 @@ Expression: "timeOfDay.empty() or
       | %resource.ofType(MedicationStatement).dosage
     ).timing.repeat.timeOfDay.select(toString().substring(0, 8))
   )"
+Severity: #error
+
+Invariant: TimingBoundsPeriodFullDate
+Description: "boundsPeriod.start and boundsPeriod.end must state a full calendar date (YYYY-MM-DD, optionally with a time). FHIR dateTime also allows YYYY and YYYY-MM; the dosage text renders dates as DD.MM.YYYY and cannot represent a partial date."
+Expression: "(bounds.ofType(Period).start | bounds.ofType(Period).end).all(toString().length() >= 10)"
 Severity: #error
 
 Invariant: TimingBoundsPeriodNotForWhen

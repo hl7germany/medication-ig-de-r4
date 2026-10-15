@@ -13,6 +13,6 @@ Context: MedicationRequest, MedicationDispense, MedicationStatement
   * valueCode 1.. MS
   * valueCode from $all-languages-vs
 * extension[algorithmVersion]
-  * ^short = "Version des Algorithmus zur Generierung der Dosierungsanweisung (Version der zugrundeliegenden Python Referenzimplementierung)"
+  * ^short = "Version des Algorithmus zur Generierung der Dosierungsanweisung (Version der normativen Algorithmusspezifikation, die auch die Referenzimplementierung in __version__ führt)"
   * value[x] only string
   * valueString 1.. MS

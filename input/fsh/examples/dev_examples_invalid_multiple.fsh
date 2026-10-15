@@ -1,4 +1,4 @@
-Instance: INV-multiple-01-of-10-when
+Instance: INV-multi-01-of-10-when
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Two dosages with the same period of day"
@@ -25,7 +25,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
       * period = 1
       * periodUnit = #d
 
-Instance: INV-multiple-02-of-10-C-TimingOnlyOneTimeOfDay
+Instance: INV-multi-02-of-10-C-TimingOnlyOneTimeOfDay
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Two dosages with the same time of day"
@@ -50,7 +50,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * periodUnit = #d
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-multiple-04-of-10-C-TimingOnlyOnePeriodForDayOfWeek
+Instance: INV-multi-04-of-10-C-TimingOnlyOnePeriodForDayOfWeek
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Two dosages with the same period of day on the same day"
@@ -79,7 +79,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * periodUnit = #d
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-multiple-05-of-10-C-TimingOnlyOnePeriodForDayOfWeek
+Instance: INV-multi-05-of-10-C-TimingOnlyOnePeriodForDayOfWeek
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Two dosages with the same time of day on the same day"
@@ -108,7 +108,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
     * periodUnit = #d
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-multiple-06-of-10-C-TimingIntervalOnlyOneFrequency
+Instance: INV-multi-06-of-10-C-TimingIntervalOnlyOneFrequency
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Two Interval Dosages"
@@ -130,7 +130,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
     * periodUnit = #d
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-multiple-07-of-10-C-TimingOnlyOneWhen
+Instance: INV-multi-07-of-10-C-TimingOnlyOneWhen
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Two interval Dosages same period of day"
@@ -155,7 +155,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
     * when[+] = #EVE
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-multiple-08-of-10-C-TimingOnlyOneTimeOfDay
+Instance: INV-multi-08-of-10-C-TimingOnlyOneTimeOfDay
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Two interval Dosages same time"
@@ -179,7 +179,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
     * timeOfDay[+] = "08:00:00"
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-multiple-09-of-10-C-TimingOnlyOneTimeForInterval
+Instance: INV-multi-09-of-10-C-TimingOnlyOneTimeForInterval
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Two interval Dosages same time"
@@ -203,7 +203,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
     * timeOfDay[+] = "20:00:00"
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-multiple-10-of-10-C-TimingOnlyOneBounds
+Instance: INV-multi-10-of-10-C-TimingOnlyOneBounds
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Two interval Dosages different boundsDuration"
@@ -225,7 +225,7 @@ Description: "Dieses Beispiel stellt eine Medikationsanforderung mit einer Dosie
 
 // --- MedicationDispense equivalents ---
 
-Instance: INV-multiple-01-of-10-when-MD
+Instance: INV-multi-01-of-10-when-MD
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
 Title: "Two dosages with the same period of day"
@@ -251,7 +251,7 @@ Description: "CAVE: This MedicationDispense is for validation purposes and does 
       * period = 1
       * periodUnit = #d
 
-Instance: INV-multiple-02-of-10-C-TimingOnlyOneTimeOfDay-MD
+Instance: INV-multi-02-of-10-C-TimingOnlyOneTimeOfDay-MD
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
 Title: "Two dosages with the same time of day"
@@ -275,7 +275,7 @@ Description: "CAVE: This MedicationDispense is for validation purposes and does 
     * periodUnit = #d
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-multiple-04-of-10-C-TimingOnlyOnePeriodForDayOfWeek-MD
+Instance: INV-multi-04-of-10-C-TimingOnlyOnePeriodForDayOfWeek-MD
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
 Title: "Two dosages with the same period of day on the same day"
@@ -303,7 +303,7 @@ Description: "CAVE: This MedicationDispense is for validation purposes and does 
     * periodUnit = #d
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-multiple-05-of-10-C-TimingOnlyOnePeriodForDayOfWeek-MD
+Instance: INV-multi-05-of-10-C-TimingOnlyOnePeriodForDayOfWeek-MD
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
 Title: "Two dosages with the same time of day on the same day"
@@ -331,7 +331,7 @@ Description: "CAVE: This MedicationDispense is for validation purposes and does 
     * periodUnit = #d
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-multiple-06-of-10-C-TimingIntervalOnlyOneFrequency-MD
+Instance: INV-multi-06-of-10-C-TimingIntervalOnlyOneFrequency-MD
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
 Title: "Two Interval Dosages"
@@ -352,7 +352,7 @@ Description: "Dieses Beispiel stellt eine Medikationsabgabe mit einer Dosierung 
     * periodUnit = #d
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-multiple-07-of-10-C-TimingOnlyOneWhen-MD
+Instance: INV-multi-07-of-10-C-TimingOnlyOneWhen-MD
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
 Title: "Two interval Dosages same period of day"
@@ -376,7 +376,7 @@ Description: "Dieses Beispiel stellt eine Medikationsabgabe mit einer Dosierung 
     * when[+] = #EVE
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-multiple-08-of-10-C-TimingOnlyOneTimeOfDay-MD
+Instance: INV-multi-08-of-10-C-TimingOnlyOneTimeOfDay-MD
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
 Title: "Two interval Dosages same time"
@@ -399,7 +399,7 @@ Description: "Dieses Beispiel stellt eine Medikationsabgabe mit einer Dosierung 
     * timeOfDay[+] = "08:00:00"
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-multiple-09-of-10-C-TimingOnlyOneTimeForInterval-MD
+Instance: INV-multi-09-of-10-C-TimingOnlyOneTimeForInterval-MD
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
 Title: "Two interval Dosages same time"
@@ -422,7 +422,7 @@ Description: "Dieses Beispiel stellt eine Medikationsabgabe mit einer Dosierung 
     * timeOfDay[+] = "20:00:00"
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-multiple-10-of-10-C-TimingOnlyOneBounds-MD
+Instance: INV-multi-10-of-10-C-TimingOnlyOneBounds-MD
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
 Title: "Two interval Dosages different boundsDuration"
@@ -449,7 +449,7 @@ Description: "Dieses Beispiel stellt eine Medikationsabgabe mit einer Dosierung 
 
 // --- MedicationStatement equivalents ---
 
-Instance: INV-multiple-01-of-10-when-MS
+Instance: INV-multi-01-of-10-when-MS
 InstanceOf: MedicationStatementDgMP
 Usage: #example
 Title: "Two dosages with the same period of day"
@@ -475,7 +475,7 @@ Description: "CAVE: This MedicationStatement is for validation purposes and does
       * period = 1
       * periodUnit = #d
 
-Instance: INV-multiple-02-of-10-C-TimingOnlyOneTimeOfDay-MS
+Instance: INV-multi-02-of-10-C-TimingOnlyOneTimeOfDay-MS
 InstanceOf: MedicationStatementDgMP
 Usage: #example
 Title: "Two dosages with the same time of day"
@@ -499,7 +499,7 @@ Description: "CAVE: This MedicationStatement is for validation purposes and does
     * periodUnit = #d
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-multiple-04-of-10-C-TimingOnlyOnePeriodForDayOfWeek-MS
+Instance: INV-multi-04-of-10-C-TimingOnlyOnePeriodForDayOfWeek-MS
 InstanceOf: MedicationStatementDgMP
 Usage: #example
 Title: "Two dosages with the same period of day on the same day"
@@ -527,7 +527,7 @@ Description: "CAVE: This MedicationStatement is for validation purposes and does
     * periodUnit = #d
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-multiple-05-of-10-C-TimingOnlyOnePeriodForDayOfWeek-MS
+Instance: INV-multi-05-of-10-C-TimingOnlyOnePeriodForDayOfWeek-MS
 InstanceOf: MedicationStatementDgMP
 Usage: #example
 Title: "Two dosages with the same time of day on the same day"
@@ -555,7 +555,7 @@ Description: "CAVE: This MedicationStatement is for validation purposes and does
     * periodUnit = #d
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-multiple-06-of-10-C-TimingIntervalOnlyOneFrequency-MS
+Instance: INV-multi-06-of-10-C-TimingIntervalOnlyOneFrequency-MS
 InstanceOf: MedicationStatementDgMP
 Usage: #example
 Title: "Two Interval Dosages"
@@ -576,7 +576,7 @@ Description: "Dieses Beispiel stellt eine Medikationsaussage mit einer Dosierung
     * periodUnit = #d
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-multiple-07-of-10-C-TimingOnlyOneWhen-MS
+Instance: INV-multi-07-of-10-C-TimingOnlyOneWhen-MS
 InstanceOf: MedicationStatementDgMP
 Usage: #example
 Title: "Two interval Dosages same period of day"
@@ -600,7 +600,7 @@ Description: "Dieses Beispiel stellt eine Medikationsaussage mit einer Dosierung
     * when[+] = #EVE
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-multiple-08-of-10-C-TimingOnlyOneTimeOfDay-MS
+Instance: INV-multi-08-of-10-C-TimingOnlyOneTimeOfDay-MS
 InstanceOf: MedicationStatementDgMP
 Usage: #example
 Title: "Two interval Dosages same time"
@@ -623,7 +623,7 @@ Description: "Dieses Beispiel stellt eine Medikationsaussage mit einer Dosierung
     * timeOfDay[+] = "08:00:00"
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-multiple-09-of-10-C-TimingOnlyOneTimeForInterval-MS
+Instance: INV-multi-09-of-10-C-TimingOnlyOneTimeForInterval-MS
 InstanceOf: MedicationStatementDgMP
 Usage: #example
 Title: "Two interval Dosages same time"
@@ -646,7 +646,7 @@ Description: "Dieses Beispiel stellt eine Medikationsaussage mit einer Dosierung
     * timeOfDay[+] = "20:00:00"
   * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-multiple-10-of-10-C-TimingOnlyOneBounds-MS
+Instance: INV-multi-10-of-10-C-TimingOnlyOneBounds-MS
 InstanceOf: MedicationStatementDgMP
 Usage: #example
 Title: "Two interval Dosages different boundsDuration"

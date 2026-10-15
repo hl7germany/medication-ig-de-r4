@@ -167,7 +167,7 @@ Description: "CAVE: This MedicationRequest is for validation purposes and does N
   * url = "http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta"
   * extension[+]
     * url = "algorithmVersion"
-    * valueString = "2.0.0-ballot"
+    * valueString = "2.0.0-rc.1"
   * extension[+]
     * url = "language"
     * valueCode = #de-DE
@@ -186,7 +186,7 @@ Description: "CAVE: This MedicationDispense is for validation purposes and does 
   * url = "http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta"
   * extension[+]
     * url = "algorithmVersion"
-    * valueString = "2.0.0-ballot"
+    * valueString = "2.0.0-rc.1"
   * extension[+]
     * url = "language"
     * valueCode = #de-DE
@@ -205,7 +205,7 @@ Description: "CAVE: This MedicationStatement is for validation purposes and does
   * url = "http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta"
   * extension[+]
     * url = "algorithmVersion"
-    * valueString = "2.0.0-ballot"
+    * valueString = "2.0.0-rc.1"
   * extension[+]
     * url = "language"
     * valueCode = #de-DE

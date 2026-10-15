@@ -9,7 +9,7 @@ Die Seite beschreibt die hierfür geltenden technischen Anforderungen im dgMP-Ko
 
 Die Angabe von Start- und Enddatum definiert den zeitlichen Gültigkeitsbereich einer Dosieranweisung. Sie kann nicht mit der Dauer einer Anwendung (`.boundsDuration`) kombiniert werden.
 
-Start und Ende können als vollständiges Kalenderdatum oder als Datum mit Uhrzeit angegeben werden. Enthält ein FHIR-`dateTime` eine Uhrzeit, ist eine Zeitzone verpflichtend. Für die Textdarstellung wird der Zeitpunkt in die IANA-Zeitzone `Europe/Berlin` umgerechnet.
+Start und Ende können als vollständiges Kalenderdatum oder als Datum mit Uhrzeit angegeben werden; die in FHIR `dateTime` ebenfalls möglichen Teildaten `JJJJ` und `JJJJ-MM` sind nicht zulässig ([TimingBoundsPeriodFullDate](./dosierung-constraints.html#timingboundsperiodfulldate)). Enthält ein FHIR-`dateTime` eine Uhrzeit, ist eine Zeitzone verpflichtend. Für die Textdarstellung wird der Zeitpunkt in die IANA-Zeitzone `Europe/Berlin` umgerechnet.
 
 Folgende weitere Beispiele sind in diesem IG dargestellt:
 

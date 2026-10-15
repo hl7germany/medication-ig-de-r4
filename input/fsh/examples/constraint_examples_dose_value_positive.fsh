@@ -79,6 +79,31 @@ Description: "CAVE: Validierungsbeispiel - eine Obergrenze von 0 beschreibt kein
     * low = 0 $kbv-dosiereinheit#1 "Stück"
     * high = 0 $kbv-dosiereinheit#1 "Stück"
 
+// Eine explizit mit 0 belegte Position ist eine Belegung, keine Lücke: In der
+// ausgeschriebenen Form des 4-Schemas (sobald eine Position einen Bereich
+// trägt) bleibt sie als eigenes Segment erhalten. Die Textgenerierung prüft den
+// Wertebereich nicht und erzeugt
+// "täglich: morgens — je 0 Stück, abends — je 1 bis 2 Stück".
+
+Instance: INV-C-DosageDoseValuePositive-Statement-06-of-06
+InstanceOf: MedicationStatementDgMP
+Usage: #example
+Title: "Ungültig (Statement): doseQuantity.value ist 0 neben einem Dosisbereich"
+Description: "CAVE: Validierungsbeispiel - eine Einzeldosis von 0 beschreibt keine verabreichbare Arzneimittelmenge. Zeigt zugleich, dass die Textgenerierung eine explizit mit 0 belegte Position in der ausgeschriebenen Form des 4-Schemas erhält."
+* subject.display = "Patient"
+* status = #active
+* medicationCodeableConcept.text = "Ibuprofen 400mg"
+* dosage[+]
+  * timing.repeat
+    * when[+] = #MORN
+  * doseAndRate.doseQuantity = 0 $kbv-dosiereinheit#1 "Stück"
+* dosage[+]
+  * timing.repeat
+    * when[+] = #EVE
+  * doseAndRate.doseRange
+    * low = 1 $kbv-dosiereinheit#1 "Stück"
+    * high = 2 $kbv-dosiereinheit#1 "Stück"
+
 // Positives Grenzwertbeispiel: 0 als Untergrenze eines Bereichs.
 
 Instance: Example-MD-Dosage-Zero-Range-Low

@@ -227,3 +227,48 @@ Description: "CAVE: This MedicationStatement is for validation purposes and does
     * dayOfWeek[+] = #mon
     * boundsPeriod.start = "2026-06-05T08:00:00+02:00"
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
+
+// TimingBoundsPeriodFullDate
+
+Instance: INV-C-TimingBoundsPeriodFullDate-MR-01-of-01
+InstanceOf: MedicationRequestDgMP
+Usage: #example
+Title: "Invalid Dosage"
+Description: "CAVE: This MedicationRequest is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for invalid Permutations"
+* subject.display = "Patient"
+* status = #active
+* intent = #order
+* medicationCodeableConcept.text = "Ibuprofen 400mg"
+* dosageInstruction[+]
+  * timing.repeat
+    * when[+] = #MORN
+    * boundsPeriod.start = "2026-06"
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
+
+Instance: INV-C-TimingBoundsPeriodFullDate-MD-01-of-01
+InstanceOf: MedicationDispenseDgMP
+Usage: #example
+Title: "Invalid Dosage"
+Description: "CAVE: This MedicationDispense is for validation purposes and does NOT represent a valid dosageInstruction. It only checks for invalid Permutations"
+* subject.display = "Patient"
+* status = #completed
+* medicationCodeableConcept.text = "Ibuprofen 400mg"
+* dosageInstruction[+]
+  * timing.repeat
+    * when[+] = #MORN
+    * boundsPeriod.end = "2026"
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
+
+Instance: INV-C-TimingBoundsPeriodFullDate-MS-01-of-01
+InstanceOf: MedicationStatementDgMP
+Usage: #example
+Title: "Invalid Dosage"
+Description: "CAVE: This MedicationStatement is for validation purposes and does NOT represent a valid dosage. It only checks for invalid Permutations"
+* subject.display = "Patient"
+* status = #active
+* medicationCodeableConcept.text = "Ibuprofen 400mg"
+* dosage[+]
+  * timing.repeat
+    * when[+] = #MORN
+    * boundsPeriod.start = "2026-06"
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"

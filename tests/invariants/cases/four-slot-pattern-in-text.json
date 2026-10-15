@@ -1,0 +1,126 @@
+[
+  {
+    "invariant": "DosageFourSlotPatternInText",
+    "context": "Dosage",
+    "cases": [
+      {
+        "name": "nacktes 4-Schema",
+        "dosage": {
+          "text": "1-0-1-0"
+        },
+        "expect": false
+      },
+      {
+        "name": "nacktes 4-Schema mit Einheit",
+        "dosage": {
+          "text": "1-0-1-0 Stück"
+        },
+        "expect": false
+      },
+      {
+        "name": "nacktes 4-Schema mit Dezimalkomma",
+        "dosage": {
+          "text": "0,5-0-0,5-0 Stück"
+        },
+        "expect": false
+      },
+      {
+        "name": "nacktes 4-Schema mit Bruchangabe",
+        "dosage": {
+          "text": "1/2-0-1/2-0"
+        },
+        "expect": false
+      },
+      {
+        "name": "nacktes 4-Schema mit Gedankenstrich",
+        "dosage": {
+          "text": "1–0–1–0"
+        },
+        "expect": false
+      },
+      {
+        "name": "erzeugte Form mit täglich: (nur Warnung)",
+        "dosage": {
+          "text": "täglich: 1-0-1-0 Stück"
+        },
+        "expect": true
+      },
+      {
+        "name": "erzeugte Form mit Dauer (nur Warnung)",
+        "dosage": {
+          "text": "für 2 Wochen täglich: 1-0-1-0 Stück"
+        },
+        "expect": true
+      },
+      {
+        "name": "4-Schema mit weiterem Text (nur Warnung)",
+        "dosage": {
+          "text": "1-0-1-0 nach dem Essen"
+        },
+        "expect": true
+      },
+      {
+        "name": "Ausschleichschema (nur Warnung)",
+        "dosage": {
+          "text": "Woche 1: 1-0-0-0, Woche 2: 1-0-1-0"
+        },
+        "expect": true
+      },
+      {
+        "name": "kein 4-Schema",
+        "dosage": {
+          "text": "täglich: je 1 Stück"
+        },
+        "expect": true
+      }
+    ]
+  },
+  {
+    "invariant": "DosageFourSlotPatternInTextWarning",
+    "context": "Dosage",
+    "cases": [
+      {
+        "name": "nacktes 4-Schema",
+        "dosage": {
+          "text": "1-0-1-0 Stück"
+        },
+        "expect": false
+      },
+      {
+        "name": "erzeugte Form mit täglich:",
+        "dosage": {
+          "text": "täglich: 1-0-1-0 Stück"
+        },
+        "expect": false
+      },
+      {
+        "name": "4-Schema mit weiterem Text",
+        "dosage": {
+          "text": "1-0-1-0 nach dem Essen"
+        },
+        "expect": false
+      },
+      {
+        "name": "Ausschleichschema",
+        "dosage": {
+          "text": "Woche 1: 1-0-0-0, Woche 2: 1-0-1-0"
+        },
+        "expect": false
+      },
+      {
+        "name": "kein 4-Schema",
+        "dosage": {
+          "text": "täglich: je 1 Stück"
+        },
+        "expect": true
+      },
+      {
+        "name": "Uhrzeiten",
+        "dosage": {
+          "text": "täglich: 08:00 Uhr — je 1 Stück"
+        },
+        "expect": true
+      }
+    ]
+  }
+]

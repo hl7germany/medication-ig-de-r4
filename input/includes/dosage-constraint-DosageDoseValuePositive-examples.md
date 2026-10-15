@@ -5,3 +5,4 @@
 | [MedicationRequest-INV-C-DosageDoseValuePositive-Request-01-of-05](./MedicationRequest-INV-C-DosageDoseValuePositive-Request-01-of-05.html) | -1 Stück |  |  |  |  |  |  |  | MORN |  |
 | [MedicationRequest-INV-C-DosageDoseValuePositive-Request-04-of-05](./MedicationRequest-INV-C-DosageDoseValuePositive-Request-04-of-05.html) | 0 Stück |  |  |  |  |  |  |  | MORN |  |
 | [MedicationStatement-INV-C-DosageDoseValuePositive-Statement-03-of-05](./MedicationStatement-INV-C-DosageDoseValuePositive-Statement-03-of-05.html) | bis -1 Stück |  |  |  |  |  |  |  | MORN |  |
+| [MedicationStatement-INV-C-DosageDoseValuePositive-Statement-06-of-06](./MedicationStatement-INV-C-DosageDoseValuePositive-Statement-06-of-06.html) | 0 Stück<br>1-2 Stück |  |  |  |  |  |  |  | MORN<br>EVE |  |

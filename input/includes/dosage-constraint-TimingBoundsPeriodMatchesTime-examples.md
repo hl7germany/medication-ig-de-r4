@@ -1,0 +1,8 @@
+| File | doseQuantity | duration | durationUnit | frequency | period | periodUnit | Day<br>of<br>Week | Time<br>Of<br>Day | when | bounds[x] |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| [MedicationDispense-INV-C-TimingBoundsPeriodMatchesTime-MD-01-of-02](./MedicationDispense-INV-C-TimingBoundsPeriodMatchesTime-MD-01-of-02.html) | 1 Stück |  |  |  |  |  |  | 08:00:00, 20:00:00 |  | Period = 2026-06-05T09:00:00+02:00 - |
+| [MedicationDispense-INV-C-TimingBoundsPeriodMatchesTime-MD-02-of-02](./MedicationDispense-INV-C-TimingBoundsPeriodMatchesTime-MD-02-of-02.html) | 1 Stück |  |  |  |  |  |  | 08:00:00 |  | Period = 2026-06-05 - 2026-06-12T12:00:00+02:00 |
+| [MedicationRequest-INV-C-TimingBoundsPeriodMatchesTime-MR-01-of-02](./MedicationRequest-INV-C-TimingBoundsPeriodMatchesTime-MR-01-of-02.html) | 1 Stück |  |  |  |  |  |  | 08:00:00, 20:00:00 |  | Period = 2026-06-05T09:00:00+02:00 - |
+| [MedicationRequest-INV-C-TimingBoundsPeriodMatchesTime-MR-02-of-02](./MedicationRequest-INV-C-TimingBoundsPeriodMatchesTime-MR-02-of-02.html) | 1 Stück |  |  |  |  |  |  | 08:00:00 |  | Period = 2026-06-05 - 2026-06-12T12:00:00+02:00 |
+| [MedicationStatement-INV-C-TimingBoundsPeriodMatchesTime-MS-01-of-02](./MedicationStatement-INV-C-TimingBoundsPeriodMatchesTime-MS-01-of-02.html) | 1 Stück |  |  |  |  |  |  | 08:00:00, 20:00:00 |  | Period = 2026-06-05T09:00:00+02:00 - |
+| [MedicationStatement-INV-C-TimingBoundsPeriodMatchesTime-MS-02-of-02](./MedicationStatement-INV-C-TimingBoundsPeriodMatchesTime-MS-02-of-02.html) | 1 Stück |  |  |  |  |  |  | 08:00:00 |  | Period = 2026-06-05 - 2026-06-12T12:00:00+02:00 |

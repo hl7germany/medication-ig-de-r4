@@ -51,7 +51,7 @@ Instance: Example-MR-Dosage-1000-startdatetime
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-1000-startdatetime"
-Description: "Dieses Beispiel stellt einen Startzeitpunkt mit Zeitzone dar, der für die Textausgabe nach Europe/Berlin umgerechnet wird."
+Description: "Dieses Beispiel stellt einen Startzeitpunkt mit Zeitzone im Uhrzeitenschema dar. Die Uhrzeit des Startzeitpunkts entspricht einer der angegebenen Uhrzeiten."
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -59,15 +59,15 @@ Description: "Dieses Beispiel stellt einen Startzeitpunkt mit Zeitzone dar, der 
 * dosageInstruction[+]
   * timing.repeat
     * boundsPeriod
-      * start = "2026-06-05T04:30:45Z"
-    * when[+] = #MORN
+      * start = "2026-06-05T08:00:00+02:00"
+    * timeOfDay[+] = "08:00:00"
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 Instance: Example-MR-Dosage-1000-startdatetime-daychange
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-1000-startdatetime-daychange"
-Description: "Dieses Beispiel stellt einen Startzeitpunkt mit Zeitzone dar, bei dem durch die Umrechnung nach Europe/Berlin ein Tageswechsel entsteht (05.06. 23:30 UTC → 06.06. 01:30 Uhr)."
+Description: "Dieses Beispiel stellt einen Startzeitpunkt mit Zeitzone in einem reinen Intervall dar, bei dem durch die Umrechnung nach Europe/Berlin ein Tageswechsel entsteht (05.06. 23:30 UTC → 06.06. 01:30 Uhr)."
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -76,5 +76,7 @@ Description: "Dieses Beispiel stellt einen Startzeitpunkt mit Zeitzone dar, bei 
   * timing.repeat
     * boundsPeriod
       * start = "2026-06-05T23:30:45Z"
-    * when[+] = #MORN
+    * frequency = 1
+    * period = 8
+    * periodUnit = #h
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"

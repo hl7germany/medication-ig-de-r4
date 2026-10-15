@@ -21,6 +21,9 @@ Der bisher als Freitext-Fallback bezeichnete Ansatz, Quell-JSON mit einem Warnpr
 | M15 | `TimingOnlyOneBounds` | Bounds sind nur teilweise gesetzt; sie dürfen nicht auf weitere Dosage-Elemente kopiert werden. |
 | M16 | `DosageStructuredRequiresBoth` | `timing` oder `doseAndRate` fehlt; es darf kein Wert erfunden werden. |
 | M17 | `DosageDoseUnitSameCode` | Unterschiedliche Dosis-Codes können ohne versionierte exakte Umrechnung nicht vereinheitlicht werden. |
+| M22 | `TimingValuesPositive` | `period`, `periodMax` oder `boundsDuration.value` ist null oder negativ; eine sichere Wiederholung beziehungsweise Behandlungsdauer lässt sich daraus nicht ableiten. |
+
+M15–M17 behandeln bereits 1.0.7-widrige Bestandsdaten, nicht neue Zielverschärfungen für gültige Quellen; siehe [Geltungsbereich](./migration-1.0.7-2.0.0.html). Für M22 konnte `period = 0` in 1.0.7 zulässig sein (`tim-5` verlangt nur `period >= 0`), ebenso eine nichtpositive `boundsDuration.value`. Negative Perioden waren dagegen bereits unzulässig; `periodMax` war im dgMP-Quellprofil ausgeschlossen.
 
 Das Verfahren gilt außerdem, wenn bei M01, M02, M04, M05, M06, M07 oder M18 eine erforderliche Voraussetzung fehlt, die Vollständigkeitsprüfung scheitert, der Renderer einen Fehler liefert oder das Ziel ungültig bleibt. Auch ein nicht durch die Falltabelle abgedeckter Zielverstoß darf nicht durch eine erfundene Transformation umgangen werden.
 
@@ -56,8 +59,13 @@ Quelle: Ein Dosage-Element hat `when = MORN`, ein anderes `timeOfDay = 08:00`. B
 
 Quelle: `timing` ist vorhanden, `doseAndRate` fehlt. Die Migration ergänzt keine angenommene Dosis und gibt keine unvollständige Ziel-Dosierung frei.
 
+### M22 – Nichtpositive Periode oder Behandlungsdauer
+
+Quelle: `frequency = 1`, `period = 0`, `periodUnit = d`, positive Dosis mit vollständiger Einheit. Die Migration setzt weder eine positive Periode ein noch entfernt sie die Zeitangabe. Auch bei `boundsDuration.value = 0` oder einem negativen Dauerwert wird ausschließlich archiviert; keine dieser Angaben darf durch einen Renderer-Freitext als verwendbare Einnahmeanweisung freigegeben werden.
+
 ## Prüffälle
 
+- `period = 0` sowie `boundsDuration.value = 0` oder `-1` lösen M22 aus, auch wenn die Ganzzahligkeitsprüfung erfolgreich ist.
 - Die vollständige Quelle einschließlich Array-Reihenfolge und Extensions bleibt unverändert wiederherstellbar.
 - Es wird weder eine Teil-Dosierung noch eine Zielressource mit Archiv-JSON in `Dosage.text` freigegeben.
 - Der Migrationsbericht unterscheidet `Nur archiviert`, erfolgreiche Migration und technischen Fehler.

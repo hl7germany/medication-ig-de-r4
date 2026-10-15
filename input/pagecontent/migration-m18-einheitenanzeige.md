@@ -6,6 +6,8 @@
 
 `TimingBoundsUnitMatchesCode` verlangt, dass `Timing.repeat.boundsDuration.unit` zum UCUM-Code in `boundsDuration.code` passt. Der Constraint ist hart im dgMP-Profil; im generischen Timing-DE-Profil gibt es eine entsprechende Warnung.
 
+Die Regel galt bereits unverändert in 1.0.7. M18 ist daher eine Behandlung bereits quellprofilwidriger Bestandsdaten, keine durch 2.0.0 neu erforderliche Änderung gültiger Quellen; siehe [Geltungsbereich](./migration-1.0.7-2.0.0.html).
+
 ## Auslöser
 
 `boundsDuration.code` ist vorhanden, aber `boundsDuration.unit` gehört nicht zu den im Profil für diesen Code erlaubten deutschen Anzeigen.

@@ -83,7 +83,8 @@
   "TimingOnlyOneType": [
     "DosageRequiresGeneratedText",
     "TimingIntervalOnlyOneFrequency",
-    "TimingOnlyOneTimeForInterval"
+    "TimingOnlyOneTimeForInterval",
+    "TimingPeriodUnit"
   ],
   "TimingOnlyOneWhen": [
     "DosageRequiresGeneratedText",

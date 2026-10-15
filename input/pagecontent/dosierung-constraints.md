@@ -109,7 +109,7 @@ Folgende Beispiele lösen eine Warnung aus:
 ##### TimingSingleDosageForTimeOfDayWarning
 
 **Beschreibung:**  
-Warnung in `TimingDE`, wenn bei täglicher Dosierung mit ausschließlich `timeOfDay` mehrere `Dosage`‑Elemente mit identischer Dosis verwendet werden.
+Warnung in `TimingDE`, wenn bei ausschließlich `timeOfDay` (täglich oder in einer Intervall-Kombination) mehrere `Dosage`‑Elemente mit identischer Dosis verwendet werden.
 
 **Warum?**  
 Mehrere gleichartige Elemente sind unnötig aufgesplittert und erschweren die Auswertung. Im generischen Profil bleibt es bei einer Warnung, weil die Aufteilung dort nicht schadet. In den dgMP-Profilen gilt für denselben Sachverhalt der Fehler [TimingSingleDosageForTimeOfDay](#timingsingledosagefortimeofday).
@@ -121,7 +121,7 @@ Folgende Beispiele lösen eine Warnung aus:
 ##### TimingSingleDosageForWhenWarning
 
 **Beschreibung:**  
-Warnung in `TimingDE`, wenn bei täglicher Dosierung mit ausschließlich `when` mehrere `Dosage`‑Elemente mit identischer Dosis verwendet werden.
+Warnung in `TimingDE`, wenn bei ausschließlich `when` (täglich oder in einer Intervall-Kombination) mehrere `Dosage`‑Elemente mit identischer Dosis verwendet werden.
 
 **Warum?**  
 Mehrere gleichartige Elemente sind unnötig aufgesplittert und erschweren die Auswertung. Im generischen Profil bleibt es bei einer Warnung, weil die Aufteilung dort nicht schadet. In den dgMP-Profilen gilt für denselben Sachverhalt der Fehler [TimingSingleDosageForWhen](#timingsingledosageforwhen).
@@ -431,7 +431,7 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 ##### TimingSingleDosageForTimeOfDay
 
 **Beschreibung:**  
-In den dgMP-Profilen sind bei täglicher Dosierung mit ausschließlich `timeOfDay` mehrere Tageszeiten in einem einzigen `Dosage`‑Element zu modellieren. Mehrere `Dosage`‑Elemente sind nur zulässig, wenn jedes Element eine eindeutige vollständige Dosis einschließlich ihres Datentyps (`Quantity` oder `Range`) besitzt.
+In den dgMP-Profilen sind bei ausschließlich `timeOfDay` – täglich oder in einer Intervall-Kombination – mehrere Tageszeiten in einem einzigen `Dosage`‑Element zu modellieren. Mehrere `Dosage`‑Elemente sind nur zulässig, wenn jedes Element eine eindeutige vollständige Dosis einschließlich ihres Datentyps (`Quantity` oder `Range`) besitzt.
 
 **Warum?**  
 Verhindert unnötige Aufsplitterung gleichartiger Dosierungen und sorgt für eine klare, eindeutige Modellierung der Tageszeiten.
@@ -443,7 +443,7 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 ##### TimingSingleDosageForWhen
 
 **Beschreibung:**  
-In den dgMP-Profilen sind bei täglicher Dosierung mit ausschließlich `when` mehrere Zeitabschnitte des Tages in einem einzigen `Dosage`‑Element zu modellieren. Mehrere `Dosage`‑Elemente sind nur zulässig, wenn jedes Element eine eindeutige vollständige Dosis einschließlich ihres Datentyps (`Quantity` oder `Range`) besitzt.
+In den dgMP-Profilen sind bei ausschließlich `when` – täglich oder in einer Intervall-Kombination – mehrere Zeitabschnitte des Tages in einem einzigen `Dosage`‑Element zu modellieren. Mehrere `Dosage`‑Elemente sind nur zulässig, wenn jedes Element eine eindeutige vollständige Dosis einschließlich ihres Datentyps (`Quantity` oder `Range`) besitzt.
 
 **Warum?**  
 Verhindert unnötige Aufsplitterung gleichartiger Dosierungen und sorgt für eine klare, eindeutige Modellierung der Tagesabschnitte.

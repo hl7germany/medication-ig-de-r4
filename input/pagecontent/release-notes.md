@@ -30,6 +30,15 @@
 - **`TimingBoundsPeriodMatchesTime` (`TimingDgMP`) — neu**
   - Im Uhrzeitenschema (`timeOfDay`) muss eine Uhrzeit in `boundsPeriod.start` oder `boundsPeriod.end` einer der angegebenen Uhrzeiten entsprechen.
   - Bekannte Einschränkung: Der FHIRPath-Ausdruck prüft nur den Uhrzeitanteil, nicht den Zeitzonenversatz. Die Übereinstimmung mit `Europe/Berlin` muss die Anwendung zusätzlich prüfen.
+- **Mehrere `Dosage`-Elemente werden in allen Invarianten mit `combine()` statt `|` zusammengeführt.** `|` entfernt nach FHIRPath gleiche Elemente; zwei identische Elemente zählten deshalb als eines. Betroffen waren `AsNeededSingleDosageOnly`, `FreeTextSingleDosageOnly`/`…Warning` und `TimingSingleDosageForWhen`/`…ForTimeOfDay` samt Warnungen: Zwei gleiche reine Bedarfsdosierungen waren gültig, obwohl genau ein Element verlangt ist (die Textgenerierung bricht dort ab).
+- **`TimingOnlyOneBounds` (`TimingDgMP`)**
+  - Erkennt jetzt auch einen Wechsel zwischen Dauer und Zeitraum über die Elemente und einen Zeitraum, dessen Start oder Ende nur in einem Teil der Elemente steht. Bisher wurden Dauer und Zeitraum getrennt geprüft und fehlende Werte übergangen; die Textgenerierung liest den Zeitrahmen nur aus dem ersten Element, ein abweichender ging verloren.
+- **`TimingPeriodUnit` (`TimingDgMP`)**
+  - Mit `dayOfWeek` ist nur `period = 1` und `periodUnit = wk` zulässig, wie beschrieben; bisher wurde jede Periode in Wochen akzeptiert (der Fall war über `TimingOnlyOneType` bereits ausgeschlossen).
+- **`TimingOnlyOneTimeForInterval` (`TimingDgMP`)**
+  - Alle Elemente einer Intervall-Kombination müssen `period` und `periodUnit` tragen; ein Element ohne `period` wurde übergangen (der Fall war über `TimingOnlyOneType` bereits ausgeschlossen).
+- **`TimingSingleDosageForWhen`, `TimingSingleDosageForTimeOfDay` (`TimingDgMP`) und die Warnungen in `TimingDE`**
+  - Beschreibung an den Ausdruck angeglichen: Die Regel gilt bei täglicher Gabe und in einer Intervall-Kombination, nicht nur bei täglicher Gabe.
 - **`TimingBoundsPeriodFullDate` (`TimingDgMP`) — neu**
   - `boundsPeriod.start` und `boundsPeriod.end` müssen ein vollständiges Kalenderdatum enthalten. FHIR `dateTime` erlaubt auch `JJJJ` und `JJJJ-MM`; die Textgenerierung kann ein Teildatum nicht darstellen und bricht ab.
 - **`MinimumIntervalOnlyPureAsNeeded` und `MaxDoseOnlyPureAsNeeded` (`DosageDgMP`)**

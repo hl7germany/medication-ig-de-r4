@@ -632,10 +632,10 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 ##### DosageFourSlotPatternInText
 
 **Beschreibung:**  
-`Dosage.text` darf nicht ausschließlich aus einem 4-Schema bestehen. Erfasst wird der reine Fall – vier durch `-` oder `–` getrennte Werte, optional mit Nachkommastellen, Bruchangabe und nachgestellter Einheit (z. B. `1-0-1-0`, `0,5-0-0,5-0`, `1-0-1-0 Stück`). Ein 4-Schema, das in einen Text eingebettet ist, löst weiterhin nur die Warnung `DosageFourSlotPatternInTextWarning` aus.
+`Dosage.text` darf nicht ausschließlich aus einem 4-Schema bestehen. Erfasst wird der reine Fall – vier durch `-` oder `–` getrennte Werte, optional mit Nachkommastellen, Bruchangabe und nachgestellter Einheit (z. B. `1-0-1-0`, `0,5-0-0,5-0`, `1-0-1-0 Stück`). Ein 4-Schema, das in einen Text eingebettet ist, löst weiterhin nur die Warnung `DosageFourSlotPatternInTextWarning` aus. Das gilt auch für die Form, die die Textgenerierung erzeugt (`täglich: 1-0-1-0 Stück`).
 
 **Warum?**  
-Ein Freitext, der nur ein 4-Schema enthält, trägt keine Information, die nicht strukturiert über `timing.repeat.when` und `doseAndRate` abbildbar wäre. Er entzieht die Dosierung der maschinellen Auswertung und der Textgenerierung, die genau diese Darstellung aus strukturierten Angaben selbst erzeugt (siehe [Dosis Textgenerierung](./dosierung-textgenerierung.html)).
+Ein Freitext, der nur ein 4-Schema enthält, trägt keine Information, die nicht strukturiert über `timing.repeat.when` und `doseAndRate` abbildbar wäre. Er entzieht die Dosierung der maschinellen Auswertung und der Textgenerierung, die das 4-Schema aus strukturierten Angaben selbst erzeugt (`täglich: 1-0-1-0 Stück`) (siehe [Dosis Textgenerierung](./dosierung-textgenerierung.html)).
 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 

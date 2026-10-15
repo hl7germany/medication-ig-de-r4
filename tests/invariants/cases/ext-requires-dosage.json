@@ -1,0 +1,431 @@
+[
+  {
+    "invariant": "ExtRequiresDosage-MR",
+    "context": "Resource",
+    "resourceTypes": [
+      "MedicationRequest"
+    ],
+    "cases": [
+      {
+        "name": "Extensions mit Dosierung",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-{{resourceType}}.renderedDosageInstruction",
+            "valueMarkdown": "morgens: 1 Stück"
+          },
+          {
+            "url": "http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta",
+            "extension": [
+              {
+                "url": "algorithmVersion",
+                "valueString": "x"
+              },
+              {
+                "url": "language",
+                "valueCode": "de-DE"
+              }
+            ]
+          }
+        ],
+        "expect": true
+      },
+      {
+        "name": "Freitext-Dosierung mit Extensions",
+        "dosage": {
+          "text": "morgens 1 Stück"
+        },
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-{{resourceType}}.renderedDosageInstruction",
+            "valueMarkdown": "morgens: 1 Stück"
+          },
+          {
+            "url": "http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta",
+            "extension": [
+              {
+                "url": "algorithmVersion",
+                "valueString": "x"
+              },
+              {
+                "url": "language",
+                "valueCode": "de-DE"
+              }
+            ]
+          }
+        ],
+        "expect": true
+      },
+      {
+        "name": "weder Extensions noch Dosierung",
+        "expect": true
+      },
+      {
+        "name": "renderedDosageInstruction von MedicationStatement ohne Dosierung",
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-MedicationStatement.renderedDosageInstruction",
+            "valueMarkdown": "morgens: 1 Stück"
+          }
+        ],
+        "expect": true
+      },
+      {
+        "name": "beide Extensions ohne Dosierung",
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-{{resourceType}}.renderedDosageInstruction",
+            "valueMarkdown": "morgens: 1 Stück"
+          },
+          {
+            "url": "http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta",
+            "extension": [
+              {
+                "url": "algorithmVersion",
+                "valueString": "x"
+              },
+              {
+                "url": "language",
+                "valueCode": "de-DE"
+              }
+            ]
+          }
+        ],
+        "expect": false
+      },
+      {
+        "name": "nur GeneratedDosageInstructionsMeta ohne Dosierung",
+        "extension": [
+          {
+            "url": "http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta",
+            "extension": [
+              {
+                "url": "algorithmVersion",
+                "valueString": "x"
+              },
+              {
+                "url": "language",
+                "valueCode": "de-DE"
+              }
+            ]
+          }
+        ],
+        "expect": false
+      },
+      {
+        "name": "nur renderedDosageInstruction ohne Dosierung",
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-{{resourceType}}.renderedDosageInstruction",
+            "valueMarkdown": "morgens: 1 Stück"
+          }
+        ],
+        "expect": false
+      }
+    ]
+  },
+  {
+    "invariant": "ExtRequiresDosage-MD",
+    "context": "Resource",
+    "resourceTypes": [
+      "MedicationDispense"
+    ],
+    "cases": [
+      {
+        "name": "Extensions mit Dosierung",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-{{resourceType}}.renderedDosageInstruction",
+            "valueMarkdown": "morgens: 1 Stück"
+          },
+          {
+            "url": "http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta",
+            "extension": [
+              {
+                "url": "algorithmVersion",
+                "valueString": "x"
+              },
+              {
+                "url": "language",
+                "valueCode": "de-DE"
+              }
+            ]
+          }
+        ],
+        "expect": true
+      },
+      {
+        "name": "Freitext-Dosierung mit Extensions",
+        "dosage": {
+          "text": "morgens 1 Stück"
+        },
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-{{resourceType}}.renderedDosageInstruction",
+            "valueMarkdown": "morgens: 1 Stück"
+          },
+          {
+            "url": "http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta",
+            "extension": [
+              {
+                "url": "algorithmVersion",
+                "valueString": "x"
+              },
+              {
+                "url": "language",
+                "valueCode": "de-DE"
+              }
+            ]
+          }
+        ],
+        "expect": true
+      },
+      {
+        "name": "weder Extensions noch Dosierung",
+        "expect": true
+      },
+      {
+        "name": "renderedDosageInstruction von MedicationRequest ohne Dosierung",
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-MedicationRequest.renderedDosageInstruction",
+            "valueMarkdown": "morgens: 1 Stück"
+          }
+        ],
+        "expect": true
+      },
+      {
+        "name": "beide Extensions ohne Dosierung",
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-{{resourceType}}.renderedDosageInstruction",
+            "valueMarkdown": "morgens: 1 Stück"
+          },
+          {
+            "url": "http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta",
+            "extension": [
+              {
+                "url": "algorithmVersion",
+                "valueString": "x"
+              },
+              {
+                "url": "language",
+                "valueCode": "de-DE"
+              }
+            ]
+          }
+        ],
+        "expect": false
+      },
+      {
+        "name": "nur GeneratedDosageInstructionsMeta ohne Dosierung",
+        "extension": [
+          {
+            "url": "http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta",
+            "extension": [
+              {
+                "url": "algorithmVersion",
+                "valueString": "x"
+              },
+              {
+                "url": "language",
+                "valueCode": "de-DE"
+              }
+            ]
+          }
+        ],
+        "expect": false
+      },
+      {
+        "name": "nur renderedDosageInstruction ohne Dosierung",
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-{{resourceType}}.renderedDosageInstruction",
+            "valueMarkdown": "morgens: 1 Stück"
+          }
+        ],
+        "expect": false
+      }
+    ]
+  },
+  {
+    "invariant": "ExtRequiresDosage-MS",
+    "context": "Resource",
+    "resourceTypes": [
+      "MedicationStatement"
+    ],
+    "cases": [
+      {
+        "name": "Extensions mit Dosierung",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-{{resourceType}}.renderedDosageInstruction",
+            "valueMarkdown": "morgens: 1 Stück"
+          },
+          {
+            "url": "http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta",
+            "extension": [
+              {
+                "url": "algorithmVersion",
+                "valueString": "x"
+              },
+              {
+                "url": "language",
+                "valueCode": "de-DE"
+              }
+            ]
+          }
+        ],
+        "expect": true
+      },
+      {
+        "name": "Freitext-Dosierung mit Extensions",
+        "dosage": {
+          "text": "morgens 1 Stück"
+        },
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-{{resourceType}}.renderedDosageInstruction",
+            "valueMarkdown": "morgens: 1 Stück"
+          },
+          {
+            "url": "http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta",
+            "extension": [
+              {
+                "url": "algorithmVersion",
+                "valueString": "x"
+              },
+              {
+                "url": "language",
+                "valueCode": "de-DE"
+              }
+            ]
+          }
+        ],
+        "expect": true
+      },
+      {
+        "name": "weder Extensions noch Dosierung",
+        "expect": true
+      },
+      {
+        "name": "renderedDosageInstruction von MedicationRequest ohne Dosierung",
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-MedicationRequest.renderedDosageInstruction",
+            "valueMarkdown": "morgens: 1 Stück"
+          }
+        ],
+        "expect": true
+      },
+      {
+        "name": "beide Extensions ohne Dosierung",
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-{{resourceType}}.renderedDosageInstruction",
+            "valueMarkdown": "morgens: 1 Stück"
+          },
+          {
+            "url": "http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta",
+            "extension": [
+              {
+                "url": "algorithmVersion",
+                "valueString": "x"
+              },
+              {
+                "url": "language",
+                "valueCode": "de-DE"
+              }
+            ]
+          }
+        ],
+        "expect": false
+      },
+      {
+        "name": "nur GeneratedDosageInstructionsMeta ohne Dosierung",
+        "extension": [
+          {
+            "url": "http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta",
+            "extension": [
+              {
+                "url": "algorithmVersion",
+                "valueString": "x"
+              },
+              {
+                "url": "language",
+                "valueCode": "de-DE"
+              }
+            ]
+          }
+        ],
+        "expect": false
+      },
+      {
+        "name": "nur renderedDosageInstruction ohne Dosierung",
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-{{resourceType}}.renderedDosageInstruction",
+            "valueMarkdown": "morgens: 1 Stück"
+          }
+        ],
+        "expect": false
+      }
+    ]
+  }
+]

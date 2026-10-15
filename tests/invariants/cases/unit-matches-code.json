@@ -1,0 +1,1599 @@
+[
+  {
+    "invariant": "MinimumIntervalUnitMatchesCode",
+    "context": "Dosage",
+    "cases": [
+      {
+        "name": "h mit Stunde(n)",
+        "dosage": {
+          "asNeededBoolean": true,
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ],
+          "modifierExtension": [
+            {
+              "url": "http://ig.fhir.de/igs/medication/StructureDefinition/MinimumIntervalBetweenAdministrations",
+              "valueDuration": {
+                "value": 4,
+                "unit": "Stunde(n)",
+                "system": "http://unitsofmeasure.org",
+                "code": "h"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "h mit Stunde",
+        "dosage": {
+          "asNeededBoolean": true,
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ],
+          "modifierExtension": [
+            {
+              "url": "http://ig.fhir.de/igs/medication/StructureDefinition/MinimumIntervalBetweenAdministrations",
+              "valueDuration": {
+                "value": 1,
+                "unit": "Stunde",
+                "system": "http://unitsofmeasure.org",
+                "code": "h"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "h mit Stunden",
+        "dosage": {
+          "asNeededBoolean": true,
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ],
+          "modifierExtension": [
+            {
+              "url": "http://ig.fhir.de/igs/medication/StructureDefinition/MinimumIntervalBetweenAdministrations",
+              "valueDuration": {
+                "value": 4,
+                "unit": "Stunden",
+                "system": "http://unitsofmeasure.org",
+                "code": "h"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "min mit Minute(n)",
+        "dosage": {
+          "asNeededBoolean": true,
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ],
+          "modifierExtension": [
+            {
+              "url": "http://ig.fhir.de/igs/medication/StructureDefinition/MinimumIntervalBetweenAdministrations",
+              "valueDuration": {
+                "value": 30,
+                "unit": "Minute(n)",
+                "system": "http://unitsofmeasure.org",
+                "code": "min"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "min mit Minute",
+        "dosage": {
+          "asNeededBoolean": true,
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ],
+          "modifierExtension": [
+            {
+              "url": "http://ig.fhir.de/igs/medication/StructureDefinition/MinimumIntervalBetweenAdministrations",
+              "valueDuration": {
+                "value": 1,
+                "unit": "Minute",
+                "system": "http://unitsofmeasure.org",
+                "code": "min"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "min mit Minuten",
+        "dosage": {
+          "asNeededBoolean": true,
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ],
+          "modifierExtension": [
+            {
+              "url": "http://ig.fhir.de/igs/medication/StructureDefinition/MinimumIntervalBetweenAdministrations",
+              "valueDuration": {
+                "value": 30,
+                "unit": "Minuten",
+                "system": "http://unitsofmeasure.org",
+                "code": "min"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "ohne Mindestabstand",
+        "dosage": {
+          "asNeededBoolean": true,
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "h mit Minute(n)",
+        "dosage": {
+          "asNeededBoolean": true,
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ],
+          "modifierExtension": [
+            {
+              "url": "http://ig.fhir.de/igs/medication/StructureDefinition/MinimumIntervalBetweenAdministrations",
+              "valueDuration": {
+                "value": 4,
+                "unit": "Minute(n)",
+                "system": "http://unitsofmeasure.org",
+                "code": "h"
+              }
+            }
+          ]
+        },
+        "expect": false
+      },
+      {
+        "name": "min mit Stunde(n)",
+        "dosage": {
+          "asNeededBoolean": true,
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ],
+          "modifierExtension": [
+            {
+              "url": "http://ig.fhir.de/igs/medication/StructureDefinition/MinimumIntervalBetweenAdministrations",
+              "valueDuration": {
+                "value": 30,
+                "unit": "Stunde(n)",
+                "system": "http://unitsofmeasure.org",
+                "code": "min"
+              }
+            }
+          ]
+        },
+        "expect": false
+      },
+      {
+        "name": "h mit Tag(e)",
+        "dosage": {
+          "asNeededBoolean": true,
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ],
+          "modifierExtension": [
+            {
+              "url": "http://ig.fhir.de/igs/medication/StructureDefinition/MinimumIntervalBetweenAdministrations",
+              "valueDuration": {
+                "value": 4,
+                "unit": "Tag(e)",
+                "system": "http://unitsofmeasure.org",
+                "code": "h"
+              }
+            }
+          ]
+        },
+        "expect": false
+      },
+      {
+        "name": "h mit Abkürzung Std.",
+        "dosage": {
+          "asNeededBoolean": true,
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ],
+          "modifierExtension": [
+            {
+              "url": "http://ig.fhir.de/igs/medication/StructureDefinition/MinimumIntervalBetweenAdministrations",
+              "valueDuration": {
+                "value": 4,
+                "unit": "Std.",
+                "system": "http://unitsofmeasure.org",
+                "code": "h"
+              }
+            }
+          ]
+        },
+        "expect": false
+      },
+      {
+        "name": "h mit kleingeschriebenem stunden",
+        "dosage": {
+          "asNeededBoolean": true,
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ],
+          "modifierExtension": [
+            {
+              "url": "http://ig.fhir.de/igs/medication/StructureDefinition/MinimumIntervalBetweenAdministrations",
+              "valueDuration": {
+                "value": 4,
+                "unit": "stunden",
+                "system": "http://unitsofmeasure.org",
+                "code": "h"
+              }
+            }
+          ]
+        },
+        "expect": false
+      }
+    ]
+  },
+  {
+    "invariant": "TimingBoundsUnitMatchesCode",
+    "context": "Timing.repeat",
+    "cases": [
+      {
+        "name": "d mit Tag(e)",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "boundsDuration": {
+                "value": 10,
+                "unit": "Tag(e)",
+                "system": "http://unitsofmeasure.org",
+                "code": "d"
+              },
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "d mit Tag",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "boundsDuration": {
+                "value": 1,
+                "unit": "Tag",
+                "system": "http://unitsofmeasure.org",
+                "code": "d"
+              },
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "d mit Tage",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "boundsDuration": {
+                "value": 10,
+                "unit": "Tage",
+                "system": "http://unitsofmeasure.org",
+                "code": "d"
+              },
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "wk mit Woche(n)",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "boundsDuration": {
+                "value": 2,
+                "unit": "Woche(n)",
+                "system": "http://unitsofmeasure.org",
+                "code": "wk"
+              },
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "wk mit Woche",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "boundsDuration": {
+                "value": 1,
+                "unit": "Woche",
+                "system": "http://unitsofmeasure.org",
+                "code": "wk"
+              },
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "wk mit Wochen",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "boundsDuration": {
+                "value": 2,
+                "unit": "Wochen",
+                "system": "http://unitsofmeasure.org",
+                "code": "wk"
+              },
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "mo mit Monat(e)",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "boundsDuration": {
+                "value": 3,
+                "unit": "Monat(e)",
+                "system": "http://unitsofmeasure.org",
+                "code": "mo"
+              },
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "mo mit Monat",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "boundsDuration": {
+                "value": 1,
+                "unit": "Monat",
+                "system": "http://unitsofmeasure.org",
+                "code": "mo"
+              },
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "mo mit Monate",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "boundsDuration": {
+                "value": 3,
+                "unit": "Monate",
+                "system": "http://unitsofmeasure.org",
+                "code": "mo"
+              },
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "a mit Jahr(e)",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "boundsDuration": {
+                "value": 1,
+                "unit": "Jahr(e)",
+                "system": "http://unitsofmeasure.org",
+                "code": "a"
+              },
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "a mit Jahr",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "boundsDuration": {
+                "value": 1,
+                "unit": "Jahr",
+                "system": "http://unitsofmeasure.org",
+                "code": "a"
+              },
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "a mit Jahre",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "boundsDuration": {
+                "value": 2,
+                "unit": "Jahre",
+                "system": "http://unitsofmeasure.org",
+                "code": "a"
+              },
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "ohne bounds",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "boundsPeriod",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "boundsPeriod": {
+                "start": "2026-06-05"
+              },
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "wk mit Tag(e)",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "boundsDuration": {
+                "value": 2,
+                "unit": "Tag(e)",
+                "system": "http://unitsofmeasure.org",
+                "code": "wk"
+              },
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": false
+      },
+      {
+        "name": "d mit Woche",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "boundsDuration": {
+                "value": 7,
+                "unit": "Woche",
+                "system": "http://unitsofmeasure.org",
+                "code": "d"
+              },
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": false
+      },
+      {
+        "name": "mo mit Jahr(e)",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "boundsDuration": {
+                "value": 3,
+                "unit": "Jahr(e)",
+                "system": "http://unitsofmeasure.org",
+                "code": "mo"
+              },
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": false
+      },
+      {
+        "name": "a mit Monat(e)",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "boundsDuration": {
+                "value": 1,
+                "unit": "Monat(e)",
+                "system": "http://unitsofmeasure.org",
+                "code": "a"
+              },
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": false
+      },
+      {
+        "name": "d mit kleingeschriebenem tage",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "boundsDuration": {
+                "value": 10,
+                "unit": "tage",
+                "system": "http://unitsofmeasure.org",
+                "code": "d"
+              },
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": false
+      },
+      {
+        "name": "wk mit Abkürzung Wo.",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "boundsDuration": {
+                "value": 2,
+                "unit": "Wo.",
+                "system": "http://unitsofmeasure.org",
+                "code": "wk"
+              },
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": false
+      },
+      {
+        "name": "abweichende Einheit im zweiten Element",
+        "dosages": [
+          {
+            "timing": {
+              "repeat": {
+                "boundsDuration": {
+                  "value": 2,
+                  "unit": "Woche(n)",
+                  "system": "http://unitsofmeasure.org",
+                  "code": "wk"
+                },
+                "when": [
+                  "MORN"
+                ]
+              }
+            },
+            "doseAndRate": [
+              {
+                "doseQuantity": {
+                  "value": 1,
+                  "unit": "Stück",
+                  "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                  "code": "1"
+                }
+              }
+            ]
+          },
+          {
+            "timing": {
+              "repeat": {
+                "boundsDuration": {
+                  "value": 2,
+                  "unit": "Monat(e)",
+                  "system": "http://unitsofmeasure.org",
+                  "code": "wk"
+                },
+                "when": [
+                  "EVE"
+                ]
+              }
+            },
+            "doseAndRate": [
+              {
+                "doseQuantity": {
+                  "value": 2,
+                  "unit": "Stück",
+                  "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                  "code": "1"
+                }
+              }
+            ]
+          }
+        ],
+        "expect": false
+      }
+    ]
+  },
+  {
+    "invariant": "TimingBoundsUnitMatchesCodeWarning",
+    "context": "Timing.repeat",
+    "cases": [
+      {
+        "name": "d mit Tag(e)",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "boundsDuration": {
+                "value": 10,
+                "unit": "Tag(e)",
+                "system": "http://unitsofmeasure.org",
+                "code": "d"
+              },
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "d mit Tag",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "boundsDuration": {
+                "value": 1,
+                "unit": "Tag",
+                "system": "http://unitsofmeasure.org",
+                "code": "d"
+              },
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "d mit Tage",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "boundsDuration": {
+                "value": 10,
+                "unit": "Tage",
+                "system": "http://unitsofmeasure.org",
+                "code": "d"
+              },
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "wk mit Woche(n)",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "boundsDuration": {
+                "value": 2,
+                "unit": "Woche(n)",
+                "system": "http://unitsofmeasure.org",
+                "code": "wk"
+              },
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "wk mit Woche",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "boundsDuration": {
+                "value": 1,
+                "unit": "Woche",
+                "system": "http://unitsofmeasure.org",
+                "code": "wk"
+              },
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "wk mit Wochen",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "boundsDuration": {
+                "value": 2,
+                "unit": "Wochen",
+                "system": "http://unitsofmeasure.org",
+                "code": "wk"
+              },
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "mo mit Monat(e)",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "boundsDuration": {
+                "value": 3,
+                "unit": "Monat(e)",
+                "system": "http://unitsofmeasure.org",
+                "code": "mo"
+              },
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "mo mit Monat",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "boundsDuration": {
+                "value": 1,
+                "unit": "Monat",
+                "system": "http://unitsofmeasure.org",
+                "code": "mo"
+              },
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "mo mit Monate",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "boundsDuration": {
+                "value": 3,
+                "unit": "Monate",
+                "system": "http://unitsofmeasure.org",
+                "code": "mo"
+              },
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "a mit Jahr(e)",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "boundsDuration": {
+                "value": 1,
+                "unit": "Jahr(e)",
+                "system": "http://unitsofmeasure.org",
+                "code": "a"
+              },
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "a mit Jahr",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "boundsDuration": {
+                "value": 1,
+                "unit": "Jahr",
+                "system": "http://unitsofmeasure.org",
+                "code": "a"
+              },
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "a mit Jahre",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "boundsDuration": {
+                "value": 2,
+                "unit": "Jahre",
+                "system": "http://unitsofmeasure.org",
+                "code": "a"
+              },
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "ohne bounds",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "boundsPeriod",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "boundsPeriod": {
+                "start": "2026-06-05"
+              },
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "wk mit Tag(e)",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "boundsDuration": {
+                "value": 2,
+                "unit": "Tag(e)",
+                "system": "http://unitsofmeasure.org",
+                "code": "wk"
+              },
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": false
+      },
+      {
+        "name": "d mit Woche",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "boundsDuration": {
+                "value": 7,
+                "unit": "Woche",
+                "system": "http://unitsofmeasure.org",
+                "code": "d"
+              },
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": false
+      },
+      {
+        "name": "mo mit Jahr(e)",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "boundsDuration": {
+                "value": 3,
+                "unit": "Jahr(e)",
+                "system": "http://unitsofmeasure.org",
+                "code": "mo"
+              },
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": false
+      },
+      {
+        "name": "a mit Monat(e)",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "boundsDuration": {
+                "value": 1,
+                "unit": "Monat(e)",
+                "system": "http://unitsofmeasure.org",
+                "code": "a"
+              },
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": false
+      },
+      {
+        "name": "d mit kleingeschriebenem tage",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "boundsDuration": {
+                "value": 10,
+                "unit": "tage",
+                "system": "http://unitsofmeasure.org",
+                "code": "d"
+              },
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": false
+      },
+      {
+        "name": "wk mit Abkürzung Wo.",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "boundsDuration": {
+                "value": 2,
+                "unit": "Wo.",
+                "system": "http://unitsofmeasure.org",
+                "code": "wk"
+              },
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": false
+      },
+      {
+        "name": "abweichende Einheit im zweiten Element",
+        "dosages": [
+          {
+            "timing": {
+              "repeat": {
+                "boundsDuration": {
+                  "value": 2,
+                  "unit": "Woche(n)",
+                  "system": "http://unitsofmeasure.org",
+                  "code": "wk"
+                },
+                "when": [
+                  "MORN"
+                ]
+              }
+            },
+            "doseAndRate": [
+              {
+                "doseQuantity": {
+                  "value": 1,
+                  "unit": "Stück",
+                  "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                  "code": "1"
+                }
+              }
+            ]
+          },
+          {
+            "timing": {
+              "repeat": {
+                "boundsDuration": {
+                  "value": 2,
+                  "unit": "Monat(e)",
+                  "system": "http://unitsofmeasure.org",
+                  "code": "wk"
+                },
+                "when": [
+                  "EVE"
+                ]
+              }
+            },
+            "doseAndRate": [
+              {
+                "doseQuantity": {
+                  "value": 2,
+                  "unit": "Stück",
+                  "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                  "code": "1"
+                }
+              }
+            ]
+          }
+        ],
+        "expect": false
+      }
+    ]
+  }
+]

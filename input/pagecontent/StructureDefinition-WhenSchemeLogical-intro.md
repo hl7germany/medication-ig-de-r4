@@ -1,6 +1,6 @@
 Dieses Modell beschreibt die tägliche Anwendung eines Arzneimittels, ausgerichtet an den Tageszeiten
 „Morgen“, „Mittag“, „Abend“ und „Nacht“. Es sagt also aus, zu welchen groben Tagesabschnitten und in
-welcher Menge das Arzneimittel angewendet wird hne eine genaue Uhrzeit festzulegen.
+welcher Menge das Arzneimittel angewendet wird, ohne eine genaue Uhrzeit festzulegen.
 
 Welcher Zeitraum mit einer Tageszeit konkret gemeint ist, ergibt sich aus dem Tagesablauf der anwendenden
 Person oder aus einrichtungsinternen Konventionen.

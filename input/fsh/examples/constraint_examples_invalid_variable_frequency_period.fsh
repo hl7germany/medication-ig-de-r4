@@ -145,7 +145,7 @@ Description: "CAVE: Validation example - modifierExtension[MinimumIntervalBetwee
 // TimingFreqOrPeriodGtOne — Frequenz und Periode duerfen nicht beide > 1 sein
 // ---------------------------------------------------------------------------
 
-Instance: INV-C-TimingFreqOrPeriodGtOne-MR-01-of-03
+Instance: INV-C-TimingFreqOrPeriodGtOne-MR-01-of-06
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid: frequency and period both greater than one"
@@ -161,7 +161,7 @@ Description: "CAVE: Validation example - \"6 x innerhalb von 3 Stunden\" is expr
     * periodUnit = #h
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-C-TimingFreqOrPeriodGtOne-MD-02-of-03
+Instance: INV-C-TimingFreqOrPeriodGtOne-MD-02-of-06
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
 Title: "Invalid: frequency and period both greater than one"
@@ -176,7 +176,7 @@ Description: "CAVE: Validation example - \"2 x alle 8 Stunden\" is expressed as 
     * periodUnit = #h
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-C-TimingFreqOrPeriodGtOne-MS-03-of-03
+Instance: INV-C-TimingFreqOrPeriodGtOne-MS-03-of-06
 InstanceOf: MedicationStatementDgMP
 Usage: #example
 Title: "Invalid: variable frequency above one with a period above one"
@@ -192,7 +192,59 @@ Description: "CAVE: Validation example - frequencyMax exceeds 1 while the period
     * periodUnit = #h
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: W-TimingFreqOrPeriodGtOneWarning-MR-01-of-03
+Instance: INV-C-TimingFreqOrPeriodGtOne-MR-04-of-06
+InstanceOf: MedicationRequestDgMP
+Usage: #example
+Title: "Invalid: variable frequency combined with variable period"
+Description: "CAVE: Validation example - \"1 bis 3 x alle 2 bis 3 Tage\": variable frequency and variable period must not be combined."
+* subject.display = "Patient"
+* status = #active
+* intent = #order
+* medicationCodeableConcept.text = "Ibuprofen 400mg"
+* dosageInstruction[+]
+  * timing.repeat
+    * frequency = 1
+    * frequencyMax = 3
+    * period = 2
+    * periodMax = 3
+    * periodUnit = #d
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
+
+Instance: INV-C-TimingFreqOrPeriodGtOne-MD-05-of-06
+InstanceOf: MedicationDispenseDgMP
+Usage: #example
+Title: "Invalid: variable frequency combined with variable period"
+Description: "CAVE: Validation example - \"1 bis 3 x alle 2 bis 3 Tage\": variable frequency and variable period must not be combined."
+* subject.display = "Patient"
+* status = #completed
+* medicationCodeableConcept.text = "Ibuprofen 400mg"
+* dosageInstruction[+]
+  * timing.repeat
+    * frequency = 1
+    * frequencyMax = 3
+    * period = 2
+    * periodMax = 3
+    * periodUnit = #d
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
+
+Instance: INV-C-TimingFreqOrPeriodGtOne-MS-06-of-06
+InstanceOf: MedicationStatementDgMP
+Usage: #example
+Title: "Invalid: variable frequency combined with variable period"
+Description: "CAVE: Validation example - \"1 bis 3 x alle 2 bis 3 Tage\": variable frequency and variable period must not be combined."
+* subject.display = "Patient"
+* status = #active
+* medicationCodeableConcept.text = "Ibuprofen 400mg"
+* dosage[+]
+  * timing.repeat
+    * frequency = 1
+    * frequencyMax = 3
+    * period = 2
+    * periodMax = 3
+    * periodUnit = #d
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
+
+Instance: W-TimingFreqOrPeriodGtOneWarning-MR-01-of-06
 InstanceOf: MedicationRequestDE
 Usage: #example
 Title: "Warning: frequency and period both greater than one"
@@ -208,7 +260,7 @@ Description: "CAVE: Validation example - a warning in the generic DE profile."
     * periodUnit = #h
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: W-TimingFreqOrPeriodGtOneWarning-MD-02-of-03
+Instance: W-TimingFreqOrPeriodGtOneWarning-MD-02-of-06
 InstanceOf: MedicationDispenseDE
 Usage: #example
 Title: "Warning: frequency and period both greater than one"
@@ -223,7 +275,7 @@ Description: "CAVE: Validation example - a warning in the generic DE profile."
     * periodUnit = #h
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: W-TimingFreqOrPeriodGtOneWarning-MS-03-of-03
+Instance: W-TimingFreqOrPeriodGtOneWarning-MS-03-of-06
 InstanceOf: MedicationStatementDE
 Usage: #example
 Title: "Warning: frequency and period both greater than one"
@@ -254,4 +306,56 @@ Description: "Variable Frequenz mit zweistelliger Obergrenze: 9 bis 10 x taeglic
   * timing.repeat.frequencyMax = 10
   * timing.repeat.period = 1
   * timing.repeat.periodUnit = #d
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
+
+Instance: W-TimingFreqOrPeriodGtOneWarning-MR-04-of-06
+InstanceOf: MedicationRequestDE
+Usage: #example
+Title: "Warning: variable frequency combined with variable period"
+Description: "CAVE: Validation example - a warning in the generic DE profile."
+* subject.display = "Patient"
+* status = #active
+* intent = #order
+* medicationCodeableConcept.text = "Ibuprofen 400mg"
+* dosageInstruction[+]
+  * timing.repeat
+    * frequency = 1
+    * frequencyMax = 3
+    * period = 2
+    * periodMax = 3
+    * periodUnit = #d
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
+
+Instance: W-TimingFreqOrPeriodGtOneWarning-MD-05-of-06
+InstanceOf: MedicationDispenseDE
+Usage: #example
+Title: "Warning: variable frequency combined with variable period"
+Description: "CAVE: Validation example - a warning in the generic DE profile."
+* subject.display = "Patient"
+* status = #completed
+* medicationCodeableConcept.text = "Ibuprofen 400mg"
+* dosageInstruction[+]
+  * timing.repeat
+    * frequency = 1
+    * frequencyMax = 3
+    * period = 2
+    * periodMax = 3
+    * periodUnit = #d
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
+
+Instance: W-TimingFreqOrPeriodGtOneWarning-MS-06-of-06
+InstanceOf: MedicationStatementDE
+Usage: #example
+Title: "Warning: variable frequency combined with variable period"
+Description: "CAVE: Validation example - a warning in the generic DE profile."
+* subject.display = "Patient"
+* status = #active
+* medicationCodeableConcept.text = "Ibuprofen 400mg"
+* dosage[+]
+  * timing.repeat
+    * frequency = 1
+    * frequencyMax = 3
+    * period = 2
+    * periodMax = 3
+    * periodUnit = #d
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"

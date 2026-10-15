@@ -17,6 +17,8 @@
   - Mindestabstand (`valueDuration.value`) und `maxDosePerPeriod` (`numerator.value`, `denominator.value`) müssen größer als 0 sein.
 - **`MaxDoseNotBelowDose` (`DosageDgMP`) — neu** (HDB-971)
   - `maxDosePerPeriod.numerator.value` darf nicht kleiner als `doseQuantity.value` beziehungsweise `doseRange.high.value` sein. Zuvor wurde nur die Einheit verglichen (`MaxDoseSameUnitAsDose`).
+- **`TimingFreqOrPeriodGtOne` (`TimingDgMP`) / `TimingFreqOrPeriodGtOneWarning` (`TimingDE`)** (HDB-942)
+  - Beschreibung, Begründung und Beispiele um die Kombination aus variabler Frequenz und variabler Periode ergänzt („1 bis 3 x alle 2 bis 3 Tage“). Der Ausdruck ist unverändert; die Kombination war bereits ausgeschlossen.
 - **`TimingBoundsPeriodMatchesTime` (`TimingDgMP`) — neu**
   - Im Uhrzeitenschema (`timeOfDay`) muss eine Uhrzeit in `boundsPeriod.start` oder `boundsPeriod.end` einer der angegebenen Uhrzeiten entsprechen.
   - Bekannte Einschränkung: Der FHIRPath-Ausdruck prüft nur den Uhrzeitanteil, nicht den Zeitzonenversatz. Die Übereinstimmung mit `Europe/Berlin` muss die Anwendung zusätzlich prüfen.

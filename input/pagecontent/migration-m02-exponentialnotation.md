@@ -13,7 +13,7 @@ Ein numerischer Dosiswert ist im unveränderten Quellpayload mit Exponent serial
 ### Verbindliche Migration
 
 1. Den Zahlenwert mit Dezimalarithmetik einlesen, nicht mit binärer Gleitkommaarithmetik.
-2. Den Wert in kanonischer einfacher Dezimalschreibweise serialisieren: Exponent entfernen, Nachkommastellen nur so weit wie für den exakten Wert erforderlich schreiben, keine Rundung.
+2. Den Wert in einfacher Dezimalschreibweise serialisieren: Exponent entfernen, dabei die Stellenzahl der Mantisse erhalten (`5e-1` → `0.5`, `50e-2` → `0.50`), keine Rundung. FHIR betrachtet die Genauigkeit eines `decimal` einschließlich nachfolgender Nullen als Teil des Werts; die Textgenerierung gibt sie wieder (`je 0,50 Stück`). Nachfolgende Nullen zu verwerfen änderte den erzeugten Text.
 3. Danach sämtliche Zielregeln für Zahlenwerte prüfen, insbesondere `DosageDoseValueDecimalNotation`, `DosageDoseQuantityAllowedFractions` und `DosageDoseValuePositive`.
 4. Bei gültigem Wert die strukturierte Dosierung erhalten. Regulären Text und Text-Extensions nach dem [Ablauf und der Vollständigkeitsprüfung der Übersicht](./migration-1.0.7-2.0.0.html) erzeugen; anschließend die vollständige Zielressource validieren.
 5. Verletzt der exakt normalisierte Wert einen anderen Dosis-Constraint, M01 oder M03 anwenden. Andere verbleibende Fehler ebenfalls behandeln; bei fehlendem Nachweis das [Archivverfahren](./migration-archivverfahren.html) verwenden.
@@ -32,7 +32,7 @@ Ziel:
 {"value": 0.5, "unit": "Stück"}
 ```
 
-Der Zahlenwert ist identisch. Die Änderung ist nur die JSON-Serialisierung; eine Umwandlung von `0.51` in `0.5` wäre unzulässig.
+Zahlenwert und Genauigkeit sind identisch. Die Änderung ist nur die JSON-Serialisierung; eine Umwandlung von `0.51` in `0.5` wäre ebenso unzulässig wie eine von `0.50` in `0.5`.
 
 ### Was bleibt erhalten?
 
@@ -41,6 +41,7 @@ Zahlenwert, Einheit und Timing bleiben unverändert; nur die Zahlenschreibweise 
 ### Prüffälle
 
 - `5e-1` wird `0.5` und besteht beide Dosis-Constraints.
+- `50e-2` wird `0.50`, nicht `0.5`; der Dosierungstext bleibt `je 0,50 Stück`.
 - `12e-1` wird exakt `1.2`; danach löst M01 aus.
 - `0e0` wird `0`; danach löst M03 aus.
 - `5e-1` muss im Originalpayload erkannt werden, auch wenn der FHIRPath-Validator nach dem Parsen keinen Notationsfehler meldet.

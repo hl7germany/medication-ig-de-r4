@@ -336,7 +336,7 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 `period`, `periodMax` und `boundsDuration.value` müssen größer als `0` sein.
 
 **Warum?**
-`tim-5` aus FHIR R4 lässt `period = 0` zu, `periodMax` und `boundsDuration` sind in der Basis nicht eingeschränkt. Eine Periode von `0` ist nicht definiert, auch nicht als Untergrenze eines Bereichs: „alle 0 bis 3 Tage“ lässt offen, ob „spätestens“ oder „höchstens alle 3 Tage“ gemeint ist. Für einen Bereich ist eine echte Untergrenze anzugeben („alle 1 bis 3 Tage“), für einen einzuhaltenden Abstand bei Bedarfsmedikation der Mindestabstand. Eine Dauer von `0` beschreibt keine Anwendung; die Textgenerierung weist sie ab.
+`tim-5` aus FHIR R4 lässt `period = 0` zu, `periodMax` und `boundsDuration` sind in der Basis nicht eingeschränkt. Eine Periode von `0` ist nicht definiert, auch nicht als Untergrenze eines Bereichs: „alle 0 bis 3 Tage“ lässt offen, ob „spätestens“ oder „höchstens alle 3 Tage“ gemeint ist. Für einen Bereich ist eine echte Untergrenze anzugeben („alle 1 bis 3 Tage“), für einen einzuhaltenden Abstand bei Bedarfsmedikation der Mindestabstand. Eine Dauer von `0` beschreibt keine Anwendung. Die Textgenerierung prüft den Wertebereich nicht und würde `für 0 Tage` ausgeben; Vorbedingung der Textgenerierung ist die Profilvalidierung, die diesen Wert hier abfängt.
 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
@@ -538,7 +538,7 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 In den dgMP-Profilen müssen alle Dosierungsinstanzen innerhalb derselben Ressource dieselbe Dosiereinheit (Code) verwenden.
 
 **Warum?**  
-Die Textgenerierung übernimmt die gemeinsame Dosis-Einheit aus der ersten auswertbaren Dosis; unterschiedliche Einheiten würden im erzeugten Text stillschweigend verlorengehen. Zudem setzt der dgMP auf durchgängig maschinell vergleichbare Dosierungen.
+Die Textgenerierung stellt 4‑Schema und Wochentagsschemata mit einer gemeinsamen Dosis-Einheit dar; bei abweichender Anzeigeeinheit eines weiteren Elements bricht sie ab, statt eine Einheit zu unterschlagen. Zudem setzt der dgMP auf durchgängig maschinell vergleichbare Dosierungen.
 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
@@ -574,7 +574,7 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 `doseQuantity.value` und `doseRange.high.value` müssen größer als `0` sein. Für `doseRange.low.value` ist zusätzlich der Wert `0` zulässig. Die Regel prüft damit alle im dgMP zulässigen Varianten der Einzeldosis.
 
 **Warum?**
-Eine negative Dosis beschreibt keine verabreichbare Arzneimittelmenge und kann nicht sinnvoll in eine Dosierungsanweisung überführt werden. Dasselbe gilt für den Wert `0` als Einzeldosis oder als Obergrenze eines Bereichs: Beides ergäbe eine Anweisung, nach der nichts anzuwenden ist („0-0-0-0 Stück“ beziehungsweise „je bis zu 0 Stück“). Benötigt wird `0` ausschließlich als Untergrenze einer variablen Dosis, zum Beispiel für „0 bis 2 Tabletten“. Der Constraint hält die Profilvalidierung konsistent mit der defensiven Prüfung der Textgenerierung.
+Eine negative Dosis beschreibt keine verabreichbare Arzneimittelmenge und kann nicht sinnvoll in eine Dosierungsanweisung überführt werden. Dasselbe gilt für den Wert `0` als Einzeldosis oder als Obergrenze eines Bereichs: Beides ergäbe eine Anweisung, nach der nichts anzuwenden ist („0-0-0-0 Stück“ beziehungsweise „je bis zu 0 Stück“). Benötigt wird `0` ausschließlich als Untergrenze einer variablen Dosis, zum Beispiel für „0 bis 2 Tabletten“. Die Textgenerierung prüft den Wertebereich nicht — sie gibt `je 0 Stück` wieder, wie es in der Ressource steht; nur dieser Constraint verhindert eine solche Anweisung.
 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
@@ -586,7 +586,7 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 Der Mindestabstand zwischen zwei Gaben (`modifierExtension[MinimumIntervalBetweenAdministrations].valueDuration.value`) und die Maximalmenge (`maxDosePerPeriod.numerator.value`, `maxDosePerPeriod.denominator.value`) müssen größer als `0` sein.
 
 **Warum?**
-Ein Mindestabstand von `0` beschreibt keinen Abstand; ist keiner einzuhalten, entfällt die Extension. Eine Maximalmenge von `0` verbietet jede Anwendung und widerspricht damit der Bedarfsmedikation, zu der sie gehört. Negative Werte sind nicht interpretierbar. Die Textgenerierung weist einen Mindestabstand von `0` ab, erzeugt für eine Maximalmenge von `0` oder weniger aber einen Text („nicht mehr als 0 Stück in 24 Stunden“).
+Ein Mindestabstand von `0` beschreibt keinen Abstand; ist keiner einzuhalten, entfällt die Extension. Eine Maximalmenge von `0` verbietet jede Anwendung und widerspricht damit der Bedarfsmedikation, zu der sie gehört. Negative Werte sind nicht interpretierbar. Die Textgenerierung prüft den Wertebereich nicht und erzeugt für beide Angaben einen Text („im Abstand von mindestens 0 Stunden“, „nicht mehr als 0 Stück in 24 Stunden“); nur dieser Constraint verhindert ihn.
 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
@@ -692,10 +692,10 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 ##### MaxDoseOnlyPureAsNeeded
 
 **Beschreibung:**  
-Eine Maximalmenge (`maxDosePerPeriod`) darf nur bei einer Bedarfsdosierung (`asNeededBoolean = true`) angegeben werden.
+Eine Maximalmenge (`maxDosePerPeriod`) darf nur bei einer reinen Bedarfsdosierung (`asNeededBoolean = true` ohne `timing`) angegeben werden.
 
 **Warum?**  
-Die Maximalmenge wird in der Textgenerierung ausschließlich im Bedarfsfall dargestellt. Ohne die Kopplung an `asNeededBoolean` könnte eine profilvalide Nicht-Bedarf-Dosierung eine `maxDosePerPeriod` tragen, die im generierten Text stillschweigend entfiele – der Constraint verhindert diese Inkonsistenz.
+Ein strukturierter Rhythmus legt bereits fest, wie viel im Bezugszeitraum angewendet wird; eine Maximalmenge daneben wäre eine zweite, konkurrierende Angabe. Die Textgenerierung bricht in diesem Fall ab, statt die Maximalmenge stillschweigend zu übergehen.
 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
@@ -720,7 +720,7 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 Eine reine Bedarfsdosierung (`asNeededBoolean = true` ohne `timing`) darf nur als einziges `Dosage`-Element der Ressource angegeben werden.
 
 **Warum?**
-Ohne zeitliche Zuordnung lassen sich mehrere Bedarfsdosen nicht eindeutig zu einer gemeinsamen Dosierungsanweisung aggregieren. Die Beschränkung verhindert, dass die Textgenerierung nur das erste Element ausgibt und weitere Dosen unbemerkt entfallen.
+Ohne zeitliche Zuordnung lassen sich mehrere Bedarfsdosen nicht eindeutig zu einer gemeinsamen Dosierungsanweisung aggregieren; die Textgenerierung bricht in diesem Fall ab.
 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
@@ -732,7 +732,7 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 Enthält eine Ressource mehrere `Dosage`-Elemente, muss das Bedarfskennzeichen (`asNeededBoolean`) in allen Elementen identisch befüllt sein. Entweder tragen alle Elemente die Angabe oder keines.
 
 **Warum?**
-Die Bedarfskennzeichnung gilt für die Dosierung als Ganzes und entscheidet über die gesamte Textform: Sie erzeugt das vorangestellte „Bei …“, schaltet Mindestabstand und Maximalmenge frei und bewirkt die Großschreibung am Zeilenanfang. Die Textgenerierung liest sie ausschließlich aus dem ersten `Dosage`-Element. Wäre nur ein späteres Element als Bedarf gekennzeichnet, entfiele die Kennzeichnung vollständig und eine Bedarfsmedikation erschiene als festes Einnahmeschema.
+Die Bedarfskennzeichnung gilt für die Dosierung als Ganzes und entscheidet über die gesamte Textform: Sie erzeugt das vorangestellte „bei …“ und schaltet Mindestabstand und Maximalmenge frei. Die Textgenerierung liest sie ausschließlich aus dem ersten `Dosage`-Element. Wäre nur ein späteres Element als Bedarf gekennzeichnet, entfiele die Kennzeichnung vollständig und eine Bedarfsmedikation erschiene als festes Einnahmeschema.
 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
@@ -744,7 +744,7 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 Enthält eine Ressource mehrere `Dosage`-Elemente, muss der Anlass (`extension[asNeededFor]`) in allen Elementen übereinstimmen. Mehrere Anlässe je Element sind zulässig, müssen dann aber in jedem Element dieselben sein; auf die Reihenfolge kommt es nicht an.
 
 **Warum?**
-Der Anlass wird ausschließlich aus dem ersten `Dosage`-Element gelesen und dem Text vorangestellt (siehe [Dosis Textgenerierung](./dosierung-textgenerierung.html)). Ein nur in einem späteren Element angegebener oder dort abweichender Anlass würde im erzeugten Text ersatzlos entfallen und die Dosierung auf ein generisches „Bei Bedarf“ reduzieren.
+Der Anlass wird ausschließlich aus dem ersten `Dosage`-Element gelesen und dem Text vorangestellt (siehe [Dosis Textgenerierung](./dosierung-textgenerierung.html)). Ein nur in einem späteren Element angegebener oder dort abweichender Anlass würde im erzeugten Text ersatzlos entfallen und die Dosierung auf ein generisches „bei Bedarf“ reduzieren.
 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 

@@ -52,6 +52,9 @@
     "DosageRequiresGeneratedText",
     "DosageStructuredRequiresBoth"
   ],
+  "TimingBoundsPeriodFullDate": [
+    "DosageRequiresGeneratedText"
+  ],
   "TimingOnlyOneDayOfWeek": [
     "DosageRequiresGeneratedText"
   ],

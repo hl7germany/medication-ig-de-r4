@@ -1,5 +1,9 @@
 ### Release: 2.0.0
 
+**Neue Seiten**
+
+- [Migration von Dosierungen 1.0.7 auf 2.0.0](./migration-1.0.7-2.0.0.html) mit Fallseiten: Ablauf, Ergebnisarten und Fallregeln für die Überführung bestehender 1.0.7-Dosierungen.
+
 **Invarianten**
 
 - **`AsNeededForRequiresAsNeededWarning` (`DosageDE`) — neu** (HDB-924)

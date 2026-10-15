@@ -18,6 +18,13 @@ def main():
     print("Providing the pinned dosage text generation algorithm...")
     medication_dosage_script = fetch_algorithm.main()
 
+    # 0b. FSH-Dezimalzahlen mit nachfolgender Null meldet SUSHI nicht, sondern
+    #     verwirft sie still (2.50 -> 2.5); der Dosierungstext wiche dann von
+    #     der FSH-Quelle ab.
+    print("Checking FSH decimals for trailing zeros...")
+    decimal_check_script = os.path.join(base_dir, "check-fsh-decimals.py")
+    subprocess.run(['python3', decimal_check_script], check=True)
+
     # 1. Add consolidated dosage extensions to resources (using the updated extension script)
     print("Adding renderedDosageInstruction and GeneratedDosageInstructionsMeta extensions to medication resources...")
     subprocess.run([

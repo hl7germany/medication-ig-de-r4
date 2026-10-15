@@ -598,7 +598,7 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 Der Mindestabstand zwischen zwei Gaben (`modifierExtension[MinimumIntervalBetweenAdministrations].valueDuration.value`) und die Maximalmenge (`maxDosePerPeriod.numerator.value`, `maxDosePerPeriod.denominator.value`) müssen größer als `0` sein.
 
 **Warum?**
-Ein Mindestabstand von `0` beschreibt keinen Abstand; ist keiner einzuhalten, entfällt die Extension. Eine Maximalmenge von `0` verbietet jede Anwendung und widerspricht damit der Bedarfsmedikation, zu der sie gehört. Negative Werte sind nicht interpretierbar. Die Textgenerierung prüft den Wertebereich nicht und erzeugt für beide Angaben einen Text („im Abstand von mindestens 0 Stunden“, „nicht mehr als 0 Stück in 24 Stunden“); nur dieser Constraint verhindert ihn.
+Ein Mindestabstand von `0` beschreibt keinen Abstand; ist keiner einzuhalten, entfällt die Extension. Eine Maximalmenge von `0` verbietet jede Anwendung und widerspricht damit der Bedarfsmedikation, zu der sie gehört. Negative Werte sind nicht interpretierbar.
 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 

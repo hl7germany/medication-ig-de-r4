@@ -89,9 +89,10 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
 * method 0..0
   * ^comment = "Begründung Einschränkung Kardinalität: Eine Verabreichungsmethode ist in der aktuellen Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
 * maxDosePerPeriod
-  // Ein comparator veraendert die Bedeutung des Wertes ("< 6" ist nicht "6");
-  // der Dosierungstext kann ihn nicht wiedergeben. Bei der Dosis schliesst ihn
-  // SimpleQuantity bereits aus, bei Ratio ist er sonst erlaubt.
+  // Bereiche und Obergrenzen haben eigene Elemente (doseRange, maxDosePerPeriod);
+  // ein comparator ist daneben nicht vorgesehen, und der Dosierungstext hat
+  // keine Darstellung dafuer. Bei der Dosis schliesst ihn SimpleQuantity bereits
+  // aus, bei Ratio ist er sonst erlaubt.
   * numerator.comparator 0..0
   * denominator.comparator 0..0
 * maxDosePerAdministration 0..0

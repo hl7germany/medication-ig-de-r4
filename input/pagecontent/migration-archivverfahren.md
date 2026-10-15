@@ -8,7 +8,7 @@ Der bisher als Freitext-Fallback bezeichnete Ansatz, Quell-JSON mit einem Warnpr
 
 | Fall | Constraint | Grund für den Fallback |
 |---|---|---|
-| M03 | `DosageDoseValuePositive` | Null- oder Negativwert erlaubt keine sichere Dosisinterpretation; Standardrenderer weist ihn zurück. |
+| M03 | `DosageDoseValuePositive` | Null- oder Negativwert erlaubt keine sichere Dosisinterpretation. Die Textgenerierung prüft den Wertebereich nicht und würde den Wert darstellen (`je 0 Stück`); maßgeblich ist allein die Invariante. |
 | M08 | `TimingOnlyOneTimeForInterval` | Intervallangaben sind unvollständig oder widersprüchlich; fehlende Felder dürfen nicht abgeleitet werden. |
 | M09 | `TimingOnlyOneWhen` | Doppelte Tagesabschnitts-Codes können unterschiedliche Dosierungen tragen. |
 | M10 | `TimingOnlyOneTimeOfDay` | Doppelte Uhrzeiten können unterschiedliche Dosierungen tragen. |

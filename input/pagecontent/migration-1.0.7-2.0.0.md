@@ -88,7 +88,7 @@ Eine Ressource ohne Dosierung durchläuft keine Dosierungsabbildung, muss aber v
 
 Für bereits verwendbare strukturierte Dosierungen wird der Dosierungstext regulär neu erzeugt, auch nach M02 oder M18. Die nachfolgende Allowlist beschränkt nur die Umwandlung einer noch profilwidrigen Struktur in Freitext, nicht diese reguläre Generierung.
 
-Die Beispiele wurden mit der Referenzimplementierung `2.0.0-rc.1` geprüft. Für den tatsächlichen Lauf MUSS die konkrete zugelassene Algorithmus- und Implementierungsversion festgelegt werden; die normative Algorithmusspezifikation bleibt maßgeblich. Ein erfolgreicher Rendereraufruf ersetzt weder Profilvalidierung noch eine Prüfung auf Informationsverlust.
+Die Beispiele wurden mit der Referenzimplementierung `2.0.0-rc.2` geprüft. Für den tatsächlichen Lauf MUSS die konkrete zugelassene Algorithmus- und Implementierungsversion festgelegt werden; die normative Algorithmusspezifikation bleibt maßgeblich. Ein erfolgreicher Rendereraufruf ersetzt weder Profilvalidierung noch eine Prüfung auf Informationsverlust.
 
 #### Allowlist für Renderer-Freitext
 

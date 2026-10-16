@@ -2,39 +2,36 @@
 
 ### Anlass
 
-`DosageFourSlotPatternInText` verbietet in 2.0.0 einen Freitext, der vollständig einem 4-Schema entspricht, zum Beispiel `1-0-0-0`. Die Erkennung verlangt vier Zahlen-Slots; diese dürfen Dezimalwerte oder Teilungsverhältnisse enthalten. Ein Einheitstext ist optional. Der Ausdruck erkennt die Schreibform, nicht die belegte klinische Bedeutung.
+`DosageFourSlotPatternInText` verbietet in 2.0.0 einen Freitext, der ausschließlich aus einem 4-Schema besteht, zum Beispiel `1-0-1-0` oder `1-0-1-0 Stück`. Ein 4-Schema innerhalb eines weiteren Textes, etwa in der Form `täglich: 1-0-1-0 Stück`, löst nur die Warnung `DosageFourSlotPatternInTextWarning` aus.
 
 ### Auslöser
 
-Für jedes befüllte `Dosage.text` wird der reguläre Ausdruck aus `DosageFourSlotPatternInText` verwendet. Er steht hier ohne das String-Escaping des FHIRPath-Ausdrucks:
+`Dosage.text` erfüllt den regulären Ausdruck aus `DosageFourSlotPatternInText`. Er steht hier ohne das String-Escaping des FHIRPath-Ausdrucks:
 
 ```text
 ^\s*\d+([.,]\d+)?(\s*/\s*\d+)?(\s*[-–]\s*\d+([.,]\d+)?(\s*/\s*\d+)?){3}(\s*[A-Za-zÄÖÜäöüß().]+)?\s*$
 ```
 
-### Verbindliche Migration
+M04 gilt für bestehende Freitext-Dosierungen ebenso wie für einen Text, der im [Freitext-Fallback](./migration-freitext-fallback.html) entsteht.
 
-1. Ohne eine explizite, versionierte Quellkonvention den Text nicht automatisch interpretieren. Insbesondere nicht pauschal `täglich:` voranstellen: Der Regex-Treffer allein belegt keine tägliche Wiederholung.
-2. Eine zusätzliche Quellkonvention muss Slot-Bedeutung, Wiederholungsfrequenz, Zahlen- und Teilungsschreibweise sowie Dosis-System und -Code eindeutig festlegen. Diese Anleitung liefert keine solche Konvention. Eine Arzneimittelreferenz oder ein angezeigter Einheitenname allein reicht nicht aus.
-3. Nur bei vollständig belegter Bedeutung eine exakte strukturierte Abbildung nach dieser Konvention erzeugen. Null-Slots bedeuten dabei nur dann keine Gabe, wenn die Konvention dies festlegt; es werden keine strukturierten Null-Dosen erzeugt. Anschließend den regulären Text erzeugen und sämtliche Zielregeln sowie die Vollständigkeitsprüfung der Übersicht anwenden.
-4. Ist die Bedeutung nicht belegt oder die strukturierte Abbildung nicht zulässig, das [Archivverfahren](./migration-archivverfahren.html) verwenden. Keine bloße Textumformulierung zur Umgehung des Constraints vornehmen.
+### Überführung
 
-Die ursprüngliche Ressourcenfassung bleibt unverändert archiviert. Alte Renderer-Extensions dürfen nicht als Herkunft der neu erzeugten Darstellung übernommen werden.
+1. Dem Text ohne führende und nachfolgende Leerzeichen `täglich: ` voranstellen. Der übrige Text bleibt unverändert.
+2. `renderedDosageInstruction` auf exakt denselben Text setzen und `GeneratedDosageInstructionsMeta` angeben (siehe [Text-Extensions](./migration-1.0.7-2.0.0.html)).
+
+Der Text wird nicht in eine strukturierte Dosierung umgewandelt.
 
 ### Beispiel
 
 ```text
-Quelle:   Dosage.text = "1-0-0-0 Stück"
-Nachweis: Keine versionierte Quellkonvention vorhanden
-Ergebnis: Nur archiviert; keine 2.0.0-Dosierung freigegeben
+Quelle:  Dosage.text = "1-0-1-0 Stück"
+Ziel:    Dosage.text = "täglich: 1-0-1-0 Stück"
+         renderedDosageInstruction = "täglich: 1-0-1-0 Stück"
 ```
-
-Wenn eine freigegebene Quellkonvention dagegen ausdrücklich „morgens, mittags, abends, nachts; jeden Tag; Stück mit festgelegtem System und Code“ festlegt, kann die Quelle als Dosis `1` mit `when = MORN` abgebildet werden. Diese Bedeutung stammt dann aus der dokumentierten Quellkonvention, nicht aus dem Regex.
 
 ### Prüffälle
 
-- `1-0-0-0` ohne Quellkonvention wird nur archiviert; es wird kein `täglich:` ergänzt.
-- Eine belegte Quellkonvention erlaubt nur eine exakte Abbildung ohne Rundung oder geratenen Einheiten-Code.
-- `1-0-0` matcht nicht, weil nur drei Slots vorhanden sind; M04 ändert den Text nicht.
-- Ein Text mit weiterem Zusatz, der den vollständigen Ausdruck nicht erfüllt, wird nicht geändert.
-- Eine erzeugte strukturierte Dosierung muss einschließlich neuer Text-Extensions gegen das Zielprofil validieren.
+- `1-0-1-0` wird `täglich: 1-0-1-0`.
+- `1/2-0-0-1 Stück` wird `täglich: 1/2-0-0-1 Stück`.
+- `1-0-0` hat nur drei Slots und bleibt unverändert.
+- `morgens 1-0-0-0` erfüllt den Ausdruck nicht und bleibt unverändert.

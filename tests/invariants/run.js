@@ -80,6 +80,7 @@ function evaluate(expression, context, type, res) {
   if (context === 'Resource') targets.push(type);
   (res[p] || []).forEach((dosage, i) => {
     if (context === 'Dosage') targets.push(`${type}.${p}[${i}]`);
+    if (context === 'Timing' && dosage.timing) targets.push(`${type}.${p}[${i}].timing`);
     if (context === 'Timing.repeat' && dosage.timing?.repeat) targets.push(`${type}.${p}[${i}].timing.repeat`);
   });
   const results = targets.map(t => fhirpath.evaluate(res, `${t}.select(${expression})`, { resource: res, rootResource: res }, r4));

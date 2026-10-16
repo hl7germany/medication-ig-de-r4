@@ -102,9 +102,7 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
 
 Invariant: DosageStructuredOrFreeText
 Description: "A dosage must be given either as free text only or as complete structured information only; mixing both is not allowed."
-Expression: "(%resource.ofType(MedicationRequest).dosageInstruction | 
- %resource.ofType(MedicationDispense).dosageInstruction | 
- %resource.ofType(MedicationStatement).dosage).all(
+Expression: "(%resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)).all(
   (text.exists() and timing.empty() and doseAndRate.empty()) or
   (text.empty() and (timing.exists() or doseAndRate.exists()))
 )"
@@ -112,9 +110,7 @@ Severity: #error
 
 Invariant: DosageStructuredRequiresBoth
 Description: "If a structured dosage is given, both timing and doseAndRate must be present. For pure as-needed dosages, doseAndRate may be given without timing."
-Expression: "(%resource.ofType(MedicationRequest).dosageInstruction |
- %resource.ofType(MedicationDispense).dosageInstruction |
- %resource.ofType(MedicationStatement).dosage).all(
+Expression: "(%resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)).all(
   (timing.exists() implies doseAndRate.exists()) and
   (doseAndRate.exists() implies (
     timing.exists() or
@@ -150,16 +146,12 @@ Severity: #error
 Invariant: FreeTextSingleDosageOnly
 Description: "If a dosage is given as pure free text, there must be exactly one Dosage element."
 Expression: "(
-  (%resource.ofType(MedicationRequest).dosageInstruction |
-   %resource.ofType(MedicationDispense).dosageInstruction |
-   %resource.ofType(MedicationStatement).dosage
+  (%resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)
   ).exists(text.exists() and timing.empty() and doseAndRate.empty())
 )
 implies
 (
-  (%resource.ofType(MedicationRequest).dosageInstruction |
-   %resource.ofType(MedicationDispense).dosageInstruction |
-   %resource.ofType(MedicationStatement).dosage
+  (%resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)
   ).count() = 1
 )"
 Severity: #error
@@ -167,9 +159,7 @@ Severity: #error
 Invariant: FreeTextMatchesRenderedText
 Description: "If a dosage is given as pure free text (text present, timing and doseAndRate empty), the value in dosageInstruction.text must match the value in the renderedDosageInstruction extension."
 Expression: "(
-  (%resource.ofType(MedicationRequest).dosageInstruction |
-   %resource.ofType(MedicationDispense).dosageInstruction |
-   %resource.ofType(MedicationStatement).dosage
+  (%resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)
   ).where(text.exists() and timing.empty() and doseAndRate.empty()).exists()
 )
 implies
@@ -245,12 +235,12 @@ Severity: #error
 // Zu klaeren, ob code-gleich genuegt oder der Vergleich angeglichen wird.
 Invariant: DosageDoseUnitSameCode
 Description: "The dose unit must be the same across all dosages."
-Expression: "(%resource.ofType(MedicationRequest).dosageInstruction | %resource.ofType(MedicationDispense).dosageInstruction | %resource.ofType(MedicationStatement).dosage).all(
+Expression: "(%resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)).all(
 doseAndRate.exists() implies
   (
-    (%resource.ofType(MedicationRequest).dosageInstruction | %resource.ofType(MedicationDispense).dosageInstruction | %resource.ofType(MedicationStatement).dosage).doseAndRate.dose.ofType(Quantity).code |
-    (%resource.ofType(MedicationRequest).dosageInstruction | %resource.ofType(MedicationDispense).dosageInstruction | %resource.ofType(MedicationStatement).dosage).doseAndRate.dose.ofType(Range).low.code |
-    (%resource.ofType(MedicationRequest).dosageInstruction | %resource.ofType(MedicationDispense).dosageInstruction | %resource.ofType(MedicationStatement).dosage).doseAndRate.dose.ofType(Range).high.code
+    (%resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)).doseAndRate.dose.ofType(Quantity).code |
+    (%resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)).doseAndRate.dose.ofType(Range).low.code |
+    (%resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)).doseAndRate.dose.ofType(Range).high.code
   ).distinct().count() = 1
 )"
 Severity: #error
@@ -292,26 +282,20 @@ Invariant: PatientInstructionIdentical
 Description: "If patientInstruction is used in a resource with multiple dosages, the field must be populated identically in all Dosage elements."
 Expression: "(
   (
-    %resource.ofType(MedicationRequest).dosageInstruction |
-    %resource.ofType(MedicationDispense).dosageInstruction |
-    %resource.ofType(MedicationStatement).dosage
+    %resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)
   ).patientInstruction.distinct().count() <= 1
 )
 and
 (
   (
     (
-      %resource.ofType(MedicationRequest).dosageInstruction |
-      %resource.ofType(MedicationDispense).dosageInstruction |
-      %resource.ofType(MedicationStatement).dosage
+      %resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)
     ).patientInstruction.exists()
   )
   implies
   (
     (
-      %resource.ofType(MedicationRequest).dosageInstruction |
-      %resource.ofType(MedicationDispense).dosageInstruction |
-      %resource.ofType(MedicationStatement).dosage
+      %resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)
     ).all(patientInstruction.exists())
   )
 )"
@@ -388,17 +372,13 @@ Expression: "extension.where(url='http://hl7.org/fhir/5.0/StructureDefinition/ex
 Invariant: AsNeededSingleDosageOnly
 Description: "If an as-needed dosage with asNeededBoolean = true is given without timing, exactly one Dosage element must exist in the resource."
 Expression: "(
-  %resource.ofType(MedicationRequest).dosageInstruction |
-  %resource.ofType(MedicationDispense).dosageInstruction |
-  %resource.ofType(MedicationStatement).dosage
+  %resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)
 ).where(
   asNeeded.ofType(boolean) = true and timing.empty()
 ).exists()
 implies
 (
-  %resource.ofType(MedicationRequest).dosageInstruction |
-  %resource.ofType(MedicationDispense).dosageInstruction |
-  %resource.ofType(MedicationStatement).dosage
+  %resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)
 ).count() = 1"
 Severity: #error
 
@@ -417,26 +397,20 @@ Description: "The as-needed flag (asNeededBoolean) must be populated identically
 Severity: #error
 Expression: "(
   (
-    %resource.ofType(MedicationRequest).dosageInstruction |
-    %resource.ofType(MedicationDispense).dosageInstruction |
-    %resource.ofType(MedicationStatement).dosage
+    %resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)
   ).asNeeded.ofType(boolean).distinct().count() <= 1
 )
 and
 (
   (
     (
-      %resource.ofType(MedicationRequest).dosageInstruction |
-      %resource.ofType(MedicationDispense).dosageInstruction |
-      %resource.ofType(MedicationStatement).dosage
+      %resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)
     ).asNeeded.ofType(boolean).exists()
   )
   implies
   (
     (
-      %resource.ofType(MedicationRequest).dosageInstruction |
-      %resource.ofType(MedicationDispense).dosageInstruction |
-      %resource.ofType(MedicationStatement).dosage
+      %resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)
     ).all(asNeeded.ofType(boolean).exists())
   )
 )"
@@ -448,18 +422,14 @@ Severity: #error
    Ressource insgesamt. Zwei Mengen gleicher Mächtigkeit, deren Vereinigung
    dieselbe Mächtigkeit hat, sind identisch — unabhängig von der Reihenfolge. */
 Expression: "(
-  %resource.ofType(MedicationRequest).dosageInstruction |
-  %resource.ofType(MedicationDispense).dosageInstruction |
-  %resource.ofType(MedicationStatement).dosage
+  %resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)
 ).all(
   extension.where(
     url='http://hl7.org/fhir/5.0/StructureDefinition/extension-Dosage.asNeededFor'
   ).value.ofType(CodeableConcept).text.distinct().count()
   =
   (
-    %resource.ofType(MedicationRequest).dosageInstruction |
-    %resource.ofType(MedicationDispense).dosageInstruction |
-    %resource.ofType(MedicationStatement).dosage
+    %resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)
   ).extension.where(
     url='http://hl7.org/fhir/5.0/StructureDefinition/extension-Dosage.asNeededFor'
   ).value.ofType(CodeableConcept).text.distinct().count()

@@ -56,11 +56,9 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * ^comment = "Wenn mehr als ein Ereignis angegeben ist, bezieht sich das Ereignis auf die Vereinigung der angegebenen Ereignisse."
 
 Invariant: TimingSingleDosageForTimeOfDayWarning
-Description: "If only timeOfDay is used and dosing is daily, the times must be modelled in a single Dosage element. Multiple Dosage elements are only allowed if every element carries a distinct dose, including its data type."
+Description: "If only timeOfDay is used (without dayOfWeek), the times should be modelled in a single Dosage element, both for daily dosing and in an interval combination. Multiple Dosage elements are only allowed if every element carries a distinct dose, including its data type."
 Expression: "(
-  %resource.ofType(MedicationRequest).dosageInstruction
-  | %resource.ofType(MedicationDispense).dosageInstruction
-  | %resource.ofType(MedicationStatement).dosage
+  %resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)
 ).all(
   (
     timing.repeat.dayOfWeek.empty() and
@@ -71,9 +69,7 @@ Expression: "(
   (
     (
       (
-        %resource.ofType(MedicationRequest).dosageInstruction
-        | %resource.ofType(MedicationDispense).dosageInstruction
-        | %resource.ofType(MedicationStatement).dosage
+        %resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)
       ).where(
         timing.repeat.dayOfWeek.empty() and timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()
       ).count() = 1
@@ -81,17 +77,13 @@ Expression: "(
     or
     (
       (
-        %resource.ofType(MedicationRequest).dosageInstruction
-        | %resource.ofType(MedicationDispense).dosageInstruction
-        | %resource.ofType(MedicationStatement).dosage
+        %resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)
       ).where(
         timing.repeat.dayOfWeek.empty() and timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()
       ).doseAndRate.dose.distinct().count()
       =
       (
-        %resource.ofType(MedicationRequest).dosageInstruction
-        | %resource.ofType(MedicationDispense).dosageInstruction
-        | %resource.ofType(MedicationStatement).dosage
+        %resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)
       ).where(
         timing.repeat.dayOfWeek.empty() and timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()
       ).count()
@@ -101,11 +93,9 @@ Expression: "(
 Severity: #warning
 
 Invariant: TimingSingleDosageForWhenWarning
-Description: "If only when is used and dosing is daily, the times of day must be modelled in a single Dosage element. Multiple Dosage elements are only allowed if every element carries a distinct dose, including its data type."
+Description: "If only when is used (without dayOfWeek), the times of day should be modelled in a single Dosage element, both for daily dosing and in an interval combination. Multiple Dosage elements are only allowed if every element carries a distinct dose, including its data type."
 Expression: "(
-  %resource.ofType(MedicationRequest).dosageInstruction
-  | %resource.ofType(MedicationDispense).dosageInstruction
-  | %resource.ofType(MedicationStatement).dosage
+  %resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)
 ).all(
   (
     timing.repeat.dayOfWeek.empty() and
@@ -116,9 +106,7 @@ Expression: "(
   (
     (
       (
-        %resource.ofType(MedicationRequest).dosageInstruction
-        | %resource.ofType(MedicationDispense).dosageInstruction
-        | %resource.ofType(MedicationStatement).dosage
+        %resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)
       ).where(
         timing.repeat.dayOfWeek.empty() and timing.repeat.when.exists() and timing.repeat.timeOfDay.empty()
       ).count() = 1
@@ -126,17 +114,13 @@ Expression: "(
     or
     (
       (
-        %resource.ofType(MedicationRequest).dosageInstruction
-        | %resource.ofType(MedicationDispense).dosageInstruction
-        | %resource.ofType(MedicationStatement).dosage
+        %resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)
       ).where(
         timing.repeat.dayOfWeek.empty() and timing.repeat.when.exists() and timing.repeat.timeOfDay.empty()
       ).doseAndRate.dose.distinct().count()
       =
       (
-        %resource.ofType(MedicationRequest).dosageInstruction
-        | %resource.ofType(MedicationDispense).dosageInstruction
-        | %resource.ofType(MedicationStatement).dosage
+        %resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)
       ).where(
         timing.repeat.dayOfWeek.empty() and timing.repeat.when.exists() and timing.repeat.timeOfDay.empty()
       ).count()

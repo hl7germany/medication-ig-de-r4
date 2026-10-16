@@ -79,11 +79,9 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
     * ^comment = "Begründung Einschränkung Kardinalität: Ein Zeitversatz ist in der ersten Ausbaustufe desdgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
 
 Invariant: TimingSingleDosageForTimeOfDay
-Description: "If only timeOfDay is used and dosing is daily, the times must be modelled in a single Dosage element. Multiple Dosage elements are only allowed if every element carries a distinct dose, including its data type."
+Description: "If only timeOfDay is used (without dayOfWeek), the times must be modelled in a single Dosage element, both for daily dosing and in an interval combination. Multiple Dosage elements are only allowed if every element carries a distinct dose, including its data type."
 Expression: "(
-  %resource.ofType(MedicationRequest).dosageInstruction
-  | %resource.ofType(MedicationDispense).dosageInstruction
-  | %resource.ofType(MedicationStatement).dosage
+  %resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)
 ).all(
   (
     timing.repeat.dayOfWeek.empty() and
@@ -94,9 +92,7 @@ Expression: "(
   (
     (
       (
-        %resource.ofType(MedicationRequest).dosageInstruction
-        | %resource.ofType(MedicationDispense).dosageInstruction
-        | %resource.ofType(MedicationStatement).dosage
+        %resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)
       ).where(
         timing.repeat.dayOfWeek.empty() and timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()
       ).count() = 1
@@ -104,17 +100,13 @@ Expression: "(
     or
     (
       (
-        %resource.ofType(MedicationRequest).dosageInstruction
-        | %resource.ofType(MedicationDispense).dosageInstruction
-        | %resource.ofType(MedicationStatement).dosage
+        %resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)
       ).where(
         timing.repeat.dayOfWeek.empty() and timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()
       ).doseAndRate.dose.distinct().count()
       =
       (
-        %resource.ofType(MedicationRequest).dosageInstruction
-        | %resource.ofType(MedicationDispense).dosageInstruction
-        | %resource.ofType(MedicationStatement).dosage
+        %resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)
       ).where(
         timing.repeat.dayOfWeek.empty() and timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()
       ).count()
@@ -124,11 +116,9 @@ Expression: "(
 Severity: #error
 
 Invariant: TimingSingleDosageForWhen
-Description: "If only when is used and dosing is daily, the times of day must be modelled in a single Dosage element. Multiple Dosage elements are only allowed if every element carries a distinct dose, including its data type."
+Description: "If only when is used (without dayOfWeek), the times of day must be modelled in a single Dosage element, both for daily dosing and in an interval combination. Multiple Dosage elements are only allowed if every element carries a distinct dose, including its data type."
 Expression: "(
-  %resource.ofType(MedicationRequest).dosageInstruction
-  | %resource.ofType(MedicationDispense).dosageInstruction
-  | %resource.ofType(MedicationStatement).dosage
+  %resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)
 ).all(
   (
     timing.repeat.dayOfWeek.empty() and
@@ -139,9 +129,7 @@ Expression: "(
   (
     (
       (
-        %resource.ofType(MedicationRequest).dosageInstruction
-        | %resource.ofType(MedicationDispense).dosageInstruction
-        | %resource.ofType(MedicationStatement).dosage
+        %resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)
       ).where(
         timing.repeat.dayOfWeek.empty() and timing.repeat.when.exists() and timing.repeat.timeOfDay.empty()
       ).count() = 1
@@ -149,17 +137,13 @@ Expression: "(
     or
     (
       (
-        %resource.ofType(MedicationRequest).dosageInstruction
-        | %resource.ofType(MedicationDispense).dosageInstruction
-        | %resource.ofType(MedicationStatement).dosage
+        %resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)
       ).where(
         timing.repeat.dayOfWeek.empty() and timing.repeat.when.exists() and timing.repeat.timeOfDay.empty()
       ).doseAndRate.dose.distinct().count()
       =
       (
-        %resource.ofType(MedicationRequest).dosageInstruction
-        | %resource.ofType(MedicationDispense).dosageInstruction
-        | %resource.ofType(MedicationStatement).dosage
+        %resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)
       ).where(
         timing.repeat.dayOfWeek.empty() and timing.repeat.when.exists() and timing.repeat.timeOfDay.empty()
       ).count()
@@ -267,7 +251,7 @@ Description: "periodUnit may only be given together with period. With dayOfWeek,
 Expression: "periodUnit.empty() or (
   period.exists() and
   (
-    (dayOfWeek.exists() and periodUnit = 'wk') or
+    (dayOfWeek.exists() and periodUnit = 'wk' and period = 1) or
     (
       dayOfWeek.empty() and
       (
@@ -290,9 +274,7 @@ Invariant: TimingOnlyOneType
 Description: "Exactly one of the supported timing schemas is allowed. With dayOfWeek, frequency and the pair period = 1 and periodUnit = wk are optional redundant legacy statements; they do not constitute an interval schema. With when or timeOfDay, frequency is optional; a non-daily period distinguishes the daily schema from a time interval combined with a time-of-day or clock-time reference. A variable frequency (frequencyMax) is reserved for the pure interval, because concrete times or weekdays already determine the number of administrations."
 Expression: "/* DayOfWeek only; legacy frequency and the exact 1 wk pair are optional */
 (
-  %resource.ofType(MedicationRequest).dosageInstruction |
-  %resource.ofType(MedicationDispense).dosageInstruction |
-  %resource.ofType(MedicationStatement).dosage
+  %resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)
 ).all(
   timing.repeat.dayOfWeek.exists() and
   timing.repeat.when.empty() and
@@ -307,9 +289,7 @@ Expression: "/* DayOfWeek only; legacy frequency and the exact 1 wk pair are opt
 
 /* Interval only (frequency + period + periodUnit, no when/timeOfDay/dayOfWeek) */
 (
-  %resource.ofType(MedicationRequest).dosageInstruction |
-  %resource.ofType(MedicationDispense).dosageInstruction |
-  %resource.ofType(MedicationStatement).dosage
+  %resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)
 ).all(
   timing.repeat.frequency.exists() and
   timing.repeat.period.exists() and
@@ -321,9 +301,7 @@ Expression: "/* DayOfWeek only; legacy frequency and the exact 1 wk pair are opt
 
 /* DayOfWeek and Time/4-Schema; legacy frequency and the exact 1 wk pair are optional */
 (
-  %resource.ofType(MedicationRequest).dosageInstruction | 
-  %resource.ofType(MedicationDispense).dosageInstruction | 
-  %resource.ofType(MedicationStatement).dosage
+  %resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)
 ).all(
   timing.repeat.dayOfWeek.exists() and
   (
@@ -340,9 +318,7 @@ Expression: "/* DayOfWeek only; legacy frequency and the exact 1 wk pair are opt
 
 /* Daily When or TimeOfDay; frequency is optional, a variable frequency is not */
 (
-  %resource.ofType(MedicationRequest).dosageInstruction |
-  %resource.ofType(MedicationDispense).dosageInstruction |
-  %resource.ofType(MedicationStatement).dosage
+  %resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)
 ).all(
   timing.repeat.dayOfWeek.empty() and
   (
@@ -360,9 +336,7 @@ Expression: "/* DayOfWeek only; legacy frequency and the exact 1 wk pair are opt
 /* Non-daily interval combined with When or TimeOfDay; frequency is optional, a
    variable frequency is not */
 (
-  %resource.ofType(MedicationRequest).dosageInstruction |
-  %resource.ofType(MedicationDispense).dosageInstruction |
-  %resource.ofType(MedicationStatement).dosage
+  %resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)
 ).all(
   timing.repeat.dayOfWeek.empty() and
   (
@@ -384,9 +358,7 @@ Severity: #error
 Invariant: TimingOnlyOneWhen
 Description: "In a schema that uses only when, no part of the day may occur in more than one Dosage element of a resource."
 Expression: "( /* Detect when-based schema */
-  %resource.ofType(MedicationRequest).dosageInstruction
-  | %resource.ofType(MedicationDispense).dosageInstruction
-  | %resource.ofType(MedicationStatement).dosage
+  %resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)
 ).all(
     timing.repeat.dayOfWeek.empty() and
     timing.repeat.when.exists() and
@@ -411,9 +383,7 @@ Severity: #error
 Invariant: TimingOnlyWhenOrTimeOfDay
 Description: "The Dosage elements of a resource must not mix a time of day (timeOfDay) and a part of the day (when)."
 Expression: "(
-  %resource.ofType(MedicationRequest).dosageInstruction
-  | %resource.ofType(MedicationDispense).dosageInstruction
-  | %resource.ofType(MedicationStatement).dosage
+  %resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)
 ).all(
     (timing.repeat.when.exists() or 
     timing.repeat.timeOfDay.exists())
@@ -437,9 +407,7 @@ Severity: #error
 Invariant: TimingOnlyOneTimeOfDay
 Description: "In a schema that uses only timeOfDay, no time of day may occur in more than one Dosage element of a resource."
 Expression: "( /* Detect TimeOfDay */
-  %resource.ofType(MedicationRequest).dosageInstruction
-  | %resource.ofType(MedicationDispense).dosageInstruction
-  | %resource.ofType(MedicationStatement).dosage
+  %resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)
 ).all(
   (
     timing.repeat.dayOfWeek.empty() and
@@ -466,9 +434,7 @@ Severity: #error
 Invariant: TimingOnlyOneDayOfWeek
 Description: "In a schema that uses only dayOfWeek, no weekday may occur in more than one Dosage element of a resource."
 Expression: "( /* Detect DayOfWeek */
-  %resource.ofType(MedicationRequest).dosageInstruction
-  | %resource.ofType(MedicationDispense).dosageInstruction
-  | %resource.ofType(MedicationStatement).dosage
+  %resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)
 ).all(
   (
     timing.repeat.dayOfWeek.exists() and
@@ -494,86 +460,37 @@ Severity: #error
 
 Invariant: TimingOnlyOneBounds
 Description: "All Dosage elements of a resource must state the same bounds (Duration or Period), and either all of them carry a bounds or none."
-Expression: "(
-  %resource.ofType(MedicationRequest).dosageInstruction
-  | %resource.ofType(MedicationDispense).dosageInstruction
-  | %resource.ofType(MedicationStatement).dosage
-).all(
-  (
-    ( /* only one different value and code are allowed*/
-      (%resource.ofType(MedicationRequest).exists() or %resource.ofType(MedicationDispense).exists())
-      implies
-      %resource.dosageInstruction.timing.repeat.bounds.ofType(Duration).exists().not() or
-      (
-        (%resource.dosageInstruction.timing.repeat.bounds.ofType(Duration).value.distinct().count() = 1)
-        and
-        (%resource.dosageInstruction.timing.repeat.bounds.ofType(Duration).code.distinct().count() = 1)
-      )
-    )
-    and
-    (
-      %resource.ofType(MedicationStatement).exists()
-      implies
-      %resource.dosage.timing.repeat.bounds.ofType(Duration).exists().not() or
-      (
-        (%resource.dosage.timing.repeat.bounds.ofType(Duration).value.distinct().count() = 1)
-        and
-        (%resource.dosage.timing.repeat.bounds.ofType(Duration).code.distinct().count() = 1)
-      )
-    )
-    and
-    ( /* boundsPeriod: Start und Ende müssen ebenfalls über alle Dosierungen gleich sein.
-         Die Textgenerierung liest den Zeitrahmen nur aus dem ersten Dosage-Element. */
-      (%resource.ofType(MedicationRequest).exists() or %resource.ofType(MedicationDispense).exists())
-      implies
-      %resource.dosageInstruction.timing.repeat.bounds.ofType(Period).exists().not() or
-      (
-        (%resource.dosageInstruction.timing.repeat.bounds.ofType(Period).start.distinct().count() <= 1)
-        and
-        (%resource.dosageInstruction.timing.repeat.bounds.ofType(Period).end.distinct().count() <= 1)
-      )
-    )
-    and
-    (
-      %resource.ofType(MedicationStatement).exists()
-      implies
-      %resource.dosage.timing.repeat.bounds.ofType(Period).exists().not() or
-      (
-        (%resource.dosage.timing.repeat.bounds.ofType(Period).start.distinct().count() <= 1)
-        and
-        (%resource.dosage.timing.repeat.bounds.ofType(Period).end.distinct().count() <= 1)
-      )
-    )
+Expression: "/* Alle Dosage-Elemente tragen denselben Zeitrahmen: keines, alle dieselbe Dauer
+   oder alle denselben Zeitraum (Start und Ende jeweils bei allen gleich oder bei
+   allen fehlend). Die Textgenerierung liest den Zeitrahmen nur aus dem ersten
+   Element. */
+(%resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)).all(timing.repeat.bounds.ofType(Duration).empty() and timing.repeat.bounds.ofType(Period).empty())
+or
+(
+  (%resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)).all(timing.repeat.bounds.ofType(Duration).exists())
+  and (%resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)).timing.repeat.bounds.ofType(Duration).value.distinct().count() = 1
+  and (%resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)).timing.repeat.bounds.ofType(Duration).code.distinct().count() = 1
+)
+or
+(
+  (%resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)).all(timing.repeat.bounds.ofType(Period).exists())
+  and (
+    (%resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)).all(timing.repeat.bounds.ofType(Period).start.exists())
+    or (%resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)).all(timing.repeat.bounds.ofType(Period).start.empty())
   )
-  and
-  ( /* Entweder alle Dosage-Elemente tragen einen Zeitrahmen oder keines. Die
-       Textgenerierung liest ihn nur aus dem ersten Element; ein Element ohne
-       Zeitrahmen wuerde sonst stillschweigend als begrenzt dargestellt. */
-    (
-      (
-        %resource.ofType(MedicationRequest).dosageInstruction |
-        %resource.ofType(MedicationDispense).dosageInstruction |
-        %resource.ofType(MedicationStatement).dosage
-      ).timing.repeat.bounds.exists()
-    )
-    implies
-    (
-      (
-        %resource.ofType(MedicationRequest).dosageInstruction |
-        %resource.ofType(MedicationDispense).dosageInstruction |
-        %resource.ofType(MedicationStatement).dosage
-      ).all(timing.repeat.bounds.exists())
-    )
+  and (
+    (%resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)).all(timing.repeat.bounds.ofType(Period).end.exists())
+    or (%resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)).all(timing.repeat.bounds.ofType(Period).end.empty())
   )
+  and (%resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)).timing.repeat.bounds.ofType(Period).start.distinct().count() <= 1
+  and (%resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)).timing.repeat.bounds.ofType(Period).end.distinct().count() <= 1
 )"
 Severity: #error
 
 Invariant: TimingIntervalOnlyOneFrequency
 Description: "If a dosage is defined by a pure interval, only one Dosage element is allowed in the resource."
 Expression: "( /* Detect Interval */
-  %resource.ofType(MedicationRequest).dosageInstruction
-  | %resource.ofType(MedicationDispense).dosageInstruction
-  | %resource.ofType(MedicationStatement).dosage
+  %resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)
 )
 .all(
   (
@@ -610,9 +527,7 @@ Severity: #error
 Invariant: TimingOnlyOnePeriodForDayOfWeek
 Description: "In a schema that combines dayOfWeek with either timeOfDay or when, each combination of weekday and time must be unique across all Dosage elements of a resource."
 Expression: "( /* Detect DayOfWeek and Time/4-Schema */
-  %resource.ofType(MedicationRequest).dosageInstruction
-  | %resource.ofType(MedicationDispense).dosageInstruction
-  | %resource.ofType(MedicationStatement).dosage
+  %resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)
 ).all(
   (
     timing.repeat.dayOfWeek.exists() and
@@ -732,12 +647,10 @@ Expression: "( /* Detect DayOfWeek and Time/4-Schema */
 Severity: #error
 
 Invariant: TimingOnlyOneTimeForInterval
-Description: "In a schema that combines an interval with timeOfDay or when, all Dosage elements of a resource must use the same period and periodUnit, and each timeOfDay or when value must be unique across them."
+Description: "In a schema that combines an interval with timeOfDay or when, all Dosage elements of a resource must use the same period, periodMax and periodUnit (periodMax either in all elements or in none), and each timeOfDay or when value must be unique across them."
 Expression: "/* Detect Interval and Time/4-Schema */
 (
-  %resource.ofType(MedicationRequest).dosageInstruction
-  | %resource.ofType(MedicationDispense).dosageInstruction
-  | %resource.ofType(MedicationStatement).dosage
+  %resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)
 )
 .all(
   (
@@ -757,8 +670,14 @@ Expression: "/* Detect Interval and Time/4-Schema */
     )
     implies
     (
-      %resource.dosageInstruction.timing.repeat.period.distinct().count() = 1
+      %resource.dosageInstruction.all(timing.repeat.period.exists() and timing.repeat.periodUnit.exists())
+      and %resource.dosageInstruction.timing.repeat.period.distinct().count() = 1
       and %resource.dosageInstruction.timing.repeat.periodUnit.distinct().count() = 1
+      and (
+        %resource.dosageInstruction.all(timing.repeat.periodMax.exists())
+        or %resource.dosageInstruction.all(timing.repeat.periodMax.empty())
+      )
+      and %resource.dosageInstruction.timing.repeat.periodMax.distinct().count() <= 1
     )
     and
     (
@@ -773,8 +692,14 @@ Expression: "/* Detect Interval and Time/4-Schema */
     implies
     (
       (
-        %resource.dosage.timing.repeat.period.distinct().count() = 1
+        %resource.dosage.all(timing.repeat.period.exists() and timing.repeat.periodUnit.exists())
+        and %resource.dosage.timing.repeat.period.distinct().count() = 1
         and %resource.dosage.timing.repeat.periodUnit.distinct().count() = 1
+        and (
+          %resource.dosage.all(timing.repeat.periodMax.exists())
+          or %resource.dosage.all(timing.repeat.periodMax.empty())
+        )
+        and %resource.dosage.timing.repeat.periodMax.distinct().count() <= 1
       )
       and
       (
@@ -799,9 +724,7 @@ Expression: "timeOfDay.empty() or
   .where(toString().length() > 10)
   .all(
     toString().substring(11, 8) in (
-      %resource.ofType(MedicationRequest).dosageInstruction
-      | %resource.ofType(MedicationDispense).dosageInstruction
-      | %resource.ofType(MedicationStatement).dosage
+      %resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)
     ).timing.repeat.timeOfDay.select(toString().substring(0, 8))
   )"
 Severity: #error

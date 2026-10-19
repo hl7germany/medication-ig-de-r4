@@ -2,7 +2,12 @@ import os
 import sys
 import json
 import re
+from decimal import Decimal
 from typing import List, Dict, Any
+
+# Von Hand gepflegte JSON-Beispiele (z. B. mit nachfolgender Null, die SUSHI
+# verwerfen würde, siehe check-fsh-decimals.py) werden zusätzlich berücksichtigt.
+EXAMPLES_DIR = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "../input/examples"))
 
 MATRIX_COLUMNS = [
     "duration", "durationUnit", "frequency", "period", "periodUnit",
@@ -12,6 +17,16 @@ COLUMN_KEYS = [
     "duration", "durationUnit", "frequency", "period", "periodUnit",
     "Day of Week", "Time Of Day", "when", "bounds[x]"
 ]
+
+def _plain_numbers(value):
+    """Decimal für die dict-Darstellung als float ausgeben (wie vor parse_float=Decimal)."""
+    if isinstance(value, Decimal):
+        return float(value)
+    if isinstance(value, dict):
+        return {k: _plain_numbers(v) for k, v in value.items()}
+    if isinstance(value, list):
+        return [_plain_numbers(v) for v in value]
+    return value
 
 def extract_timing_matrix_fields(timing):
     def get(val, default=""):
@@ -43,7 +58,7 @@ def extract_timing_matrix_fields(timing):
             end = bounds.get("end", "")
             fields["bounds[x]"] = f"Period = {start} - {end}".strip()
         else:
-            fields["bounds[x]"] = str(bounds)
+            fields["bounds[x]"] = str(_plain_numbers(bounds))
     else:
         fields["bounds[x]"] = ""
     return fields
@@ -136,25 +151,27 @@ def generate_matrix_for_constraint(input_folder, output_path, constraint_key, se
     # The key must be followed by '-' or '.', otherwise a key would also match example
     # files of a longer key sharing the same prefix (e.g. 'Foo' vs. 'FooWarning').
     marker_pattern = re.compile(rf"-[CW]-{re.escape(constraint_key)}(?=[-.]|$)")
-    all_files: List[str] = []
-    for f in os.listdir(input_folder):
-        if not (f.startswith('MedicationRequest-') or f.startswith('MedicationDispense-') or f.startswith('MedicationStatement-')):
+    all_files: Dict[str, str] = {}
+    for folder in (input_folder, EXAMPLES_DIR):
+        if not os.path.isdir(folder):
             continue
-        fp = os.path.join(input_folder, f)
-        if not os.path.isfile(fp):
-            continue
-        if marker_pattern.search(f):
-            all_files.append(f)
-    
-    # Sort files naturally (01-of-02 before 02-of-02)
-    all_files.sort(key=natural_sort_key)
-    
+        for f in os.listdir(folder):
+            if not (f.startswith('MedicationRequest-') or f.startswith('MedicationDispense-') or f.startswith('MedicationStatement-')):
+                continue
+            fp = os.path.join(folder, f)
+            if not os.path.isfile(fp):
+                continue
+            if marker_pattern.search(f):
+                all_files.setdefault(f, fp)
+
     matrix_rows = []
-    for filename in all_files:
-        file_path = os.path.join(input_folder, filename)
+    # Sort files naturally (01-of-02 before 02-of-02)
+    for filename in sorted(all_files, key=natural_sort_key):
+        file_path = all_files[filename]
         try:
             with open(file_path, "r", encoding="utf-8") as f:
-                resource = json.load(f)
+                # Decimal erhält die Genauigkeit (0.1250); float verwürfe die Null.
+                resource = json.load(f, parse_float=Decimal)
             dosages = extract_dosages(resource)
             if not dosages:
                 continue  # skip if no dosages

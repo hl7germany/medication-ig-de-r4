@@ -39,7 +39,7 @@ Die vollständige Einnahmeangabe einschließlich des exakten Dosiswerts bleibt i
 
 - `1.25` besteht den Bruchteils-Constraint und bleibt strukturiert.
 - `0.125`, `0.375`, `0.625`, `0.875` und `1.125` bestehen beide Dosis-Constraints und bleiben strukturiert.
-- `0.333` und `0.666` lösen trotz zulässiger Nachkommastellenzahl M01 aus; die Drittelwerte bleiben `.33` und `.66`.
+- `0.333` und `0.666` lösen trotz zulässiger Nachkommastellenzahl M01 aus; für Drittel sind nur `.33` und `.66` zulässig.
 - `1.2` löst M01 aus; kein Zahlenwert darf gerundet werden.
 - `0` oder ein negativer Wert gehört zu M03, nicht zu dieser Renderer-Allowlist.
 - `1.2000000000000001` darf nicht als `1,2000000000000002` übernommen werden; die Dezimalvergleichsprüfung muss die Änderung erkennen.

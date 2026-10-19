@@ -1120,19 +1120,19 @@
       { "name": "Dosis fehlt", "dosage": {}, "expect": true },
       { "name": "Quantity ohne Wert", "dosage": { "doseAndRate": [{ "doseQuantity": { "unit": "Stück" } }] }, "expect": true },
       { "name": "Range ohne Werte", "dosage": { "doseAndRate": [{ "doseRange": { "low": { "unit": "Stück" }, "high": { "unit": "Stück" } } }] }, "expect": true },
-      { "name": "Ganzzahl ohne Laengenlimit", "dosage": { "doseAndRate": [{ "doseQuantity": { "value": 12345 } }] }, "expect": true },
+      { "name": "Ganzzahl ohne Längenlimit", "dosage": { "doseAndRate": [{ "doseQuantity": { "value": 12345 } }] }, "expect": true },
       { "name": "Eine Nachkommastelle", "dosage": { "doseAndRate": [{ "doseQuantity": { "value": 0.5 } }] }, "expect": true },
       { "name": "Zwei Nachkommastellen", "dosage": { "doseAndRate": [{ "doseQuantity": { "value": 0.25 } }] }, "expect": true },
       { "name": "Quantity drei Nachkommastellen", "dosage": { "doseAndRate": [{ "doseQuantity": { "value": 0.125 } }] }, "expect": true },
       { "name": "Range low drei Nachkommastellen", "dosage": { "doseAndRate": [{ "doseRange": { "low": { "value": 0.375 }, "high": { "value": 1 } } }] }, "expect": true },
       { "name": "Range high drei Nachkommastellen", "dosage": { "doseAndRate": [{ "doseRange": { "high": { "value": 0.875 } } }] }, "expect": true },
       { "name": "Gemischter Bereich drei Nachkommastellen", "dosage": { "doseAndRate": [{ "doseRange": { "low": { "value": 1.125 }, "high": { "value": 2.625 } } }] }, "expect": true },
-      { "name": "Notation erlaubt auch unzulaessigen Bruchteil", "dosage": { "doseAndRate": [{ "doseQuantity": { "value": 0.333 } }] }, "expect": true },
+      { "name": "Notation erlaubt auch unzulässigen Bruchteil", "dosage": { "doseAndRate": [{ "doseQuantity": { "value": 0.333 } }] }, "expect": true },
       { "name": "Quantity vier Nachkommastellen", "dosage": { "doseAndRate": [{ "doseQuantity": { "value": 0.0625 } }] }, "expect": false },
       { "name": "Range low vier Nachkommastellen", "dosage": { "doseAndRate": [{ "doseRange": { "low": { "value": 0.0625 }, "high": { "value": 1 } } }] }, "expect": false },
       { "name": "Range high vier Nachkommastellen", "dosage": { "doseAndRate": [{ "doseRange": { "high": { "value": 1.0625 } } }] }, "expect": false },
-      { "name": "Quantity knapp ueber Achtel", "dosage": { "doseAndRate": [{ "doseQuantity": { "value": 0.1251 } }] }, "expect": false },
-      { "name": "Ungueltige Notation im zweiten Element", "dosages": [{ "doseAndRate": [{ "doseQuantity": { "value": 0.125 } }] }, { "doseAndRate": [{ "doseQuantity": { "value": 0.0625 } }] }], "expect": false }
+      { "name": "Quantity knapp über Achtel", "dosage": { "doseAndRate": [{ "doseQuantity": { "value": 0.1251 } }] }, "expect": false },
+      { "name": "Ungültige Notation im zweiten Element", "dosages": [{ "doseAndRate": [{ "doseQuantity": { "value": 0.125 } }] }, { "doseAndRate": [{ "doseQuantity": { "value": 0.0625 } }] }], "expect": false }
     ]
   },
   {

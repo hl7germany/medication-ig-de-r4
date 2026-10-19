@@ -562,15 +562,17 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 Dosiswerte in `doseQuantity` und `doseRange` dürfen nur ganzzahlig sein oder einen der Dezimalanteile `.125`, `.25`, `.33`, `.375`, `.5`, `.625`, `.66`, `.75` oder `.875` verwenden. Die Achtelschritte sind als Dezimalzahlen anzugeben, nicht als Bruchzeichenfolge wie `1/8`. Ganzzahlige Anteile sind zulässig, beispielsweise `1.125` für 1 1/8 Einheiten.
 
 **Warum?**  
-Bildet halbe, viertel, achtel und näherungsweise drittel Einheiten ab. Ob die konkrete Darreichungsform entsprechend teilbar ist, muss fachlich geprüft werden; die Zulässigkeit eines Zahlenwerts allein belegt dies nicht. Die bisherigen Drittelwerte `.33` und `.66` bleiben unverändert; `.333` und `.666` sind weiterhin nicht zulässig. Die zulässige Schreibweise des Werts regelt zusätzlich [DosageDoseValueDecimalNotation](#dosagedosevaluedecimalnotation).
+Bildet halbe, viertel, achtel und näherungsweise drittel Einheiten ab. Ob die konkrete Darreichungsform entsprechend teilbar ist, muss fachlich geprüft werden; die Zulässigkeit eines Zahlenwerts allein belegt dies nicht. Für Drittel sind nur `.33` und `.66` zulässig, nicht `.333` oder `.666`. Die zulässige Schreibweise des Werts regelt zusätzlich [DosageDoseValueDecimalNotation](#dosagedosevaluedecimalnotation).
 
 | Bruchteil | Dezimalanteil |
 | --- | --- |
 | 1/8 | `.125` |
 | 2/8 = 1/4 | `.25` |
+| 1/3 (gerundet) | `.33` |
 | 3/8 | `.375` |
 | 4/8 = 1/2 | `.5` |
 | 5/8 | `.625` |
+| 2/3 (gerundet) | `.66` |
 | 6/8 = 3/4 | `.75` |
 | 7/8 | `.875` |
 
@@ -583,10 +585,10 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 ##### DosageDoseValueDecimalNotation
 
 **Beschreibung:**  
-Dosiswerte in `doseQuantity.value` sowie `doseRange.low.value` und `doseRange.high.value` müssen in einfacher Dezimalschreibweise mit maximal drei Nachkommastellen angegeben werden (z. B. `0.125`, `0.5`, `1`, `2.875`). Vier Nachkommastellen sind nicht zulässig, beispielsweise `0.0625`. Die vom Datentyp `decimal` erlaubte Exponentialschreibweise ist unzulässig; `0.5` darf also nicht als `50e-2` übermittelt werden.
+Dosiswerte in `doseQuantity.value` sowie `doseRange.low.value` und `doseRange.high.value` müssen in einfacher Dezimalschreibweise mit maximal drei Nachkommastellen angegeben werden (z. B. `0.125`, `0.5`, `1`, `2.875`). Vier Nachkommastellen sind nicht zulässig, beispielsweise `0.0625`. Das gilt auch, wenn nur eine nachfolgende Null hinzukommt (`0.1250`): Nachfolgende Nullen zählen mit, weil FHIR die Genauigkeit eines `decimal` als Teil des Werts betrachtet. Die vom Datentyp `decimal` erlaubte Exponentialschreibweise ist unzulässig; `0.5` darf also nicht als `50e-2` übermittelt werden.
 
 **Warum?**  
-Der Constraint `DosageDoseQuantityAllowedFractions` schränkt den Wertebereich ein, arbeitet dafür aber auf dem geparsten Zahlenwert und ist gegenüber der Notation blind. Da Dosiswerte in der Praxis auch textnah weiterverarbeitet und angezeigt werden, legt dieser Constraint zusätzlich die Schreibweise fest. Drei Nachkommastellen ermöglichen die exakte Darstellung von Achteln. Die Grenze erlaubt nicht beliebige Tausendstel; die Bruchteilsregel gilt zusätzlich. Ob Exponentialnotation nach dem Parsen noch erkannt wird, hängt vom Parser beziehungsweise Validator ab (siehe [Migration der Exponentialnotation](./migration-m02-exponentialnotation.html)).
+Der Constraint `DosageDoseQuantityAllowedFractions` schränkt den Wertebereich ein, arbeitet dafür aber auf dem geparsten Zahlenwert und ist gegenüber der Notation blind. Da Dosiswerte in der Praxis auch textnah weiterverarbeitet und angezeigt werden, legt dieser Constraint zusätzlich die Schreibweise fest. Drei Nachkommastellen ermöglichen die exakte Darstellung von Achteln. Die Grenze erlaubt nicht beliebige Tausendstel; die Bruchteilsregel gilt zusätzlich. Ob Exponentialnotation oder nachfolgende Nullen nach dem Parsen noch erkannt werden, hängt vom Parser beziehungsweise Validator ab (siehe [Migration der Exponentialnotation](./migration-m02-exponentialnotation.html)).
 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 

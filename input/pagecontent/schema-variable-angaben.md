@@ -13,6 +13,7 @@ Folgende weitere Beispiele sind in diesem IG dargestellt:
 | Fall | Beispielstring | Beispiel-Datei |
 | -------- | ------- | ------- |
 | Variable Einzeldosis | täglich: je 1 bis 2 Stück | [Example-MR-Dosage-variable-doseRange](MedicationRequest-Example-MR-Dosage-variable-doseRange.html) |
+| Variable Einzeldosis in Achtelschritten | täglich: je 0,375 bis 1,875 Stück | [Example-MS-Dosage-eighths-range](MedicationStatement-Example-MS-Dosage-eighths-range.html) |
 | Variable Frequenz | 1 bis 2 x täglich: je 1 Stück | [Example-MR-Dosage-variable-frequency](MedicationRequest-Example-MR-Dosage-variable-frequency.html) |
 | Variable Periode | alle 4 bis 6 Tage: je 1 Stück | [Example-MR-Dosage-variable-period](MedicationRequest-Example-MR-Dosage-variable-period.html) |
 | Variable Periode ab 1 | alle 1 bis 3 Tage: je 1 Stück | [Example-MR-Dosage-variable-period-1-3d](MedicationRequest-Example-MR-Dosage-variable-period-1-3d.html) |
@@ -22,6 +23,8 @@ Folgende weitere Beispiele sind in diesem IG dargestellt:
 ### Variable Einzeldosis
 
 Eine variable Einzeldosis wird über `Dosage.doseAndRate.doseRange` modelliert. Dabei beschreibt `low` die Untergrenze und `high` die Obergrenze des zulässigen Dosisbereichs.
+
+Beide Grenzen dürfen die [zulässigen Dosisbruchteile](./dosierung-constraints.html#dosagedosequantityallowedfractions) einschließlich Achtelschritten verwenden. Sie werden als Dezimalzahlen mit höchstens drei Nachkommastellen übertragen, beispielsweise `0.375` bis `1.875` für 3/8 bis 1 7/8 Einheiten.
 
 ### Beispiel
 

@@ -1,3 +1,37 @@
+Instance: Example-MR-Dosage-eighths
+InstanceOf: MedicationRequestDgMP
+Usage: #example
+Title: "Kodierte Dosierung in Achtelschritten"
+Description: "Technisches Beispiel mit 1/8, 3/8, 5/8 und 7/8 Stück zu vier Tageszeiten, als Dezimalwerte mit drei Nachkommastellen."
+* subject.display = "Patient"
+* status = #active
+* intent = #order
+* medicationCodeableConcept.text = "Testmedikation"
+* dosageInstruction[+]
+  * timing.repeat.when = #MORN
+  * doseAndRate.doseQuantity = 0.125 $kbv-dosiereinheit#1 "Stück"
+* dosageInstruction[+]
+  * timing.repeat.when = #NOON
+  * doseAndRate.doseQuantity = 0.375 $kbv-dosiereinheit#1 "Stück"
+* dosageInstruction[+]
+  * timing.repeat.when = #EVE
+  * doseAndRate.doseQuantity = 0.625 $kbv-dosiereinheit#1 "Stück"
+* dosageInstruction[+]
+  * timing.repeat.when = #NIGHT
+  * doseAndRate.doseQuantity = 0.875 $kbv-dosiereinheit#1 "Stück"
+
+Instance: Example-MD-Dosage-eighths-mixed
+InstanceOf: MedicationDispenseDgMP
+Usage: #example
+Title: "Kodierte Dosierung mit ganzzahligem Anteil und Achtel"
+Description: "Technisches Beispiel mit 1 1/8 Stück als doseQuantity.value = 1.125."
+* subject.display = "Patient"
+* status = #completed
+* medicationCodeableConcept.text = "Testmedikation"
+* dosageInstruction[+]
+  * timing.repeat.when = #MORN
+  * doseAndRate.doseQuantity = 1.125 $kbv-dosiereinheit#1 "Stück"
+
 Instance: Example-MR-Dosage-UnitStueck-1020
 InstanceOf: MedicationRequestDgMP
 Usage: #example

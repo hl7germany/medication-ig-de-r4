@@ -29,6 +29,7 @@
 |  |  | 2 Stück |  |  |  |  |  | EVE |  |
 | [MedicationDispense-Example-MD-Dosage-UnitTasse-1000](./MedicationDispense-Example-MD-Dosage-UnitTasse-1000.html) | täglich: 2-0-0-0 Teelöffel | 2 Teelöffel |  |  |  |  |  | MORN |  |
 | [MedicationDispense-Example-MD-Dosage-Zero-Range-Low](./MedicationDispense-Example-MD-Dosage-Zero-Range-Low.html) | täglich: morgens — je 0 bis 2 Stück | 0-2 Stück |  |  |  |  |  | MORN |  |
+| [MedicationDispense-Example-MD-Dosage-eighths-mixed](./MedicationDispense-Example-MD-Dosage-eighths-mixed.html) | täglich: 1,125-0-0-0 Stück | 1.125 Stück |  |  |  |  |  | MORN |  |
 | [MedicationDispense-Example-MD-DosageTr-1000](./MedicationDispense-Example-MD-DosageTr-1000.html) | täglich: 20-0-0-0 Tropfen | 20 Tropfen |  |  |  |  |  | MORN |  |
 | [MedicationDispense-Example-MD-Weekday-Legacy](./MedicationDispense-Example-MD-Weekday-Legacy.html) | dienstags — je 1 Stück; donnerstags — je 1 Stück | 1 Stück | 2 | 1 | wk | tue, thu |  |  |  |
 | [MedicationDispense-Example-MD-Weekday-TimeOfDay-Legacy](./MedicationDispense-Example-MD-Weekday-TimeOfDay-Legacy.html) | dienstags 08:00 Uhr, 20:00 Uhr — je 1 Stück; donnerstags 08:00 Uhr, 20:00 Uhr — je 1 Stück | 1 Stück | 4 | 1 | wk | tue, thu | 08:00:00, 20:00:00 |  |  |
@@ -127,6 +128,10 @@
 |  |  | 2 Stück |  | 2 | d |  | 20:00:00 |  |  |
 | [MedicationRequest-Example-MR-Dosage-comb-interval-4](./MedicationRequest-Example-MR-Dosage-comb-interval-4.html) | alle 2 Tage: 08:00 Uhr — je 1 Stück, 10:00 Uhr — je 2 Stück, 14:00 Uhr — je 2 Stück, 20:00 Uhr — je 1 Stück, 22:00 Uhr — je 2 Stück | 1 Stück |  | 2 | d |  | 08:00:00, 20:00:00 |  |  |
 |  |  | 2 Stück |  | 2 | d |  | 10:00:00, 14:00:00, 22:00:00 |  |  |
+| [MedicationRequest-Example-MR-Dosage-eighths](./MedicationRequest-Example-MR-Dosage-eighths.html) | täglich: 0,125-0,375-0,625-0,875 Stück | 0.125 Stück |  |  |  |  |  | MORN |  |
+|  |  | 0.375 Stück |  |  |  |  |  | NOON |  |
+|  |  | 0.625 Stück |  |  |  |  |  | EVE |  |
+|  |  | 0.875 Stück |  |  |  |  |  | NIGHT |  |
 | [MedicationRequest-Example-MR-Dosage-interval-1mo](./MedicationRequest-Example-MR-Dosage-interval-1mo.html) | monatlich: je 1 Stück | 1 Stück | 1 | 1 | mo |  |  |  |  |
 | [MedicationRequest-Example-MR-Dosage-interval-2d-bound](./MedicationRequest-Example-MR-Dosage-interval-2d-bound.html) | für 6 Wochen alle 2 Tage: je 2 Stück | 2 Stück | 1 | 2 | d |  |  |  | {'system': 'http://unitsofmeasure.org', 'value': 6, 'code': 'wk', 'unit': 'Woche(n)'} |
 | [MedicationRequest-Example-MR-Dosage-interval-2wk](./MedicationRequest-Example-MR-Dosage-interval-2wk.html) | alle 2 Wochen: je 1 Stück | 1 Stück | 1 | 2 | wk |  |  |  |  |
@@ -208,6 +213,7 @@
 | [MedicationStatement-Example-MS-Dosage-UnitStueck-1020](./MedicationStatement-Example-MS-Dosage-UnitStueck-1020.html) | täglich: 1-0-2-0 Stück | 1 Stück |  |  |  |  |  | MORN |  |
 |  |  | 2 Stück |  |  |  |  |  | EVE |  |
 | [MedicationStatement-Example-MS-Dosage-UnitTasse-1000](./MedicationStatement-Example-MS-Dosage-UnitTasse-1000.html) | täglich: 2-0-0-0 Teelöffel | 2 Teelöffel |  |  |  |  |  | MORN |  |
+| [MedicationStatement-Example-MS-Dosage-eighths-range](./MedicationStatement-Example-MS-Dosage-eighths-range.html) | täglich: je 0,375 bis 1,875 Stück | 0.375-1.875 Stück | 1 | 1 | d |  |  |  |  |
 | [MedicationStatement-Example-MS-DosageTr-1000](./MedicationStatement-Example-MS-DosageTr-1000.html) | täglich: 20-0-0-0 Tropfen | 20 Tropfen |  |  |  |  |  | MORN |  |
 | [MedicationStatement-Example-MS-Weekday-Legacy](./MedicationStatement-Example-MS-Weekday-Legacy.html) | dienstags — je 1 Stück; donnerstags — je 1 Stück | 1 Stück | 2 | 1 | wk | tue, thu |  |  |  |
 | [MedicationStatement-Example-MS-Weekday-TimeOfDay-Legacy](./MedicationStatement-Example-MS-Weekday-TimeOfDay-Legacy.html) | dienstags 08:00 Uhr, 20:00 Uhr — je 1 Stück; donnerstags 08:00 Uhr, 20:00 Uhr — je 1 Stück | 1 Stück | 4 | 1 | wk | tue, thu | 08:00:00, 20:00:00 |  |  |

@@ -10,6 +10,10 @@
 
 **Invarianten**
 
+- **`DosageDoseQuantityAllowedFractions` und `DosageDoseValueDecimalNotation` (`DosageDgMP`)**
+  - Achtelschritte sind zusätzlich zulässig: `.125`, `.375`, `.625` und `.875` ergänzen die bisherigen Bruchteile; ganzzahlige Anteile wie `1.125` sind ebenfalls erlaubt. Dies gilt für `doseQuantity.value` sowie beide Grenzen von `doseRange`.
+  - Die maximale Zahl der Nachkommastellen steigt von zwei auf drei. Die Drittelwerte bleiben `.33` und `.66`; beliebige Tausendstel und Exponentialnotation bleiben unzulässig.
+  - Positivbeispiele für Achteldosen und Dosisbereiche ergänzt; Negativbeispiele zur Notation verwenden jetzt vier Nachkommastellen. Die Migrationshinweise berücksichtigen die Erweiterung.
 - **`AsNeededForRequiresAsNeededWarning` (`DosageDE`) — neu** (HDB-924)
   - Warnt, wenn ein Anlass (`extension[asNeededFor]`) ohne `asNeededBoolean = true` angegeben ist. `dos-1` lässt einen Anlass ohne `asNeeded` wie in FHIR R5 weiterhin zu; lesende Systeme werten ihn als Bedarfsdosierung. In den dgMP-Profilen bleibt der Fall über `AsNeededForRequiresAsNeeded` ein Fehler.
 - **`DosageRequiresGeneratedText` (`DosageDgMP`) — ersetzt `DosageStructuredRequiresGeneratedText`** (HDB-947)

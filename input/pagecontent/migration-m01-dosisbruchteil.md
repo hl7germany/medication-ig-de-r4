@@ -2,7 +2,7 @@
 
 ### Anlass
 
-`DosageDoseQuantityAllowedFractions` lässt in strukturierten Dosen nur ganze Werte und die Bruchteile `.25`, `.33`, `.5`, `.66` und `.75` zu. In 1.0.7 waren auch andere positive Werte wie `1.2` zulässig.
+`DosageDoseQuantityAllowedFractions` lässt in strukturierten Dosen nur ganze Werte und die Bruchteile `.125`, `.25`, `.33`, `.375`, `.5`, `.625`, `.66`, `.75` und `.875` zu. Achtelschritte einschließlich ganzzahliger Anteile wie `1.125` bleiben damit strukturiert abbildbar. In 1.0.7 waren auch andere positive Werte wie `1.2` zulässig.
 
 ### Auslöser
 
@@ -38,6 +38,8 @@ Die vollständige Einnahmeangabe einschließlich des exakten Dosiswerts bleibt i
 ### Prüffälle
 
 - `1.25` besteht den Bruchteils-Constraint und bleibt strukturiert.
+- `0.125`, `0.375`, `0.625`, `0.875` und `1.125` bestehen beide Dosis-Constraints und bleiben strukturiert.
+- `0.333` und `0.666` lösen trotz zulässiger Nachkommastellenzahl M01 aus; die Drittelwerte bleiben `.33` und `.66`.
 - `1.2` löst M01 aus; kein Zahlenwert darf gerundet werden.
 - `0` oder ein negativer Wert gehört zu M03, nicht zu dieser Renderer-Allowlist.
 - `1.2000000000000001` darf nicht als `1,2000000000000002` übernommen werden; die Dezimalvergleichsprüfung muss die Änderung erkennen.

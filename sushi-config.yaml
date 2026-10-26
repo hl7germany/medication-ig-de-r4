@@ -91,8 +91,6 @@ pages:
       title: M02 - Exponentialschreibweise
     migration-m04-viererschema-freitext.md:
       title: M04 - 4-Schema im Freitext
-    migration-m18-einheitenanzeige.md:
-      title: M18 - Anzeigeeinheit passt nicht zum UCUM-Code
   artifacts.html:
     title: FHIR Summary
   downloads.md:

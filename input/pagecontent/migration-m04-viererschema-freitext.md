@@ -21,6 +21,8 @@ M04 gilt für bestehende Freitext-Dosierungen ebenso wie für einen Text, der im
 
 Der Text wird nicht in eine strukturierte Dosierung umgewandelt.
 
+Das Voranstellen von `täglich: ` ist die einzige Ergänzung, die die Überführung vornimmt. Sie löst den Konflikt mit `DosageFourSlotPatternInText` und entspricht der Form, in der die Textgenerierung 2.0.0 ein strukturiertes 4-Schema ausgibt (zum Beispiel `täglich: 1-0-1-0 Stück`).
+
 ### Beispiel
 
 ```text

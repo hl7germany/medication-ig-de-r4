@@ -8,6 +8,7 @@ Description: "Dieses Profil dient ausschließlich der Validierung des Implementa
   and GeneratedDosageInstructionsMeta named generatedDosageInstructionsMeta 0..1 MS
 * insert MedicationCommonRuleset
 * obeys ExtRequiresDosage-MS
+* obeys RenderedRequiresMeta-MS
 
 * dosage only DosageDgMP
   * ^short = "Angabe der Dosierinformationen strukturiert oder als Freitext"
@@ -20,4 +21,13 @@ Expression: "(
     url = 'http://hl7.org/fhir/5.0/StructureDefinition/extension-MedicationStatement.renderedDosageInstruction'
   ).exists()
 ) implies dosage.exists()"
+Severity: #error
+
+Invariant: RenderedRequiresMeta-MS
+Description: "If the renderedDosageInstruction extension is present, the GeneratedDosageInstructionsMeta extension must be present."
+Expression: "extension.where(
+  url = 'http://hl7.org/fhir/5.0/StructureDefinition/extension-MedicationStatement.renderedDosageInstruction'
+).exists() implies extension.where(
+  url = 'http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta'
+).exists()"
 Severity: #error

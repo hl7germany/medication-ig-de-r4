@@ -125,6 +125,7 @@ def should_skip_extension_generation(filename: str) -> bool:
         "Invalid-Dosage-C-DosageRequiresGeneratedText",
         "Invalid-Dosage-C-DosageStructuredRequiresGeneratedText",
         "INV-C-DosageRequiresGeneratedText",
+        "INV-C-RenderedRequiresMeta",
     )
     return any(marker in name for marker in skip_markers)
 

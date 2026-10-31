@@ -49,6 +49,8 @@
 - **`TimingBoundsPeriodNotForWhen` (`TimingDgMP`) — neu**
   - Im Tageszeitenschema (`when`) und im Wochentagsschema ohne `timeOfDay` dürfen `boundsPeriod.start` und `boundsPeriod.end` keine Uhrzeit enthalten.
   - Das Beispiel `Example-MR-Dosage-1000-startdatetime` verwendet deshalb jetzt das Uhrzeitenschema, `Example-MR-Dosage-1000-startdatetime-daychange` ein reines Intervall.
+- **`RenderedRequiresMeta-MR`, `RenderedRequiresMeta-MD`, `RenderedRequiresMeta-MS` (`MedicationRequestDgMP`, `MedicationDispenseDgMP`, `MedicationStatementDgMP`) — neu**
+  - `renderedDosageInstruction` verlangt `GeneratedDosageInstructionsMeta`: Ohne Sprache und Algorithmus-Version in der Meta-Extension können entgegennehmende Systeme den generierten Dosierungstext nicht validieren.
 
 **Fachliche Informationsmodelle**
 

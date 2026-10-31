@@ -26,7 +26,10 @@
     "MaxDosePerPeriodOnly24hOr1d"
   ],
   "DosageRequiresGeneratedText": [
-    "FreeTextMatchesRenderedText"
+    "FreeTextMatchesRenderedText",
+    "RenderedRequiresMeta-MD",
+    "RenderedRequiresMeta-MR",
+    "RenderedRequiresMeta-MS"
   ],
   "DosageStructuredOrFreeText": [
     "DosageRequiresGeneratedText",
@@ -43,6 +46,15 @@
     "DosageRequiresGeneratedText",
     "rng-2"
   ],
+  "ExtRequiresDosage-MD": [
+    "RenderedRequiresMeta-MD"
+  ],
+  "ExtRequiresDosage-MR": [
+    "RenderedRequiresMeta-MR"
+  ],
+  "ExtRequiresDosage-MS": [
+    "RenderedRequiresMeta-MS"
+  ],
   "FreeTextSingleDosageOnly": [
     "FreeTextMatchesRenderedText"
   ],
@@ -56,6 +68,15 @@
     "DosageRequiresGeneratedText",
     "DosageStructuredRequiresBoth",
     "FreeTextMatchesRenderedText"
+  ],
+  "RenderedRequiresMeta-MD": [
+    "DosageRequiresGeneratedText"
+  ],
+  "RenderedRequiresMeta-MR": [
+    "DosageRequiresGeneratedText"
+  ],
+  "RenderedRequiresMeta-MS": [
+    "DosageRequiresGeneratedText"
   ],
   "TimingBoundsPeriodFullDate": [
     "DosageRequiresGeneratedText"
@@ -99,7 +120,6 @@
     "TimingOnlyOneType"
   ],
   "TimingValuesPositive": [
-    "DosageRequiresGeneratedText",
     "TimingVarPeriodGtMin"
   ]
 }

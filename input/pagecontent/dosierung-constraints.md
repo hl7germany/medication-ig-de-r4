@@ -777,7 +777,7 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 #### Fehler: Auf Ressourcen-Ebene
 
-Die folgende Invariante ist an den Elternressourcen modelliert, weil sie einen Fall abdeckt, in dem gar kein `Dosage`-Objekt vorliegt. Sie existiert je einmal für `MedicationRequest`, `MedicationDispense` und `MedicationStatement` (Constraint-Keys `ExtRequiresDosage-MR`, `ExtRequiresDosage-MD` und `ExtRequiresDosage-MS`).
+Die folgenden Invarianten sind an den Elternressourcen modelliert: `ExtRequiresDosage` deckt den Fall ab, in dem gar kein `Dosage`-Objekt vorliegt, und `RenderedRequiresMeta` stellt sicher, dass zu `renderedDosageInstruction` immer die zugehörigen Metadaten gehören. Beide existieren je einmal für `MedicationRequest`, `MedicationDispense` und `MedicationStatement` (Constraint-Keys `ExtRequiresDosage-MR`, `ExtRequiresDosage-MD` und `ExtRequiresDosage-MS` bzw. `RenderedRequiresMeta-MR`, `RenderedRequiresMeta-MD` und `RenderedRequiresMeta-MS`).
 
 ##### DosageExtensionsRequireDosage
 
@@ -787,5 +787,13 @@ Wenn auf einer MedicationRequest, MedicationDispense oder MedicationStatement di
 **Warum?**
 Die Dosierungs-Extensions enthalten Metadaten beziehungsweise den gerenderten Text zu einer Dosierungsangabe. Ohne Dosierung fehlt ihr fachlicher Bezug. Da es in diesem Fall kein `Dosage`-Objekt gibt, ist die Anforderung als Constraint an den jeweiligen Elternressourcen modelliert.
 
+##### RenderedRequiresMeta
+
+**Beschreibung:**
+Wenn auf einer MedicationRequest, MedicationDispense oder MedicationStatement die Extension `renderedDosageInstruction` vorliegt, muss auch die Extension `GeneratedDosageInstructionsMeta` vorhanden sein.
+
+**Warum?**
+`renderedDosageInstruction` trägt den generierten Dosierungstext; `GeneratedDosageInstructionsMeta` trägt dazu die Sprache und die Version des Textgenerierungs-Algorithmus. Fehlen die Metadaten, können entgegennehmende Systeme den Text nicht gegen eine definierte Version und Sprache validieren (siehe [Bereitstellung des Dosierungstextes](./dosierung-text-hinzufuegen.html)).
+
 **Hinweis zur Implementierung:**
-Diese Invariante ist nicht auf den Dosage-Profilen definiert, sondern auf den abstrakten Profilen `MedicationRequestDgMP`, `MedicationDispenseDgMP` und `MedicationStatementDgMP`. Eigene Implementierungsprofile, die nicht von diesen abstrakten dgMP-Profilen ableiten, müssen den jeweils passenden Constraint daher manuell übernehmen.
+Diese Invarianten sind nicht auf den Dosage-Profilen definiert, sondern auf den abstrakten Profilen `MedicationRequestDgMP`, `MedicationDispenseDgMP` und `MedicationStatementDgMP`. Eigene Implementierungsprofile, die nicht von diesen abstrakten dgMP-Profilen ableiten, müssen die jeweils passenden Constraints daher manuell übernehmen.

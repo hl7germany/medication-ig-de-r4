@@ -1,8 +1,8 @@
 Instance: Example-MS-Dosage-eighths-range
 InstanceOf: MedicationStatementDgMP
 Usage: #example
-Title: "Variable Einzeldosis in Achtelschritten"
-Description: "Technisches Beispiel mit einem Dosisbereich von 3/8 bis 1 7/8 Stück, als Dezimalwerte 0.375 bis 1.875."
+Title: "Variable Einzeldosis mit 1/8"
+Description: "Technisches Beispiel mit einem Dosisbereich von 1/8 bis 1 2/3 Stück, als Dezimalwerte 0.125 bis 1.66."
 * subject.display = "Patient"
 * status = #active
 * medicationCodeableConcept.text = "Testmedikation"
@@ -11,8 +11,8 @@ Description: "Technisches Beispiel mit einem Dosisbereich von 3/8 bis 1 7/8 Stü
   * timing.repeat.period = 1
   * timing.repeat.periodUnit = #d
   * doseAndRate.doseRange
-    * low = 0.375 $kbv-dosiereinheit#1 "Stück"
-    * high = 1.875 $kbv-dosiereinheit#1 "Stück"
+    * low = 0.125 $kbv-dosiereinheit#1 "Stück"
+    * high = 1.66 $kbv-dosiereinheit#1 "Stück"
 
 Instance: Example-MR-Dosage-variable-doseRange
 InstanceOf: MedicationRequestDgMP

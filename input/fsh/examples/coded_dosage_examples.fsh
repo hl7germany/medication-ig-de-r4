@@ -1,8 +1,8 @@
 Instance: Example-MR-Dosage-eighths
 InstanceOf: MedicationRequestDgMP
 Usage: #example
-Title: "Kodierte Dosierung in Achtelschritten"
-Description: "Technisches Beispiel mit 1/8, 3/8, 5/8 und 7/8 Stück zu vier Tageszeiten, als Dezimalwerte mit drei Nachkommastellen."
+Title: "Kodierte Dosierung mit 1/8 und bisherigen Bruchteilen"
+Description: "Technisches Beispiel mit 1/8, 1/4, 1/3 und 2/3 Stück zu vier Tageszeiten."
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -12,13 +12,13 @@ Description: "Technisches Beispiel mit 1/8, 3/8, 5/8 und 7/8 Stück zu vier Tage
   * doseAndRate.doseQuantity = 0.125 $kbv-dosiereinheit#1 "Stück"
 * dosageInstruction[+]
   * timing.repeat.when = #NOON
-  * doseAndRate.doseQuantity = 0.375 $kbv-dosiereinheit#1 "Stück"
+  * doseAndRate.doseQuantity = 0.25 $kbv-dosiereinheit#1 "Stück"
 * dosageInstruction[+]
   * timing.repeat.when = #EVE
-  * doseAndRate.doseQuantity = 0.625 $kbv-dosiereinheit#1 "Stück"
+  * doseAndRate.doseQuantity = 0.33 $kbv-dosiereinheit#1 "Stück"
 * dosageInstruction[+]
   * timing.repeat.when = #NIGHT
-  * doseAndRate.doseQuantity = 0.875 $kbv-dosiereinheit#1 "Stück"
+  * doseAndRate.doseQuantity = 0.66 $kbv-dosiereinheit#1 "Stück"
 
 Instance: Example-MD-Dosage-eighths-mixed
 InstanceOf: MedicationDispenseDgMP

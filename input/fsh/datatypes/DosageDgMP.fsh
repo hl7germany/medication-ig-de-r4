@@ -186,7 +186,7 @@ implies
 Severity: #error
 
 Invariant: DosageDoseQuantityAllowedFractions
-Description: "Dose values in doseQuantity or doseRange must be whole numbers or use one of the following fractional parts: .125, .25, .33, .375, .5, .625, .66, .75 or .875."
+Description: "Dose values in doseQuantity or doseRange must be whole numbers or use one of the following fractional parts: .125, .25, .33, .5, .66 or .75."
 Expression: """
 doseAndRate.all(
   (
@@ -196,12 +196,9 @@ doseAndRate.all(
       ($this mod 1 = 0.125) or
       ($this mod 1 = 0.25) or
       ($this mod 1 = 0.33) or
-      ($this mod 1 = 0.375) or
       ($this mod 1 = 0.5) or
-      ($this mod 1 = 0.625) or
       ($this mod 1 = 0.66) or
-      ($this mod 1 = 0.75) or
-      ($this mod 1 = 0.875)
+      ($this mod 1 = 0.75)
     )
   )
   and
@@ -212,12 +209,9 @@ doseAndRate.all(
       ($this mod 1 = 0.125) or
       ($this mod 1 = 0.25) or
       ($this mod 1 = 0.33) or
-      ($this mod 1 = 0.375) or
       ($this mod 1 = 0.5) or
-      ($this mod 1 = 0.625) or
       ($this mod 1 = 0.66) or
-      ($this mod 1 = 0.75) or
-      ($this mod 1 = 0.875)
+      ($this mod 1 = 0.75)
     )
   )
   and
@@ -228,12 +222,9 @@ doseAndRate.all(
       ($this mod 1 = 0.125) or
       ($this mod 1 = 0.25) or
       ($this mod 1 = 0.33) or
-      ($this mod 1 = 0.375) or
       ($this mod 1 = 0.5) or
-      ($this mod 1 = 0.625) or
       ($this mod 1 = 0.66) or
-      ($this mod 1 = 0.75) or
-      ($this mod 1 = 0.875)
+      ($this mod 1 = 0.75)
     )
   )
 )

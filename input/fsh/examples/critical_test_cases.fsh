@@ -157,6 +157,30 @@ Description: "Example showing interval dosing with monthly period"
 * dosageInstruction.timing.repeat.periodUnit = #mo
 * dosageInstruction.doseAndRate[0].doseQuantity = 1 '1' "Stück"
 
+// 11. Sorting of TimeOfDay
+Instance: Example-MR-Dosage-comb-interval-4-sort-1
+InstanceOf: MedicationRequest
+Usage: #example
+* subject.display = "Patient"
+* status = #active
+* intent = #order
+* medicationCodeableConcept.text = "Ibuprofen 400mg"
+* dosageInstruction[+]
+  * timing.repeat
+    * period = 2
+    * periodUnit = #d
+    * timeOfDay[+] = "20:00:00"
+    * timeOfDay[+] = "08:00:00"
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
+* dosageInstruction[+]
+  * timing.repeat
+    * period = 2
+    * periodUnit = #d
+    * timeOfDay[+] = "22:00:00"
+    * timeOfDay[+] = "10:00:00"
+    * timeOfDay[+] = "14:00:00"
+  * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
+
 // --- MedicationDispense equivalents ---
 
 Instance: MD-Dosage-interval-when-3d
@@ -304,6 +328,28 @@ Description: "Example showing interval dosing with monthly period"
 * dosageInstruction.timing.repeat.period = 2
 * dosageInstruction.timing.repeat.periodUnit = #mo
 * dosageInstruction.doseAndRate[0].doseQuantity = 1 '1' "Stück"
+
+Instance: Example-MD-Dosage-comb-interval-4-sort-1
+InstanceOf: MedicationDispense
+Usage: #example
+* subject.display = "Patient"
+* status = #completed
+* medicationCodeableConcept.text = "Ibuprofen 400mg"
+* dosageInstruction[+]
+  * timing.repeat
+    * period = 2
+    * periodUnit = #d
+    * timeOfDay[+] = "20:00:00"
+    * timeOfDay[+] = "08:00:00"
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
+* dosageInstruction[+]
+  * timing.repeat
+    * period = 2
+    * periodUnit = #d
+    * timeOfDay[+] = "22:00:00"
+    * timeOfDay[+] = "10:00:00"
+    * timeOfDay[+] = "14:00:00"
+  * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
 // --- MedicationStatement equivalents ---
 
@@ -469,3 +515,25 @@ Description: "Example showing interval dosing with monthly period"
 * dosage.timing.repeat.period = 2
 * dosage.timing.repeat.periodUnit = #mo
 * dosage.doseAndRate[0].doseQuantity = 1 '1' "Stück"
+
+Instance: Example-MS-Dosage-comb-interval-4-sort-1
+InstanceOf: MedicationStatement
+Usage: #example
+* subject.display = "Patient"
+* status = #active
+* medicationCodeableConcept.text = "Ibuprofen 400mg"
+* dosage[+]
+  * timing.repeat
+    * period = 2
+    * periodUnit = #d
+    * timeOfDay[+] = "20:00:00"
+    * timeOfDay[+] = "08:00:00"
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
+* dosage[+]
+  * timing.repeat
+    * period = 2
+    * periodUnit = #d
+    * timeOfDay[+] = "22:00:00"
+    * timeOfDay[+] = "10:00:00"
+    * timeOfDay[+] = "14:00:00"
+  * doseAndRate.doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"

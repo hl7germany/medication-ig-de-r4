@@ -7,16 +7,20 @@ Bis zum Ballot 2.0.0 sind mehrfach fehlerhafte oder fehlende Invarianten erst du
 Die GitHub Action [`.github/workflows/ig-build.yml`](.github/workflows/ig-build.yml) läuft bei jedem Pull Request und jedem Push auf `main`:
 
 1. **Invariantentests** (`tests/invariants`, einige Sekunden): Die FHIRPath-Ausdrücke werden aus den FSH-Dateien gelesen und mit fhirpath.js gegen tabellarische Testfälle ausgewertet, jeweils für alle drei Ressourcentypen.
-2. **IG-Build** (`scripts/build-ig.sh`, ca. 5 Minuten): SUSHI, Textgenerierung, IG Publisher, danach `scripts/ig-expected-error-check.py`. Der Build schlägt fehl bei
+2. **Invariantentests mit HAPI** (`npm run test:hapi`, etwa eine Minute): Dieselben Testfälle werden mit der FHIRPath-Engine des HL7-Validators aus dem aktuellen `publisher.jar` ausgewertet, auf dem Element-Modell wie bei der Validierung. Der Job schlägt fehl bei
+   - einer Abweichung vom erwarteten Ergebnis, die nicht in `tests/invariants/hapi-known-deviations.json` steht (dort stehen bekannte Fehler der Engine mit Issue),
+   - einem Eintrag dort, der nicht mehr zutrifft, etwa nach einem Fix der Engine,
+   - einer Invariante, die an einer MedicationDispense mit 40 Dosierungen länger als 150 ms braucht (Summe über alle Kontext-Elemente). Für bekannte langsame Invarianten steht ein eigenes Limit unter `runtime`.
+3. **IG-Build** (`scripts/build-ig.sh`, ca. 5 Minuten): SUSHI, Textgenerierung, IG Publisher, danach `scripts/ig-expected-error-check.py`. Der Build schlägt fehl bei
    - unerwarteten Fehlern in gültigen Beispielen,
    - Negativbeispielen, die ihren Constraint nicht auslösen, oder Negativbeispielen ohne jeden Fehler,
    - Constraints, die nicht in allen drei Ressourcentypen durch Beispiele belegt sind,
    - nicht isolierten Negativbeispielen (siehe unten),
    - Fehlerbeispielen für DE-Regeln, die nicht auf einem DE-Profil liegen,
    - Broken Links.
-3. **Erzeugte Includes entsprechen dem Repo-Stand**: Nach dem Build dürfen sich unter `input/` keine Dateien geändert haben. Wer Beispiele ändert, muss die neu erzeugten Includes mit einchecken.
+4. **Erzeugte Includes entsprechen dem Repo-Stand**: Nach dem Build dürfen sich unter `input/` keine Dateien geändert haben. Wer Beispiele ändert, muss die neu erzeugten Includes mit einchecken.
 
-Damit die Prüfungen wirken, braucht `main` eine Branch Protection (Repo-Admin, Settings → Branches): Status-Checks „Invariantentests (fhirpath.js)“ und „IG-Build und Prüfung der Beispiele“ erforderlich, mindestens eine Freigabe, offene Review-Kommentare vor dem Merge klären.
+Damit die Prüfungen wirken, braucht `main` eine Branch Protection (Repo-Admin, Settings → Branches): Status-Checks „Invariantentests (fhirpath.js)“, „Invariantentests (HAPI-FHIRPath)“ und „IG-Build und Prüfung der Beispiele“ erforderlich, mindestens eine Freigabe, offene Review-Kommentare vor dem Merge klären.
 
 ## Invariantentests schreiben
 
@@ -39,7 +43,7 @@ Testfälle liegen als JSON in `tests/invariants/cases/`. Jede Datei enthält ein
 - `resourceTypes`: optional; ohne Angabe läuft jeder Fall für MedicationRequest, MedicationDispense und MedicationStatement.
 - `expect`: `true` heißt erfüllt. Bewertet wird wie im HAPI-Validator: Nur das Ergebnis `[true]` erfüllt die Invariante, `[false]` und ein leeres Ergebnis verletzen sie.
 
-Lokal: `cd tests/invariants && npm install && npm test`. Der Runner nennt am Ende alle Invarianten, die noch keine Tests haben.
+Lokal: `cd tests/invariants && npm install && npm test`. Der Runner nennt am Ende alle Invarianten, die noch keine Tests haben. `npm run test:hapi` braucht Java und nimmt `publisher.jar` aus `PUBLISHER_JAR`, `input-cache/` oder `~/.fhir/tools/publisher/`.
 
 Bei neuen oder geänderten Invarianten gehören in die Tests:
 

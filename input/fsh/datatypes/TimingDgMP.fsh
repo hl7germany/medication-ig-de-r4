@@ -384,22 +384,22 @@ Invariant: TimingOnlyWhenOrTimeOfDay
 Description: "The Dosage elements of a resource must not mix a time of day (timeOfDay) and a part of the day (when)."
 Expression: "(
   %resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)
-).all(
-    (timing.repeat.when.exists() or 
-    timing.repeat.timeOfDay.exists())
-  implies
+).where(
+  timing.repeat.when.exists() or
+  timing.repeat.timeOfDay.exists()
+).empty()
+or
+(
   (
-    (
-      (%resource.ofType(MedicationRequest).exists() or %resource.ofType(MedicationDispense).exists())
-      implies
-      (%resource.dosageInstruction.timing.repeat.when.exists() xor %resource.dosageInstruction.timing.repeat.timeOfDay.exists())
-    )
-    and
-    (
-      %resource.ofType(MedicationStatement).exists()
-      implies
-      (%resource.dosage.timing.repeat.when.exists() xor %resource.dosage.timing.repeat.timeOfDay.exists())
-    )
+    (%resource.ofType(MedicationRequest).exists() or %resource.ofType(MedicationDispense).exists())
+    implies
+    (%resource.dosageInstruction.timing.repeat.when.exists() xor %resource.dosageInstruction.timing.repeat.timeOfDay.exists())
+  )
+  and
+  (
+    %resource.ofType(MedicationStatement).exists()
+    implies
+    (%resource.dosage.timing.repeat.when.exists() xor %resource.dosage.timing.repeat.timeOfDay.exists())
   )
 )"
 Severity: #error
@@ -408,25 +408,23 @@ Invariant: TimingOnlyOneTimeOfDay
 Description: "In a schema that uses only timeOfDay, no time of day may occur in more than one Dosage element of a resource."
 Expression: "( /* Detect TimeOfDay */
   %resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)
-).all(
+).where(
+  timing.repeat.dayOfWeek.empty() and
+  timing.repeat.timeOfDay.exists() and
+  timing.repeat.when.empty()
+).empty()
+or
+(
   (
-    timing.repeat.dayOfWeek.empty() and
-    timing.repeat.timeOfDay.exists() and
-    timing.repeat.when.empty() 
+    (%resource.ofType(MedicationRequest).exists() or %resource.ofType(MedicationDispense).exists())
+    implies
+    (%resource.dosageInstruction.timing.repeat.timeOfDay.distinct().count() = %resource.dosageInstruction.timing.repeat.timeOfDay.count())
   )
-  implies
+  and
   (
-    (
-      (%resource.ofType(MedicationRequest).exists() or %resource.ofType(MedicationDispense).exists())
-      implies
-      (%resource.dosageInstruction.timing.repeat.timeOfDay.distinct().count() = %resource.dosageInstruction.timing.repeat.timeOfDay.count())
-    )
-    and
-    (
-      %resource.ofType(MedicationStatement).exists()
-      implies
-      (%resource.dosage.timing.repeat.timeOfDay.distinct().count() = %resource.dosage.timing.repeat.timeOfDay.count())
-    )
+    %resource.ofType(MedicationStatement).exists()
+    implies
+    (%resource.dosage.timing.repeat.timeOfDay.distinct().count() = %resource.dosage.timing.repeat.timeOfDay.count())
   )
 )"
 Severity: #error
@@ -652,17 +650,18 @@ Expression: "/* Detect Interval and Time/4-Schema */
 (
   %resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)
 )
-.all(
+.where(
+  timing.repeat.period.exists() and
+  timing.repeat.periodUnit.exists() and
+  timing.repeat.dayOfWeek.empty() and
   (
-    timing.repeat.period.exists() and
-    timing.repeat.periodUnit.exists() and
-    timing.repeat.dayOfWeek.empty() and
-    (
-      (timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()) or
-      (timing.repeat.when.exists() and timing.repeat.timeOfDay.empty())
-    )
+    (timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()) or
+    (timing.repeat.when.exists() and timing.repeat.timeOfDay.empty())
   )
-  implies
+)
+.empty()
+or
+(
   (
     (
       %resource.ofType(MedicationRequest).exists()

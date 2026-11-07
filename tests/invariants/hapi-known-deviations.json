@@ -28,11 +28,6 @@
   ],
   "runtime": [
     {
-      "invariant": "TimingOnlyOneTimeForInterval",
-      "limitMs": 6000,
-      "reason": "all() über alle Dosierungen, dessen Bedingung über %resource unabhängig vom aktuellen Element ist; an jedem Kontext-Element ausgewertet, wächst die Laufzeit kubisch mit der Zahl der Dosierungen."
-    },
-    {
       "invariant": "DosageDoseUnitSameCode",
       "limitMs": 1500,
       "reason": "all() über alle Dosierungen, dessen Bedingung über %resource unabhängig vom aktuellen Element ist; an jedem Kontext-Element ausgewertet, wächst die Laufzeit kubisch mit der Zahl der Dosierungen. Umformung in PR #205."
@@ -41,16 +36,6 @@
       "invariant": "DosageDoseUnitSameCodeWarning",
       "limitMs": 1500,
       "reason": "all() über alle Dosierungen, dessen Bedingung über %resource unabhängig vom aktuellen Element ist; an jedem Kontext-Element ausgewertet, wächst die Laufzeit kubisch mit der Zahl der Dosierungen. Umformung in PR #205."
-    },
-    {
-      "invariant": "TimingOnlyOneTimeOfDay",
-      "limitMs": 500,
-      "reason": "all() über alle Dosierungen, dessen Bedingung über %resource unabhängig vom aktuellen Element ist; an jedem Kontext-Element ausgewertet, wächst die Laufzeit kubisch mit der Zahl der Dosierungen."
-    },
-    {
-      "invariant": "TimingOnlyWhenOrTimeOfDay",
-      "limitMs": 500,
-      "reason": "all() über alle Dosierungen, dessen Bedingung über %resource unabhängig vom aktuellen Element ist; an jedem Kontext-Element ausgewertet, wächst die Laufzeit kubisch mit der Zahl der Dosierungen."
     }
   ]
 }

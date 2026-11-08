@@ -1,0 +1,56 @@
+{
+  "_comment": "Bekannte Abweichungen der FHIRPath-Engine des HL7-Validators (deviations) und bekannte langsame Invarianten (runtime, Limit in ms bei 40 Dosierungen). HapiRunner schlägt fehl, wenn eine eingetragene Abweichung nicht mehr auftritt; der Eintrag ist dann zu entfernen. Liegt eine langsame Invariante unter einem Zehntel des Budgets, gibt es nur einen Hinweis.",
+  "deviations": [
+    {
+      "invariant": "TimingSingleDosageForWhen",
+      "case": "Bereich 1 bis 2 vor Bereich bis 2",
+      "issue": "https://github.com/hapifhir/org.hl7.fhir.core/issues/2843",
+      "reason": "HAPI vergleicht komplexe Werte asymmetrisch: Ein Range nur mit high gilt als gleich einem späteren Range mit gleichem high und zusätzlichem low, distinct() verwirft ihn."
+    },
+    {
+      "invariant": "TimingSingleDosageForWhenWarning",
+      "case": "Bereich 1 bis 2 vor Bereich bis 2",
+      "issue": "https://github.com/hapifhir/org.hl7.fhir.core/issues/2843",
+      "reason": "HAPI vergleicht komplexe Werte asymmetrisch: Ein Range nur mit high gilt als gleich einem späteren Range mit gleichem high und zusätzlichem low, distinct() verwirft ihn."
+    },
+    {
+      "invariant": "TimingSingleDosageForTimeOfDay",
+      "case": "Bereich 1 bis 2 vor Bereich bis 2",
+      "issue": "https://github.com/hapifhir/org.hl7.fhir.core/issues/2843",
+      "reason": "HAPI vergleicht komplexe Werte asymmetrisch: Ein Range nur mit high gilt als gleich einem späteren Range mit gleichem high und zusätzlichem low, distinct() verwirft ihn."
+    },
+    {
+      "invariant": "TimingSingleDosageForTimeOfDayWarning",
+      "case": "Bereich 1 bis 2 vor Bereich bis 2",
+      "issue": "https://github.com/hapifhir/org.hl7.fhir.core/issues/2843",
+      "reason": "HAPI vergleicht komplexe Werte asymmetrisch: Ein Range nur mit high gilt als gleich einem späteren Range mit gleichem high und zusätzlichem low, distinct() verwirft ihn."
+    }
+  ],
+  "runtime": [
+    {
+      "invariant": "TimingOnlyOneTimeForInterval",
+      "limitMs": 6000,
+      "reason": "all() über alle Dosierungen, dessen Bedingung über %resource unabhängig vom aktuellen Element ist; an jedem Kontext-Element ausgewertet, wächst die Laufzeit kubisch mit der Zahl der Dosierungen."
+    },
+    {
+      "invariant": "DosageDoseUnitSameCode",
+      "limitMs": 1500,
+      "reason": "all() über alle Dosierungen, dessen Bedingung über %resource unabhängig vom aktuellen Element ist; an jedem Kontext-Element ausgewertet, wächst die Laufzeit kubisch mit der Zahl der Dosierungen. Umformung in PR #205."
+    },
+    {
+      "invariant": "DosageDoseUnitSameCodeWarning",
+      "limitMs": 1500,
+      "reason": "all() über alle Dosierungen, dessen Bedingung über %resource unabhängig vom aktuellen Element ist; an jedem Kontext-Element ausgewertet, wächst die Laufzeit kubisch mit der Zahl der Dosierungen. Umformung in PR #205."
+    },
+    {
+      "invariant": "TimingOnlyOneTimeOfDay",
+      "limitMs": 500,
+      "reason": "all() über alle Dosierungen, dessen Bedingung über %resource unabhängig vom aktuellen Element ist; an jedem Kontext-Element ausgewertet, wächst die Laufzeit kubisch mit der Zahl der Dosierungen."
+    },
+    {
+      "invariant": "TimingOnlyWhenOrTimeOfDay",
+      "limitMs": 500,
+      "reason": "all() über alle Dosierungen, dessen Bedingung über %resource unabhängig vom aktuellen Element ist; an jedem Kontext-Element ausgewertet, wächst die Laufzeit kubisch mit der Zahl der Dosierungen."
+    }
+  ]
+}

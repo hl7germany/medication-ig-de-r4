@@ -44,23 +44,25 @@ function readFshString(s, i) {
   throw new Error('Unterminierter String');
 }
 
-function loadInvariants() {
+// Invarianten einer FSH-Datei; file ist der Pfad relativ zum Repo.
+function invariantsIn(s, file) {
   const invariants = {};
-  for (const file of fshFiles(FSH_DIR)) {
-    const s = fs.readFileSync(file, 'utf8');
-    const re = /^Invariant:\s*(\S+)/gm;
-    let m;
-    while ((m = re.exec(s))) {
-      const next = s.slice(m.index + 1).search(/^(Invariant|Profile|Extension|Logical|RuleSet|ValueSet|CodeSystem|Instance|Alias):/m);
-      const block = next === -1 ? s.slice(m.index) : s.slice(m.index, m.index + 1 + next);
-      const e = block.indexOf('Expression:');
-      if (e === -1) continue;
-      const q = block.indexOf('"', e);
-      const severity = (block.match(/^Severity:\s*#(\w+)/m) || [])[1];
-      invariants[m[1]] = { expression: readFshString(block, q), severity, file: path.relative(ROOT, file) };
-    }
+  const re = /^Invariant:\s*(\S+)/gm;
+  let m;
+  while ((m = re.exec(s))) {
+    const next = s.slice(m.index + 1).search(/^(Invariant|Profile|Extension|Logical|RuleSet|ValueSet|CodeSystem|Instance|Alias):/m);
+    const block = next === -1 ? s.slice(m.index) : s.slice(m.index, m.index + 1 + next);
+    const e = block.indexOf('Expression:');
+    if (e === -1) continue;
+    const q = block.indexOf('"', e);
+    const severity = (block.match(/^Severity:\s*#(\w+)/m) || [])[1];
+    invariants[m[1]] = { expression: readFshString(block, q), severity, file };
   }
   return invariants;
+}
+
+function loadInvariants() {
+  return Object.assign({}, ...fshFiles(FSH_DIR).map(file => invariantsIn(fs.readFileSync(file, 'utf8'), path.relative(ROOT, file))));
 }
 
 // Alle Testfall-Blöcke aus cases/*.json, in fester Reihenfolge.
@@ -172,7 +174,7 @@ function main() {
   }
 }
 
-module.exports = { RESOURCE_TYPES, DOSAGE_PATH, loadInvariants, caseBlocks, buildResource, targetsFor };
+module.exports = { ROOT, RESOURCE_TYPES, DOSAGE_PATH, invariantsIn, loadInvariants, caseBlocks, buildResource, targetsFor };
 
 if (require.main === module) {
   const exportIndex = process.argv.indexOf('--export');

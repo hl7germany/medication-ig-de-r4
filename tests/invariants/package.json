@@ -5,7 +5,8 @@
   "scripts": {
     "test": "node run.js",
     "test:hapi": "bash run-hapi.sh",
-    "test:mutation": "node mutate.js"
+    "test:mutation": "node mutate.js",
+    "test:equivalence": "node equivalence.js"
   },
   "dependencies": {
     "fhirpath": "5.2.0"

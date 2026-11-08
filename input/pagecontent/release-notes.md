@@ -12,7 +12,7 @@
 
 - **`DosageDoseUnitSameCode` (`DosageDgMP`) und `DosageDoseUnitSameCodeWarning` (`DosageDE`)**
   - Generischen FHIRPath-Ausdruck optimiert: Dosis-Codes werden direkt gesammelt und mit `distinct().count() = 1` geprüft, statt die gesamte Code-Menge innerhalb von `all()` für jedes Dosage-Element erneut aufzubauen. Constraint-Keys, Schweregrade und Dosage-Kontext bleiben unverändert.
-  - Keine fachliche Änderung: Verglichen werden nur die Codes von Quantity und Range-Grenzen. Bei vorhandenem `doseAndRate` ohne Dosis-Code wird die Regel weiterhin ausgelöst. Beschreibungen präzisiert und Beispiele sowie Grenzfalltests ergänzt.
+  - Keine fachliche Änderung: Verglichen werden nur die Codes von Quantity und Range-Grenzen. Bei vorhandenem `doseAndRate` ohne Dosis-Code wird die Regel weiterhin ausgelöst. Die Beschreibungen nennen die verglichenen Felder. Neue Beispiele mit Dosisbereich und mit Dosis ohne Code.
 - **`AsNeededForRequiresAsNeededWarning` (`DosageDE`) — neu** (HDB-924)
   - Warnt, wenn ein Anlass (`extension[asNeededFor]`) ohne `asNeededBoolean = true` angegeben ist. `dos-1` lässt einen Anlass ohne `asNeeded` wie in FHIR R5 weiterhin zu; lesende Systeme werten ihn als Bedarfsdosierung. In den dgMP-Profilen bleibt der Fall über `AsNeededForRequiresAsNeeded` ein Fehler.
 - **`DosageRequiresGeneratedText` (`DosageDgMP`) — ersetzt `DosageStructuredRequiresGeneratedText`** (HDB-947)

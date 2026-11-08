@@ -1,7 +1,7 @@
 // Invalid examples for DosageDoseUnitSameCode (error)
 // Two dosageInstructions with different dose units
 
-Instance: INV-C-DosageDoseUnitSameCode-Request-01-of-01
+Instance: INV-C-DosageDoseUnitSameCode-Request-01-of-02
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid: mixed dose units"
@@ -19,7 +19,7 @@ Description: "CAVE: Validation example - two dosageInstructions use different do
     * when[+] = #EVE
   * doseAndRate.doseQuantity = 500 $kbv-dosiereinheit#mg "mg"
 
-Instance: INV-C-DosageDoseUnitSameCode-Request-Range-01-of-01
+Instance: INV-C-DosageDoseUnitSameCode-Request-02-of-02
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid (Request): mixed Quantity and Range dose units"
@@ -37,7 +37,7 @@ Description: "CAVE: Validation example - doseQuantity uses code 1, doseRange.low
     * low = 1 $kbv-dosiereinheit#6 "Tropfen"
     * high = 2 $kbv-dosiereinheit#6 "Tropfen"
 
-Instance: INV-C-DosageDoseUnitSameCode-Statement-Range-01-of-01
+Instance: INV-C-DosageDoseUnitSameCode-Statement-02-of-02
 InstanceOf: MedicationStatementDgMP
 Usage: #example
 Title: "Invalid (Statement): mixed Quantity and Range dose units"
@@ -54,7 +54,7 @@ Description: "CAVE: Validation example - doseQuantity uses code 1, doseRange.low
     * low = 1 $kbv-dosiereinheit#6 "Tropfen"
     * high = 2 $kbv-dosiereinheit#6 "Tropfen"
 
-Instance: INV-C-DosageDoseUnitSameCode-Dispense-Range-01-of-01
+Instance: INV-C-DosageDoseUnitSameCode-Dispense-02-of-02
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
 Title: "Invalid (Dispense): mixed Quantity and Range dose units"
@@ -71,7 +71,7 @@ Description: "CAVE: Validation example - doseQuantity uses code 1, doseRange.low
     * low = 1 $kbv-dosiereinheit#6 "Tropfen"
     * high = 2 $kbv-dosiereinheit#6 "Tropfen"
 
-Instance: INV-C-DosageDoseUnitSameCode-Statement-01-of-01
+Instance: INV-C-DosageDoseUnitSameCode-Statement-01-of-02
 InstanceOf: MedicationStatementDgMP
 Usage: #example
 Title: "Invalid: mixed dose units"
@@ -88,7 +88,7 @@ Description: "CAVE: Validation example - two dosage entries use different dose u
     * when[+] = #EVE
   * doseAndRate.doseQuantity = 500 $kbv-dosiereinheit#mg "mg"
 
-Instance: INV-C-DosageDoseUnitSameCode-Dispense-01-of-01
+Instance: INV-C-DosageDoseUnitSameCode-Dispense-01-of-02
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
 Title: "Invalid: mixed dose units"

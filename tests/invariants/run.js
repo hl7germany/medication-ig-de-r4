@@ -6,6 +6,9 @@
 // [false] und ein leeres Ergebnis verletzen sie.
 //
 // Aufruf: npm test (in tests/invariants)
+//
+// Mit --export <Datei> werden die Testfälle stattdessen als JSON geschrieben, für die Auswertung
+// mit der FHIRPath-Engine des HL7-Validators (HapiRunner.java, npm run test:hapi).
 
 const fs = require('fs');
 const path = require('path');
@@ -73,8 +76,8 @@ function buildResource(type, testCase) {
   return res;
 }
 
-// Wertet die Invariante an jedem Element des Kontexts aus. Erfüllt, wenn jedes Element [true] liefert.
-function evaluate(expression, context, type, res) {
+// Pfade der Elemente, an denen die Invariante ausgewertet wird.
+function targetsFor(context, type, res) {
   const p = DOSAGE_PATH[type];
   const targets = [];
   if (context === 'Resource') targets.push(type);
@@ -83,8 +86,55 @@ function evaluate(expression, context, type, res) {
     if (context === 'Timing' && dosage.timing) targets.push(`${type}.${p}[${i}].timing`);
     if (context === 'Timing.repeat' && dosage.timing?.repeat) targets.push(`${type}.${p}[${i}].timing.repeat`);
   });
-  const results = targets.map(t => fhirpath.evaluate(res, `${t}.select(${expression})`, { resource: res, rootResource: res }, r4));
+  return targets;
+}
+
+// Wertet die Invariante an jedem Element des Kontexts aus. Erfüllt, wenn jedes Element [true] liefert.
+function evaluate(expression, context, type, res) {
+  const results = targetsFor(context, type, res).map(t => fhirpath.evaluate(res, `${t}.select(${expression})`, { resource: res, rootResource: res }, r4));
   return { ok: results.every(r => r.length === 1 && r[0] === true), results };
+}
+
+// Realistisch befüllte MedicationDispense mit n Dosierungen für die Laufzeitprüfung.
+function perfResource(n) {
+  const dosages = Array.from({ length: n }, (_, i) => {
+    const m = 6 * 60 + 15 * i;
+    const time = `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}:00`;
+    return {
+      text: `${time.slice(0, 5)} Uhr: je 1 Stück`,
+      patientInstruction: 'Nicht zerkauen',
+      timing: { repeat: { boundsDuration: { value: 14, unit: 'Tage', system: 'http://unitsofmeasure.org', code: 'd' }, frequency: 1, period: 1, periodUnit: 'd', timeOfDay: [time] } },
+      route: { coding: [{ system: 'http://standardterms.edqm.eu', code: '20053000', display: 'Oral use' }] },
+      doseAndRate: [{ doseQuantity: { value: 1, unit: 'Stück', system: 'https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT', code: '1' } }]
+    };
+  });
+  return buildResource('MedicationDispense', { dosages });
+}
+
+function exportCases(outFile) {
+  const invariants = loadInvariants();
+  const contexts = {};
+  const cases = [];
+  for (const file of fs.readdirSync(CASES_DIR).filter(f => f.endsWith('.json')).sort()) {
+    for (const block of JSON.parse(fs.readFileSync(path.join(CASES_DIR, file), 'utf8'))) {
+      if (!invariants[block.invariant]) continue;
+      contexts[block.invariant] = block.context;
+      for (const type of block.resourceTypes ?? RESOURCE_TYPES) {
+        for (const tc of block.cases) {
+          const res = buildResource(type, tc);
+          cases.push({ file, invariant: block.invariant, resourceType: type, name: tc.name, expect: tc.expect, resource: res, targets: targetsFor(block.context, type, res) });
+        }
+      }
+    }
+  }
+  const perf = perfResource(Number(process.env.PERF_DOSAGES || 40));
+  const out = {
+    invariants: Object.fromEntries(Object.entries(contexts).map(([k, context]) => [k, { context, expression: invariants[k].expression }])),
+    cases,
+    perf: { resource: perf, targets: Object.fromEntries(['Resource', 'Dosage', 'Timing', 'Timing.repeat'].map(c => [c, targetsFor(c, 'MedicationDispense', perf)])) }
+  };
+  fs.writeFileSync(outFile, JSON.stringify(out));
+  console.log(`${cases.length} Testfälle zu ${Object.keys(contexts).length} Invarianten exportiert: ${outFile}`);
 }
 
 function main() {
@@ -121,4 +171,6 @@ function main() {
   }
 }
 
-main();
+const exportIndex = process.argv.indexOf('--export');
+if (exportIndex !== -1) exportCases(process.argv[exportIndex + 1]);
+else main();

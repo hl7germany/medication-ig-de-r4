@@ -48,7 +48,7 @@ jobs:
       - name: IG Publisher laden
         run: |
           mkdir -p ../../input-cache
-          curl -fsSL -o ../../input-cache/publisher.jar https://github.com/HL7/fhir-ig-publisher/releases/latest/download/publisher.jar
+          curl -fsSL --retry 5 --retry-all-errors --retry-delay 10 -o ../../input-cache/publisher.jar https://github.com/HL7/fhir-ig-publisher/releases/latest/download/publisher.jar
       - run: npm run test:hapi
 
   ig-build:
@@ -82,7 +82,7 @@ jobs:
       - name: IG Publisher laden
         run: |
           mkdir -p input-cache
-          curl -fsSL -o input-cache/publisher.jar https://github.com/HL7/fhir-ig-publisher/releases/latest/download/publisher.jar
+          curl -fsSL --retry 5 --retry-all-errors --retry-delay 10 -o input-cache/publisher.jar https://github.com/HL7/fhir-ig-publisher/releases/latest/download/publisher.jar
           java -jar input-cache/publisher.jar -v
       - name: Build und Prüfung der Beispiele
         run: bash scripts/build-ig.sh

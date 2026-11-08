@@ -10,7 +10,7 @@ Die GitHub Action [`.github/workflows/ig-build.yml`](.github/workflows/ig-build.
 2. **Invariantentests mit HAPI** (`npm run test:hapi`, etwa eine Minute): Dieselben Testfälle werden mit der FHIRPath-Engine des HL7-Validators aus dem aktuellen `publisher.jar` ausgewertet, auf dem Element-Modell wie bei der Validierung. Der Job schlägt fehl bei
    - einer Abweichung vom erwarteten Ergebnis, die nicht in `tests/invariants/hapi-known-deviations.json` steht (dort stehen bekannte Fehler der Engine mit Issue),
    - einem Eintrag dort, der nicht mehr zutrifft, etwa nach einem Fix der Engine,
-   - einer Invariante, die an einer MedicationDispense mit 40 Dosierungen länger als 60 ms braucht (Summe über alle Kontext-Elemente). Für bekannte langsame Invarianten steht ein eigenes Limit unter `runtime`.
+   - einer Invariante, die an einer MedicationDispense mit 40 Dosierungen länger als 60 ms braucht (Summe über alle Kontext-Elemente, schnellster von mehreren Läufen). Für bekannte langsame Invarianten steht ein eigenes Limit unter `runtime`.
 3. **IG-Build** (`scripts/build-ig.sh`, ca. 5 Minuten): SUSHI, Textgenerierung, IG Publisher, danach `scripts/ig-expected-error-check.py`. Der Build schlägt fehl bei
    - unerwarteten Fehlern in gültigen Beispielen,
    - Negativbeispielen, die ihren Constraint nicht auslösen, oder Negativbeispielen ohne jeden Fehler,

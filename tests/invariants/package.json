@@ -4,7 +4,8 @@
   "description": "Tabellengetriebene Tests der FHIRPath-Invarianten mit fhirpath.js und der Engine des HL7-Validators",
   "scripts": {
     "test": "node run.js",
-    "test:hapi": "bash run-hapi.sh"
+    "test:hapi": "bash run-hapi.sh",
+    "test:mutation": "node mutate.js"
   },
   "dependencies": {
     "fhirpath": "5.2.0"

@@ -63,6 +63,12 @@ function loadInvariants() {
   return invariants;
 }
 
+// Alle Testfall-Blöcke aus cases/*.json, in fester Reihenfolge.
+function caseBlocks() {
+  return fs.readdirSync(CASES_DIR).filter(f => f.endsWith('.json')).sort()
+    .flatMap(file => JSON.parse(fs.readFileSync(path.join(CASES_DIR, file), 'utf8')).map(block => ({ file, block })));
+}
+
 function buildResource(type, testCase) {
   const p = DOSAGE_PATH[type];
   const dosages = testCase.dosages ?? (testCase.dosage ? [testCase.dosage] : []);
@@ -115,15 +121,13 @@ function exportCases(outFile) {
   const invariants = loadInvariants();
   const contexts = {};
   const cases = [];
-  for (const file of fs.readdirSync(CASES_DIR).filter(f => f.endsWith('.json')).sort()) {
-    for (const block of JSON.parse(fs.readFileSync(path.join(CASES_DIR, file), 'utf8'))) {
-      if (!invariants[block.invariant]) continue;
-      contexts[block.invariant] = block.context;
-      for (const type of block.resourceTypes ?? RESOURCE_TYPES) {
-        for (const tc of block.cases) {
-          const res = buildResource(type, tc);
-          cases.push({ file, invariant: block.invariant, resourceType: type, name: tc.name, expect: tc.expect, resource: res, targets: targetsFor(block.context, type, res) });
-        }
+  for (const { file, block } of caseBlocks()) {
+    if (!invariants[block.invariant]) continue;
+    contexts[block.invariant] = block.context;
+    for (const type of block.resourceTypes ?? RESOURCE_TYPES) {
+      for (const tc of block.cases) {
+        const res = buildResource(type, tc);
+        cases.push({ file, invariant: block.invariant, resourceType: type, name: tc.name, expect: tc.expect, resource: res, targets: targetsFor(block.context, type, res) });
       }
     }
   }
@@ -142,22 +146,19 @@ function main() {
   const tested = new Set();
   let total = 0;
   const failures = [];
-  for (const file of fs.readdirSync(CASES_DIR).filter(f => f.endsWith('.json')).sort()) {
-    const blocks = JSON.parse(fs.readFileSync(path.join(CASES_DIR, file), 'utf8'));
-    for (const block of blocks) {
-      const inv = invariants[block.invariant];
-      if (!inv) { failures.push(`${file}: Invariante ${block.invariant} nicht in den FSH-Dateien gefunden`); continue; }
-      tested.add(block.invariant);
-      for (const type of block.resourceTypes ?? RESOURCE_TYPES) {
-        for (const tc of block.cases) {
-          total++;
-          const res = buildResource(type, tc);
-          let outcome;
-          try { outcome = evaluate(inv.expression, block.context, type, res); }
-          catch (err) { failures.push(`${file}: ${block.invariant} / ${type} / ${tc.name}: Auswertungsfehler ${err.message}`); continue; }
-          if (outcome.ok !== tc.expect)
-            failures.push(`${file}: ${block.invariant} / ${type} / ${tc.name}: erwartet ${tc.expect ? 'erfüllt' : 'verletzt'}, Ergebnis ${JSON.stringify(outcome.results)}`);
-        }
+  for (const { file, block } of caseBlocks()) {
+    const inv = invariants[block.invariant];
+    if (!inv) { failures.push(`${file}: Invariante ${block.invariant} nicht in den FSH-Dateien gefunden`); continue; }
+    tested.add(block.invariant);
+    for (const type of block.resourceTypes ?? RESOURCE_TYPES) {
+      for (const tc of block.cases) {
+        total++;
+        const res = buildResource(type, tc);
+        let outcome;
+        try { outcome = evaluate(inv.expression, block.context, type, res); }
+        catch (err) { failures.push(`${file}: ${block.invariant} / ${type} / ${tc.name}: Auswertungsfehler ${err.message}`); continue; }
+        if (outcome.ok !== tc.expect)
+          failures.push(`${file}: ${block.invariant} / ${type} / ${tc.name}: erwartet ${tc.expect ? 'erfüllt' : 'verletzt'}, Ergebnis ${JSON.stringify(outcome.results)}`);
       }
     }
   }
@@ -171,6 +172,10 @@ function main() {
   }
 }
 
-const exportIndex = process.argv.indexOf('--export');
-if (exportIndex !== -1) exportCases(process.argv[exportIndex + 1]);
-else main();
+module.exports = { RESOURCE_TYPES, DOSAGE_PATH, loadInvariants, caseBlocks, buildResource, targetsFor };
+
+if (require.main === module) {
+  const exportIndex = process.argv.indexOf('--export');
+  if (exportIndex !== -1) exportCases(process.argv[exportIndex + 1]);
+  else main();
+}

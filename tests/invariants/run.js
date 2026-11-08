@@ -63,11 +63,16 @@ function loadInvariants() {
   return invariants;
 }
 
-function buildResource(type, testCase) {
+// {"$decimal": "1.0"} steht in Testfällen für eine Dezimalzahl, deren Schreibweise zählt. JSON.parse
+// macht aus 1.0 die Zahl 1; fhirpath.js bekommt die Zahl, der Export für HAPI die Schreibweise.
+const DECIMAL = /\{"\$decimal":"(-?\d+(?:\.\d+)?)"\}/g;
+const toNumber = (key, value) => value && typeof value === 'object' && typeof value.$decimal === 'string' ? Number(value.$decimal) : value;
+
+function buildResource(type, testCase, { keepDecimals = false } = {}) {
   const p = DOSAGE_PATH[type];
   const dosages = testCase.dosages ?? (testCase.dosage ? [testCase.dosage] : []);
   const json = JSON.stringify({ dosages, extension: testCase.extension }).replaceAll('{{resourceType}}', type);
-  const { dosages: d, extension } = JSON.parse(json);
+  const { dosages: d, extension } = JSON.parse(json, keepDecimals ? undefined : toNumber);
   const res = { resourceType: type, status: type === 'MedicationDispense' ? 'completed' : 'active', subject: { display: 'Patient' } };
   if (type === 'MedicationRequest') res.intent = 'order';
   res.medicationCodeableConcept = { text: 'Testmedikation' };
@@ -121,7 +126,7 @@ function exportCases(outFile) {
       contexts[block.invariant] = block.context;
       for (const type of block.resourceTypes ?? RESOURCE_TYPES) {
         for (const tc of block.cases) {
-          const res = buildResource(type, tc);
+          const res = buildResource(type, tc, { keepDecimals: true });
           cases.push({ file, invariant: block.invariant, resourceType: type, name: tc.name, expect: tc.expect, resource: res, targets: targetsFor(block.context, type, res) });
         }
       }
@@ -133,7 +138,7 @@ function exportCases(outFile) {
     cases,
     perf: { resource: perf, targets: Object.fromEntries(['Resource', 'Dosage', 'Timing', 'Timing.repeat'].map(c => [c, targetsFor(c, 'MedicationDispense', perf)])) }
   };
-  fs.writeFileSync(outFile, JSON.stringify(out));
+  fs.writeFileSync(outFile, JSON.stringify(out).replace(DECIMAL, '$1'));
   console.log(`${cases.length} Testfälle zu ${Object.keys(contexts).length} Invarianten exportiert: ${outFile}`);
 }
 

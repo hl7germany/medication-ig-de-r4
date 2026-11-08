@@ -267,7 +267,7 @@ Severity: #error
 
 Invariant: TimingPeriodOnlyWholeNumber
 Description: "period and periodMax must be whole numbers; decimal values are not allowed."
-Expression: "(period.exists() implies period mod 1 = 0) and (periodMax.exists() implies periodMax mod 1 = 0)"
+Expression: "(period.exists() implies period.truncate() = period) and (periodMax.exists() implies periodMax.truncate() = periodMax)"
 Severity: #error
 
 Invariant: TimingOnlyOneType
@@ -713,7 +713,7 @@ Severity: #error
 
 Invariant: TimingBoundsDurationOnlyWholeNumber
 Description: "boundsDuration.value must be a whole number; decimal values are not allowed."
-Expression: "bounds.ofType(Duration).value.empty() or bounds.ofType(Duration).value mod 1 = 0"
+Expression: "bounds.ofType(Duration).value.all($this.truncate() = $this)"
 Severity: #error
 
 Invariant: TimingBoundsPeriodMatchesTime

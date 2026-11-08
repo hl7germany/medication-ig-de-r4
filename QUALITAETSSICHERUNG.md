@@ -41,6 +41,7 @@ Testfälle liegen als JSON in `tests/invariants/cases/`. Jede Datei enthält ein
 - `context`: Element, an dem die Invariante hängt: `Dosage`, `Timing.repeat` oder `Resource`.
 - `dosage` oder `dosages`: ein oder mehrere Dosage-Elemente; `extension`: Extensions auf Ressourcenebene. `{{resourceType}}` wird durch den jeweiligen Ressourcentyp ersetzt, etwa für die URL von `renderedDosageInstruction`.
 - `resourceTypes`: optional; ohne Angabe läuft jeder Fall für MedicationRequest, MedicationDispense und MedicationStatement.
+- `{"$decimal": "1.0"}` anstelle einer Zahl: Dezimalzahl, deren Schreibweise zählt. JSON macht aus `1.0` sonst die Zahl `1`. fhirpath.js bekommt die Zahl, der HAPI-Job die Schreibweise. Das braucht es für Fälle, die HAPI je nach Schreibweise anders auswertet, etwa `1.0 mod 1`.
 - `expect`: `true` heißt erfüllt. Bewertet wird wie im HAPI-Validator: Nur das Ergebnis `[true]` erfüllt die Invariante, `[false]` und ein leeres Ergebnis verletzen sie.
 
 Lokal: `cd tests/invariants && npm install && npm test`. Der Runner nennt am Ende alle Invarianten, die noch keine Tests haben. `npm run test:hapi` braucht Java und nimmt `publisher.jar` aus `PUBLISHER_JAR`, `input-cache/` oder `~/.fhir/tools/publisher/`.

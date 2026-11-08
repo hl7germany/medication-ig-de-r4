@@ -41,6 +41,7 @@
   - `periodMax` muss in allen Elementen gleich sein oder in allen fehlen; bisher wurde es nicht verglichen. Die Textgenerierung liest den Rhythmus nur aus dem ersten Element.
 - **`TimingSingleDosageForWhen`, `TimingSingleDosageForTimeOfDay` (`TimingDgMP`) und die Warnungen in `TimingDE`**
   - Beschreibung an den Ausdruck angeglichen: Die Regel gilt bei täglicher Gabe und in einer Intervall-Kombination, nicht nur bei täglicher Gabe.
+  - Bekannte Einschränkung: Der HL7-Validator (org.hl7.fhir.core, geprüft bis 7.0.5) meldet einen Verstoß, wenn auf einen Dosisbereich mit Unter- und Obergrenze ein Dosisbereich nur mit derselben Obergrenze folgt, etwa morgens 1 bis 2 Stück und abends bis zu 2 Stück. Die Dosen sind verschieden, die Regel ist erfüllt ([hapifhir/org.hl7.fhir.core#2843](https://github.com/hapifhir/org.hl7.fhir.core/issues/2843)).
 - **`TimingBoundsPeriodFullDate` (`TimingDgMP`) — neu**
   - `boundsPeriod.start` und `boundsPeriod.end` müssen ein vollständiges Kalenderdatum enthalten. FHIR `dateTime` erlaubt auch `JJJJ` und `JJJJ-MM`; die Textgenerierung kann ein Teildatum nicht darstellen und bricht ab.
 - **`MinimumIntervalOnlyPureAsNeeded` und `MaxDoseOnlyPureAsNeeded` (`DosageDgMP`)**

@@ -10,9 +10,9 @@
 
 **Invarianten**
 
-- **`DosageDoseUnitSameCode` (`DosageDgMP`) und `DosageDoseUnitSameCodeWarning` (`DosageDE`)**
-  - Generischen FHIRPath-Ausdruck optimiert: Dosis-Codes werden direkt gesammelt und mit `distinct().count() = 1` geprüft, statt die gesamte Code-Menge innerhalb von `all()` für jedes Dosage-Element erneut aufzubauen. Constraint-Keys, Schweregrade und Dosage-Kontext bleiben unverändert.
-  - Keine fachliche Änderung: Verglichen werden nur die Codes von Quantity und Range-Grenzen. Bei vorhandenem `doseAndRate` ohne Dosis-Code wird die Regel weiterhin ausgelöst. Die Beschreibungen nennen die verglichenen Felder. Neue Beispiele mit Dosisbereich und mit Dosis ohne Code.
+- **`DosageDoseUnitSameCode` (`DosageDgMP`), `DosageDoseUnitSameCodeWarning` (`DosageDE`), `TimingOnlyOneTimeForInterval`, `TimingOnlyOneTimeOfDay` und `TimingOnlyWhenOrTimeOfDay` (`TimingDgMP`): Ausdruck umgeformt, ohne fachliche Änderung**
+  - Die Prüfung über alle `Dosage`-Elemente der Ressource läuft je Auswertung einmal statt einmal je Element. Bisher wuchs die Validierungszeit mit der dritten Potenz der Anzahl der `Dosage`-Elemente. Constraint-Keys, Schweregrade und Kontext bleiben unverändert.
+  - `DosageDoseUnitSameCode` und `DosageDoseUnitSameCodeWarning`: Verglichen werden nur die Codes von Quantity und Range-Grenzen. Bei vorhandenem `doseAndRate` ohne Dosis-Code wird die Regel weiterhin ausgelöst. Die Beschreibungen nennen die verglichenen Felder. Neue Beispiele mit Dosisbereich und mit Dosis ohne Code.
 - **`AsNeededForRequiresAsNeededWarning` (`DosageDE`) — neu** (HDB-924)
   - Warnt, wenn ein Anlass (`extension[asNeededFor]`) ohne `asNeededBoolean = true` angegeben ist. `dos-1` lässt einen Anlass ohne `asNeeded` wie in FHIR R5 weiterhin zu; lesende Systeme werten ihn als Bedarfsdosierung. In den dgMP-Profilen bleibt der Fall über `AsNeededForRequiresAsNeeded` ein Fehler.
 - **`DosageRequiresGeneratedText` (`DosageDgMP`) — ersetzt `DosageStructuredRequiresGeneratedText`** (HDB-947)
@@ -34,7 +34,6 @@
   - Im Uhrzeitenschema (`timeOfDay`) muss eine Uhrzeit in `boundsPeriod.start` oder `boundsPeriod.end` einer der angegebenen Uhrzeiten entsprechen.
   - Bekannte Einschränkung: Der FHIRPath-Ausdruck prüft nur den Uhrzeitanteil, nicht den Zeitzonenversatz. Die Übereinstimmung mit `Europe/Berlin` muss die Anwendung zusätzlich prüfen.
 - **Mehrere `Dosage`-Elemente werden in allen Invarianten mit `combine()` statt `|` zusammengeführt.** `|` entfernt nach FHIRPath gleiche Elemente; zwei identische Elemente zählten deshalb als eines. Betroffen waren `AsNeededSingleDosageOnly`, `FreeTextSingleDosageOnly`/`…Warning` und `TimingSingleDosageForWhen`/`…ForTimeOfDay` samt Warnungen: Zwei gleiche reine Bedarfsdosierungen waren gültig, obwohl genau ein Element verlangt ist (die Textgenerierung bricht dort ab).
-- **`TimingOnlyOneTimeForInterval`, `TimingOnlyOneTimeOfDay` und `TimingOnlyWhenOrTimeOfDay` (`TimingDgMP`): Ausdruck umgeformt, ohne fachliche Änderung.** Die Prüfung über alle `Dosage`-Elemente der Ressource läuft je Auswertung einmal statt einmal je Element. Bisher wuchs die Validierungszeit mit der dritten Potenz der Anzahl der `Dosage`-Elemente.
 - **`TimingOnlyOneBounds` (`TimingDgMP`)**
   - Erkennt jetzt auch einen Wechsel zwischen Dauer und Zeitraum über die Elemente und einen Zeitraum, dessen Start oder Ende nur in einem Teil der Elemente steht. Bisher wurden Dauer und Zeitraum getrennt geprüft und fehlende Werte übergangen; die Textgenerierung liest den Zeitrahmen nur aus dem ersten Element, ein abweichender ging verloren.
 - **`TimingPeriodUnit` (`TimingDgMP`)**

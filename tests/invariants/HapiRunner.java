@@ -41,7 +41,7 @@ public class HapiRunner {
   public static void main(String[] args) throws Exception {
     JsonObject export = read(args[0]);
     JsonObject known = read(args[1]);
-    double budgetMs = args.length > 2 ? Double.parseDouble(args[2]) : 150;
+    double budgetMs = args.length > 2 ? Double.parseDouble(args[2]) : 60;
 
     PrintStream out = System.out;
     System.setOut(new PrintStream(OutputStream.nullOutputStream()));

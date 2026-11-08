@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Invariantentests mit der FHIRPath-Engine des HL7-Validators (org.hl7.fhir.core).
 # Die Engine kommt aus publisher.jar: $PUBLISHER_JAR, sonst input-cache/publisher.jar,
-# sonst ~/.fhir/tools/publisher/publisher.jar. Optional: $INVARIANT_BUDGET_MS (Standard 150 ms)
+# sonst ~/.fhir/tools/publisher/publisher.jar. Optional: $INVARIANT_BUDGET_MS (Standard 60 ms)
 # und $PERF_DOSAGES (Dosierungen in der Laufzeitprüfung, Standard 40).
 set -euo pipefail
 cd "$(dirname "$0")"
@@ -19,4 +19,4 @@ echo "Engine aus $jar ($(java -jar "$jar" -v 2>/dev/null | tail -1))"
 tmp="$(mktemp -d)"
 trap 'rm -rf "$tmp"' EXIT
 node run.js --export "$tmp/export.json"
-java -cp "$jar" HapiRunner.java "$tmp/export.json" hapi-known-deviations.json "${INVARIANT_BUDGET_MS:-150}"
+java -cp "$jar" HapiRunner.java "$tmp/export.json" hapi-known-deviations.json "${INVARIANT_BUDGET_MS:-60}"

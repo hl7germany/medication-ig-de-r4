@@ -234,18 +234,13 @@ Severity: #error
 // gueltig. MaxDoseSameUnitAsDose vergleicht dagegen system, code und unit.
 // Zu klaeren, ob code-gleich genuegt oder der Vergleich angeglichen wird.
 Invariant: DosageDoseUnitSameCode
-Description: "If any dosage has doseAndRate, the dose codes from Quantity and Range bounds must have exactly one distinct value across all dosages. Only code is compared, not system or unit."
+Description: "All dose codes from Quantity and Range bounds across all dosages must be the same. Dosages without a dose code are not counted. Only code is compared, not system or unit."
 Expression: "%resource.ofType(MedicationRequest).dosageInstruction
-  .combine(%resource.ofType(MedicationDispense).dosageInstruction)
-  .combine(%resource.ofType(MedicationStatement).dosage)
-  .doseAndRate.empty()
-or
-%resource.ofType(MedicationRequest).dosageInstruction
   .combine(%resource.ofType(MedicationDispense).dosageInstruction)
   .combine(%resource.ofType(MedicationStatement).dosage)
   .doseAndRate.dose
   .select(ofType(Quantity).code | ofType(Range).low.code | ofType(Range).high.code)
-  .distinct().count() = 1"
+  .distinct().count() <= 1"
 Severity: #error
 
 Invariant: DosageDoseValueDecimalNotation

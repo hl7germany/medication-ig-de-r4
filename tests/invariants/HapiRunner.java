@@ -28,7 +28,7 @@ import java.util.*;
  * Eintrag, der nicht mehr zutrifft, damit die Liste nach einem Fix der Engine bereinigt wird.
  *
  * Danach wird jede Invariante an einer MedicationDispense mit 40 Dosierungen ausgewertet
- * (Summe über alle Kontext-Elemente, Median). Überschreitet eine Invariante das Budget,
+ * (Summe über alle Kontext-Elemente, schnellster von mehreren Läufen). Überschreitet eine Invariante das Budget,
  * schlägt der Lauf ebenfalls fehl. Für bekannte langsame Invarianten gilt das Limit aus
  * hapi-known-deviations.json (runtime); liegen sie unter einem Zehntel des Budgets, gibt es nur einen Hinweis.
  *
@@ -41,7 +41,7 @@ public class HapiRunner {
   public static void main(String[] args) throws Exception {
     JsonObject export = read(args[0]);
     JsonObject known = read(args[1]);
-    double budgetMs = args.length > 2 ? Double.parseDouble(args[2]) : 150;
+    double budgetMs = args.length > 2 ? Double.parseDouble(args[2]) : 60;
 
     PrintStream out = System.out;
     System.setOut(new PrintStream(OutputStream.nullOutputStream()));
@@ -140,8 +140,11 @@ public class HapiRunner {
 
   interface Run { void run(); }
 
-  /** Median in ms; Wiederholungen auf ein Zeitbudget begrenzt. */
-  static double median(Run r) {
+  /**
+   * Schnellster Lauf in ms; Wiederholungen auf ein Zeitbudget begrenzt. Fremdlast auf dem Rechner
+   * verlängert einzelne Läufe nur, der schnellste kommt dem Aufwand des Ausdrucks am nächsten.
+   */
+  static double fastest(Run r) {
     long t0 = System.nanoTime();
     for (int i = 0; i < 5 && System.nanoTime() - t0 < 1_000_000_000L; i++) r.run();
     List<Long> times = new ArrayList<>();
@@ -151,8 +154,7 @@ public class HapiRunner {
       r.run();
       times.add(System.nanoTime() - s);
     }
-    Collections.sort(times);
-    return times.get(times.size() / 2) / 1e6;
+    return Collections.min(times) / 1e6;
   }
 
   static void checkRuntime(JsonObject perf, JsonObject invariants, Map<String, ExpressionNode> expressions, double budgetMs, JsonArray slow, List<String> failures) throws Exception {
@@ -170,7 +172,7 @@ public class HapiRunner {
       if (targets.isEmpty()) continue;
       ExpressionNode n = expressions.get(key);
       try {
-        times.add(Map.entry(key, median(() -> { for (Base t : targets) fpe.evaluate(null, res, res, t, n); })));
+        times.add(Map.entry(key, fastest(() -> { for (Base t : targets) fpe.evaluate(null, res, res, t, n); })));
       } catch (Exception ex) {
         failures.add("Laufzeitprüfung " + key + ": Auswertungsfehler " + ex.getMessage());
       }

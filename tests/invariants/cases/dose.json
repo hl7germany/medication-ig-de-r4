@@ -462,6 +462,316 @@
     "context": "Dosage",
     "cases": [
       {
+        "name": "keine Dosages",
+        "dosages": [],
+        "expect": true
+      },
+      {
+        "name": "Dosages ohne doseAndRate",
+        "dosages": [
+          {
+            "text": "Nach Plan"
+          },
+          {
+            "timing": {
+              "repeat": {
+                "when": [
+                  "MORN"
+                ]
+              }
+            }
+          }
+        ],
+        "expect": true
+      },
+      {
+        "name": "nur Rate, kein Dosis-Code",
+        "dosage": {
+          "doseAndRate": [
+            {
+              "rateQuantity": {
+                "value": 10,
+                "system": "http://unitsofmeasure.org",
+                "code": "mL/h"
+              }
+            }
+          ]
+        },
+        "expect": false
+      },
+      {
+        "name": "nur Typ, keine Dosis",
+        "dosage": {
+          "doseAndRate": [
+            {
+              "type": {
+                "text": "Test"
+              }
+            }
+          ]
+        },
+        "expect": false
+      },
+      {
+        "name": "Quantity ohne Code, allein",
+        "dosage": {
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "mg"
+              }
+            }
+          ]
+        },
+        "expect": false
+      },
+      {
+        "name": "Quantity ohne Code und Quantity mit Code",
+        "dosages": [
+          {
+            "doseAndRate": [
+              {
+                "doseQuantity": {
+                  "value": 1,
+                  "unit": "mg"
+                }
+              }
+            ]
+          },
+          {
+            "doseAndRate": [
+              {
+                "doseQuantity": {
+                  "value": 2,
+                  "code": "mg"
+                }
+              }
+            ]
+          }
+        ],
+        "expect": true
+      },
+      {
+        "name": "Rate und Quantity, Rate-Code wird nicht verglichen",
+        "dosages": [
+          {
+            "doseAndRate": [
+              {
+                "rateQuantity": {
+                  "value": 10,
+                  "code": "mL/h"
+                }
+              }
+            ]
+          },
+          {
+            "doseAndRate": [
+              {
+                "doseQuantity": {
+                  "value": 2,
+                  "code": "mg"
+                }
+              }
+            ]
+          }
+        ],
+        "expect": true
+      },
+      {
+        "name": "Dosages mit und ohne doseAndRate",
+        "dosages": [
+          {
+            "timing": {
+              "repeat": {
+                "when": [
+                  "MORN"
+                ]
+              }
+            }
+          },
+          {
+            "doseAndRate": [
+              {
+                "doseQuantity": {
+                  "value": 2,
+                  "code": "mg"
+                }
+              }
+            ]
+          }
+        ],
+        "expect": true
+      },
+      {
+        "name": "Range low und high mit verschiedenen Codes",
+        "dosage": {
+          "doseAndRate": [
+            {
+              "doseRange": {
+                "low": {
+                  "value": 1,
+                  "code": "mg"
+                },
+                "high": {
+                  "value": 2,
+                  "code": "g"
+                }
+              }
+            }
+          ]
+        },
+        "expect": false
+      },
+      {
+        "name": "Range nur low und Quantity mit gleichem Code",
+        "dosages": [
+          {
+            "doseAndRate": [
+              {
+                "doseRange": {
+                  "low": {
+                    "value": 1,
+                    "code": "mg"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "doseAndRate": [
+              {
+                "doseQuantity": {
+                  "value": 2,
+                  "code": "mg"
+                }
+              }
+            ]
+          }
+        ],
+        "expect": true
+      },
+      {
+        "name": "Range nur high mit abweichendem Code",
+        "dosages": [
+          {
+            "doseAndRate": [
+              {
+                "doseRange": {
+                  "high": {
+                    "value": 2,
+                    "code": "mL"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "doseAndRate": [
+              {
+                "doseQuantity": {
+                  "value": 1,
+                  "code": "mg"
+                }
+              }
+            ]
+          }
+        ],
+        "expect": false
+      },
+      {
+        "name": "Range ohne Codes",
+        "dosage": {
+          "doseAndRate": [
+            {
+              "doseRange": {
+                "low": {
+                  "value": 1
+                },
+                "high": {
+                  "value": 2
+                }
+              }
+            }
+          ]
+        },
+        "expect": false
+      },
+      {
+        "name": "zwei identische Dosages",
+        "dosages": [
+          {
+            "doseAndRate": [
+              {
+                "doseQuantity": {
+                  "value": 1,
+                  "code": "mg"
+                }
+              }
+            ]
+          },
+          {
+            "doseAndRate": [
+              {
+                "doseQuantity": {
+                  "value": 1,
+                  "code": "mg"
+                }
+              }
+            ]
+          }
+        ],
+        "expect": true
+      },
+      {
+        "name": "mehrere doseAndRate in einer Dosage, verschiedene Codes",
+        "dosage": {
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "code": "mg"
+              }
+            },
+            {
+              "doseQuantity": {
+                "value": 2,
+                "code": "mL"
+              }
+            }
+          ]
+        },
+        "expect": false
+      },
+      {
+        "name": "gleicher Code aus verschiedenen Systemen",
+        "dosages": [
+          {
+            "doseAndRate": [
+              {
+                "doseQuantity": {
+                  "value": 1,
+                  "system": "http://unitsofmeasure.org",
+                  "code": "mg"
+                }
+              }
+            ]
+          },
+          {
+            "doseAndRate": [
+              {
+                "doseQuantity": {
+                  "value": 2,
+                  "system": "http://example.org/CodeSystem/units",
+                  "code": "mg"
+                }
+              }
+            ]
+          }
+        ],
+        "expect": true
+      },
+      {
         "name": "ein Element",
         "dosage": {
           "timing": {
@@ -790,6 +1100,316 @@
     "context": "Dosage",
     "cases": [
       {
+        "name": "keine Dosages",
+        "dosages": [],
+        "expect": true
+      },
+      {
+        "name": "Dosages ohne doseAndRate",
+        "dosages": [
+          {
+            "text": "Nach Plan"
+          },
+          {
+            "timing": {
+              "repeat": {
+                "when": [
+                  "MORN"
+                ]
+              }
+            }
+          }
+        ],
+        "expect": true
+      },
+      {
+        "name": "nur Rate, kein Dosis-Code",
+        "dosage": {
+          "doseAndRate": [
+            {
+              "rateQuantity": {
+                "value": 10,
+                "system": "http://unitsofmeasure.org",
+                "code": "mL/h"
+              }
+            }
+          ]
+        },
+        "expect": false
+      },
+      {
+        "name": "nur Typ, keine Dosis",
+        "dosage": {
+          "doseAndRate": [
+            {
+              "type": {
+                "text": "Test"
+              }
+            }
+          ]
+        },
+        "expect": false
+      },
+      {
+        "name": "Quantity ohne Code, allein",
+        "dosage": {
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "mg"
+              }
+            }
+          ]
+        },
+        "expect": false
+      },
+      {
+        "name": "Quantity ohne Code und Quantity mit Code",
+        "dosages": [
+          {
+            "doseAndRate": [
+              {
+                "doseQuantity": {
+                  "value": 1,
+                  "unit": "mg"
+                }
+              }
+            ]
+          },
+          {
+            "doseAndRate": [
+              {
+                "doseQuantity": {
+                  "value": 2,
+                  "code": "mg"
+                }
+              }
+            ]
+          }
+        ],
+        "expect": true
+      },
+      {
+        "name": "Rate und Quantity, Rate-Code wird nicht verglichen",
+        "dosages": [
+          {
+            "doseAndRate": [
+              {
+                "rateQuantity": {
+                  "value": 10,
+                  "code": "mL/h"
+                }
+              }
+            ]
+          },
+          {
+            "doseAndRate": [
+              {
+                "doseQuantity": {
+                  "value": 2,
+                  "code": "mg"
+                }
+              }
+            ]
+          }
+        ],
+        "expect": true
+      },
+      {
+        "name": "Dosages mit und ohne doseAndRate",
+        "dosages": [
+          {
+            "timing": {
+              "repeat": {
+                "when": [
+                  "MORN"
+                ]
+              }
+            }
+          },
+          {
+            "doseAndRate": [
+              {
+                "doseQuantity": {
+                  "value": 2,
+                  "code": "mg"
+                }
+              }
+            ]
+          }
+        ],
+        "expect": true
+      },
+      {
+        "name": "Range low und high mit verschiedenen Codes",
+        "dosage": {
+          "doseAndRate": [
+            {
+              "doseRange": {
+                "low": {
+                  "value": 1,
+                  "code": "mg"
+                },
+                "high": {
+                  "value": 2,
+                  "code": "g"
+                }
+              }
+            }
+          ]
+        },
+        "expect": false
+      },
+      {
+        "name": "Range nur low und Quantity mit gleichem Code",
+        "dosages": [
+          {
+            "doseAndRate": [
+              {
+                "doseRange": {
+                  "low": {
+                    "value": 1,
+                    "code": "mg"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "doseAndRate": [
+              {
+                "doseQuantity": {
+                  "value": 2,
+                  "code": "mg"
+                }
+              }
+            ]
+          }
+        ],
+        "expect": true
+      },
+      {
+        "name": "Range nur high mit abweichendem Code",
+        "dosages": [
+          {
+            "doseAndRate": [
+              {
+                "doseRange": {
+                  "high": {
+                    "value": 2,
+                    "code": "mL"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "doseAndRate": [
+              {
+                "doseQuantity": {
+                  "value": 1,
+                  "code": "mg"
+                }
+              }
+            ]
+          }
+        ],
+        "expect": false
+      },
+      {
+        "name": "Range ohne Codes",
+        "dosage": {
+          "doseAndRate": [
+            {
+              "doseRange": {
+                "low": {
+                  "value": 1
+                },
+                "high": {
+                  "value": 2
+                }
+              }
+            }
+          ]
+        },
+        "expect": false
+      },
+      {
+        "name": "zwei identische Dosages",
+        "dosages": [
+          {
+            "doseAndRate": [
+              {
+                "doseQuantity": {
+                  "value": 1,
+                  "code": "mg"
+                }
+              }
+            ]
+          },
+          {
+            "doseAndRate": [
+              {
+                "doseQuantity": {
+                  "value": 1,
+                  "code": "mg"
+                }
+              }
+            ]
+          }
+        ],
+        "expect": true
+      },
+      {
+        "name": "mehrere doseAndRate in einer Dosage, verschiedene Codes",
+        "dosage": {
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "code": "mg"
+              }
+            },
+            {
+              "doseQuantity": {
+                "value": 2,
+                "code": "mL"
+              }
+            }
+          ]
+        },
+        "expect": false
+      },
+      {
+        "name": "gleicher Code aus verschiedenen Systemen",
+        "dosages": [
+          {
+            "doseAndRate": [
+              {
+                "doseQuantity": {
+                  "value": 1,
+                  "system": "http://unitsofmeasure.org",
+                  "code": "mg"
+                }
+              }
+            ]
+          },
+          {
+            "doseAndRate": [
+              {
+                "doseQuantity": {
+                  "value": 2,
+                  "system": "http://example.org/CodeSystem/units",
+                  "code": "mg"
+                }
+              }
+            ]
+          }
+        ],
+        "expect": true
+      },
+      {
         "name": "ein Element",
         "dosage": {
           "timing": {
@@ -1110,6 +1730,110 @@
           }
         ],
         "expect": false
+      }
+    ]
+  },
+  {
+    "invariant": "DosageDoseUnitSameCode",
+    "context": "Resource",
+    "cases": [
+      {
+        "name": "Root ohne Dosages",
+        "dosages": [],
+        "expect": true
+      },
+      {
+        "name": "Root mit Dosis ohne Code",
+        "dosage": {
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1
+              }
+            }
+          ]
+        },
+        "expect": false
+      },
+      {
+        "name": "Root mit gleichem Dosis-Code",
+        "dosages": [
+          {
+            "doseAndRate": [
+              {
+                "doseQuantity": {
+                  "value": 1,
+                  "code": "mg"
+                }
+              }
+            ]
+          },
+          {
+            "doseAndRate": [
+              {
+                "doseRange": {
+                  "high": {
+                    "value": 2,
+                    "code": "mg"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "expect": true
+      }
+    ]
+  },
+  {
+    "invariant": "DosageDoseUnitSameCodeWarning",
+    "context": "Resource",
+    "cases": [
+      {
+        "name": "Root ohne Dosages",
+        "dosages": [],
+        "expect": true
+      },
+      {
+        "name": "Root mit Dosis ohne Code",
+        "dosage": {
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1
+              }
+            }
+          ]
+        },
+        "expect": false
+      },
+      {
+        "name": "Root mit gleichem Dosis-Code",
+        "dosages": [
+          {
+            "doseAndRate": [
+              {
+                "doseQuantity": {
+                  "value": 1,
+                  "code": "mg"
+                }
+              }
+            ]
+          },
+          {
+            "doseAndRate": [
+              {
+                "doseRange": {
+                  "high": {
+                    "value": 2,
+                    "code": "mg"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "expect": true
       }
     ]
   },

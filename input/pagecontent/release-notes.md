@@ -34,6 +34,7 @@
   - Im Uhrzeitenschema (`timeOfDay`) muss eine Uhrzeit in `boundsPeriod.start` oder `boundsPeriod.end` einer der angegebenen Uhrzeiten entsprechen.
   - Bekannte Einschränkung: Der FHIRPath-Ausdruck prüft nur den Uhrzeitanteil, nicht den Zeitzonenversatz. Die Übereinstimmung mit `Europe/Berlin` muss die Anwendung zusätzlich prüfen.
 - **Mehrere `Dosage`-Elemente werden in allen Invarianten mit `combine()` statt `|` zusammengeführt.** `|` entfernt nach FHIRPath gleiche Elemente; zwei identische Elemente zählten deshalb als eines. Betroffen waren `AsNeededSingleDosageOnly`, `FreeTextSingleDosageOnly`/`…Warning` und `TimingSingleDosageForWhen`/`…ForTimeOfDay` samt Warnungen: Zwei gleiche reine Bedarfsdosierungen waren gültig, obwohl genau ein Element verlangt ist (die Textgenerierung bricht dort ab).
+- **`TimingOnlyOneTimeForInterval`, `TimingOnlyOneTimeOfDay` und `TimingOnlyWhenOrTimeOfDay` (`TimingDgMP`): Ausdruck umgeformt, ohne fachliche Änderung.** Die Prüfung über alle `Dosage`-Elemente der Ressource läuft je Auswertung einmal statt einmal je Element. Bisher wuchs die Validierungszeit mit der dritten Potenz der Anzahl der `Dosage`-Elemente.
 - **`TimingOnlyOneBounds` (`TimingDgMP`)**
   - Erkennt jetzt auch einen Wechsel zwischen Dauer und Zeitraum über die Elemente und einen Zeitraum, dessen Start oder Ende nur in einem Teil der Elemente steht. Bisher wurden Dauer und Zeitraum getrennt geprüft und fehlende Werte übergangen; die Textgenerierung liest den Zeitrahmen nur aus dem ersten Element, ein abweichender ging verloren.
 - **`TimingPeriodUnit` (`TimingDgMP`)**
@@ -43,6 +44,7 @@
   - `periodMax` muss in allen Elementen gleich sein oder in allen fehlen; bisher wurde es nicht verglichen. Die Textgenerierung liest den Rhythmus nur aus dem ersten Element.
 - **`TimingSingleDosageForWhen`, `TimingSingleDosageForTimeOfDay` (`TimingDgMP`) und die Warnungen in `TimingDE`**
   - Beschreibung an den Ausdruck angeglichen: Die Regel gilt bei täglicher Gabe und in einer Intervall-Kombination, nicht nur bei täglicher Gabe.
+  - Bekannte Einschränkung: Der HL7-Validator (org.hl7.fhir.core, geprüft bis 7.0.5) meldet einen Verstoß, wenn auf einen Dosisbereich mit Unter- und Obergrenze ein Dosisbereich nur mit derselben Obergrenze folgt, etwa morgens 1 bis 2 Stück und abends bis zu 2 Stück. Die Dosen sind verschieden, die Regel ist erfüllt ([hapifhir/org.hl7.fhir.core#2843](https://github.com/hapifhir/org.hl7.fhir.core/issues/2843)).
 - **`TimingBoundsPeriodFullDate` (`TimingDgMP`) — neu**
   - `boundsPeriod.start` und `boundsPeriod.end` müssen ein vollständiges Kalenderdatum enthalten. FHIR `dateTime` erlaubt auch `JJJJ` und `JJJJ-MM`; die Textgenerierung kann ein Teildatum nicht darstellen und bricht ab.
 - **`MinimumIntervalOnlyPureAsNeeded` und `MaxDoseOnlyPureAsNeeded` (`DosageDgMP`)**

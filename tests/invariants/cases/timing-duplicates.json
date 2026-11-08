@@ -721,6 +721,62 @@
           }
         ],
         "expect": false
+      },
+      {
+        "name": "gleiche Uhrzeit in zwei Elementen, daneben ein Element ohne Timing",
+        "dosages": [
+          {
+            "timing": {
+              "repeat": {
+                "timeOfDay": [
+                  "08:00:00"
+                ]
+              }
+            },
+            "doseAndRate": [
+              {
+                "doseQuantity": {
+                  "value": 1,
+                  "unit": "Stück",
+                  "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                  "code": "1"
+                }
+              }
+            ]
+          },
+          {
+            "timing": {
+              "repeat": {
+                "timeOfDay": [
+                  "08:00:00"
+                ]
+              }
+            },
+            "doseAndRate": [
+              {
+                "doseQuantity": {
+                  "value": 2,
+                  "unit": "Stück",
+                  "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                  "code": "1"
+                }
+              }
+            ]
+          },
+          {
+            "doseAndRate": [
+              {
+                "doseQuantity": {
+                  "value": 3,
+                  "unit": "Stück",
+                  "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                  "code": "1"
+                }
+              }
+            ]
+          }
+        ],
+        "expect": false
       }
     ]
   },
@@ -1430,6 +1486,62 @@
               {
                 "doseQuantity": {
                   "value": 2,
+                  "unit": "Stück",
+                  "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                  "code": "1"
+                }
+              }
+            ]
+          }
+        ],
+        "expect": false
+      },
+      {
+        "name": "Tageszeit und Uhrzeit, daneben ein Element ohne Timing",
+        "dosages": [
+          {
+            "timing": {
+              "repeat": {
+                "when": [
+                  "MORN"
+                ]
+              }
+            },
+            "doseAndRate": [
+              {
+                "doseQuantity": {
+                  "value": 1,
+                  "unit": "Stück",
+                  "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                  "code": "1"
+                }
+              }
+            ]
+          },
+          {
+            "timing": {
+              "repeat": {
+                "timeOfDay": [
+                  "20:00:00"
+                ]
+              }
+            },
+            "doseAndRate": [
+              {
+                "doseQuantity": {
+                  "value": 2,
+                  "unit": "Stück",
+                  "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                  "code": "1"
+                }
+              }
+            ]
+          },
+          {
+            "doseAndRate": [
+              {
+                "doseQuantity": {
+                  "value": 3,
                   "unit": "Stück",
                   "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
                   "code": "1"
@@ -2936,6 +3048,104 @@
                 "periodUnit": "d",
                 "timeOfDay": [
                   "20:00:00"
+                ]
+              }
+            },
+            "doseAndRate": [
+              {
+                "doseQuantity": {
+                  "value": 2,
+                  "unit": "Stück",
+                  "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                  "code": "1"
+                }
+              }
+            ]
+          }
+        ],
+        "expect": true
+      },
+      {
+        "name": "Tageszeiten ohne Intervall",
+        "dosages": [
+          {
+            "timing": {
+              "repeat": {
+                "when": [
+                  "MORN"
+                ]
+              }
+            },
+            "doseAndRate": [
+              {
+                "doseQuantity": {
+                  "value": 1,
+                  "unit": "Stück",
+                  "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                  "code": "1"
+                }
+              }
+            ]
+          },
+          {
+            "timing": {
+              "repeat": {
+                "when": [
+                  "EVE"
+                ]
+              }
+            },
+            "doseAndRate": [
+              {
+                "doseQuantity": {
+                  "value": 2,
+                  "unit": "Stück",
+                  "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                  "code": "1"
+                }
+              }
+            ]
+          }
+        ],
+        "expect": true
+      },
+      {
+        "name": "gleiche Uhrzeit an verschiedenen Wochentagen",
+        "dosages": [
+          {
+            "timing": {
+              "repeat": {
+                "period": 1,
+                "periodUnit": "wk",
+                "dayOfWeek": [
+                  "mon"
+                ],
+                "timeOfDay": [
+                  "08:00:00"
+                ]
+              }
+            },
+            "doseAndRate": [
+              {
+                "doseQuantity": {
+                  "value": 1,
+                  "unit": "Stück",
+                  "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                  "code": "1"
+                }
+              }
+            ]
+          },
+          {
+            "timing": {
+              "repeat": {
+                "period": 1,
+                "periodUnit": "wk",
+                "dayOfWeek": [
+                  "fri"
+                ],
+                "timeOfDay": [
+                  "08:00:00"
                 ]
               }
             },

@@ -87,6 +87,8 @@ pages:
     title: Migration von Dosierungen 1.0.7 auf 2.0.0
     migration-freitext-fallback.md:
       title: Freitext-Fallback für nicht strukturiert überführbare Dosierungen
+    migration-m03-m11-freitext.md:
+      title: M03/M11 - Freitext aus fehlerhafter strukturierter Dosierung
     migration-m02-exponentialnotation.md:
       title: M02 - Exponentialschreibweise
     migration-m04-viererschema-freitext.md:

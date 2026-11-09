@@ -1,6 +1,6 @@
 [Zur Migrationsübersicht](./migration-1.0.7-2.0.0.html)
 
-Der Freitext-Fallback gilt, wenn eine strukturierte 1.0.7-Dosierungs-Liste nach der Normalisierung M02 weiterhin mindestens eine Invariante des 2.0.0-Profils verletzt. Die Fälle und ihre Invarianten stehen in der [Fallübersicht](./migration-1.0.7-2.0.0.html). Die Dosierung wird dann als reine Freitext-Dosierung abgebildet. Zahlen, Einheiten und Zeitangaben werden dabei weder korrigiert noch umgerechnet; der Freitext gibt die Quelldosierung so wieder, wie sie strukturiert angegeben war.
+Der Freitext-Fallback gilt, wenn eine strukturierte 1.0.7-Dosierungs-Liste nach der Normalisierung M02 weiterhin mindestens eine Invariante des 2.0.0-Profils verletzt. M03 und M11 werden stattdessen nach dem eigenen Ablauf [M03/M11](./migration-m03-m11-freitext.html) behandelt. Die übrigen Fälle und ihre Invarianten stehen in der [Fallübersicht](./migration-1.0.7-2.0.0.html). Die Dosierung wird dann als reine Freitext-Dosierung abgebildet. Zahlen, Einheiten und Zeitangaben werden dabei weder korrigiert noch umgerechnet; der Freitext gibt die Quelldosierung so wieder, wie sie strukturiert angegeben war.
 
 ### Abbildung
 

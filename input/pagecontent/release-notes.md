@@ -30,6 +30,9 @@
   - Mindestabstand (`valueDuration.value`) und `maxDosePerPeriod` (`numerator.value`, `denominator.value`) müssen größer als 0 sein.
 - **`MaxDoseNotBelowDose` (`DosageDgMP`) — neu** (HDB-971)
   - `maxDosePerPeriod.numerator.value` darf nicht kleiner als `doseQuantity.value` beziehungsweise `doseRange.high.value` sein. Zuvor wurde nur die Einheit verglichen (`MaxDoseSameUnitAsDose`).
+- **`DosageDoseQuantityAllowedFractions` und `DosageDoseValueDecimalNotation` (`DosageDgMP`): Achtel `.125` zulässig**
+  - `DosageDoseQuantityAllowedFractions`: Zusätzlich zulässig ist der Bruchteil `.125` (1/8), auch mit ganzzahligem Anteil wie `1.125`, in `doseQuantity` und in beiden Grenzen von `doseRange`. Weitere Achtel wie `.375` sind nicht zulässig.
+  - `DosageDoseValueDecimalNotation`: höchstens drei statt zwei Nachkommastellen.
 - **`TimingFreqOrPeriodGtOne` (`TimingDgMP`) / `TimingFreqOrPeriodGtOneWarning` (`TimingDE`)** (HDB-942)
   - Beschreibung, Begründung und Beispiele um die Kombination aus variabler Frequenz und variabler Periode ergänzt („1 bis 3 x alle 2 bis 3 Tage“). Der Ausdruck ist unverändert; die Kombination war bereits ausgeschlossen.
 - **`TimingBoundsPeriodMatchesTime` (`TimingDgMP`) — neu**

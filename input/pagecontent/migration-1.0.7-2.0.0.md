@@ -16,7 +16,7 @@ Ressourcenelemente außerhalb der Dosierung und der Text-Extensions bleiben unve
 
 ### Ablauf
 
-Eine Dosierungs-Liste kann mehrere `Dosage`-Elemente enthalten, und jedes Element kann mehrere der unten aufgeführten Fälle aufweisen. Die Fall-IDs (M01–M15) sind nur Kennungen für die Unterschiede zwischen 1.0.7 und 2.0.0; ihre Nummern geben **keine Reihenfolge** vor. Maßgeblich ist der folgende Ablauf, der immer die gesamte Dosierungs-Liste einer Ressource betrachtet.
+Eine Dosierungs-Liste kann mehrere `Dosage`-Elemente enthalten, und jedes Element kann mehrere der unten aufgeführten Fälle aufweisen. Die Fall-IDs (M01–M12) sind nur Kennungen für die Unterschiede zwischen 1.0.7 und 2.0.0; ihre Nummern geben **keine Reihenfolge** vor. Maßgeblich ist der folgende Ablauf, der immer die gesamte Dosierungs-Liste einer Ressource betrachtet.
 
 1. **Keine Dosierung vorhanden:** Es wird keine Dosierung ergänzt. Sind `renderedDosageInstruction` oder `GeneratedDosageInstructionsMeta` ohne Dosierung vorhanden, werden sie entfernt (M12).
 2. **Reiner Freitext:** `Dosage.text` wird übernommen; besteht der Text nur aus einem 4-Schema (zum Beispiel `1-0-1-0 Stück`), wird er nach [M04](./migration-m04-viererschema-freitext.html) behandelt. Auf Ressourcenebene werden `renderedDosageInstruction` mit exakt diesem Text sowie `GeneratedDosageInstructionsMeta` gesetzt (`DosageRequiresGeneratedText`, `FreeTextMatchesRenderedText`, siehe Abschnitt „Text-Extensions“).
@@ -44,7 +44,6 @@ Das Ergebnis ist eine Ressource, die dem 2.0.0-Profil entspricht. Ausgenommen si
 | M10 | `TimingOnlyOneBounds` | `boundsDuration` nur an einem Teil der `Dosage`-Elemente oder unterschiedliche Behandlungsdauern | Eindeutiges `boundsDuration` in fehlende Elemente kopieren; bei mehreren Werten oder Codes Migration abbrechen | [M10](./migration-m10-einheitlicher-zeitrahmen.html) |
 | M11 | `TimingValuesPositive` | Periode null oder Behandlungsdauer null oder negativ (eine negative Periode schließt bereits die R4-Basisregel `tim-5` aus) | Gesamte Dosierungsliste als Freitext; danach M04 erneut prüfen | [M03/M11](./migration-m03-m11-freitext.html) |
 | M12 | `ExtRequiresDosage-MR`, `ExtRequiresDosage-MD`, `ExtRequiresDosage-MS` | Text-Extension ohne Dosierung | Extensions entfernen | Schritt 1 des Ablaufs |
-| M13–M15 | siehe unten | Neue Felder, Warnungen und Lockerungen | Keine Änderung | Abschnitt „Fälle ohne Datenänderung“ |
 
 Bei M01 und M05–M07 werden die Werte weder gerundet noch in andere Einheiten umgerechnet noch umgedeutet, auch wenn eine exakte Umrechnung möglich wäre (zum Beispiel eine Periode von `1.5 d` in `36 h`). „2 x alle 3 Tage“ wird also weder zu „alle 1,5 Tage“ noch zu „alle 36 Stunden“. Die Überführung erhält die Angabe der Quelle, wie sie verordnet wurde; deshalb gilt dort der Freitext-Fallback. Bei M10 wird ausschließlich ein bereits vorhandener, eindeutiger Wert wiederholt; er wird nicht verändert.
 

@@ -2,7 +2,7 @@
 
 ### Anlass
 
-`DosageDoseValueDecimalNotation` verlangt eine einfache Dezimalschreibweise mit höchstens zwei Nachkommastellen. Die Prüfung verwendet `value.toString()`: Ob damit die ursprüngliche JSON-Exponentialnotation erkannt wird, hängt vom Parser beziehungsweise Validator ab. Nach gewöhnlichem JSON-Parsen sind `5e-1` und `0.5` derselbe Zahlenwert.
+`DosageDoseValueDecimalNotation` verlangt eine einfache Dezimalschreibweise mit höchstens drei Nachkommastellen. Die Prüfung verwendet `value.toString()`: Ob damit die ursprüngliche JSON-Exponentialnotation erkannt wird, hängt vom Parser beziehungsweise Validator ab. Nach gewöhnlichem JSON-Parsen sind `5e-1` und `0.5` derselbe Zahlenwert.
 
 M02 normalisiert deshalb ausdrücklich die Quellserialisierung. Die Implementierung darf sich für ihre Erkennung nicht allein auf eine FHIRPath-Auswertung des bereits geparsten Werts verlassen.
 
@@ -41,6 +41,8 @@ Zahlenwert, Einheit und Timing bleiben unverändert; nur die Zahlenschreibweise 
 ### Prüffälle
 
 - `5e-1` wird `0.5` und besteht beide Dosis-Constraints.
+- `125e-3` wird exakt `0.125` und bleibt als Achteldosis strukturiert.
+- `625e-4` wird exakt `0.0625`; der Wert verletzt weiterhin die Bruchteilsregel und die Grenze von drei Nachkommastellen, ohne dass gerundet werden darf.
 - `50e-2` wird `0.50`, nicht `0.5`; der Dosierungstext bleibt `je 0,50 Stück`.
 - `12e-1` wird exakt `1.2`; danach löst M01 aus.
 - `0e0` wird `0`; danach löst M03 aus.

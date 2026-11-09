@@ -47,7 +47,7 @@ Beispiele (Warnungskontext – mehrere Freitext‑Dosierungen):
 ##### DosageDoseUnitSameCodeWarning
 
 **Beschreibung:**  
-Warnung in `DosageDE`, wenn die Dosierungsinstanzen innerhalb derselben Ressource unterschiedliche Dosiereinheiten (Codes) verwenden.
+Warnung in `DosageDE`, wenn bei vorhandenem `doseAndRate` über alle Dosierungsinstanzen derselben Ressource hinweg nicht genau ein unterschiedlicher Dosis-Code vorliegt. Verglichen werden `doseQuantity.code`, `doseRange.low.code` und `doseRange.high.code`, nicht `system` oder die Anzeigeeinheit `unit`.
 
 **Warum?**  
 Gemischte Einheiten (z. B. Stück und mg) erschweren Vergleich, Summierung und Darstellung. Im generischen Profil bleibt es bei einer Warnung, weil sich fachlich begründete Mischformen nicht generell ausschließen lassen. In den dgMP-Profilen gilt für denselben Sachverhalt der Fehler [DosageDoseUnitSameCode](#dosagedoseunitsamecode).
@@ -547,7 +547,7 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 ##### DosageDoseUnitSameCode
 
 **Beschreibung:**  
-In den dgMP-Profilen müssen alle Dosierungsinstanzen innerhalb derselben Ressource dieselbe Dosiereinheit (Code) verwenden.
+In den dgMP-Profilen muss bei vorhandenem `doseAndRate` über alle Dosierungsinstanzen derselben Ressource hinweg genau ein unterschiedlicher Dosis-Code vorliegen. Berücksichtigt werden `doseQuantity.code`, `doseRange.low.code` und `doseRange.high.code`. 
 
 **Warum?**  
 Der dgMP setzt auf durchgängig maschinell vergleichbare Dosierungen; das kompakte 4‑Schema des Dosierungstextes trägt eine gemeinsame Dosis-Einheit.
@@ -559,10 +559,21 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 ##### DosageDoseQuantityAllowedFractions
 
 **Beschreibung:**  
-Dosiswerte in `doseQuantity` und `doseRange` dürfen nur ganzzahlig sein oder einen der Dezimalanteile `.25`, `.33`, `.5`, `.66` oder `.75` verwenden.
+Dosiswerte in `doseQuantity` und `doseRange` dürfen ganzzahlig sein oder einen der bisherigen Bruchteile `.25`, `.33`, `.5`, `.66` und `.75` verwenden. Zusätzlich ist ausschließlich das Achtel `.125` zulässig; weitere Achtel wie `.375` (3/8), `.625` (5/8) und `.875` (7/8) sind nicht erlaubt. Die Werte sind als Dezimalzahlen anzugeben, nicht als Bruchzeichenfolge wie `1/8`. Ganzzahlige Anteile sind zulässig, beispielsweise `1.125` für 1 1/8 Einheiten.
 
 **Warum?**  
-Bildet die in der Praxis teilbaren Darreichungsformen ab (halbe, viertel oder drittel Einheiten) und verhindert Dosiswerte, die sich nicht verabreichen lassen. Die zulässige Schreibweise des Werts regelt zusätzlich [DosageDoseValueDecimalNotation](#dosagedosevaluedecimalnotation).
+Die bisher erlaubten Viertel-, Drittel- und Halbwerte bleiben unverändert. Ergänzend wird 1/8 unterstützt, ohne daraus eine allgemeine Achtel-Stückelung abzuleiten. Ob die konkrete Darreichungsform entsprechend teilbar ist, muss fachlich geprüft werden; die Zulässigkeit eines Zahlenwerts allein belegt dies nicht. Die zulässige Schreibweise des Werts regelt zusätzlich [DosageDoseValueDecimalNotation](#dosagedosevaluedecimalnotation).
+
+| Bruchteil | Dezimalanteil |
+| --- | --- |
+| 1/8 | `.125` |
+| 1/4 | `.25` |
+| 1/3 (gerundet) | `.33` |
+| 1/2 | `.5` |
+| 2/3 (gerundet) | `.66` |
+| 3/4 | `.75` |
+
+Gültige Beispiele: [feste Achteldosen](./MedicationRequest-Example-MR-Dosage-eighths.html), [Dosis mit ganzzahligem Anteil](./MedicationDispense-Example-MD-Dosage-eighths-mixed.html) und [variabler Dosisbereich](./MedicationStatement-Example-MS-Dosage-eighths-range.html).
 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
@@ -571,10 +582,10 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 ##### DosageDoseValueDecimalNotation
 
 **Beschreibung:**  
-Dosiswerte in `doseQuantity.value` sowie `doseRange.low.value` und `doseRange.high.value` müssen in einfacher Dezimalschreibweise mit maximal zwei Nachkommastellen angegeben werden (z. B. `0.5`, `1`, `2.25`). Die vom Datentyp `decimal` erlaubte Exponentialschreibweise ist unzulässig; `0.5` darf also nicht als `50e-2` übermittelt werden.
+Dosiswerte in `doseQuantity.value` sowie `doseRange.low.value` und `doseRange.high.value` müssen in einfacher Dezimalschreibweise mit maximal drei Nachkommastellen angegeben werden (z. B. `0.125`, `0.5`, `1`, `2.75`). Vier Nachkommastellen sind nicht zulässig, beispielsweise `0.0625`. Das gilt auch, wenn nur eine nachfolgende Null hinzukommt (`0.1250`): Nachfolgende Nullen zählen mit, weil FHIR die Genauigkeit eines `decimal` als Teil des Werts betrachtet. Die vom Datentyp `decimal` erlaubte Exponentialschreibweise ist unzulässig; `0.5` darf also nicht als `50e-2` übermittelt werden.
 
 **Warum?**  
-Der Constraint `DosageDoseQuantityAllowedFractions` schränkt den Wertebereich ein, arbeitet dafür aber auf dem geparsten Zahlenwert und ist gegenüber der Notation blind. Da Dosiswerte in der Praxis auch textnah weiterverarbeitet und angezeigt werden, legt dieser Constraint zusätzlich die Schreibweise fest und hält sie an der BMP-Spezifikation ausgerichtet.
+Der Constraint `DosageDoseQuantityAllowedFractions` schränkt den Wertebereich ein, arbeitet dafür aber auf dem geparsten Zahlenwert und ist gegenüber der Notation blind. Da Dosiswerte in der Praxis auch textnah weiterverarbeitet und angezeigt werden, legt dieser Constraint zusätzlich die Schreibweise fest. Drei Nachkommastellen ermöglichen die exakte Darstellung von Achteln. Die Grenze erlaubt nicht beliebige Tausendstel; die Bruchteilsregel gilt zusätzlich. Ob Exponentialnotation oder nachfolgende Nullen nach dem Parsen noch erkannt werden, hängt vom Parser beziehungsweise Validator ab (siehe [Migration der Exponentialnotation](./migration-m02-exponentialnotation.html)).
 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 

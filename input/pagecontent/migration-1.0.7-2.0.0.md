@@ -32,7 +32,7 @@ Das Ergebnis ist eine Ressource, die dem 2.0.0-Profil entspricht. Ausgenommen si
 
 | Fall | Invariante | Anlass | Überführung | Details |
 |---|---|---|---|---|
-| M01 | `DosageDoseQuantityAllowedFractions`, `DosageDoseValueDecimalNotation` | Dosiswert mit einem Bruchteil außer `.25`, `.33`, `.5`, `.66`, `.75` oder mit mehr als zwei Nachkommastellen | Freitext-Fallback | [Freitext-Fallback](./migration-freitext-fallback.html) |
+| M01 | `DosageDoseQuantityAllowedFractions`, `DosageDoseValueDecimalNotation` | Dosiswert mit einem Bruchteil außer `.125`, `.25`, `.33`, `.5`, `.66`, `.75` oder mit mehr als drei Nachkommastellen | Freitext-Fallback | [Freitext-Fallback](./migration-freitext-fallback.html) |
 | M02 | `DosageDoseValueDecimalNotation` | Exponentialschreibweise im Quellpayload | Exakte Dezimalnormalisierung | [M02](./migration-m02-exponentialnotation.html) |
 | M03 | `DosageDoseValuePositive` | Dosiswert null oder negativ | Gesamte Dosierungsliste als Freitext; danach M04 erneut prüfen | [M03/M11](./migration-m03-m11-freitext.html) |
 | M04 | `DosageFourSlotPatternInText` | Freitext besteht nur aus einem 4-Schema | `täglich: ` voranstellen | [M04](./migration-m04-viererschema-freitext.html) |

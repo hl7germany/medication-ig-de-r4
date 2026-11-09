@@ -2,7 +2,7 @@
 
 ### Anlass
 
-`DosageDoseValueDecimalNotation` verlangt eine einfache Dezimalschreibweise mit höchstens zwei Nachkommastellen. Die Prüfung verwendet `value.toString()`. Ob dabei eine JSON-Exponentialnotation erkannt wird, hängt vom Parser ab: Nach gewöhnlichem JSON-Parsen sind `5e-1` und `0.5` derselbe Zahlenwert. M02 betrifft deshalb die Serialisierung im Quellpayload, nicht nur den geparsten Wert.
+`DosageDoseValueDecimalNotation` verlangt eine einfache Dezimalschreibweise mit höchstens drei Nachkommastellen. Die Prüfung verwendet `value.toString()`. Ob dabei eine JSON-Exponentialnotation erkannt wird, hängt vom Parser ab: Nach gewöhnlichem JSON-Parsen sind `5e-1` und `0.5` derselbe Zahlenwert. M02 betrifft deshalb die Serialisierung im Quellpayload, nicht nur den geparsten Wert.
 
 ### Auslöser
 
@@ -31,6 +31,8 @@ Ziel:
 ### Prüffälle
 
 - `5e-1` wird `0.5` und bleibt strukturiert.
+- `125e-3` wird `0.125` und bleibt strukturiert.
+- `625e-4` wird `0.0625`; danach gilt M01.
 - `50e-2` wird `0.50`, nicht `0.5`.
 - `12e-1` wird `1.2`; danach gilt M01.
 - `0e0` wird `0`; danach gilt M03.

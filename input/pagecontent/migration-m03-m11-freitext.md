@@ -2,7 +2,7 @@
 
 ### Anlass
 
-M03 (`DosageDoseValuePositive`) und M11 (`TimingValuesPositive`) beanstanden einen Dosiswert von null oder kleiner beziehungsweise eine Periode von null oder eine Behandlungsdauer von null oder kleiner. Bei diesen Fällen wird die Textgenerierung trotz der verletzten Zielprofil-Invariante ausgeführt. Der erzeugte Text bildet die Quelldosierung ab; die fehlerhaften strukturierten Werte werden nicht korrigiert.
+M03 (`DosageDoseValuePositive`) und M11 (`TimingValuesPositive`) beanstanden einen Dosiswert von null oder kleiner beziehungsweise eine Periode von null oder eine Behandlungsdauer von null oder kleiner. Bei diesen Fällen wird die Textgenerierung trotz der verletzten Zielprofil-Invariante ausgeführt. Der erzeugte Text bildet die Quelldosierung ab; die fehlerhaften strukturierten Werte werden nicht korrigiert. Vorher muss M10 erfolgreich behandelt sein. Bei mehreren unterschiedlichen `boundsDuration`-Werten oder Codes wird die Migration nach [M10](./migration-m10-einheitlicher-zeitrahmen.html) abgebrochen, bevor ein möglicherweise unvollständiger Text erzeugt wird.
 
 ### Überführung
 

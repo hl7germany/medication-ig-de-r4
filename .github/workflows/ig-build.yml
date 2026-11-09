@@ -22,6 +22,55 @@ jobs:
       - run: npm ci
       - run: npm test
 
+  invariant-tests-hapi:
+    name: Invariantentests (HAPI-FHIRPath)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: tests/invariants
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: tests/invariants/package-lock.json
+      - run: npm ci
+      - name: FHIR-Paketcache
+        uses: actions/cache@v4
+        with:
+          path: ~/.fhir/packages
+          key: fhir-packages-hapi-invariants-r4-core
+      - name: Aktuelle Version des IG Publishers ermitteln
+        id: publisher
+        working-directory: ${{ github.workspace }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for i in 1 2 3 4 5; do
+            version=$(gh api repos/HL7/fhir-ig-publisher/releases/latest --jq .tag_name) && break
+            sleep 20
+          done
+          test -n "$version"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+      - name: IG Publisher aus dem Cache
+        id: publisher-cache
+        uses: actions/cache@v4
+        with:
+          path: input-cache/publisher.jar
+          key: ig-publisher-${{ steps.publisher.outputs.version }}
+      - name: IG Publisher laden
+        if: steps.publisher-cache.outputs.cache-hit != 'true'
+        working-directory: ${{ github.workspace }}
+        run: |
+          mkdir -p input-cache
+          curl -fsSL --retry 10 --retry-all-errors --retry-delay 30 -o input-cache/publisher.jar "https://github.com/HL7/fhir-ig-publisher/releases/download/${{ steps.publisher.outputs.version }}/publisher.jar"
+      - run: npm run test:hapi
+
   ig-build:
     name: IG-Build und Prüfung der Beispiele
     runs-on: ubuntu-latest
@@ -50,11 +99,30 @@ jobs:
         with:
           path: ~/.fhir/packages
           key: fhir-packages-${{ hashFiles('sushi-config.yaml') }}
+      - name: Aktuelle Version des IG Publishers ermitteln
+        id: publisher
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for i in 1 2 3 4 5; do
+            version=$(gh api repos/HL7/fhir-ig-publisher/releases/latest --jq .tag_name) && break
+            sleep 20
+          done
+          test -n "$version"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+      - name: IG Publisher aus dem Cache
+        id: publisher-cache
+        uses: actions/cache@v4
+        with:
+          path: input-cache/publisher.jar
+          key: ig-publisher-${{ steps.publisher.outputs.version }}
       - name: IG Publisher laden
+        if: steps.publisher-cache.outputs.cache-hit != 'true'
         run: |
           mkdir -p input-cache
-          curl -fsSL -o input-cache/publisher.jar https://github.com/HL7/fhir-ig-publisher/releases/latest/download/publisher.jar
-          java -jar input-cache/publisher.jar -v
+          curl -fsSL --retry 10 --retry-all-errors --retry-delay 30 -o input-cache/publisher.jar "https://github.com/HL7/fhir-ig-publisher/releases/download/${{ steps.publisher.outputs.version }}/publisher.jar"
+      - name: Version des IG Publishers
+        run: java -jar input-cache/publisher.jar -v
       - name: Build und Prüfung der Beispiele
         run: bash scripts/build-ig.sh
       - name: Erzeugte Includes entsprechen dem Repo-Stand

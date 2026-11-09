@@ -47,7 +47,7 @@ Beispiele (Warnungskontext – mehrere Freitext‑Dosierungen):
 ##### DosageDoseUnitSameCodeWarning
 
 **Beschreibung:**  
-Warnung in `DosageDE`, wenn die Dosierungsinstanzen innerhalb derselben Ressource unterschiedliche Dosiereinheiten (Codes) verwenden.
+Warnung in `DosageDE`, wenn bei vorhandenem `doseAndRate` über alle Dosierungsinstanzen derselben Ressource hinweg nicht genau ein unterschiedlicher Dosis-Code vorliegt. Verglichen werden `doseQuantity.code`, `doseRange.low.code` und `doseRange.high.code`, nicht `system` oder die Anzeigeeinheit `unit`.
 
 **Warum?**  
 Gemischte Einheiten (z. B. Stück und mg) erschweren Vergleich, Summierung und Darstellung. Im generischen Profil bleibt es bei einer Warnung, weil sich fachlich begründete Mischformen nicht generell ausschließen lassen. In den dgMP-Profilen gilt für denselben Sachverhalt der Fehler [DosageDoseUnitSameCode](#dosagedoseunitsamecode).
@@ -547,7 +547,7 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 ##### DosageDoseUnitSameCode
 
 **Beschreibung:**  
-In den dgMP-Profilen müssen alle Dosierungsinstanzen innerhalb derselben Ressource dieselbe Dosiereinheit (Code) verwenden.
+In den dgMP-Profilen muss bei vorhandenem `doseAndRate` über alle Dosierungsinstanzen derselben Ressource hinweg genau ein unterschiedlicher Dosis-Code vorliegen. Berücksichtigt werden `doseQuantity.code`, `doseRange.low.code` und `doseRange.high.code`. 
 
 **Warum?**  
 Der dgMP setzt auf durchgängig maschinell vergleichbare Dosierungen; das kompakte 4‑Schema des Dosierungstextes trägt eine gemeinsame Dosis-Einheit.

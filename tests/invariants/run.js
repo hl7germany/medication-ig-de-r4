@@ -183,12 +183,13 @@ function main() {
   }
   const untested = Object.keys(invariants).filter(k => !tested.has(k)).sort();
   console.log(`${total - failures.length}/${total} Testfälle bestanden, ${tested.size}/${Object.keys(invariants).length} Invarianten mit Tests`);
-  if (untested.length) console.log(`Ohne Tests: ${untested.join(', ')}`);
+  // Jede Invariante braucht Testfälle; ohne sie prüft auch die Mutationsprüfung die Invariante nicht.
+  if (untested.length) console.log(`Ohne Tests (Testfälle in cases/*.json ergänzen): ${untested.join(', ')}`);
   if (failures.length) {
     console.log(`\n${failures.length} Fehlschläge:`);
     failures.forEach(f => console.log(`- ${f}`));
-    process.exit(1);
   }
+  if (failures.length || untested.length) process.exit(1);
 }
 
 module.exports = { ROOT, RESOURCE_TYPES, DOSAGE_PATH, DECIMAL, invariantsIn, loadInvariants, caseBlocks, buildResource, targetsFor };

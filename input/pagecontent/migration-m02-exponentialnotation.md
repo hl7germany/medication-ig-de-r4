@@ -12,7 +12,7 @@ Ein Dosiswert ist im Quellpayload mit Exponent serialisiert, zum Beispiel `5e-1`
 
 1. Den Wert dezimalgenau einlesen, ohne binäre Gleitkommaarithmetik.
 2. Den Wert ohne Exponent serialisieren und dabei die Stellenzahl der Mantisse erhalten: `5e-1` → `0.5`, `50e-2` → `0.50`. Es wird nicht gerundet. FHIR behandelt die Genauigkeit eines `decimal` einschließlich nachfolgender Nullen als Teil des Werts, und die Textgenerierung gibt sie wieder (`je 0,50 Stück`).
-3. Mit dem normalisierten Wert weiter nach dem [Ablauf der Übersicht](./migration-1.0.7-2.0.0.html) verfahren. Verletzt der Wert danach einen anderen Dosis-Constraint (zum Beispiel M01 oder M03), gilt der [Freitext-Fallback](./migration-freitext-fallback.html).
+3. Mit dem normalisierten Wert weiter nach dem [Ablauf der Übersicht](./migration-1.0.7-2.0.0.html) verfahren.
 
 ### Beispiel
 

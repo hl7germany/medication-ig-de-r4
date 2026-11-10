@@ -1,6 +1,6 @@
 [Zur Migrationsübersicht](./migration-1.0.7-2.0.0.html)
 
-Der Freitext-Fallback gilt, wenn eine strukturierte 1.0.7-Dosierungs-Liste nach den Schritten M02 und M10 weiterhin mindestens eine Invariante des 2.0.0-Profils verletzt. M03 und M11 werden stattdessen nach dem eigenen Ablauf [M03/M11](./migration-m03-m11-freitext.html) behandelt. Widersprüchliche `boundsDuration`-Angaben führen nach [M10](./migration-m10-einheitlicher-zeitrahmen.html) zum Abbruch und nicht zum Freitext-Fallback. Die übrigen Fälle und ihre Invarianten stehen in der [Fallübersicht](./migration-1.0.7-2.0.0.html). Die Dosierung wird dann als reine Freitext-Dosierung abgebildet. Zahlen, Einheiten und Zeitangaben werden dabei weder korrigiert noch umgerechnet; der Freitext gibt die Quelldosierung so wieder, wie sie strukturiert angegeben war.
+Der Freitext-Fallback gilt, wenn eine strukturierte 1.0.7-Dosierungs-Liste nach den Schritten M02 und M10 weiterhin mindestens eine Invariante des 2.0.0-Profils verletzt. M03 und M11 werden stattdessen nach dem eigenen Ablauf [M03/M11](./migration-m03-m11-freitext.html) behandelt. Die übrigen Fälle und ihre Invarianten stehen in der [Fallübersicht](./migration-1.0.7-2.0.0.html). Die Dosierung wird dann als reine Freitext-Dosierung abgebildet. Zahlen, Einheiten und Zeitangaben werden dabei weder korrigiert noch umgerechnet; der Freitext gibt die Quelldosierung so wieder, wie sie strukturiert angegeben war.
 
 ### Abbildung
 

@@ -21,8 +21,7 @@ jobs:
           cache-dependency-path: tests/invariants/package-lock.json
       - run: npm ci
       - run: npm test
-      - name: Mutationsprüfung (Bericht in der Zusammenfassung, schlägt nicht fehl)
-        continue-on-error: true
+      - name: Mutationsprüfung (Bericht in der Zusammenfassung)
         run: npm run test:mutation -- --summary "$GITHUB_STEP_SUMMARY"
 
   invariant-tests-hapi:

@@ -6,7 +6,7 @@ Bis zum Ballot 2.0.0 sind mehrfach fehlerhafte oder fehlende Invarianten erst du
 
 Die GitHub Action [`.github/workflows/ig-build.yml`](.github/workflows/ig-build.yml) läuft bei jedem Pull Request und jedem Push auf `main`:
 
-1. **Invariantentests** (`tests/invariants`, einige Sekunden): Die FHIRPath-Ausdrücke werden aus den FSH-Dateien gelesen und mit fhirpath.js gegen tabellarische Testfälle ausgewertet, jeweils für alle drei Ressourcentypen. Danach läuft die [Mutationsprüfung](#mutationsprüfung) (etwa eine halbe Minute). Ihr Bericht steht in der Zusammenfassung des Jobs, sie schlägt nicht fehl.
+1. **Invariantentests** (`tests/invariants`, einige Sekunden): Die FHIRPath-Ausdrücke werden aus den FSH-Dateien gelesen und mit fhirpath.js gegen tabellarische Testfälle ausgewertet, jeweils für alle drei Ressourcentypen. Danach läuft die [Mutationsprüfung](#mutationsprüfung) (etwa eine halbe Minute), ihr Bericht steht in der Zusammenfassung des Jobs. Sie schlägt fehl, wenn bei einer Invariante mehr oder weniger Mutanten überleben als in `tests/invariants/mutation-known-survivors.json` eingetragen.
 2. **Invariantentests mit HAPI** (`npm run test:hapi`, etwa eine Minute): Dieselben Testfälle werden mit der FHIRPath-Engine des HL7-Validators aus dem aktuellen `publisher.jar` ausgewertet, auf dem Element-Modell wie bei der Validierung. Der Job schlägt fehl bei
    - einer Abweichung vom erwarteten Ergebnis, die nicht in `tests/invariants/hapi-known-deviations.json` steht (dort stehen bekannte Fehler der Engine mit Issue),
    - einem Eintrag dort, der nicht mehr zutrifft, etwa nach einem Fix der Engine,
@@ -66,9 +66,9 @@ Bei neuen oder geänderten Invarianten gehören in die Tests:
 Ein Mutant ist erkannt, wenn mindestens ein Testfall ein anderes Ergebnis als erwartet liefert. Der Bericht listet je Invariante die überlebenden Mutanten mit Zeile und Ausschnitt. Ein überlebender Mutant bedeutet eines von beiden:
 
 - Der veränderte Teil der Regel ist ungetestet. Dann fehlt ein Testfall, der genau diesen Teil prüft.
-- Der Mutant ist gleichwertig zum Original, etwa wenn eine Bedingung schon durch eine andere Klausel gilt. Dann ist nichts zu tun.
+- Der Mutant ist gleichwertig zum Original, etwa wenn eine Bedingung schon durch eine andere Klausel gilt. Dann wird er mit Begründung in `mutation-known-survivors.json` gezählt.
 
-Mit Invarianten als Argument (`npm run test:mutation -- TimingOnlyOneType`) läuft die Prüfung nur für diese. Bei neuen oder geänderten Invarianten gehört der Bericht für die betroffenen Regeln in den Pull Request. Eine Schwelle, ab der die CI fehlschlägt, gibt es noch nicht.
+`mutation-known-survivors.json` nennt je Invariante die Anzahl der überlebenden Mutanten und warum kein Testfall sie erkennen kann oder soll. Die Prüfung schlägt fehl, wenn bei einer Invariante mehr oder weniger Mutanten überleben als eingetragen; eine Invariante ohne Eintrag darf keine überlebenden Mutanten haben. Mit Invarianten als Argument (`npm run test:mutation -- TimingOnlyOneType`) läuft die Prüfung nur für diese. Bei neuen oder geänderten Invarianten gehört der Bericht für die betroffenen Regeln in den Pull Request.
 
 ## Umformungen prüfen
 

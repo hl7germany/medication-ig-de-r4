@@ -2,11 +2,11 @@
 
 **Neue Seiten**
 
-- [Migration von Dosierungen 1.0.7 auf 2.0.0](./migration-1.0.7-2.0.0.html) mit Fallseiten: Ablauf, Ergebnisarten und Fallregeln für die Überführung bestehender 1.0.7-Dosierungen.
+- [Migration von Dosierungen 1.0.7 auf 2.0.0](./migration-1.0.7-2.0.0.html): technische Überführung bestehender 1.0.7-Dosierungen einschließlich Freitext-Fallback.
 
 **Textgenerierung**
 
-- [Dosis: Textgenerierung](./dosierung-textgenerierung.html) und [Bereitstellung des Dosierungstextes](./dosierung-text-hinzufuegen.html): Vorbedingung der Textgenerierung ist eine gegen das Profil validierte Ressource. Der Algorithmus prüft keine Profilregeln und keine Wertebereiche; er bricht nur ab, wenn der Text nicht bildbar wäre oder eine Angabe unterschlagen beziehungsweise mehrdeutig wiedergeben würde. Ein erzeugter Text belegt keine Profilkonformität.
+- [Dosis: Textgenerierung](./dosierung-textgenerierung.html) und [Bereitstellung des Dosierungstextes](./dosierung-text-hinzufuegen.html): Vorbedingung der Textgenerierung ist eine gegen das Profil validierte Ressource. Der Algorithmus prüft keine Profilregeln und keine Wertebereiche; er bricht nur ab, wenn der Text nicht bildbar wäre oder eine Angabe unterschlagen beziehungsweise mehrdeutig wiedergeben würde. Ein erzeugter Text belegt keine Profilkonformität. Ausgenommen ist der [Freitext-Fallback](./migration-1.0.7-2.0.0.html#freitext-fallback) der Migration von 1.0.7 auf 2.0.0.
 
 **Invarianten**
 
@@ -21,6 +21,8 @@
   - Bei `TimingOnlyOneTimeOfDay` wächst die Validierungszeit nicht mehr mit der dritten Potenz der Anzahl der `Dosage`-Elemente.
 - **`AsNeededForRequiresAsNeededWarning` (`DosageDE`) — neu** (HDB-924)
   - Warnt, wenn ein Anlass (`extension[asNeededFor]`) ohne `asNeededBoolean = true` angegeben ist. `dos-1` lässt einen Anlass ohne `asNeeded` wie in FHIR R5 weiterhin zu; lesende Systeme werten ihn als Bedarfsdosierung. In den dgMP-Profilen bleibt der Fall über `AsNeededForRequiresAsNeeded` ein Fehler.
+- **`DosageDoseQuantityAllowedFractions` (`DosageDgMP`), `TimingPeriodOnlyWholeNumber` und `TimingBoundsDurationOnlyWholeNumber` (`TimingDgMP`): Ganzzahligkeit mit `truncate()` geprüft**
+  - Die Regeln prüfen mit `$this.truncate() = $this` statt mit `mod 1 = 0`, ob ein Wert ganzzahlig ist. Validatoren auf Basis von HAPI (org.hl7.fhir.core) lehnten bisher ganzzahlige Werte in Dezimalschreibweise wie `1.0` oder `14.0` fälschlich ab, weil dort `1.0 mod 1` den Wert `-0.0` ergibt und dieser nicht gleich `0` ist ([hapifhir/org.hl7.fhir.core#2859](https://github.com/hapifhir/org.hl7.fhir.core/issues/2859)). Nach FHIRPath sind diese Werte gültig; Constraint-Keys, Schweregrade und Kontext bleiben unverändert.
 - **`DosageRequiresGeneratedText` (`DosageDgMP`) — ersetzt `DosageStructuredRequiresGeneratedText`** (HDB-947)
   - `GeneratedDosageInstructionsMeta` und `renderedDosageInstruction` sind unabhängig von der Art der Dosierung anzugeben, also auch bei Freitext. Zuvor galt die Pflicht nur für strukturierte Dosierungen.
   - Der Schlüssel erscheint in Validierungsmeldungen; Werkzeuge, die auf `DosageStructuredRequiresGeneratedText` abstellen, müssen angepasst werden.
@@ -34,6 +36,9 @@
   - Mindestabstand (`valueDuration.value`) und `maxDosePerPeriod` (`numerator.value`, `denominator.value`) müssen größer als 0 sein.
 - **`MaxDoseNotBelowDose` (`DosageDgMP`) — neu** (HDB-971)
   - `maxDosePerPeriod.numerator.value` darf nicht kleiner als `doseQuantity.value` beziehungsweise `doseRange.high.value` sein. Zuvor wurde nur die Einheit verglichen (`MaxDoseSameUnitAsDose`).
+- **`DosageDoseQuantityAllowedFractions` und `DosageDoseValueDecimalNotation` (`DosageDgMP`): Achtel `.125` zulässig**
+  - `DosageDoseQuantityAllowedFractions`: Zusätzlich zulässig ist der Bruchteil `.125` (1/8), auch mit ganzzahligem Anteil wie `1.125`, in `doseQuantity` und in beiden Grenzen von `doseRange`. Weitere Achtel wie `.375` sind nicht zulässig.
+  - `DosageDoseValueDecimalNotation`: höchstens drei statt zwei Nachkommastellen.
 - **`TimingFreqOrPeriodGtOne` (`TimingDgMP`) / `TimingFreqOrPeriodGtOneWarning` (`TimingDE`)** (HDB-942)
   - Beschreibung, Begründung und Beispiele um die Kombination aus variabler Frequenz und variabler Periode ergänzt („1 bis 3 x alle 2 bis 3 Tage“). Der Ausdruck ist unverändert; die Kombination war bereits ausgeschlossen.
 - **`TimingBoundsPeriodMatchesTime` (`TimingDgMP`) — neu**
@@ -69,6 +74,11 @@
   - Enthält keinen `zeitrahmen` mehr: Eine reine Bedarfsdosierung hat kein `timing` und damit keinen Anwendungszeitraum über `bounds[x]`.
   - `zeitangaben.mindestabstand.einheit` ist an `MindestabstandUnitsOfTimeDgMP` gebunden (required), wie in `DosageDgMP`.
   - Die Seite [Schema für Bedarfsmedikation](./schema-bedarfsmedikation.html) erläutert, dass eine reine Bedarfsdosierung genau ein `Dosage`-Element erlaubt (`AsNeededSingleDosageOnly`).
+
+**Beispiele**
+
+- `MR-Dosage-comb-interval-4-unsorted`, `MD-Dosage-comb-interval-4-unsorted`, `MS-Dosage-comb-interval-4-unsorted` — neu: Intervall-Kombination mit unsortierten Uhrzeiten innerhalb der `Dosage`-Elemente.
+- `MR-Dosage-BoundsDuration-Decimal` — neu (JSON): `boundsDuration.value` als ganze Zahl mit Dezimalpunkt (`14.0`).
 
 ### Release: 2.0.0-ballot
 

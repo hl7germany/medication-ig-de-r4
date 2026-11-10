@@ -186,13 +186,14 @@ implies
 Severity: #error
 
 Invariant: DosageDoseQuantityAllowedFractions
-Description: "Dose values in doseQuantity or doseRange must be whole numbers or use one of the following fractional parts: .25, .33, .5, .66 or .75."
+Description: "Dose values in doseQuantity or doseRange must be whole numbers or use one of the following fractional parts: .125, .25, .33, .5, .66 or .75."
 Expression: """
 doseAndRate.all(
   (
     dose.ofType(Quantity).value.empty() or
     dose.ofType(Quantity).value.all(
-      ($this mod 1 = 0) or
+      ($this.truncate() = $this) or
+      ($this mod 1 = 0.125) or
       ($this mod 1 = 0.25) or
       ($this mod 1 = 0.33) or
       ($this mod 1 = 0.5) or
@@ -204,7 +205,8 @@ doseAndRate.all(
   (
     dose.ofType(Range).low.value.empty() or
     dose.ofType(Range).low.value.all(
-      ($this mod 1 = 0) or
+      ($this.truncate() = $this) or
+      ($this mod 1 = 0.125) or
       ($this mod 1 = 0.25) or
       ($this mod 1 = 0.33) or
       ($this mod 1 = 0.5) or
@@ -216,7 +218,8 @@ doseAndRate.all(
   (
     dose.ofType(Range).high.value.empty() or
     dose.ofType(Range).high.value.all(
-      ($this mod 1 = 0) or
+      ($this.truncate() = $this) or
+      ($this mod 1 = 0.125) or
       ($this mod 1 = 0.25) or
       ($this mod 1 = 0.33) or
       ($this mod 1 = 0.5) or
@@ -244,22 +247,22 @@ Expression: "%resource.ofType(MedicationRequest).dosageInstruction
 Severity: #error
 
 Invariant: DosageDoseValueDecimalNotation
-Description: "Dose values in doseQuantity or doseRange must use plain decimal notation with at most two decimal places. Exponential notation (e.g. 50e-2 instead of 0.5) is not allowed."
+Description: "Dose values in doseQuantity or doseRange must use plain decimal notation with at most three decimal places. Exponential notation (e.g. 50e-2 instead of 0.5) is not allowed."
 Expression: """
 doseAndRate.all(
   (
     dose.ofType(Quantity).value.empty() or
-    dose.ofType(Quantity).value.toString().matches('^[0-9]+([.][0-9]{1,2})?$')
+    dose.ofType(Quantity).value.toString().matches('^[0-9]+([.][0-9]{1,3})?$')
   )
   and
   (
     dose.ofType(Range).low.value.empty() or
-    dose.ofType(Range).low.value.toString().matches('^[0-9]+([.][0-9]{1,2})?$')
+    dose.ofType(Range).low.value.toString().matches('^[0-9]+([.][0-9]{1,3})?$')
   )
   and
   (
     dose.ofType(Range).high.value.empty() or
-    dose.ofType(Range).high.value.toString().matches('^[0-9]+([.][0-9]{1,2})?$')
+    dose.ofType(Range).high.value.toString().matches('^[0-9]+([.][0-9]{1,3})?$')
   )
 )
 """

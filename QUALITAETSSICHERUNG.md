@@ -70,6 +70,18 @@ Ein Mutant ist erkannt, wenn mindestens ein Testfall ein anderes Ergebnis als er
 
 Mit Invarianten als Argument (`npm run test:mutation -- TimingOnlyOneType`) läuft die Prüfung nur für diese. Bei neuen oder geänderten Invarianten gehört der Bericht für die betroffenen Regeln in den Pull Request. Eine Schwelle, ab der die CI fehlschlägt, gibt es noch nicht.
 
+## Umformungen prüfen
+
+Wird eine Invariante umgeformt, etwa für die Laufzeit, soll sie meist dasselbe Ergebnis liefern wie vorher. `npm run test:equivalence -- --base <ref>` (in `tests/invariants`) vergleicht dafür jede Invariante, deren Ausdruck sich gegenüber dem Git-Stand `<ref>` unterscheidet, mit ihrer früheren Fassung. Beide Fassungen werden an jedem Kontext-Element ausgewertet, die Ergebnisse (true, false, leer, mehrere Werte, Fehler) verglichen:
+
+- an den Ressourcen aller Testfälle,
+- an Zufallsinstanzen mit Kombinationen aus Timing- und Dosisfeldern (`--random <n>`, Standard 3000, fester Seed über `--seed`),
+- an JSON-Ressourcen aus Verzeichnissen (`--examples <dir>`, etwa `fsh-generated/resources` nach einem SUSHI-Lauf).
+
+Mit `--hapi` rechnet zusätzlich die Engine des HL7-Validators aus `publisher.jar` (`HapiEquivalence.java`). Das ist wichtig, weil HAPI in einzelnen Fällen anders rechnet als fhirpath.js. Testfälle mit `{"$decimal": …}` bekommt HAPI wie im HAPI-Job mit ihrer Schreibweise, etwa `14.0`; die Zufallsinstanzen enthalten nur Zahlen. `--head <ref>` vergleicht zwei Git-Stände statt des Arbeitsverzeichnisses, etwa für einen Patch auf einem älteren Release. Kontexte, Testfälle und Zufallsinstanzen kommen dabei immer aus dem Arbeitsverzeichnis. Einzelne Invarianten lassen sich als Argument angeben.
+
+Der Bericht nennt je Invariante die Zahl der Abweichungen mit Richtung (etwa `false → true`) und Beispielen. Bei Abweichungen endet der Lauf mit Exit-Code 1. Für eine Umformung ohne fachliche Änderung muss der Bericht in beiden Engines „keine Abweichung“ zeigen; bei einer gewollten Änderung gehören Richtung und Umfang in den Pull Request.
+
 ## Nebeneffekte bei Negativbeispielen
 
 Ein `-C-`-Beispiel soll nur seinen eigenen Constraint verletzen. Löst es weitere aus, kann es eine zu lockere Regel verdecken. Beispiel: Die `dos-1`-Beispiele lagen auf den dgMP-Profilen und lösten immer auch den strengeren dgMP-Fehler aus. Dass `dos-1` selbst zu locker war, fiel nicht auf (HDB-924).

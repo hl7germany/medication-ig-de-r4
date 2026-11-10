@@ -192,7 +192,7 @@ doseAndRate.all(
   (
     dose.ofType(Quantity).value.empty() or
     dose.ofType(Quantity).value.all(
-      ($this mod 1 = 0) or
+      ($this.truncate() = $this) or
       ($this mod 1 = 0.125) or
       ($this mod 1 = 0.25) or
       ($this mod 1 = 0.33) or
@@ -205,7 +205,7 @@ doseAndRate.all(
   (
     dose.ofType(Range).low.value.empty() or
     dose.ofType(Range).low.value.all(
-      ($this mod 1 = 0) or
+      ($this.truncate() = $this) or
       ($this mod 1 = 0.125) or
       ($this mod 1 = 0.25) or
       ($this mod 1 = 0.33) or
@@ -218,7 +218,7 @@ doseAndRate.all(
   (
     dose.ofType(Range).high.value.empty() or
     dose.ofType(Range).high.value.all(
-      ($this mod 1 = 0) or
+      ($this.truncate() = $this) or
       ($this mod 1 = 0.125) or
       ($this mod 1 = 0.25) or
       ($this mod 1 = 0.33) or

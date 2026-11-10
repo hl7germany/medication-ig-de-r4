@@ -186,13 +186,14 @@ implies
 Severity: #error
 
 Invariant: DosageDoseQuantityAllowedFractions
-Description: "Dose values in doseQuantity or doseRange must be whole numbers or use one of the following fractional parts: .25, .33, .5, .66 or .75."
+Description: "Dose values in doseQuantity or doseRange must be whole numbers or use one of the following fractional parts: .125, .25, .33, .5, .66 or .75."
 Expression: """
 doseAndRate.all(
   (
     dose.ofType(Quantity).value.empty() or
     dose.ofType(Quantity).value.all(
       ($this mod 1 = 0) or
+      ($this mod 1 = 0.125) or
       ($this mod 1 = 0.25) or
       ($this mod 1 = 0.33) or
       ($this mod 1 = 0.5) or
@@ -205,6 +206,7 @@ doseAndRate.all(
     dose.ofType(Range).low.value.empty() or
     dose.ofType(Range).low.value.all(
       ($this mod 1 = 0) or
+      ($this mod 1 = 0.125) or
       ($this mod 1 = 0.25) or
       ($this mod 1 = 0.33) or
       ($this mod 1 = 0.5) or
@@ -217,6 +219,7 @@ doseAndRate.all(
     dose.ofType(Range).high.value.empty() or
     dose.ofType(Range).high.value.all(
       ($this mod 1 = 0) or
+      ($this mod 1 = 0.125) or
       ($this mod 1 = 0.25) or
       ($this mod 1 = 0.33) or
       ($this mod 1 = 0.5) or
@@ -234,34 +237,37 @@ Severity: #error
 // gueltig. MaxDoseSameUnitAsDose vergleicht dagegen system, code und unit.
 // Zu klaeren, ob code-gleich genuegt oder der Vergleich angeglichen wird.
 Invariant: DosageDoseUnitSameCode
-Description: "The dose unit must be the same across all dosages."
-Expression: "(%resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)).all(
-doseAndRate.exists() implies
-  (
-    (%resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)).doseAndRate.dose.ofType(Quantity).code |
-    (%resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)).doseAndRate.dose.ofType(Range).low.code |
-    (%resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)).doseAndRate.dose.ofType(Range).high.code
-  ).distinct().count() = 1
-)"
+Description: "If any dosage has doseAndRate, the dose codes from Quantity and Range bounds must have exactly one distinct value across all dosages. Only code is compared, not system or unit."
+Expression: "%resource.ofType(MedicationRequest).dosageInstruction
+  .combine(%resource.ofType(MedicationDispense).dosageInstruction)
+  .combine(%resource.ofType(MedicationStatement).dosage)
+  .doseAndRate.empty()
+or
+%resource.ofType(MedicationRequest).dosageInstruction
+  .combine(%resource.ofType(MedicationDispense).dosageInstruction)
+  .combine(%resource.ofType(MedicationStatement).dosage)
+  .doseAndRate.dose
+  .select(ofType(Quantity).code | ofType(Range).low.code | ofType(Range).high.code)
+  .distinct().count() = 1"
 Severity: #error
 
 Invariant: DosageDoseValueDecimalNotation
-Description: "Dose values in doseQuantity or doseRange must use plain decimal notation with at most two decimal places. Exponential notation (e.g. 50e-2 instead of 0.5) is not allowed."
+Description: "Dose values in doseQuantity or doseRange must use plain decimal notation with at most three decimal places. Exponential notation (e.g. 50e-2 instead of 0.5) is not allowed."
 Expression: """
 doseAndRate.all(
   (
     dose.ofType(Quantity).value.empty() or
-    dose.ofType(Quantity).value.toString().matches('^[0-9]+([.][0-9]{1,2})?$')
+    dose.ofType(Quantity).value.toString().matches('^[0-9]+([.][0-9]{1,3})?$')
   )
   and
   (
     dose.ofType(Range).low.value.empty() or
-    dose.ofType(Range).low.value.toString().matches('^[0-9]+([.][0-9]{1,2})?$')
+    dose.ofType(Range).low.value.toString().matches('^[0-9]+([.][0-9]{1,3})?$')
   )
   and
   (
     dose.ofType(Range).high.value.empty() or
-    dose.ofType(Range).high.value.toString().matches('^[0-9]+([.][0-9]{1,2})?$')
+    dose.ofType(Range).high.value.toString().matches('^[0-9]+([.][0-9]{1,3})?$')
   )
 )
 """

@@ -10,6 +10,9 @@
 
 **Invarianten**
 
+- **`DosageDoseUnitSameCode` (`DosageDgMP`), `DosageDoseUnitSameCodeWarning` (`DosageDE`), `TimingOnlyOneTimeForInterval`, `TimingOnlyOneTimeOfDay` und `TimingOnlyWhenOrTimeOfDay` (`TimingDgMP`): Ausdruck umgeformt, ohne fachliche Änderung**
+  - Die Prüfung über alle `Dosage`-Elemente der Ressource läuft je Auswertung einmal statt einmal je Element. Bisher wuchs die Validierungszeit mit der dritten Potenz der Anzahl der `Dosage`-Elemente. Constraint-Keys, Schweregrade und Kontext bleiben unverändert.
+  - `DosageDoseUnitSameCode` und `DosageDoseUnitSameCodeWarning`: Verglichen werden nur die Codes von Quantity und Range-Grenzen. Bei vorhandenem `doseAndRate` ohne Dosis-Code wird die Regel weiterhin ausgelöst. Die Beschreibungen nennen die verglichenen Felder. Neue Beispiele mit Dosisbereich und mit Dosis ohne Code.
 - **`AsNeededForRequiresAsNeededWarning` (`DosageDE`) — neu** (HDB-924)
   - Warnt, wenn ein Anlass (`extension[asNeededFor]`) ohne `asNeededBoolean = true` angegeben ist. `dos-1` lässt einen Anlass ohne `asNeeded` wie in FHIR R5 weiterhin zu; lesende Systeme werten ihn als Bedarfsdosierung. In den dgMP-Profilen bleibt der Fall über `AsNeededForRequiresAsNeeded` ein Fehler.
 - **`DosageRequiresGeneratedText` (`DosageDgMP`) — ersetzt `DosageStructuredRequiresGeneratedText`** (HDB-947)
@@ -25,6 +28,9 @@
   - Mindestabstand (`valueDuration.value`) und `maxDosePerPeriod` (`numerator.value`, `denominator.value`) müssen größer als 0 sein.
 - **`MaxDoseNotBelowDose` (`DosageDgMP`) — neu** (HDB-971)
   - `maxDosePerPeriod.numerator.value` darf nicht kleiner als `doseQuantity.value` beziehungsweise `doseRange.high.value` sein. Zuvor wurde nur die Einheit verglichen (`MaxDoseSameUnitAsDose`).
+- **`DosageDoseQuantityAllowedFractions` und `DosageDoseValueDecimalNotation` (`DosageDgMP`): Achtel `.125` zulässig**
+  - `DosageDoseQuantityAllowedFractions`: Zusätzlich zulässig ist der Bruchteil `.125` (1/8), auch mit ganzzahligem Anteil wie `1.125`, in `doseQuantity` und in beiden Grenzen von `doseRange`. Weitere Achtel wie `.375` sind nicht zulässig.
+  - `DosageDoseValueDecimalNotation`: höchstens drei statt zwei Nachkommastellen.
 - **`TimingFreqOrPeriodGtOne` (`TimingDgMP`) / `TimingFreqOrPeriodGtOneWarning` (`TimingDE`)** (HDB-942)
   - Beschreibung, Begründung und Beispiele um die Kombination aus variabler Frequenz und variabler Periode ergänzt („1 bis 3 x alle 2 bis 3 Tage“). Der Ausdruck ist unverändert; die Kombination war bereits ausgeschlossen.
 - **`TimingBoundsPeriodMatchesTime` (`TimingDgMP`) — neu**
@@ -40,6 +46,7 @@
   - `periodMax` muss in allen Elementen gleich sein oder in allen fehlen; bisher wurde es nicht verglichen. Die Textgenerierung liest den Rhythmus nur aus dem ersten Element.
 - **`TimingSingleDosageForWhen`, `TimingSingleDosageForTimeOfDay` (`TimingDgMP`) und die Warnungen in `TimingDE`**
   - Beschreibung an den Ausdruck angeglichen: Die Regel gilt bei täglicher Gabe und in einer Intervall-Kombination, nicht nur bei täglicher Gabe.
+  - Bekannte Einschränkung: Der HL7-Validator (org.hl7.fhir.core, geprüft bis 7.0.5) meldet einen Verstoß, wenn auf einen Dosisbereich mit Unter- und Obergrenze ein Dosisbereich nur mit derselben Obergrenze folgt, etwa morgens 1 bis 2 Stück und abends bis zu 2 Stück. Die Dosen sind verschieden, die Regel ist erfüllt ([hapifhir/org.hl7.fhir.core#2843](https://github.com/hapifhir/org.hl7.fhir.core/issues/2843)).
 - **`TimingBoundsPeriodFullDate` (`TimingDgMP`) — neu**
   - `boundsPeriod.start` und `boundsPeriod.end` müssen ein vollständiges Kalenderdatum enthalten. FHIR `dateTime` erlaubt auch `JJJJ` und `JJJJ-MM`; die Textgenerierung kann ein Teildatum nicht darstellen und bricht ab.
 - **`MinimumIntervalOnlyPureAsNeeded` und `MaxDoseOnlyPureAsNeeded` (`DosageDgMP`)**

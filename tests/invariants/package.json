@@ -1,9 +1,10 @@
 {
   "name": "invariant-tests",
   "private": true,
-  "description": "Tabellengetriebene Tests der FHIRPath-Invarianten mit fhirpath.js",
+  "description": "Tabellengetriebene Tests der FHIRPath-Invarianten mit fhirpath.js und der Engine des HL7-Validators",
   "scripts": {
-    "test": "node run.js"
+    "test": "node run.js",
+    "test:hapi": "bash run-hapi.sh"
   },
   "dependencies": {
     "fhirpath": "5.2.0"

@@ -78,7 +78,7 @@ Wird eine Invariante umgeformt, etwa für die Laufzeit, soll sie meist dasselbe 
 - an Zufallsinstanzen mit Kombinationen aus Timing- und Dosisfeldern (`--random <n>`, Standard 3000, fester Seed über `--seed`),
 - an JSON-Ressourcen aus Verzeichnissen (`--examples <dir>`, etwa `fsh-generated/resources` nach einem SUSHI-Lauf).
 
-Mit `--hapi` rechnet zusätzlich die Engine des HL7-Validators aus `publisher.jar` (`HapiEquivalence.java`). Das ist wichtig, weil HAPI in einzelnen Fällen anders rechnet als fhirpath.js. `--head <ref>` vergleicht zwei Git-Stände statt des Arbeitsverzeichnisses, etwa für einen Patch auf einem älteren Release. Kontexte, Testfälle und Zufallsinstanzen kommen dabei immer aus dem Arbeitsverzeichnis. Einzelne Invarianten lassen sich als Argument angeben.
+Mit `--hapi` rechnet zusätzlich die Engine des HL7-Validators aus `publisher.jar` (`HapiEquivalence.java`). Das ist wichtig, weil HAPI in einzelnen Fällen anders rechnet als fhirpath.js. Testfälle mit `{"$decimal": …}` bekommt HAPI wie im HAPI-Job mit ihrer Schreibweise, etwa `14.0`; die Zufallsinstanzen enthalten nur Zahlen. `--head <ref>` vergleicht zwei Git-Stände statt des Arbeitsverzeichnisses, etwa für einen Patch auf einem älteren Release. Kontexte, Testfälle und Zufallsinstanzen kommen dabei immer aus dem Arbeitsverzeichnis. Einzelne Invarianten lassen sich als Argument angeben.
 
 Der Bericht nennt je Invariante die Zahl der Abweichungen mit Richtung (etwa `false → true`) und Beispielen. Bei Abweichungen endet der Lauf mit Exit-Code 1. Für eine Umformung ohne fachliche Änderung muss der Bericht in beiden Engines „keine Abweichung“ zeigen; bei einer gewollten Änderung gehören Richtung und Umfang in den Pull Request.
 

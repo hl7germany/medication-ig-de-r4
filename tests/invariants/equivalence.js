@@ -20,7 +20,7 @@ const path = require('path');
 const { execFileSync, spawnSync } = require('child_process');
 const fhirpath = require('fhirpath');
 const r4 = require('fhirpath/fhir-context/r4');
-const { ROOT, RESOURCE_TYPES, DOSAGE_PATH, invariantsIn, loadInvariants, caseBlocks, buildResource, targetsFor } = require('./run');
+const { ROOT, RESOURCE_TYPES, DOSAGE_PATH, DECIMAL, invariantsIn, loadInvariants, caseBlocks, buildResource, targetsFor } = require('./run');
 
 function parseArgs(argv) {
   const opts = { base: null, head: null, random: 3000, seed: 1, examples: [], hapi: false, only: [] };
@@ -110,11 +110,13 @@ function exampleResources(dirs) {
 function caseResources() {
   const seen = new Set();
   return caseBlocks().flatMap(({ file, block }) => (block.resourceTypes ?? RESOURCE_TYPES).flatMap(type => block.cases.flatMap(tc => {
+    // Wie im HAPI-Job: fhirpath.js bekommt Zahlen, HAPI die Schreibweise aus {"$decimal": …}.
     const resource = buildResource(type, tc);
-    const id = JSON.stringify(resource);
+    const hapiResource = buildResource(type, tc, { keepDecimals: true });
+    const id = JSON.stringify(hapiResource);
     if (seen.has(id)) return [];
     seen.add(id);
-    return [{ name: `${file}: ${tc.name} (${type})`, resource }];
+    return [{ name: `${file}: ${tc.name} (${type})`, resource, hapiResource }];
   })));
 }
 
@@ -193,8 +195,8 @@ function main() {
     const contextsUsed = [...new Set(pairs.map(p => p.context))];
     fs.writeFileSync(file, JSON.stringify({
       pairs,
-      instances: instances.map(({ name, resource }) => ({ name, resource, targets: Object.fromEntries(contextsUsed.map(c => [c, targetsFor(c, resource.resourceType, resource)])) }))
-    }));
+      instances: instances.map(({ name, resource, hapiResource }) => ({ name, resource: hapiResource ?? resource, targets: Object.fromEntries(contextsUsed.map(c => [c, targetsFor(c, resource.resourceType, resource)])) }))
+    }).replace(DECIMAL, '$1'));
     const run = spawnSync('java', ['-cp', publisherJar(), path.join(__dirname, 'HapiEquivalence.java'), file], { stdio: 'inherit' });
     fs.rmSync(dir, { recursive: true, force: true });
     if (run.status !== 0) deviations += 1;

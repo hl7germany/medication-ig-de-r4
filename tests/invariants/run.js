@@ -191,7 +191,7 @@ function main() {
   }
 }
 
-module.exports = { ROOT, RESOURCE_TYPES, DOSAGE_PATH, invariantsIn, loadInvariants, caseBlocks, buildResource, targetsFor };
+module.exports = { ROOT, RESOURCE_TYPES, DOSAGE_PATH, DECIMAL, invariantsIn, loadInvariants, caseBlocks, buildResource, targetsFor };
 
 if (require.main === module) {
   const exportIndex = process.argv.indexOf('--export');

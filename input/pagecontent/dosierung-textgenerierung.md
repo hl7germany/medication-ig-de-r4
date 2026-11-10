@@ -2,7 +2,7 @@ Die normative Spezifikation des Algorithmus zur Erzeugung menschenlesbarer Dosie
 
 **➜ [hl7germany/dgMP-DosageTextgenerierung-Skript](https://github.com/hl7germany/dgMP-DosageTextgenerierung-Skript)**
 
-Dort sind Algorithmenbeschreibung, Referenzimplementierung und Versionsverlauf zu finden.
+Dort sind Algorithmenbeschreibung, Beispielimplementierung und Versionsverlauf zu finden.
 
 ### Vorbedingung: validierte Ressource
 

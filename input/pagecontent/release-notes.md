@@ -1,5 +1,7 @@
 ### Release: 2.0.0
 
+**Version des Textgenerierungs-Algorithmus:** `2.0.0-rc.1`. Die erzeugten Texte ändern sich gegenüber `2.0.0-ballot`, etwa `täglich: 1-0-1-0 Stück` statt `1-0-1-0 Stück` und `bei Kopfschmerzen, alle 8 Stunden: je 1 Stück` statt `bei Kopfschmerzen: alle 8 Stunden je 1 Stück`. Alle Änderungen des Algorithmus stehen im `CHANGELOG.md` von [hl7germany/dgMP-DosageTextgenerierung-Skript](https://github.com/hl7germany/dgMP-DosageTextgenerierung-Skript).
+
 **Neue Seiten**
 
 - [Migration von Dosierungen 1.0.7 auf 2.0.0](./migration-1.0.7-2.0.0.html): technische Überführung bestehender 1.0.7-Dosierungen einschließlich Freitext-Fallback.
@@ -8,65 +10,83 @@
 
 - [Dosis: Textgenerierung](./dosierung-textgenerierung.html) und [Bereitstellung des Dosierungstextes](./dosierung-text-hinzufuegen.html): Vorbedingung der Textgenerierung ist eine gegen das Profil validierte Ressource. Der Algorithmus prüft keine Profilregeln und keine Wertebereiche; er bricht nur ab, wenn der Text nicht bildbar wäre oder eine Angabe unterschlagen beziehungsweise mehrdeutig wiedergeben würde. Ein erzeugter Text belegt keine Profilkonformität. Ausgenommen ist der [Freitext-Fallback](./migration-1.0.7-2.0.0.html#freitext-fallback) der Migration von 1.0.7 auf 2.0.0.
 
-**Invarianten**
+**Extensions**
 
+- **`GeneratedDosageInstructionsMeta`**
+  - Die Beschreibung bezieht die Extension auf den Text in `renderedDosageInstruction` und nennt die Freitext-Dosierung, bei der die Textgenerierung den Freitext unverändert übernimmt. Bisher sprach sie nur von strukturierten Dosierungsinformationen.
+  - `algorithmVersion` ist die Version der normativen Algorithmusspezifikation. Bisher verwies die Kurzbeschreibung auf die Version der Python-Referenzimplementierung.
+
+**Invarianten: neu**
+
+- **`TimingNoDuplicateValues` (`TimingDgMP`)**
+  - Innerhalb eines `Dosage`-Elements dürfen `dayOfWeek`, `when` und `timeOfDay` keinen Wert mehrfach enthalten. Bisher schlossen das nur die Schemata ohne Wochentag sowie das reine Wochentagsschema aus. Bei Wochentagen mit Tagesabschnitt oder Uhrzeit war zum Beispiel montags `MORN`, `MORN` mit `frequency = 2` gültig, obwohl FHIR mehrere Angaben in `when` als Vereinigung wertet und der Dosierungstext eine Gabe nennt.
+  - Bei der Migration aus 1.0.7 werden doppelte Werte zusammengeführt und `frequency` angepasst ([M14](./migration-1.0.7-2.0.0.html#m14)).
+- **`AsNeededForRequiresAsNeededWarning` (`DosageDE`)** (HDB-924)
+  - Warnt, wenn ein Anlass (`extension[asNeededFor]`) ohne `asNeededBoolean = true` angegeben ist. `dos-1` lässt einen Anlass ohne `asNeeded` wie in FHIR R5 weiterhin zu; lesende Systeme werten ihn als Bedarfsdosierung. In den dgMP-Profilen bleibt der Fall über `AsNeededForRequiresAsNeeded` ein Fehler.
+- **`TimingValuesPositive` (`TimingDgMP`) und `TimingValuesPositiveWarning` (`TimingDE`)** (HDB-971)
+  - `period`, `periodMax` und `boundsDuration.value` müssen größer als 0 sein. FHIR R4 verlangt über `tim-5` nur `period >= 0`; `periodMax` und `boundsDuration` waren ungeprüft.
+  - In `TimingDE` zusätzlich `boundsRange`: `low` nicht negativ, `high` größer als 0.
+- **`DosageLimitsPositive` (`DosageDgMP`) und `DosageLimitsPositiveWarning` (`DosageDE`)** (HDB-971)
+  - Mindestabstand (`valueDuration.value`) und `maxDosePerPeriod` (`numerator.value`, `denominator.value`) müssen größer als 0 sein.
+- **`MaxDoseNotBelowDose` (`DosageDgMP`)** (HDB-971)
+  - `maxDosePerPeriod.numerator.value` darf nicht kleiner als `doseQuantity.value` beziehungsweise `doseRange.high.value` sein. Zuvor wurde nur die Einheit verglichen (`MaxDoseSameUnitAsDose`).
+- **`TimingBoundsPeriodFullDate` (`TimingDgMP`)**
+  - `boundsPeriod.start` und `boundsPeriod.end` müssen ein vollständiges Kalenderdatum enthalten. FHIR `dateTime` erlaubt auch `JJJJ` und `JJJJ-MM`; die Textgenerierung kann ein Teildatum nicht darstellen und bricht ab.
+- **`TimingBoundsPeriodMatchesTime` (`TimingDgMP`)**
+  - Im Uhrzeitenschema (`timeOfDay`) muss eine Uhrzeit in `boundsPeriod.start` oder `boundsPeriod.end` einer der angegebenen Uhrzeiten entsprechen.
+  - Bekannte Einschränkung: Der FHIRPath-Ausdruck prüft nur den Uhrzeitanteil, nicht den Zeitzonenversatz. Die Übereinstimmung mit `Europe/Berlin` muss die Anwendung zusätzlich prüfen.
+- **`TimingBoundsPeriodNotForWhen` (`TimingDgMP`)**
+  - Im Tageszeitenschema (`when`) und im Wochentagsschema ohne `timeOfDay` dürfen `boundsPeriod.start` und `boundsPeriod.end` keine Uhrzeit enthalten.
+  - Das Beispiel `Example-MR-Dosage-1000-startdatetime` verwendet deshalb jetzt das Uhrzeitenschema, `Example-MR-Dosage-1000-startdatetime-daychange` ein reines Intervall.
+
+**Invarianten: ersetzt**
+
+- **`DosageRequiresGeneratedText` (`DosageDgMP`) ersetzt `DosageStructuredRequiresGeneratedText`** (HDB-947)
+  - `GeneratedDosageInstructionsMeta` und `renderedDosageInstruction` sind unabhängig von der Art der Dosierung anzugeben, also auch bei Freitext. Zuvor galt die Pflicht nur für strukturierte Dosierungen.
+  - Der Schlüssel erscheint in Validierungsmeldungen; Werkzeuge, die auf `DosageStructuredRequiresGeneratedText` abstellen, müssen angepasst werden.
+
+**Invarianten: geändert**
+
+- **Alle Invarianten über mehrere `Dosage`-Elemente: `combine()` statt `|`**
+  - `|` entfernt nach FHIRPath gleiche Elemente; zwei identische Elemente zählten deshalb als eines. Betroffen waren `AsNeededSingleDosageOnly`, `FreeTextSingleDosageOnly`/`…Warning` und `TimingSingleDosageForWhen`/`…ForTimeOfDay` samt Warnungen: Zwei gleiche reine Bedarfsdosierungen waren gültig, obwohl genau ein Element verlangt ist (die Textgenerierung bricht dort ab).
+- **`FreeTextMatchesRenderedText` (`DosageDgMP`)** (HDB-947)
+  - Bei einer Freitext-Dosierung muss `renderedDosageInstruction` vorhanden sein und `Dosage.text` exakt entsprechen. Zuvor wurde nur verglichen, wenn die Extension vorhanden war.
 - **`DosageDoseUnitSameCode` (`DosageDgMP`) und `DosageDoseUnitSameCodeWarning` (`DosageDE`)**
   - Alle Dosis-Codes der Ressource müssen bzw. sollen gleich sein. Verglichen werden `doseQuantity.code`, `doseRange.low.code` und `doseRange.high.code` aller `Dosage`-Elemente, nicht `system` oder `unit`. Dosierungen ohne Dosis-Code zählen nicht mit. Bisher löste `doseAndRate` ohne jeden Dosis-Code die Regel aus, etwa eine reine `rate`-Angabe oder eine Dosis ohne Code in `DosageDE`.
   - Die Prüfung über alle `Dosage`-Elemente der Ressource läuft je Auswertung einmal statt einmal je Element. Bisher wuchs die Validierungszeit mit der dritten Potenz der Anzahl der `Dosage`-Elemente. Validatoren auf Basis von HAPI (org.hl7.fhir.core) übersahen mit der bisherigen Fassung einen Teil der gemischten Einheiten (hapifhir/org.hl7.fhir.core#2843).
   - Die Beschreibungen nennen die verglichenen Felder. Neue Beispiele mit Dosisbereich.
-- **`TimingOnlyOneTimeForInterval` und `TimingOnlyWhenOrTimeOfDay` (`TimingDgMP`): Ausdruck umgeformt, ohne fachliche Änderung**
-  - Die Prüfung über alle `Dosage`-Elemente der Ressource läuft je Auswertung einmal statt einmal je Element. Bisher wuchs die Validierungszeit mit der dritten Potenz der Anzahl der `Dosage`-Elemente. Constraint-Keys, Schweregrade und Kontext bleiben unverändert.
-- **`TimingOnlyOneTimeOfDay`, `TimingOnlyOneWhen` und `TimingOnlyOneDayOfWeek` (`TimingDgMP`)**
-  - Verglichen werden nur die Elemente, die das jeweilige Schema nutzen (nur `timeOfDay`, nur `when` bzw. nur `dayOfWeek`). Bisher zählten auch Elemente anderer Schemata mit, etwa dieselbe Uhrzeit in einem Element mit `dayOfWeek`. Eine Mischung der Schemata verletzt weiterhin `TimingOnlyOneType`.
-  - Bei `TimingOnlyOneTimeOfDay` wächst die Validierungszeit nicht mehr mit der dritten Potenz der Anzahl der `Dosage`-Elemente.
-- **`TimingNoDuplicateValues` (`TimingDgMP`) — neu**
-  - Innerhalb eines `Dosage`-Elements dürfen `dayOfWeek`, `when` und `timeOfDay` keinen Wert mehrfach enthalten. Bisher schlossen das nur die Schemata ohne Wochentag sowie das reine Wochentagsschema aus. Bei Wochentagen mit Tagesabschnitt oder Uhrzeit war zum Beispiel montags `MORN`, `MORN` mit `frequency = 2` gültig, obwohl FHIR mehrere Angaben in `when` als Vereinigung wertet und der Dosierungstext eine Gabe nennt.
-  - Bei der Migration aus 1.0.7 werden doppelte Werte zusammengeführt und `frequency` angepasst ([M14](./migration-1.0.7-2.0.0.html#m14)).
-- **`AsNeededForRequiresAsNeededWarning` (`DosageDE`) — neu** (HDB-924)
-  - Warnt, wenn ein Anlass (`extension[asNeededFor]`) ohne `asNeededBoolean = true` angegeben ist. `dos-1` lässt einen Anlass ohne `asNeeded` wie in FHIR R5 weiterhin zu; lesende Systeme werten ihn als Bedarfsdosierung. In den dgMP-Profilen bleibt der Fall über `AsNeededForRequiresAsNeeded` ein Fehler.
-- **`DosageDoseQuantityAllowedFractions` (`DosageDgMP`), `TimingPeriodOnlyWholeNumber` und `TimingBoundsDurationOnlyWholeNumber` (`TimingDgMP`): Ganzzahligkeit mit `truncate()` geprüft**
+- **`DosageDoseQuantityAllowedFractions` (`DosageDgMP`)**
+  - Zusätzlich zulässig ist der Bruchteil `.125` (1/8), auch mit ganzzahligem Anteil wie `1.125`, in `doseQuantity` und in beiden Grenzen von `doseRange`. Weitere Achtel wie `.375` sind nicht zulässig.
+  - Die Ganzzahligkeit wird mit `$this.truncate() = $this` statt mit `mod 1 = 0` geprüft, siehe `TimingPeriodOnlyWholeNumber`.
+- **`DosageDoseValueDecimalNotation` (`DosageDgMP`)**
+  - Höchstens drei statt zwei Nachkommastellen.
+- **`TimingPeriodOnlyWholeNumber` und `TimingBoundsDurationOnlyWholeNumber` (`TimingDgMP`)**
   - Die Regeln prüfen mit `$this.truncate() = $this` statt mit `mod 1 = 0`, ob ein Wert ganzzahlig ist. Validatoren auf Basis von HAPI (org.hl7.fhir.core) lehnten bisher ganzzahlige Werte in Dezimalschreibweise wie `1.0` oder `14.0` fälschlich ab, weil dort `1.0 mod 1` den Wert `-0.0` ergibt und dieser nicht gleich `0` ist ([hapifhir/org.hl7.fhir.core#2859](https://github.com/hapifhir/org.hl7.fhir.core/issues/2859)). Nach FHIRPath sind diese Werte gültig; Constraint-Keys, Schweregrade und Kontext bleiben unverändert.
-- **`DosageRequiresGeneratedText` (`DosageDgMP`) — ersetzt `DosageStructuredRequiresGeneratedText`** (HDB-947)
-  - `GeneratedDosageInstructionsMeta` und `renderedDosageInstruction` sind unabhängig von der Art der Dosierung anzugeben, also auch bei Freitext. Zuvor galt die Pflicht nur für strukturierte Dosierungen.
-  - Der Schlüssel erscheint in Validierungsmeldungen; Werkzeuge, die auf `DosageStructuredRequiresGeneratedText` abstellen, müssen angepasst werden.
-- **`FreeTextMatchesRenderedText` (`DosageDgMP`)** (HDB-947)
-  - Bei einer Freitext-Dosierung muss `renderedDosageInstruction` vorhanden sein und `Dosage.text` exakt entsprechen. Zuvor wurde nur verglichen, wenn die Extension vorhanden war.
-- `DosageRequiresGeneratedText` und `FreeTextMatchesRenderedText` entsprechen damit wieder dem Stand von 1.0.1. In 1.0.2 waren sie aus Gründen der Rückwärtskompatibilität zurückgenommen worden, da 1.0.1 ein Patch-Release war; mit 2.0.0 als Major-Release gelten sie wieder.
-- **`TimingValuesPositive` (`TimingDgMP`) und `TimingValuesPositiveWarning` (`TimingDE`) — neu** (HDB-971)
-  - `period`, `periodMax` und `boundsDuration.value` müssen größer als 0 sein. FHIR R4 verlangt über `tim-5` nur `period >= 0`; `periodMax` und `boundsDuration` waren ungeprüft.
-  - In `TimingDE` zusätzlich `boundsRange`: `low` nicht negativ, `high` größer als 0.
-- **`DosageLimitsPositive` (`DosageDgMP`) und `DosageLimitsPositiveWarning` (`DosageDE`) — neu** (HDB-971)
-  - Mindestabstand (`valueDuration.value`) und `maxDosePerPeriod` (`numerator.value`, `denominator.value`) müssen größer als 0 sein.
-- **`MaxDoseNotBelowDose` (`DosageDgMP`) — neu** (HDB-971)
-  - `maxDosePerPeriod.numerator.value` darf nicht kleiner als `doseQuantity.value` beziehungsweise `doseRange.high.value` sein. Zuvor wurde nur die Einheit verglichen (`MaxDoseSameUnitAsDose`).
-- **`DosageDoseQuantityAllowedFractions` und `DosageDoseValueDecimalNotation` (`DosageDgMP`): Achtel `.125` zulässig**
-  - `DosageDoseQuantityAllowedFractions`: Zusätzlich zulässig ist der Bruchteil `.125` (1/8), auch mit ganzzahligem Anteil wie `1.125`, in `doseQuantity` und in beiden Grenzen von `doseRange`. Weitere Achtel wie `.375` sind nicht zulässig.
-  - `DosageDoseValueDecimalNotation`: höchstens drei statt zwei Nachkommastellen.
-- **`TimingFreqOrPeriodGtOne` (`TimingDgMP`) / `TimingFreqOrPeriodGtOneWarning` (`TimingDE`)** (HDB-942)
-  - Beschreibung, Begründung und Beispiele um die Kombination aus variabler Frequenz und variabler Periode ergänzt („1 bis 3 x alle 2 bis 3 Tage“). Der Ausdruck ist unverändert; die Kombination war bereits ausgeschlossen.
-- **`TimingBoundsPeriodMatchesTime` (`TimingDgMP`) — neu**
-  - Im Uhrzeitenschema (`timeOfDay`) muss eine Uhrzeit in `boundsPeriod.start` oder `boundsPeriod.end` einer der angegebenen Uhrzeiten entsprechen.
-  - Bekannte Einschränkung: Der FHIRPath-Ausdruck prüft nur den Uhrzeitanteil, nicht den Zeitzonenversatz. Die Übereinstimmung mit `Europe/Berlin` muss die Anwendung zusätzlich prüfen.
-- **Mehrere `Dosage`-Elemente werden in allen Invarianten mit `combine()` statt `|` zusammengeführt.** `|` entfernt nach FHIRPath gleiche Elemente; zwei identische Elemente zählten deshalb als eines. Betroffen waren `AsNeededSingleDosageOnly`, `FreeTextSingleDosageOnly`/`…Warning` und `TimingSingleDosageForWhen`/`…ForTimeOfDay` samt Warnungen: Zwei gleiche reine Bedarfsdosierungen waren gültig, obwohl genau ein Element verlangt ist (die Textgenerierung bricht dort ab).
+- **`MinimumIntervalOnlyPureAsNeeded` und `MaxDoseOnlyPureAsNeeded` (`DosageDgMP`)**
+  - Verlangen zusätzlich `doseAndRate`: Mindestabstand und Maximalmenge sind nur an einer strukturierten reinen Bedarfsdosierung zulässig. An einer Freitext-Dosierung mit `asNeededBoolean = true` waren sie bisher gültig, konnten aber nie im Dosierungstext erscheinen, weil der Freitext unverändert übernommen wird.
 - **`TimingOnlyOneBounds` (`TimingDgMP`)**
   - Erkennt jetzt auch einen Wechsel zwischen Dauer und Zeitraum über die Elemente und einen Zeitraum, dessen Start oder Ende nur in einem Teil der Elemente steht. Bisher wurden Dauer und Zeitraum getrennt geprüft und fehlende Werte übergangen; die Textgenerierung liest den Zeitrahmen nur aus dem ersten Element, ein abweichender ging verloren.
-- **`TimingPeriodUnit` (`TimingDgMP`)**
-  - Mit `dayOfWeek` ist nur `period = 1` und `periodUnit = wk` zulässig, wie beschrieben; bisher wurde jede Periode in Wochen akzeptiert (der Fall war über `TimingOnlyOneType` bereits ausgeschlossen).
 - **`TimingOnlyOneTimeForInterval` (`TimingDgMP`)**
   - Alle Elemente einer Intervall-Kombination müssen `period` und `periodUnit` tragen; ein Element ohne `period` wurde übergangen (der Fall war über `TimingOnlyOneType` bereits ausgeschlossen).
   - `periodMax` muss in allen Elementen gleich sein oder in allen fehlen; bisher wurde es nicht verglichen. Die Textgenerierung liest den Rhythmus nur aus dem ersten Element.
+  - Die Prüfung über alle `Dosage`-Elemente der Ressource läuft je Auswertung einmal statt einmal je Element. Bisher wuchs die Validierungszeit mit der dritten Potenz der Anzahl der `Dosage`-Elemente.
+- **`TimingOnlyWhenOrTimeOfDay` (`TimingDgMP`): Ausdruck umgeformt, ohne fachliche Änderung**
+  - Die Prüfung über alle `Dosage`-Elemente der Ressource läuft je Auswertung einmal statt einmal je Element. Bisher wuchs die Validierungszeit mit der dritten Potenz der Anzahl der `Dosage`-Elemente. Constraint-Key, Schweregrad und Kontext bleiben unverändert.
+- **`TimingOnlyOneTimeOfDay`, `TimingOnlyOneWhen` und `TimingOnlyOneDayOfWeek` (`TimingDgMP`)**
+  - Verglichen werden nur die Elemente, die das jeweilige Schema nutzen (nur `timeOfDay`, nur `when` bzw. nur `dayOfWeek`). Bisher zählten auch Elemente anderer Schemata mit, etwa dieselbe Uhrzeit in einem Element mit `dayOfWeek`. Eine Mischung der Schemata verletzt weiterhin `TimingOnlyOneType`.
+  - Bei `TimingOnlyOneTimeOfDay` wächst die Validierungszeit nicht mehr mit der dritten Potenz der Anzahl der `Dosage`-Elemente.
+- **`TimingPeriodUnit` (`TimingDgMP`)**
+  - Mit `dayOfWeek` ist nur `period = 1` und `periodUnit = wk` zulässig, wie beschrieben; bisher wurde jede Periode in Wochen akzeptiert (der Fall war über `TimingOnlyOneType` bereits ausgeschlossen).
 - **`TimingSingleDosageForWhen`, `TimingSingleDosageForTimeOfDay` (`TimingDgMP`) und die Warnungen in `TimingDE`**
   - Beschreibung an den Ausdruck angeglichen: Die Regel gilt bei täglicher Gabe und in einer Intervall-Kombination, nicht nur bei täglicher Gabe.
   - Bekannte Einschränkung: Der HL7-Validator (org.hl7.fhir.core, geprüft bis 7.0.5) meldet einen Verstoß, wenn auf einen Dosisbereich mit Unter- und Obergrenze ein Dosisbereich nur mit derselben Obergrenze folgt, etwa morgens 1 bis 2 Stück und abends bis zu 2 Stück. Die Dosen sind verschieden, die Regel ist erfüllt ([hapifhir/org.hl7.fhir.core#2843](https://github.com/hapifhir/org.hl7.fhir.core/issues/2843)).
-- **`TimingBoundsPeriodFullDate` (`TimingDgMP`) — neu**
-  - `boundsPeriod.start` und `boundsPeriod.end` müssen ein vollständiges Kalenderdatum enthalten. FHIR `dateTime` erlaubt auch `JJJJ` und `JJJJ-MM`; die Textgenerierung kann ein Teildatum nicht darstellen und bricht ab.
-- **`MinimumIntervalOnlyPureAsNeeded` und `MaxDoseOnlyPureAsNeeded` (`DosageDgMP`)**
-  - Verlangen zusätzlich `doseAndRate`: Mindestabstand und Maximalmenge sind nur an einer strukturierten reinen Bedarfsdosierung zulässig. An einer Freitext-Dosierung mit `asNeededBoolean = true` waren sie bisher gültig, konnten aber nie im Dosierungstext erscheinen, weil der Freitext unverändert übernommen wird.
-- **`maxDosePerPeriod.numerator.comparator` und `.denominator.comparator` sind `0..0`**
+- **`TimingFreqOrPeriodGtOne` (`TimingDgMP`) / `TimingFreqOrPeriodGtOneWarning` (`TimingDE`)** (HDB-942)
+  - Beschreibung, Begründung und Beispiele um die Kombination aus variabler Frequenz und variabler Periode ergänzt („1 bis 3 x alle 2 bis 3 Tage“). Der Ausdruck ist unverändert; die Kombination war bereits ausgeschlossen.
+
+**Profile**
+
+- **`DosageDgMP`: `maxDosePerPeriod.numerator.comparator` und `.denominator.comparator` sind `0..0`**
   - Bereiche und Obergrenzen haben eigene Elemente (`doseRange`, `maxDosePerPeriod`); ein Vergleichsoperator ist daneben nicht vorgesehen; die Textgenerierung definiert für ihn keine Darstellung. Bei der Dosis schließt `SimpleQuantity` den `comparator` bereits aus.
-- **`TimingBoundsPeriodNotForWhen` (`TimingDgMP`) — neu**
-  - Im Tageszeitenschema (`when`) und im Wochentagsschema ohne `timeOfDay` dürfen `boundsPeriod.start` und `boundsPeriod.end` keine Uhrzeit enthalten.
-  - Das Beispiel `Example-MR-Dosage-1000-startdatetime` verwendet deshalb jetzt das Uhrzeitenschema, `Example-MR-Dosage-1000-startdatetime-daychange` ein reines Intervall.
 
 **Fachliche Informationsmodelle**
 
@@ -83,6 +103,11 @@
 - `MR-Dosage-comb-interval-4-unsorted`, `MD-Dosage-comb-interval-4-unsorted`, `MS-Dosage-comb-interval-4-unsorted` — neu: Intervall-Kombination mit unsortierten Uhrzeiten innerhalb der `Dosage`-Elemente.
 - `MR-Dosage-BoundsDuration-Decimal` — neu (JSON): `boundsDuration.value` als ganze Zahl mit Dezimalpunkt (`14.0`).
 - [Beispiele für Dosierungen](./dosierung-beispiele.html): Die Spalte `bounds[x]` der Übersicht zeigt eine Behandlungsdauer als Wert und Einheit, etwa `Duration = 5 Tag(e)`. Bisher stand dort die interne Darstellung des Erzeugungsskripts, etwa `{'system': 'http://unitsofmeasure.org', 'value': 5, 'code': 'd', 'unit': 'Tag(e)'}`.
+
+**Nachtrag zu 2.0.0-ballot**
+
+- **`ExtRequiresDosage-MR`, `ExtRequiresDosage-MD` und `ExtRequiresDosage-MS` (`MedicationRequestDgMP`, `MedicationDispenseDgMP`, `MedicationStatementDgMP`)**
+  - Die drei Invarianten sind seit 2.0.0-ballot Teil der Profile, fehlten aber in den Release Notes zu 2.0.0-ballot. Trägt eine Ressource `GeneratedDosageInstructionsMeta` oder `renderedDosageInstruction`, muss sie mindestens eine Dosierung enthalten. Zur Überführung bestehender Daten siehe [Migration, M12](./migration-1.0.7-2.0.0.html).
 
 ### Release: 2.0.0-ballot
 

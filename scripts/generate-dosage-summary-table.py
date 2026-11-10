@@ -106,17 +106,26 @@ def format_dose(dose_and_rate):
     return ""
 
 def format_bounds(repeat):
-    """Format supported Timing.repeat.bounds[x] variants."""
-    bounds = repeat.get('boundsDuration') or repeat.get('boundsPeriod') or repeat.get('boundsRange')
-    if not bounds:
-        return ""
-    if 'duration' in bounds:
-        return f"Duration = {bounds['duration']} {bounds.get('unit', '')}".strip()
-    if 'start' in bounds or 'end' in bounds:
-        start = bounds.get('start', '')
-        end = bounds.get('end', '')
-        return f"Period = {start} - {end}".strip()
-    return str(bounds)
+    """Format Timing.repeat.bounds[x] like the dose column: value and unit (code if unit is missing)."""
+    if repeat.get('boundsDuration'):
+        duration = repeat['boundsDuration']
+        unit = duration.get('unit') or duration.get('code', '')
+        return f"Duration = {duration.get('value', '')} {unit}".strip()
+    if repeat.get('boundsPeriod'):
+        period = repeat['boundsPeriod']
+        return f"Period = {period.get('start', '')} - {period.get('end', '')}".strip()
+    if repeat.get('boundsRange'):
+        bounds_range = repeat['boundsRange']
+        low = bounds_range.get('low', {})
+        high = bounds_range.get('high', {})
+        unit = high.get('unit') or low.get('unit') or high.get('code') or low.get('code', '')
+        low_value, high_value = low.get('value', ''), high.get('value', '')
+        if low_value != '' and high_value != '':
+            values = f"{low_value}-{high_value}"
+        else:
+            values = f"bis {high_value}" if high_value != '' else f"ab {low_value}"
+        return f"Range = {values} {unit}".strip()
+    return ""
 
 def extract_dosage_details(resource):
     """Extract dosage details for the table."""

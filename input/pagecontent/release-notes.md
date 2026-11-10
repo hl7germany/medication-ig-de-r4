@@ -21,7 +21,7 @@
   - Bei `TimingOnlyOneTimeOfDay` wächst die Validierungszeit nicht mehr mit der dritten Potenz der Anzahl der `Dosage`-Elemente.
 - **`TimingNoDuplicateValues` (`TimingDgMP`) — neu**
   - Innerhalb eines `Dosage`-Elements dürfen `dayOfWeek`, `when` und `timeOfDay` keinen Wert mehrfach enthalten. Bisher schlossen das nur die Schemata ohne Wochentag sowie das reine Wochentagsschema aus. Bei Wochentagen mit Tagesabschnitt oder Uhrzeit war zum Beispiel montags `MORN`, `MORN` mit `frequency = 2` gültig, obwohl FHIR mehrere Angaben in `when` als Vereinigung wertet und der Dosierungstext eine Gabe nennt.
-  - Solche 1.0.7-Dosierungen werden nach M14 per [Freitext-Fallback](./migration-1.0.7-2.0.0.html#freitext-fallback) überführt.
+  - Bei der Migration aus 1.0.7 werden doppelte Werte zusammengeführt und `frequency` angepasst ([M14](./migration-1.0.7-2.0.0.html#m14)).
 - **`AsNeededForRequiresAsNeededWarning` (`DosageDE`) — neu** (HDB-924)
   - Warnt, wenn ein Anlass (`extension[asNeededFor]`) ohne `asNeededBoolean = true` angegeben ist. `dos-1` lässt einen Anlass ohne `asNeeded` wie in FHIR R5 weiterhin zu; lesende Systeme werten ihn als Bedarfsdosierung. In den dgMP-Profilen bleibt der Fall über `AsNeededForRequiresAsNeeded` ein Fehler.
 - **`DosageDoseQuantityAllowedFractions` (`DosageDgMP`), `TimingPeriodOnlyWholeNumber` und `TimingBoundsDurationOnlyWholeNumber` (`TimingDgMP`): Ganzzahligkeit mit `truncate()` geprüft**

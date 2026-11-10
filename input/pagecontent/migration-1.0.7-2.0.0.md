@@ -1,6 +1,6 @@
 Diese Seite beschreibt, wie Dosierungen aus dem dgMP-Profilstand 1.0.7 technisch in den Profilstand 2.0.0 überführt werden. Beschrieben wird ausschließlich die Abbildung der FHIR-Strukturen. Wie ein System die Migration organisiert, ob und wie es Quelldaten aufbewahrt, protokolliert oder mit nicht überführbaren Daten umgeht, liegt beim jeweiligen System und ist nicht Gegenstand dieses Leitfadens.
 
-**Grundsatz:** Die Überführung erhält die Aussage der Quelldosierung. Zahlenwerte werden nicht gerundet und nicht in andere Einheiten umgerechnet. Neue Angaben werden nur in zwei Fällen ergänzt: Ein vorhandenes `boundsDuration` wird in die übrigen `Dosage`-Elemente kopiert ([M10](#m10)), und einem reinen 4-Schema im Freitext wird `täglich: ` vorangestellt ([M04](#m04)). Bei M03 und M11 wird der vorhandene Dosierungstext der Quelle als Freitext übernommen ([M03/M11](#m03-m11)). Für andere nicht überführbare strukturierte Dosierungen gilt der [Freitext-Fallback](#freitext-fallback).
+**Grundsatz:** Die Überführung erhält die Aussage der Quelldosierung. Zahlenwerte werden nicht gerundet und nicht in andere Einheiten umgerechnet. Neue Angaben werden nur in zwei Fällen ergänzt: Ein vorhandenes `boundsDuration` wird in die übrigen `Dosage`-Elemente kopiert ([M10](#m10)), und einem reinen 4-Schema im Freitext wird `täglich: ` vorangestellt ([M04](#m04)). Doppelte Werte innerhalb eines `Dosage`-Elements werden zusammengeführt und `frequency` wird an die verbleibenden Werte angepasst ([M14](#m14)). Bei M03 und M11 wird der vorhandene Dosierungstext der Quelle als Freitext übernommen ([M03/M11](#m03-m11)). Für andere nicht überführbare strukturierte Dosierungen gilt der [Freitext-Fallback](#freitext-fallback).
 
 ### Geltungsbereich
 
@@ -20,7 +20,7 @@ Eine Dosierungs-Liste kann mehrere `Dosage`-Elemente enthalten, und jedes Elemen
 
 1. **Keine Dosierung vorhanden:** Es wird keine Dosierung ergänzt. Sind `renderedDosageInstruction` oder `GeneratedDosageInstructionsMeta` ohne Dosierung vorhanden, werden sie entfernt (M12).
 2. **Reiner Freitext:** Mehrere gleiche Freitext-Elemente werden zu einem zusammengefasst (M13). `Dosage.text` wird übernommen; besteht der Text nur aus einem 4-Schema (zum Beispiel `1-0-1-0 Stück`), wird er nach [M04](#m04) behandelt. Auf Ressourcenebene werden `renderedDosageInstruction` mit exakt diesem Text sowie `GeneratedDosageInstructionsMeta` gesetzt (`DosageRequiresGeneratedText`, `FreeTextMatchesRenderedText`, siehe Abschnitt „Text-Extensions“).
-3. **Strukturierte Dosierung normalisieren:** In jedem `Dosage`-Element wird die Exponentialschreibweise nach [M02](#m02) normalisiert. Weitere Änderungen an den Werten finden nicht statt.
+3. **Strukturierte Dosierung normalisieren:** In jedem `Dosage`-Element wird die Exponentialschreibweise nach [M02](#m02) normalisiert, und doppelte Werte werden nach [M14](#m14) zusammengeführt. Weitere Änderungen an den Werten finden nicht statt.
 4. **M10 behandeln:** Enthält nur ein Teil der Elemente ein `boundsDuration`, wird es nach [M10](#m10) in die übrigen Elemente kopiert.
 5. **M03/M11 behandeln:** Verletzt mindestens ein Element der normalisierten Liste M03 oder M11, wird die gesamte Liste nach [M03/M11](#m03-m11) durch ein Freitext-Element mit dem vorhandenen Dosierungstext ersetzt und wie in Schritt 2 weiterbehandelt.
 6. **Gesamte Liste prüfen:** Erfüllt die verbleibende strukturierte Dosierungs-Liste die Regeln des 2.0.0-Profils (abgesehen von den Text-Extensions, die erst in diesem Schritt gesetzt werden), bleibt sie strukturiert. Der Dosierungstext wird nach der [Textgenerierung](./dosierung-textgenerierung.html) neu erzeugt; `renderedDosageInstruction` und `GeneratedDosageInstructionsMeta` werden durch die neu erzeugten Werte ersetzt.
@@ -45,17 +45,17 @@ Das Ergebnis ist eine Ressource, die dem 2.0.0-Profil entspricht. Ausgenommen si
 | M11 | `TimingValuesPositive` | Periode null oder Behandlungsdauer null oder negativ (eine negative Periode schließt bereits die R4-Basisregel `tim-5` aus) | Vorhandenen Dosierungstext als Freitext übernehmen | [M03/M11](#m03-m11) |
 | M12 | `ExtRequiresDosage-MR`, `ExtRequiresDosage-MD`, `ExtRequiresDosage-MS` | Text-Extension ohne Dosierung | Extensions entfernen | Schritt 1 des Ablaufs |
 | M13 | `FreeTextSingleDosageOnly` | Mehrere `Dosage`-Elemente mit demselben Freitext | Zu einem Element zusammenfassen | Schritt 2 des Ablaufs |
-| M14 | `TimingNoDuplicateValues` | Wochentage mit Tagesabschnitten oder Uhrzeiten, bei denen ein `Dosage`-Element denselben Wochentag, Tagesabschnitt oder dieselbe Uhrzeit mehrfach enthält (zum Beispiel montags `MORN`, `MORN` mit `frequency = 2`). In den übrigen Schemata schloss das bereits 1.0.7 aus | Freitext-Fallback | [Freitext-Fallback](#freitext-fallback) |
+| M14 | `TimingNoDuplicateValues` | Wochentage mit Tagesabschnitten oder Uhrzeiten, bei denen ein `Dosage`-Element denselben Wochentag, Tagesabschnitt oder dieselbe Uhrzeit mehrfach enthält (zum Beispiel montags `MORN`, `MORN` mit `frequency = 2`). In den übrigen Schemata schloss das bereits 1.0.7 aus | Doppelte Werte zusammenführen, `frequency` anpassen | [M14](#m14) |
 
 Bei M01 und M05–M07 werden die Werte weder gerundet noch in andere Einheiten umgerechnet noch umgedeutet, auch wenn eine exakte Umrechnung möglich wäre (zum Beispiel eine Periode von `1.5 d` in `36 h`). „2 x alle 3 Tage“ wird also weder zu „alle 1,5 Tage“ noch zu „alle 36 Stunden“. Die Überführung erhält die Angabe der Quelle, wie sie verordnet wurde; deshalb gilt dort der Freitext-Fallback. Bei M10 wird ausschließlich ein bereits vorhandener Wert wiederholt; er wird nicht verändert.
 
 ### Freitext-Fallback
 
-Der Freitext-Fallback gilt, wenn eine strukturierte 1.0.7-Dosierungs-Liste nach den Schritten M02 und M10 weiterhin mindestens eine Invariante des 2.0.0-Profils verletzt. M03 und M11 werden stattdessen nach dem eigenen Ablauf [M03/M11](#m03-m11) behandelt. Die übrigen Fälle und ihre Invarianten stehen in der Fallübersicht. Die Dosierung wird dann als reine Freitext-Dosierung abgebildet. Zahlen, Einheiten und Zeitangaben werden dabei weder korrigiert noch umgerechnet; der Freitext gibt die Quelldosierung so wieder, wie sie strukturiert angegeben war.
+Der Freitext-Fallback gilt, wenn eine strukturierte 1.0.7-Dosierungs-Liste nach den Schritten M02, M14 und M10 weiterhin mindestens eine Invariante des 2.0.0-Profils verletzt. M03 und M11 werden stattdessen nach dem eigenen Ablauf [M03/M11](#m03-m11) behandelt. Die übrigen Fälle und ihre Invarianten stehen in der Fallübersicht. Die Dosierung wird dann als reine Freitext-Dosierung abgebildet. Zahlen, Einheiten und Zeitangaben werden dabei weder korrigiert noch umgerechnet; der Freitext gibt die Quelldosierung so wieder, wie sie strukturiert angegeben war.
 
 #### Abbildung
 
-1. **Text erzeugen:** Der Text wird immer mit der [Textgenerierung](./dosierung-textgenerierung.html) aus **allen** `Dosage`-Elementen der Quelle im Zustand nach den Schritten [M02](#m02) und [M10](#m10) erzeugt, mit der tatsächlich verwendeten Algorithmusversion (in dieser Beschreibung `2.0.0`). Eine vorhandene `renderedDosageInstruction` der Quellressource wird nicht übernommen, da Bestandsdaten häufig fehlerhaft sind und der Text sonst nicht zur Struktur passen muss.
+1. **Text erzeugen:** Der Text wird immer mit der [Textgenerierung](./dosierung-textgenerierung.html) aus **allen** `Dosage`-Elementen der Quelle im Zustand nach den Schritten [M02](#m02), [M14](#m14) und [M10](#m10) erzeugt, mit der tatsächlich verwendeten Algorithmusversion (in dieser Beschreibung `2.0.0`). Eine vorhandene `renderedDosageInstruction` der Quellressource wird nicht übernommen, da Bestandsdaten häufig fehlerhaft sind und der Text sonst nicht zur Struktur passen muss.
 2. **Dosierung ersetzen:** Die gesamte Dosierungs-Liste wird durch genau ein `Dosage`-Element ersetzt, das nur `text` mit dem Text aus Schritt 1 enthält, also ohne `timing` und ohne `doseAndRate` (`DosageStructuredOrFreeText`, `FreeTextSingleDosageOnly`).
 3. **4-Schema prüfen:** Besteht der Text nur aus einem 4-Schema (zum Beispiel `1-0-1-0 Stück`), wird [M04](#m04) angewendet.
 4. **Text-Extensions setzen:** `renderedDosageInstruction` erhält exakt den Wert von `Dosage.text`. `GeneratedDosageInstructionsMeta` gibt die Sprache und die Algorithmusversion an, mit der der Text in Schritt 1 erzeugt wurde.
@@ -74,7 +74,6 @@ Die Textgenerierung liefert je nach Quellstruktur zum Beispiel:
 - M05, Behandlungsdauer `1.5 d`: `für 1,5 Tage täglich: je 1 Stück`
 - M06, Periode `1.5 d`: `alle 1,5 Tage: je 1 Stück`
 - M07, Frequenz 2 bei Periode `3 d`: `2 x alle 3 Tage: je 1 Stück`
-- M14, montags `MORN`, `MORN` mit `frequency = 2`: `montags 1-0-0-0 Stück`
 
 #### Beispiel
 
@@ -225,6 +224,30 @@ Ziel:    Dosage[0].boundsDuration = 5 d
          Dosage[1].boundsDuration = 5 d
 ```
 
+### M14 – Doppelte Werte innerhalb eines Elements {#m14}
+
+#### Anlass
+
+In 1.0.7 durfte ein `Dosage`-Element mit Wochentagen und Tagesabschnitten oder Uhrzeiten denselben Wochentag, Tagesabschnitt oder dieselbe Uhrzeit mehrfach enthalten. Das verpflichtende `frequency` zählte die Doppelung mit (`TimingFrequencyCount`). 2.0.0 schließt doppelte Werte innerhalb eines Elements aus (`TimingNoDuplicateValues`). Für `when` wertet FHIR mehrere Angaben ausdrücklich als Vereinigung, `dayOfWeek` und `timeOfDay` nennen die Tage und Uhrzeiten der Gabe. Ein doppelter Wert bezeichnet also keinen weiteren Zeitpunkt.
+
+#### Überführung
+
+1. In jedem `Dosage`-Element in `dayOfWeek`, `when` und `timeOfDay` jeweils nur das erste Vorkommen eines Werts behalten. Die Reihenfolge der übrigen Werte bleibt unverändert.
+2. Wurde in einem Element ein Wert entfernt und ist dort `frequency` angegeben, `frequency` auf die Anzahl der verbleibenden Tagesabschnitte beziehungsweise Uhrzeiten multipliziert mit der Anzahl der verbleibenden Wochentage setzen (`TimingFrequencyCount`). Alle übrigen Angaben, auch Dosis, `period` und `periodUnit`, bleiben unverändert.
+3. Mit dem Ergebnis weiter nach dem [Ablauf](#ablauf) verfahren.
+
+#### Beispiele
+
+```text
+Quelle:  dayOfWeek = mon, when = MORN, MORN, frequency = 2
+Ziel:    dayOfWeek = mon, when = MORN, frequency = 1
+Text:    montags 1-0-0-0 Stück
+
+Quelle:  dayOfWeek = mon, mon, timeOfDay = 08:00:00, frequency = 2
+Ziel:    dayOfWeek = mon, timeOfDay = 08:00:00, frequency = 1
+Text:    montags 08:00 Uhr — je 1 Stück
+```
+
 ### Text-Extensions
 
 Für 2.0.0 sind `renderedDosageInstruction` und `GeneratedDosageInstructionsMeta` bei jeder Dosierung erforderlich, auch bei Freitext (`DosageRequiresGeneratedText`). Bei Freitext stimmt `renderedDosageInstruction` exakt mit `Dosage.text` überein (`FreeTextMatchesRenderedText`). Die Umstellung von `DosageStructuredRequiresGeneratedText` auf `DosageRequiresGeneratedText` ist daher nicht nur eine Umbenennung: Auch bestehende Freitext-Dosierungen erhalten beide Extensions.
@@ -235,7 +258,7 @@ Für 2.0.0 sind `renderedDosageInstruction` und `GeneratedDosageInstructionsMeta
 
 Für die folgenden Bestandsdaten beschreibt dieser Leitfaden keine Abbildung. Wie ein System mit ihnen umgeht, entscheidet es selbst.
 
-- **Dosierungen, die bereits das Profil 1.0.7 verletzen**, zum Beispiel doppelte Tagesabschnitte oder Uhrzeiten (außer innerhalb eines Elements mit Wochentagen, siehe M14), gemischte Tagesabschnitte und Uhrzeiten, fehlendes `timing` oder `doseAndRate`, unterschiedliche Dosis-Codes oder eine Anzeigeeinheit der Behandlungsdauer, die nicht zum UCUM-Code passt. Ihre Ungültigkeit ist keine Folge des Profilwechsels.
+- **Dosierungen, die bereits das Profil 1.0.7 verletzen**, zum Beispiel doppelte Tagesabschnitte oder Uhrzeiten (außer innerhalb eines Elements mit Wochentagen, siehe [M14](#m14)), gemischte Tagesabschnitte und Uhrzeiten, fehlendes `timing` oder `doseAndRate`, unterschiedliche Dosis-Codes oder eine Anzeigeeinheit der Behandlungsdauer, die nicht zum UCUM-Code passt. Ihre Ungültigkeit ist keine Folge des Profilwechsels.
 - **Dosisangaben ohne Zahlenwert:** `doseQuantity.value` ist in 2.0.0 Pflicht, in 1.0.7 war es optional. Ohne Zahlenwert lässt sich weder eine strukturierte Dosierung noch ein Dosierungstext bilden.
 - **Dosierungen, für die die Textgenerierung im Freitext-Fallback keinen Text liefert** (siehe [Freitext-Fallback](#freitext-fallback)).
 

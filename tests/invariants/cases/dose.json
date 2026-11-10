@@ -1887,6 +1887,10 @@
       { "name": "Range low vier Nachkommastellen", "dosage": { "doseAndRate": [{ "doseRange": { "low": { "value": 0.0625 }, "high": { "value": 1 } } }] }, "expect": false },
       { "name": "Range high vier Nachkommastellen", "dosage": { "doseAndRate": [{ "doseRange": { "high": { "value": 1.0625 } } }] }, "expect": false },
       { "name": "Quantity knapp über Achtel", "dosage": { "doseAndRate": [{ "doseQuantity": { "value": 0.1251 } }] }, "expect": false },
+      { "name": "Drei Nachkommastellen mit Nullen am Ende", "dosage": { "doseAndRate": [{ "doseQuantity": { "value": { "$decimal": "0.500" } } }] }, "expect": true },
+      { "name": "Quantity vier Nachkommastellen mit Null am Ende", "dosage": { "doseAndRate": [{ "doseQuantity": { "value": { "$decimal": "0.1250" } } }] }, "expect": { "fhirpathjs": true, "hapi": false } },
+      { "name": "Range low vier Nachkommastellen mit Nullen am Ende", "dosage": { "doseAndRate": [{ "doseRange": { "low": { "value": { "$decimal": "0.7500" } }, "high": { "value": 1 } } }] }, "expect": { "fhirpathjs": true, "hapi": false } },
+      { "name": "Range high Ganzzahl mit vier Nullen", "dosage": { "doseAndRate": [{ "doseRange": { "high": { "value": { "$decimal": "1.0000" } } } }] }, "expect": { "fhirpathjs": true, "hapi": false } },
       { "name": "Ungültige Notation im zweiten Element", "dosages": [{ "doseAndRate": [{ "doseQuantity": { "value": 0.125 } }] }, { "doseAndRate": [{ "doseQuantity": { "value": 0.0625 } }] }], "expect": false }
     ]
   },

@@ -76,6 +76,21 @@ function caseBlocks() {
 const DECIMAL = /\{"\$decimal":"(-?\d+(?:\.\d+)?)"\}/g;
 const toNumber = (key, value) => value && typeof value === 'object' && typeof value.$decimal === 'string' ? Number(value.$decimal) : value;
 
+// Erwartetes Ergebnis eines Testfalls in einer Engine (fhirpathjs oder hapi). expect ist true oder false,
+// oder {"fhirpathjs": …, "hapi": …} für Fälle, die die Engines verschieden auswerten, weil fhirpath.js
+// die Schreibweise einer Dezimalzahl nicht sieht.
+const expectFor = (testCase, engine) => typeof testCase.expect === 'boolean' ? testCase.expect : testCase.expect[engine];
+
+// Meldung zu einem ungültigen expect, sonst null.
+function expectProblem(testCase) {
+  const e = testCase.expect;
+  if (typeof e === 'boolean') return null;
+  if (!e || typeof e !== 'object' || Object.keys(e).sort().join() !== 'fhirpathjs,hapi' || typeof e.fhirpathjs !== 'boolean' || typeof e.hapi !== 'boolean')
+    return 'expect muss true, false oder {"fhirpathjs": true|false, "hapi": true|false} sein';
+  if (e.fhirpathjs === e.hapi) return `expect je Engine nur bei verschiedenen Ergebnissen, sonst "expect": ${e.hapi}`;
+  return null;
+}
+
 function buildResource(type, testCase, { keepDecimals = false } = {}) {
   const p = DOSAGE_PATH[type];
   const dosages = testCase.dosages ?? (testCase.dosage ? [testCase.dosage] : []);
@@ -140,8 +155,10 @@ function exportCases(outFile) {
     contexts[block.invariant] = block.context;
     for (const type of block.resourceTypes ?? RESOURCE_TYPES) {
       for (const tc of block.cases) {
+        const problem = expectProblem(tc);
+        if (problem) throw new Error(`${file}: ${block.invariant} / ${tc.name}: ${problem}`);
         const res = buildResource(type, tc, { keepDecimals: true });
-        cases.push({ file, invariant: block.invariant, resourceType: type, name: tc.name, expect: tc.expect, resource: res, targets: targetsFor(block.context, type, res) });
+        cases.push({ file, invariant: block.invariant, resourceType: type, name: tc.name, expect: expectFor(tc, 'hapi'), resource: res, targets: targetsFor(block.context, type, res) });
       }
     }
   }
@@ -172,12 +189,15 @@ function main() {
     for (const type of block.resourceTypes ?? RESOURCE_TYPES) {
       for (const tc of block.cases) {
         total++;
+        const problem = expectProblem(tc);
+        if (problem) { failures.push(`${file}: ${block.invariant} / ${type} / ${tc.name}: ${problem}`); continue; }
+        const expect = expectFor(tc, 'fhirpathjs');
         const res = buildResource(type, tc);
         let outcome;
         try { outcome = evaluate(inv.expression, block.context, type, res); }
         catch (err) { failures.push(`${file}: ${block.invariant} / ${type} / ${tc.name}: Auswertungsfehler ${err.message}`); continue; }
-        if (outcome.ok !== tc.expect)
-          failures.push(`${file}: ${block.invariant} / ${type} / ${tc.name}: erwartet ${tc.expect ? 'erfüllt' : 'verletzt'}, Ergebnis ${JSON.stringify(outcome.results)}`);
+        if (outcome.ok !== expect)
+          failures.push(`${file}: ${block.invariant} / ${type} / ${tc.name}: erwartet ${expect ? 'erfüllt' : 'verletzt'}, Ergebnis ${JSON.stringify(outcome.results)}`);
       }
     }
   }
@@ -192,7 +212,7 @@ function main() {
   if (failures.length || untested.length) process.exit(1);
 }
 
-module.exports = { ROOT, RESOURCE_TYPES, DOSAGE_PATH, DECIMAL, invariantsIn, loadInvariants, caseBlocks, buildResource, targetsFor };
+module.exports = { ROOT, RESOURCE_TYPES, DOSAGE_PATH, DECIMAL, invariantsIn, loadInvariants, caseBlocks, expectFor, buildResource, targetsFor };
 
 if (require.main === module) {
   const exportIndex = process.argv.indexOf('--export');

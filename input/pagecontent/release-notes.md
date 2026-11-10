@@ -69,6 +69,11 @@
   - `zeitangaben.mindestabstand.einheit` ist an `MindestabstandUnitsOfTimeDgMP` gebunden (required), wie in `DosageDgMP`.
   - Die Seite [Schema für Bedarfsmedikation](./schema-bedarfsmedikation.html) erläutert, dass eine reine Bedarfsdosierung genau ein `Dosage`-Element erlaubt (`AsNeededSingleDosageOnly`).
 
+**Beispiele**
+
+- `MR-Dosage-comb-interval-4-unsorted`, `MD-Dosage-comb-interval-4-unsorted`, `MS-Dosage-comb-interval-4-unsorted` — neu: Intervall-Kombination mit unsortierten Uhrzeiten innerhalb der `Dosage`-Elemente.
+- `MR-Dosage-BoundsDuration-Decimal` — neu (JSON): `boundsDuration.value` als ganze Zahl mit Dezimalpunkt (`14.0`).
+
 ### Release: 2.0.0-ballot
 
 Diese Version erweitert das dgMP-Dosiermodell erheblich: Dosierungen, die bisher

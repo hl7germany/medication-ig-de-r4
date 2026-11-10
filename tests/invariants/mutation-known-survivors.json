@@ -43,7 +43,7 @@
     },
     "TimingOnlyOnePeriodForDayOfWeek": {
       "count": 44,
-      "reason": "42 Mutanten an der Bedingung count() > 1 je Wochentag und Zweig unterscheiden sich nur, wenn ein einzelnes Element dieselbe Tageszeit oder Uhrzeit doppelt enthält (etwa montags when MORN, MORN). Solche Elemente erfüllen die Invariante; ein Testfall würde das festschreiben. 2 Mutanten ohne Abfrage des Ressourcentyps sind gleichwertig, weil %resource.dosageInstruction bei MedicationStatement und %resource.dosage bei MedicationRequest und MedicationDispense leer sind."
+      "reason": "42 Mutanten an der Bedingung count() > 1 je Wochentag und Zweig unterscheiden sich nur, wenn ein einzelnes Element dieselbe Tageszeit oder Uhrzeit doppelt enthält (etwa montags when MORN, MORN). Das schließt TimingNoDuplicateValues aus. 2 Mutanten ohne Abfrage des Ressourcentyps sind gleichwertig, weil %resource.dosageInstruction bei MedicationStatement und %resource.dosage bei MedicationRequest und MedicationDispense leer sind."
     },
     "TimingOnlyOneTimeOfDay": {
       "count": 1,

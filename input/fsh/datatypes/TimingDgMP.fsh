@@ -16,6 +16,7 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * obeys TimingOnlyWhenOrTimeOfDay
   * obeys TimingOnlyOneTimeOfDay
   * obeys TimingOnlyOneDayOfWeek
+  * obeys TimingNoDuplicateValues
   * obeys TimingOnlyOneTimeForInterval
   * obeys TimingOnlyOneBounds
   * obeys TimingFrequencyCount
@@ -410,6 +411,11 @@ Expression: "( /* Detect DayOfWeek */
   timing.repeat.when.empty() and
   timing.repeat.timeOfDay.empty()
 ).timing.repeat.dayOfWeek.isDistinct()"
+Severity: #error
+
+Invariant: TimingNoDuplicateValues
+Description: "Within a Timing, dayOfWeek, when and timeOfDay must not contain the same value more than once."
+Expression: "dayOfWeek.isDistinct() and when.isDistinct() and timeOfDay.isDistinct()"
 Severity: #error
 
 Invariant: TimingOnlyOneBounds

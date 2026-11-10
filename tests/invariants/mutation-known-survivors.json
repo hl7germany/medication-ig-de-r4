@@ -1,0 +1,85 @@
+{
+  "_comment": "Überlebende Mutanten je Invariante, die kein Testfall erkennen kann oder soll, mit Begründung. Die Mutationsprüfung (mutate.js) schlägt fehl, wenn bei einer Invariante mehr oder weniger Mutanten überleben als eingetragen. Invarianten ohne Eintrag dürfen keine überlebenden Mutanten haben.",
+  "survivors": {
+    "DosageDoseQuantityAllowedFractions": {
+      "count": 6,
+      "reason": "value.empty() or value.all(...) ist doppelt abgesichert: all() ist auf einer leeren Menge wahr, und value hat höchstens einen Wert. Je Zweig sind das Entfernen von value.empty() und all() → exists() deshalb gleichwertig."
+    },
+    "FreeTextMatchesRenderedText": {
+      "count": 1,
+      "reason": "ofType(MedicationStatement).exists() im dritten Zweig ist gleichwertig entbehrlich, weil %resource.dosage nur bei MedicationStatement existiert."
+    },
+    "MaxDoseSameUnitAsDose": {
+      "count": 1,
+      "reason": "doseAndRate.dose.ofType(Quantity).exists() ist gleichwertig entbehrlich: Ohne Quantity sind die folgenden Vergleiche leer, der Zweig ist dann ebenfalls nicht wahr."
+    },
+    "TimingBoundsPeriodFullDate": {
+      "count": 1,
+      "reason": "Gültige FHIR-Datumsangaben haben 4, 7 oder 10 Zeichen, mit Uhrzeit mindestens 20. Die Grenze 9 statt 10 unterscheidet sich bei keinem gültigen Wert."
+    },
+    "TimingBoundsPeriodMatchesTime": {
+      "count": 1,
+      "reason": "Gültige FHIR-Datumsangaben haben 4, 7 oder 10 Zeichen, mit Uhrzeit mindestens 20. Die Grenze 11 statt 10 unterscheidet sich bei keinem gültigen Wert."
+    },
+    "TimingBoundsPeriodNotForWhen": {
+      "count": 1,
+      "reason": "Gültige FHIR-Datumsangaben haben 4, 7 oder 10 Zeichen, mit Uhrzeit mindestens 20. Die Grenze 11 statt 10 unterscheidet sich bei keinem gültigen Wert."
+    },
+    "TimingFreqOrPeriodGtOne": {
+      "count": 10,
+      "reason": "Die zweite Hälfte (Periode > 1 ⇒ Frequenz 1) folgt aus der ersten, weil frequency und frequencyMax positiveInt sind und periodMax nicht unter period liegt (TimingVarPeriodGtMin). Mutanten, die nur die zweite Hälfte oder die periodMax-Klausel der ersten ändern, sind deshalb gleichwertig."
+    },
+    "TimingFreqOrPeriodGtOneWarning": {
+      "count": 10,
+      "reason": "Gleicher Ausdruck wie TimingFreqOrPeriodGtOne, siehe dort."
+    },
+    "TimingOnlyOneBounds": {
+      "count": 1,
+      "reason": "all() → exists() beim Zeitraum unterscheidet sich nur, wenn ein Zeitraum weder Start noch Ende hat. Das lässt FHIR nicht zu (ele-1)."
+    },
+    "TimingOnlyOneDayOfWeek": {
+      "count": 1,
+      "reason": "dayOfWeek.exists() im where() ist gleichwertig entbehrlich: Elemente ohne dayOfWeek tragen nichts zu dayOfWeek.isDistinct() bei."
+    },
+    "TimingOnlyOnePeriodForDayOfWeek": {
+      "count": 44,
+      "reason": "42 Mutanten an der Bedingung count() > 1 je Wochentag und Zweig unterscheiden sich nur, wenn ein einzelnes Element dieselbe Tageszeit oder Uhrzeit doppelt enthält (etwa montags when MORN, MORN). Solche Elemente erfüllen die Invariante; ein Testfall würde das festschreiben. 2 Mutanten ohne Abfrage des Ressourcentyps sind gleichwertig, weil %resource.dosageInstruction bei MedicationStatement und %resource.dosage bei MedicationRequest und MedicationDispense leer sind."
+    },
+    "TimingOnlyOneTimeOfDay": {
+      "count": 1,
+      "reason": "timeOfDay.exists() im where() ist gleichwertig entbehrlich: Elemente ohne timeOfDay tragen nichts zu timeOfDay.isDistinct() bei."
+    },
+    "TimingOnlyOneType": {
+      "count": 1,
+      "reason": "periodUnit.exists() im fünften Schema ist gleichwertig entbehrlich, weil die folgende Klausel periodUnit d, wk oder mo verlangt."
+    },
+    "TimingOnlyOneWhen": {
+      "count": 1,
+      "reason": "when.exists() im where() ist gleichwertig entbehrlich: Elemente ohne when tragen nichts zu when.isDistinct() bei."
+    },
+    "TimingOnlyWhenOrTimeOfDay": {
+      "count": 2,
+      "reason": "Fehlt eine der beiden Alternativen im where(), gilt der zweite Teil trotzdem: Gibt es nur die jeweils andere Angabe, ist das xor wahr."
+    },
+    "TimingPeriodUnit": {
+      "count": 1,
+      "reason": "dayOfWeek.exists() im ersten Zweig ist gleichwertig entbehrlich: Ohne dayOfWeek erlaubt der zweite Zweig periodUnit wk ebenfalls."
+    },
+    "TimingSingleDosageForTimeOfDay": {
+      "count": 7,
+      "reason": "Die Bedingung vor implies (Zeilen 4 bis 7) entscheidet nichts: Der Folgeteil hängt nicht vom Element ab und ist wahr, wenn kein Element das Schema hat (das where() ist dann leer). Mutanten an der Bedingung sind deshalb gleichwertig."
+    },
+    "TimingSingleDosageForTimeOfDayWarning": {
+      "count": 7,
+      "reason": "Gleicher Ausdruck wie TimingSingleDosageForTimeOfDay, siehe dort."
+    },
+    "TimingSingleDosageForWhen": {
+      "count": 7,
+      "reason": "Die Bedingung vor implies (Zeilen 4 bis 7) entscheidet nichts: Der Folgeteil hängt nicht vom Element ab und ist wahr, wenn kein Element das Schema hat (das where() ist dann leer). Mutanten an der Bedingung sind deshalb gleichwertig."
+    },
+    "TimingSingleDosageForWhenWarning": {
+      "count": 7,
+      "reason": "Gleicher Ausdruck wie TimingSingleDosageForWhen, siehe dort."
+    }
+  }
+}

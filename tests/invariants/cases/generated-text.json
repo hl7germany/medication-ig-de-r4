@@ -832,6 +832,44 @@
             ]
           }
         ]
+      },
+      {
+        "name": "Text mit timing, keine",
+        "dosage": {
+          "text": "Morgens 1 Stück",
+          "timing": {
+            "repeat": {
+              "when": [
+                "MORN"
+              ]
+            }
+          }
+        },
+        "expect": true
+      },
+      {
+        "name": "Text mit Dosis, keine",
+        "dosage": {
+          "text": "1 Stück",
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "nur Hinweis, keine",
+        "dosage": {
+          "patientInstruction": "Mit Wasser einnehmen"
+        },
+        "expect": true
       }
     ]
   },
@@ -1043,6 +1081,76 @@
         "extension": [
           {
             "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-MedicationStatement.renderedDosageInstruction",
+            "valueMarkdown": "Morgens 1 Stück"
+          },
+          {
+            "url": "http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta",
+            "extension": [
+              {
+                "url": "algorithmVersion",
+                "valueString": "x"
+              },
+              {
+                "url": "language",
+                "valueCode": "de-DE"
+              }
+            ]
+          }
+        ],
+        "expect": false
+      }
+    ]
+  },
+  {
+    "invariant": "FreeTextMatchesRenderedText",
+    "context": "Dosage",
+    "resourceTypes": [
+      "MedicationDispense"
+    ],
+    "cases": [
+      {
+        "name": "Freitext, rendered von MedicationRequest",
+        "dosage": {
+          "text": "Morgens 1 Stück"
+        },
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-MedicationRequest.renderedDosageInstruction",
+            "valueMarkdown": "Morgens 1 Stück"
+          },
+          {
+            "url": "http://ig.fhir.de/igs/medication/StructureDefinition/GeneratedDosageInstructionsMeta",
+            "extension": [
+              {
+                "url": "algorithmVersion",
+                "valueString": "x"
+              },
+              {
+                "url": "language",
+                "valueCode": "de-DE"
+              }
+            ]
+          }
+        ],
+        "expect": false
+      }
+    ]
+  },
+  {
+    "invariant": "FreeTextMatchesRenderedText",
+    "context": "Dosage",
+    "resourceTypes": [
+      "MedicationRequest"
+    ],
+    "cases": [
+      {
+        "name": "Freitext, rendered von MedicationDispense",
+        "dosage": {
+          "text": "Morgens 1 Stück"
+        },
+        "extension": [
+          {
+            "url": "http://hl7.org/fhir/5.0/StructureDefinition/extension-MedicationDispense.renderedDosageInstruction",
             "valueMarkdown": "Morgens 1 Stück"
           },
           {

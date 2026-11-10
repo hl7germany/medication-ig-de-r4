@@ -13,7 +13,7 @@ Der Freitext-Fallback gilt, wenn eine strukturierte 1.0.7-Dosierungs-Liste nach 
 
 Die [Textgenerierung](./dosierung-textgenerierung.html) setzt grundsätzlich eine gegen das Profil validierte Ressource voraus. Im Freitext-Fallback wird sie abweichend davon auf eine Quelle angewendet, die das 2.0.0-Profil nicht erfüllt. Diese Ausnahme gilt nur für den Freitext-Fallback der Migration. Der erzeugte Text wird nicht als strukturierte Dosierung verwendet, sondern nur als Freitext übernommen.
 
-Bricht die Textgenerierung ab oder liefert sie keinen Text (zum Beispiel bei `Dosage`-Elementen mit unterschiedlichen Schemata), beschreibt dieser Leitfaden keine Abbildung; wie das System damit umgeht, entscheidet es selbst.
+Bricht die Textgenerierung ab oder liefert sie keinen Text, beschreibt dieser Leitfaden keine Abbildung; wie das System damit umgeht, entscheidet es selbst.
 
 ### Beispieltexte
 

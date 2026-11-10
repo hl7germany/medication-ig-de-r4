@@ -289,6 +289,233 @@
           ]
         },
         "expect": true
+      },
+      {
+        "name": "1 bis 2 x alle 1 bis 2 Tage um 8 Uhr (kein reines Intervall)",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "periodUnit": "d",
+              "frequency": 1,
+              "frequencyMax": 2,
+              "period": 1,
+              "periodMax": 2,
+              "timeOfDay": [
+                "08:00:00"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "1 bis 2 x alle 1 bis 2 Tage morgens (kein reines Intervall)",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "periodUnit": "d",
+              "frequency": 1,
+              "frequencyMax": 2,
+              "period": 1,
+              "periodMax": 2,
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "1 bis 2 x alle 1 bis 2 Tage montags (kein reines Intervall)",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "periodUnit": "d",
+              "frequency": 1,
+              "frequencyMax": 2,
+              "period": 1,
+              "periodMax": 2,
+              "dayOfWeek": [
+                "mon"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "1 bis 1 x alle 1 bis 2 Tage",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "periodUnit": "d",
+              "frequency": 1,
+              "frequencyMax": 1,
+              "period": 1,
+              "periodMax": 2
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "1 bis 2 x alle 1 bis 1 Tage",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "periodUnit": "d",
+              "frequency": 1,
+              "frequencyMax": 2,
+              "period": 1,
+              "periodMax": 1
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "alle 1 bis 2 Tage ohne Frequenz",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "periodUnit": "d",
+              "period": 1,
+              "periodMax": 2
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "1 bis 2 x ohne Periode",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "periodUnit": "d",
+              "frequency": 1,
+              "frequencyMax": 2
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "2 x alle 0,5 Tage",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "periodUnit": "d",
+              "frequency": 2,
+              "period": 0.5
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": false
+      },
+      {
+        "name": "1 bis 2 x alle 0,5 Tage",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "periodUnit": "d",
+              "frequency": 1,
+              "frequencyMax": 2,
+              "period": 0.5
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": false
       }
     ]
   },
@@ -582,6 +809,233 @@
           ]
         },
         "expect": true
+      },
+      {
+        "name": "1 bis 2 x alle 1 bis 2 Tage um 8 Uhr (kein reines Intervall)",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "periodUnit": "d",
+              "frequency": 1,
+              "frequencyMax": 2,
+              "period": 1,
+              "periodMax": 2,
+              "timeOfDay": [
+                "08:00:00"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "1 bis 2 x alle 1 bis 2 Tage morgens (kein reines Intervall)",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "periodUnit": "d",
+              "frequency": 1,
+              "frequencyMax": 2,
+              "period": 1,
+              "periodMax": 2,
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "1 bis 2 x alle 1 bis 2 Tage montags (kein reines Intervall)",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "periodUnit": "d",
+              "frequency": 1,
+              "frequencyMax": 2,
+              "period": 1,
+              "periodMax": 2,
+              "dayOfWeek": [
+                "mon"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "1 bis 1 x alle 1 bis 2 Tage",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "periodUnit": "d",
+              "frequency": 1,
+              "frequencyMax": 1,
+              "period": 1,
+              "periodMax": 2
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "1 bis 2 x alle 1 bis 1 Tage",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "periodUnit": "d",
+              "frequency": 1,
+              "frequencyMax": 2,
+              "period": 1,
+              "periodMax": 1
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "alle 1 bis 2 Tage ohne Frequenz",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "periodUnit": "d",
+              "period": 1,
+              "periodMax": 2
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "1 bis 2 x ohne Periode",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "periodUnit": "d",
+              "frequency": 1,
+              "frequencyMax": 2
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "2 x alle 0,5 Tage",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "periodUnit": "d",
+              "frequency": 2,
+              "period": 0.5
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": false
+      },
+      {
+        "name": "1 bis 2 x alle 0,5 Tage",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "periodUnit": "d",
+              "frequency": 1,
+              "frequencyMax": 2,
+              "period": 0.5
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": false
       }
     ]
   }

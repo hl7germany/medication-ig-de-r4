@@ -4690,6 +4690,34 @@
           ]
         },
         "expect": true
+      },
+      {
+        "name": "boundsRange low fehlt, high 0.5",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "frequency": 1,
+              "period": 1,
+              "periodUnit": "d",
+              "boundsRange": {
+                "high": {
+                  "value": 0.5
+                }
+              }
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
       }
     ]
   },

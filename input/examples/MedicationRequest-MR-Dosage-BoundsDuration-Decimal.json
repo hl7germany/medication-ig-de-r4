@@ -1,6 +1,6 @@
 {
   "resourceType": "MedicationRequest",
-  "id": "MR-Dosage-Boundsduration-Decimal",
+  "id": "MR-Dosage-BoundsDuration-Decimal",
   "meta": {
     "profile": [
       "http://ig.fhir.de/igs/medication/StructureDefinition/MedicationRequestDgMP"

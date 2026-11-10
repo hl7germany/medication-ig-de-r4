@@ -157,10 +157,12 @@ Description: "Example showing interval dosing with monthly period"
 * dosageInstruction.timing.repeat.periodUnit = #mo
 * dosageInstruction.doseAndRate[0].doseQuantity = 1 '1' "Stück"
 
-// 11. Sorting of TimeOfDay
-Instance: Example-MR-Dosage-comb-interval-4-sort-1
-InstanceOf: MedicationRequest
+// 11. Interval combination with unsorted timeOfDay
+Instance: MR-Dosage-comb-interval-4-unsorted
+InstanceOf: MedicationRequestDgMP
 Usage: #example
+Title: "MedicationRequest Dosage Example - Interval Combination with Unsorted TimeOfDay"
+Description: "Example showing an interval combination with several unsorted timeOfDay values per dosage entry"
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -329,9 +331,11 @@ Description: "Example showing interval dosing with monthly period"
 * dosageInstruction.timing.repeat.periodUnit = #mo
 * dosageInstruction.doseAndRate[0].doseQuantity = 1 '1' "Stück"
 
-Instance: Example-MD-Dosage-comb-interval-4-sort-1
-InstanceOf: MedicationDispense
+Instance: MD-Dosage-comb-interval-4-unsorted
+InstanceOf: MedicationDispenseDgMP
 Usage: #example
+Title: "MedicationDispense Dosage Example - Interval Combination with Unsorted TimeOfDay"
+Description: "Example showing an interval combination with several unsorted timeOfDay values per dosage entry"
 * subject.display = "Patient"
 * status = #completed
 * medicationCodeableConcept.text = "Ibuprofen 400mg"
@@ -516,9 +520,11 @@ Description: "Example showing interval dosing with monthly period"
 * dosage.timing.repeat.periodUnit = #mo
 * dosage.doseAndRate[0].doseQuantity = 1 '1' "Stück"
 
-Instance: Example-MS-Dosage-comb-interval-4-sort-1
-InstanceOf: MedicationStatement
+Instance: MS-Dosage-comb-interval-4-unsorted
+InstanceOf: MedicationStatementDgMP
 Usage: #example
+Title: "MedicationStatement Dosage Example - Interval Combination with Unsorted TimeOfDay"
+Description: "Example showing an interval combination with several unsorted timeOfDay values per dosage entry"
 * subject.display = "Patient"
 * status = #active
 * medicationCodeableConcept.text = "Ibuprofen 400mg"

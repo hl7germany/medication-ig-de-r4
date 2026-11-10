@@ -24,13 +24,22 @@ const { ROOT, RESOURCE_TYPES, DOSAGE_PATH, DECIMAL, invariantsIn, loadInvariants
 
 function parseArgs(argv) {
   const opts = { base: null, head: null, random: 3000, seed: 1, examples: [], hapi: false, only: [] };
+  const value = (i, option) => {
+    const v = argv[i];
+    if (v === undefined || v.startsWith('--')) throw new Error(`${option} braucht einen Wert`);
+    return v;
+  };
+  const count = (v, option) => {
+    if (!/^\d+$/.test(v)) throw new Error(`${option} erwartet eine ganze Zahl ab 0, nicht '${v}'`);
+    return Number(v);
+  };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
-    if (a === '--base') opts.base = argv[++i];
-    else if (a === '--head') opts.head = argv[++i];
-    else if (a === '--random') opts.random = Number(argv[++i]);
-    else if (a === '--seed') opts.seed = Number(argv[++i]);
-    else if (a === '--examples') opts.examples.push(argv[++i]);
+    if (a === '--base') opts.base = value(++i, a);
+    else if (a === '--head') opts.head = value(++i, a);
+    else if (a === '--random') opts.random = count(value(++i, a), a);
+    else if (a === '--seed') opts.seed = count(value(++i, a), a);
+    else if (a === '--examples') opts.examples.push(value(++i, a));
     else if (a === '--hapi') opts.hapi = true;
     else if (a.startsWith('--')) throw new Error(`Unbekannte Option ${a}`);
     else opts.only.push(a);

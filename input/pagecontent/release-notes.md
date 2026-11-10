@@ -10,9 +10,12 @@
 
 **Invarianten**
 
-- **`DosageDoseUnitSameCode` (`DosageDgMP`), `DosageDoseUnitSameCodeWarning` (`DosageDE`), `TimingOnlyOneTimeForInterval` und `TimingOnlyWhenOrTimeOfDay` (`TimingDgMP`): Ausdruck umgeformt, ohne fachliche Änderung**
+- **`DosageDoseUnitSameCode` (`DosageDgMP`) und `DosageDoseUnitSameCodeWarning` (`DosageDE`)**
+  - Alle Dosis-Codes der Ressource müssen bzw. sollen gleich sein. Verglichen werden `doseQuantity.code`, `doseRange.low.code` und `doseRange.high.code` aller `Dosage`-Elemente, nicht `system` oder `unit`. Dosierungen ohne Dosis-Code zählen nicht mit. Bisher löste `doseAndRate` ohne jeden Dosis-Code die Regel aus, etwa eine reine `rate`-Angabe oder eine Dosis ohne Code in `DosageDE`.
+  - Die Prüfung über alle `Dosage`-Elemente der Ressource läuft je Auswertung einmal statt einmal je Element. Bisher wuchs die Validierungszeit mit der dritten Potenz der Anzahl der `Dosage`-Elemente. Validatoren auf Basis von HAPI (org.hl7.fhir.core) übersahen mit der bisherigen Fassung einen Teil der gemischten Einheiten (hapifhir/org.hl7.fhir.core#2843).
+  - Die Beschreibungen nennen die verglichenen Felder. Neue Beispiele mit Dosisbereich.
+- **`TimingOnlyOneTimeForInterval` und `TimingOnlyWhenOrTimeOfDay` (`TimingDgMP`): Ausdruck umgeformt, ohne fachliche Änderung**
   - Die Prüfung über alle `Dosage`-Elemente der Ressource läuft je Auswertung einmal statt einmal je Element. Bisher wuchs die Validierungszeit mit der dritten Potenz der Anzahl der `Dosage`-Elemente. Constraint-Keys, Schweregrade und Kontext bleiben unverändert.
-  - `DosageDoseUnitSameCode` und `DosageDoseUnitSameCodeWarning`: Verglichen werden nur die Codes von Quantity und Range-Grenzen. Bei vorhandenem `doseAndRate` ohne Dosis-Code wird die Regel weiterhin ausgelöst. Die Beschreibungen nennen die verglichenen Felder. Neue Beispiele mit Dosisbereich und mit Dosis ohne Code.
 - **`TimingOnlyOneTimeOfDay`, `TimingOnlyOneWhen` und `TimingOnlyOneDayOfWeek` (`TimingDgMP`)**
   - Verglichen werden nur die Elemente, die das jeweilige Schema nutzen (nur `timeOfDay`, nur `when` bzw. nur `dayOfWeek`). Bisher zählten auch Elemente anderer Schemata mit, etwa dieselbe Uhrzeit in einem Element mit `dayOfWeek`. Eine Mischung der Schemata verletzt weiterhin `TimingOnlyOneType`.
   - Bei `TimingOnlyOneTimeOfDay` wächst die Validierungszeit nicht mehr mit der dritten Potenz der Anzahl der `Dosage`-Elemente.

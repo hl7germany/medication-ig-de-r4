@@ -1,0 +1,70 @@
+name: Äquivalenzprüfung der Invarianten
+
+# Eigener Workflow: Eine geänderte PR-Beschreibung (Freigabe) startet nur diese Prüfung neu, nicht den IG-Build.
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, edited]
+
+concurrency:
+  group: aequivalenz-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  equivalence:
+    name: Äquivalenzprüfung (Freigabe in der PR-Beschreibung)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: tests/invariants
+    steps:
+      # Ausgecheckt ist der Merge-Commit des PR; HEAD^1 ist der Stand der Zielbranch.
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: tests/invariants/package-lock.json
+      - run: npm ci
+      - name: FHIR-Paketcache
+        uses: actions/cache@v4
+        with:
+          path: ~/.fhir/packages
+          key: fhir-packages-hapi-invariants-r4-core
+      - name: Aktuelle Version des IG Publishers ermitteln
+        id: publisher
+        working-directory: ${{ github.workspace }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for _ in 1 2 3 4 5; do
+            version=$(gh api repos/HL7/fhir-ig-publisher/releases/latest --jq .tag_name) && break
+            sleep 20
+          done
+          test -n "$version"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+      - name: IG Publisher aus dem Cache
+        id: publisher-cache
+        uses: actions/cache@v4
+        with:
+          path: input-cache/publisher.jar
+          key: ig-publisher-${{ steps.publisher.outputs.version }}
+      - name: IG Publisher laden
+        if: steps.publisher-cache.outputs.cache-hit != 'true'
+        working-directory: ${{ github.workspace }}
+        run: |
+          mkdir -p input-cache
+          curl -fsSL --retry 10 --retry-all-errors --retry-delay 30 -o input-cache/publisher.jar "https://github.com/HL7/fhir-ig-publisher/releases/download/${{ steps.publisher.outputs.version }}/publisher.jar"
+      - name: Invarianten mit der Zielbranch vergleichen
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+          PUBLISHER_VERSION: ${{ steps.publisher.outputs.version }}
+        run: |
+          echo "HAPI-Engine aus IG Publisher $PUBLISHER_VERSION"
+          printf '%s' "$PR_BODY" > "$RUNNER_TEMP/pr-body.md"
+          npm run test:equivalence -- --base HEAD^1 --hapi --approval "$RUNNER_TEMP/pr-body.md" --summary "$GITHUB_STEP_SUMMARY"

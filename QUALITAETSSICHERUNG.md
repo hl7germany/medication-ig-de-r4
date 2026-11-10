@@ -82,6 +82,17 @@ Mit `--hapi` rechnet zusätzlich die Engine des HL7-Validators aus `publisher.ja
 
 Der Bericht nennt je Invariante die Zahl der Abweichungen mit Richtung (etwa `false → true`) und Beispielen. Bei Abweichungen endet der Lauf mit Exit-Code 1. Für eine Umformung ohne fachliche Änderung muss der Bericht in beiden Engines „keine Abweichung“ zeigen; bei einer gewollten Änderung gehören Richtung und Umfang in den Pull Request.
 
+### Freigabe im Pull Request
+
+Der Workflow „Äquivalenzprüfung der Invarianten“ vergleicht in jedem Pull Request die Invarianten mit dem Stand der Zielbranch, mit fhirpath.js und HAPI. Weichen Ergebnisse ab, endet der Bericht mit einem Freigabe-Block, eine Zeile je Invariante und Richtung mit der Anzahl je Engine:
+
+```
+Äquivalenz-Freigabe:
+- TimingOnlyOneDayOfWeek: false → true (fhirpath.js 290, HAPI 290)
+```
+
+Der Job ist grün, wenn die PR-Beschreibung genau diesen Block enthält, und rot, wenn eine Zeile fehlt, eine Anzahl abweicht oder eine Zeile nicht mehr auftritt. Eine gewollte Änderung wird freigegeben, indem man den Block aus der Job-Zusammenfassung in die PR-Beschreibung übernimmt; das Bearbeiten der Beschreibung startet die Prüfung neu. Ändert sich die Invariante danach erneut, passen die Anzahlen nicht mehr und die Freigabe ist zu erneuern. Der Block darf in einem Codeblock stehen. Ohne Abweichung ist kein Block nötig. Lokal liefert `--approval <datei>` dieselbe Prüfung gegen eine Textdatei.
+
 ## Nebeneffekte bei Negativbeispielen
 
 Ein `-C-`-Beispiel soll nur seinen eigenen Constraint verletzen. Löst es weitere aus, kann es eine zu lockere Regel verdecken. Beispiel: Die `dos-1`-Beispiele lagen auf den dgMP-Profilen und lösten immer auch den strengeren dgMP-Fehler aus. Dass `dos-1` selbst zu locker war, fiel nicht auf (HDB-924).

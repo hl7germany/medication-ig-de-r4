@@ -10,9 +10,15 @@
 // Den Kontext jeder Invariante liefern die Testfälle; Invarianten ohne Testfälle werden übersprungen.
 //
 // Aufruf: npm run test:equivalence -- --base <ref> [--head <ref>] [--random <n>] [--seed <n>]
-//         [--examples <dir>] [--hapi] [<Invariante> ...]
+//         [--examples <dir>] [--hapi] [--approval <datei>] [--summary <datei>] [<Invariante> ...]
 // Ohne --head gilt der Stand im Arbeitsverzeichnis. Unterscheiden sich Ergebnisse, endet der Lauf mit
-// Exit-Code 1. Bei einer gewollten fachlichen Änderung ist das erwartet; der Bericht zeigt die Richtung.
+// Exit-Code 1. Bei einer gewollten fachlichen Änderung ist das erwartet; der Bericht zeigt die Richtung
+// und endet mit einem Freigabe-Block (Zeile "Äquivalenz-Freigabe:" und eine Zeile je Abweichungsrichtung).
+//
+// --approval liest einen Text, etwa die PR-Beschreibung, und vergleicht dessen Freigabe-Block mit den
+// Abweichungen dieses Laufs. Exit-Code 0 genau dann, wenn beide übereinstimmen (auch: keine Abweichung
+// und kein Block). --summary hängt den Bericht als Markdown an eine Datei an (CI-Zusammenfassung).
+// Falsche Argumente und Fehler beim Lauf ergeben Exit-Code 2.
 
 const fs = require('fs');
 const os = require('os');
@@ -23,7 +29,7 @@ const r4 = require('fhirpath/fhir-context/r4');
 const { ROOT, RESOURCE_TYPES, DOSAGE_PATH, DECIMAL, invariantsIn, loadInvariants, caseBlocks, buildResource, targetsFor } = require('./run');
 
 function parseArgs(argv) {
-  const opts = { base: null, head: null, random: 3000, seed: 1, examples: [], hapi: false, only: [] };
+  const opts = { base: null, head: null, random: 3000, seed: 1, examples: [], hapi: false, approval: null, summary: null, only: [] };
   const value = (i, option) => {
     const v = argv[i];
     if (v === undefined || v.startsWith('--')) throw new Error(`${option} braucht einen Wert`);
@@ -41,6 +47,8 @@ function parseArgs(argv) {
     else if (a === '--seed') opts.seed = count(value(++i, a), a);
     else if (a === '--examples') opts.examples.push(value(++i, a));
     else if (a === '--hapi') opts.hapi = true;
+    else if (a === '--approval') opts.approval = value(++i, a);
+    else if (a === '--summary') opts.summary = value(++i, a);
     else if (a.startsWith('--')) throw new Error(`Unbekannte Option ${a}`);
     else opts.only.push(a);
   }
@@ -159,16 +167,64 @@ function compare(pair, instances) {
 function report(engine, pairs, results, instances) {
   const changed = new Set(pairs.map(p => p.key.split(' ')[0])).size;
   const lines = [`Äquivalenz (${engine}): ${changed} geänderte ${changed === 1 ? 'Invariante' : 'Invarianten'}, ${instances} Instanzen`];
-  let deviations = 0;
   pairs.forEach((p, i) => {
     const r = results[i];
     const n = Object.values(r.directions).reduce((s, d) => s + d.count, 0);
-    deviations += n;
     lines.push(`${p.key}: ${r.evaluations} Auswertungen, ${n ? n + ' Abweichungen' : 'keine Abweichung'}`);
     for (const [dir, d] of Object.entries(r.directions)) lines.push(`  ${dir}: ${d.count}, z. B. ${d.samples.join('; ')}`);
   });
-  console.log(lines.join('\n'));
-  return deviations;
+  return lines.join('\n');
+}
+
+const APPROVAL_HEADER = 'Äquivalenz-Freigabe:';
+
+// Eine Zeile je Invariante (und Kontext) und Abweichungsrichtung, mit der Anzahl je Engine. Die Anzahl
+// gehört dazu: Ändert sich die Invariante nach der Freigabe erneut, passt der Block nicht mehr.
+function approvalLines(pairs, results, hapiResults) {
+  const lines = [];
+  pairs.forEach((p, i) => {
+    const hapi = hapiResults ? hapiResults[i].directions : null;
+    const directions = new Set([...Object.keys(results[i].directions), ...Object.keys(hapi ?? {})]);
+    for (const dir of [...directions].sort()) {
+      const counts = [`fhirpath.js ${results[i].directions[dir]?.count ?? 0}`];
+      if (hapi) counts.push(`HAPI ${hapi[dir]?.count ?? 0}`);
+      lines.push(`- ${p.key}: ${dir} (${counts.join(', ')})`);
+    }
+  });
+  return lines;
+}
+
+// Der Freigabe-Block in einem Text: die Listenzeilen direkt nach "Äquivalenz-Freigabe:". Leerzeilen vor
+// der ersten Zeile und Code-Zäune werden übersprungen, "->" gilt wie "→".
+function approvedIn(text) {
+  const lines = text.replace(/\r/g, '').split('\n').map(l => l.trim());
+  const start = lines.indexOf(APPROVAL_HEADER);
+  if (start === -1) return [];
+  const approved = [];
+  for (const line of lines.slice(start + 1)) {
+    if (line.startsWith('```')) continue;
+    if (line.startsWith('- ')) approved.push(line.replace(/\s*->\s*/g, ' → ').replace(/\s+/g, ' '));
+    else if (line || approved.length) break;
+  }
+  return approved;
+}
+
+// Wertet beide Fassungen mit HAPI aus (HapiEquivalence.java); Ergebnisse in derselben Form wie compare().
+function runHapi(pairs, instances) {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'aequivalenz-'));
+  try {
+    const file = path.join(dir, 'export.json'), resultFile = path.join(dir, 'result.json');
+    const contextsUsed = [...new Set(pairs.map(p => p.context))];
+    fs.writeFileSync(file, JSON.stringify({
+      pairs,
+      instances: instances.map(({ name, resource, hapiResource }) => ({ name, resource: hapiResource ?? resource, targets: Object.fromEntries(contextsUsed.map(c => [c, targetsFor(c, resource.resourceType, resource)])) }))
+    }).replace(DECIMAL, '$1'));
+    const run = spawnSync('java', ['-cp', publisherJar(), path.join(__dirname, 'HapiEquivalence.java'), file, resultFile], { stdio: 'inherit' });
+    if (run.status !== 0) throw new Error(`HAPI-Lauf fehlgeschlagen (${run.error?.message ?? 'Exit-Code ' + (run.status ?? run.signal)})`);
+    return JSON.parse(fs.readFileSync(resultFile, 'utf8'));
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
 }
 
 function publisherJar() {
@@ -186,31 +242,62 @@ function main() {
   const contexts = {};
   for (const { block } of caseBlocks()) (contexts[block.invariant] ??= new Set()).add(block.context);
   const keys = (opts.only.length ? opts.only : Object.keys(after).filter(k => before[k] && before[k].expression !== after[k].expression)).sort();
-  const pairs = [];
+  const pairs = [], text = [];
   for (const key of keys) {
-    if (!before[key] || !after[key]) { console.log(`${key}: fehlt in ${before[key] ? opts.head ?? 'Arbeitsverzeichnis' : opts.base}, übersprungen`); continue; }
-    if (!contexts[key]) { console.log(`${key}: keine Testfälle, Kontext unbekannt, übersprungen`); continue; }
+    if (!before[key] || !after[key]) { text.push(`${key}: fehlt in ${before[key] ? opts.head ?? 'Arbeitsverzeichnis' : opts.base}, übersprungen`); continue; }
+    if (!contexts[key]) { text.push(`${key}: keine Testfälle, Kontext unbekannt, übersprungen`); continue; }
     for (const context of contexts[key])
       pairs.push({ key: contexts[key].size > 1 ? `${key} (${context})` : key, context, base: before[key].expression, head: after[key].expression });
   }
-  if (!pairs.length) { console.log(`Keine geänderte Invariante gegenüber ${opts.base}.`); return; }
 
-  const instances = [...caseResources(), ...randomResources(opts.random, opts.seed), ...exampleResources(opts.examples)];
-  let deviations = report('fhirpath.js', pairs, pairs.map(p => compare(p, instances)), instances.length);
-
-  if (opts.hapi) {
-    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'aequivalenz-'));
-    const file = path.join(dir, 'export.json');
-    const contextsUsed = [...new Set(pairs.map(p => p.context))];
-    fs.writeFileSync(file, JSON.stringify({
-      pairs,
-      instances: instances.map(({ name, resource, hapiResource }) => ({ name, resource: hapiResource ?? resource, targets: Object.fromEntries(contextsUsed.map(c => [c, targetsFor(c, resource.resourceType, resource)])) }))
-    }).replace(DECIMAL, '$1'));
-    const run = spawnSync('java', ['-cp', publisherJar(), path.join(__dirname, 'HapiEquivalence.java'), file], { stdio: 'inherit' });
-    fs.rmSync(dir, { recursive: true, force: true });
-    if (run.status !== 0) deviations += 1;
+  let lines = [];
+  if (!pairs.length) {
+    text.push(`Keine geänderte Invariante gegenüber ${opts.base}.`);
+  } else {
+    const instances = [...caseResources(), ...randomResources(opts.random, opts.seed), ...exampleResources(opts.examples)];
+    const results = pairs.map(p => compare(p, instances));
+    text.push(report('fhirpath.js', pairs, results, instances.length));
+    const hapiResults = opts.hapi ? runHapi(pairs, instances) : null;
+    if (hapiResults) text.push(report('HAPI', pairs, hapiResults, instances.length));
+    lines = approvalLines(pairs, results, hapiResults);
   }
-  if (deviations) process.exitCode = 1;
+  const block = [APPROVAL_HEADER, ...lines].join('\n');
+  console.log(text.join('\n'));
+  if (lines.length) console.log(`\n${block}`);
+
+  // Ohne --approval zählt jede Abweichung; mit --approval nur eine, die der Block nicht freigibt.
+  let status, missing = lines, stale = [];
+  if (!opts.approval) {
+    status = lines.length ? 'Abweichungen gefunden.' : 'Keine Abweichung.';
+  } else {
+    const approved = approvedIn(fs.readFileSync(opts.approval, 'utf8'));
+    missing = lines.filter(l => !approved.includes(l));
+    stale = approved.filter(l => !lines.includes(l));
+    if (!missing.length && !stale.length) status = lines.length ? 'Alle Abweichungen sind freigegeben.' : 'Keine Abweichung.';
+    else {
+      const parts = [];
+      if (missing.length) parts.push(`Nicht freigegeben:\n${missing.join('\n')}`);
+      if (stale.length) parts.push(`Freigegeben, aber in diesem Lauf nicht aufgetreten:\n${stale.join('\n')}`);
+      status = `Die Freigabe passt nicht zu den Abweichungen.\n${parts.join('\n')}\n` +
+        (lines.length ? `Gewollte Abweichungen mit diesem Block in der PR-Beschreibung freigeben:\n${block}` : 'Den Freigabe-Block aus der PR-Beschreibung entfernen.');
+      console.log(`\n${status}`);
+    }
+  }
+  if (missing.length || stale.length) process.exitCode = 1;
+
+  if (opts.summary) {
+    let md = `## Äquivalenzprüfung der Invarianten\n\n\`\`\`\n${text.join('\n')}\n\`\`\`\n\n`;
+    if (!missing.length && !stale.length) md += `${status}\n`;
+    else {
+      md += `**${opts.approval ? 'Die Freigabe passt nicht zu den Abweichungen.' : status}**\n\n`;
+      if (opts.approval && missing.length) md += `Nicht freigegeben:\n\n${missing.join('\n')}\n\n`;
+      if (stale.length) md += `Freigegeben, aber in diesem Lauf nicht aufgetreten:\n\n${stale.join('\n')}\n\n`;
+      md += lines.length
+        ? `Sind die Abweichungen gewollt, diesen Block in die PR-Beschreibung übernehmen:\n\n\`\`\`\n${block}\n\`\`\`\n`
+        : 'Den Freigabe-Block aus der PR-Beschreibung entfernen.\n';
+    }
+    fs.appendFileSync(opts.summary, md);
+  }
 }
 
 try {

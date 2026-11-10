@@ -1,3 +1,4 @@
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -19,10 +20,12 @@ import java.util.*;
 
 /**
  * Äquivalenzprüfung mit der FHIRPath-Engine des HL7-Validators (org.hl7.fhir.core): wertet alte und
- * neue Fassung jeder Invariante an den Kontext-Elementen aller Instanzen aus und meldet Unterschiede.
- * Die Instanzen und Ausdrücke schreibt equivalence.js (--hapi). Exit-Code 1 bei Unterschieden.
+ * neue Fassung jeder Invariante an den Kontext-Elementen aller Instanzen aus. Die Instanzen und Ausdrücke
+ * schreibt equivalence.js (--hapi); die Ergebnisse gehen je Paar als JSON nach result.json zurück
+ * ({"evaluations": n, "directions": {"false → true": {"count": n, "samples": [...]}}}), Bericht und
+ * Freigabe erstellt equivalence.js. Ein Exit-Code ungleich 0 bedeutet einen Fehler, keine Abweichung.
  *
- * Aufruf: java -cp publisher.jar HapiEquivalence.java export.json
+ * Aufruf: java -cp publisher.jar HapiEquivalence.java export.json result.json
  */
 public class HapiEquivalence {
   static FHIRPathEngine fpe;
@@ -48,10 +51,8 @@ public class HapiEquivalence {
     List<Map<String, List<String>>> directions = new ArrayList<>();
     for (int i = 0; i < pairs.size(); i++) directions.add(new LinkedHashMap<>());
 
-    int instances = 0;
     for (JsonElement e : export.getAsJsonArray("instances")) {
       JsonObject inst = e.getAsJsonObject();
-      instances++;
       String name = inst.get("name").getAsString();
       byte[] bytes = inst.getAsJsonObject("resource").toString().getBytes(StandardCharsets.UTF_8);
       Element res = Manager.parseSingle(ve.getContext(), new ByteArrayInputStream(bytes), FhirFormat.JSON);
@@ -68,17 +69,23 @@ public class HapiEquivalence {
       }
     }
 
-    long changed = pairs.stream().map(p -> p.get("key").getAsString().split(" ")[0]).distinct().count();
-    System.out.println("Äquivalenz (HAPI): " + changed + " geänderte " + (changed == 1 ? "Invariante" : "Invarianten") + ", " + instances + " Instanzen");
-    int deviations = 0;
+    JsonArray results = new JsonArray();
     for (int i = 0; i < pairs.size(); i++) {
-      int n = directions.get(i).values().stream().mapToInt(List::size).sum();
-      deviations += n;
-      System.out.println(pairs.get(i).get("key").getAsString() + ": " + evaluations[i] + " Auswertungen, " + (n > 0 ? n + " Abweichungen" : "keine Abweichung"));
-      for (var d : directions.get(i).entrySet())
-        System.out.println("  " + d.getKey() + ": " + d.getValue().size() + ", z. B. " + String.join("; ", d.getValue().subList(0, Math.min(3, d.getValue().size()))));
+      JsonObject directionsJson = new JsonObject();
+      for (var d : directions.get(i).entrySet()) {
+        JsonObject direction = new JsonObject();
+        direction.addProperty("count", d.getValue().size());
+        JsonArray samples = new JsonArray();
+        d.getValue().stream().limit(3).forEach(samples::add);
+        direction.add("samples", samples);
+        directionsJson.add(d.getKey(), direction);
+      }
+      JsonObject result = new JsonObject();
+      result.addProperty("evaluations", evaluations[i]);
+      result.add("directions", directionsJson);
+      results.add(result);
     }
-    if (deviations > 0) System.exit(1);
+    Files.writeString(Path.of(args[1]), results.toString(), StandardCharsets.UTF_8);
   }
 
   static String result(Element res, Base target, ExpressionNode expression) {

@@ -12,7 +12,7 @@
 ^\s*\d+([.,]\d+)?(\s*/\s*\d+)?(\s*[-–]\s*\d+([.,]\d+)?(\s*/\s*\d+)?){3}(\s*[A-Za-zÄÖÜäöüß().]+)?\s*$
 ```
 
-M04 gilt für bestehende Freitext-Dosierungen ebenso wie für einen Text, der im [Freitext-Fallback](./migration-freitext-fallback.html) entsteht.
+M04 gilt für bestehende Freitext-Dosierungen ebenso wie für einen Text, der im [Freitext-Fallback](./migration-1.0.7-2.0.0.html#freitext-fallback) entsteht.
 
 ### Überführung
 

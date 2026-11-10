@@ -8,7 +8,7 @@ M03 (`DosageDoseValuePositive`) und M11 (`TimingValuesPositive`) beanstanden ein
 
 1. **Text übernehmen:** Den Wert von `renderedDosageInstruction` der Quelle als `Dosage.text` übernehmen. In 1.0.7 ist `renderedDosageInstruction` bei strukturierten Dosierungen Pflicht (`DosageStructuredRequiresGeneratedText`).
 2. **Struktur verwerfen:** Die gesamte Dosierungsliste durch genau ein `Dosage`-Element ersetzen, das nur `text` enthält. `timing`, `doseAndRate` und die übrigen Dosierungsfelder entfallen. Die gesamte Liste wird ersetzt, weil Freitext in 2.0.0 nur in einem einzelnen `Dosage`-Element zulässig ist (`FreeTextSingleDosageOnly`).
-3. **Wie reinen Freitext behandeln:** Weiter mit Schritt 2 des [Ablaufs](./migration-1.0.7-2.0.0.html): Besteht der Text nur aus einem 4-Schema, wird [M04](./migration-m04-viererschema-freitext.html) angewendet; danach werden die Text-Extensions gesetzt.
+3. **Wie reinen Freitext behandeln:** Weiter mit Schritt 2 des [Ablaufs](./migration-1.0.7-2.0.0.html#ablauf): Besteht der Text nur aus einem 4-Schema, wird [M04](./migration-m04-viererschema-freitext.html) angewendet; danach werden die Text-Extensions gesetzt.
 
 Der Text wird nicht neu erzeugt und nicht als strukturierte Dosierung interpretiert. Dosis- und Zeitwerte werden weder angepasst noch umgerechnet.
 

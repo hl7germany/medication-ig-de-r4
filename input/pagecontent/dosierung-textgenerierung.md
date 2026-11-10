@@ -11,6 +11,7 @@ Die Textgenerierung setzt eine **gegen das Profil validierte Ressource** voraus.
 Daraus folgt für alle Systeme:
 
 - Die Profilvalidierung MUSS **vor** der Textgenerierung erfolgen. Eine nicht validierte Ressource kann je nach fehlendem Feld zu einem unvollständigen Text oder zu einem Laufzeitfehler führen.
+- Ausgenommen ist der [Freitext-Fallback](./migration-1.0.7-2.0.0.html#freitext-fallback) der Migration von 1.0.7 auf 2.0.0. Dort wird der Text aus Dosierungen erzeugt, die das Profil 2.0.0 nicht erfüllen, und nur als Freitext übernommen.
 - Ein erfolgreich erzeugter Dosierungstext ist **kein Nachweis** der Profilkonformität. Insbesondere erzeugt der Algorithmus auch für Konstellationen einen Text, die das Profil als Fehler oder Warnung führt (zum Beispiel eine Dosis von `0`).
 
 ### Algorithmusversion

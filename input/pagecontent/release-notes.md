@@ -2,11 +2,11 @@
 
 **Neue Seiten**
 
-- [Migration von Dosierungen 1.0.7 auf 2.0.0](./migration-1.0.7-2.0.0.html) mit Fallseiten: technische Überführung bestehender 1.0.7-Dosierungen einschließlich Freitext-Fallback.
+- [Migration von Dosierungen 1.0.7 auf 2.0.0](./migration-1.0.7-2.0.0.html): technische Überführung bestehender 1.0.7-Dosierungen einschließlich Freitext-Fallback.
 
 **Textgenerierung**
 
-- [Dosis: Textgenerierung](./dosierung-textgenerierung.html) und [Bereitstellung des Dosierungstextes](./dosierung-text-hinzufuegen.html): Vorbedingung der Textgenerierung ist eine gegen das Profil validierte Ressource. Der Algorithmus prüft keine Profilregeln und keine Wertebereiche; er bricht nur ab, wenn der Text nicht bildbar wäre oder eine Angabe unterschlagen beziehungsweise mehrdeutig wiedergeben würde. Ein erzeugter Text belegt keine Profilkonformität.
+- [Dosis: Textgenerierung](./dosierung-textgenerierung.html) und [Bereitstellung des Dosierungstextes](./dosierung-text-hinzufuegen.html): Vorbedingung der Textgenerierung ist eine gegen das Profil validierte Ressource. Der Algorithmus prüft keine Profilregeln und keine Wertebereiche; er bricht nur ab, wenn der Text nicht bildbar wäre oder eine Angabe unterschlagen beziehungsweise mehrdeutig wiedergeben würde. Ein erzeugter Text belegt keine Profilkonformität. Ausgenommen ist der [Freitext-Fallback](./migration-1.0.7-2.0.0.html#freitext-fallback) der Migration von 1.0.7 auf 2.0.0.
 
 **Invarianten**
 

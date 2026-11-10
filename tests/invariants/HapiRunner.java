@@ -59,7 +59,7 @@ public class HapiRunner {
 
     List<String> failures = new ArrayList<>();
     checkCases(export.getAsJsonArray("cases"), expressions, known.getAsJsonArray("deviations"), failures);
-    checkRuntime(export.getAsJsonObject("perf"), invariants, expressions, budgetMs, known.getAsJsonArray("runtime"), failures);
+    checkRuntime(export.getAsJsonArray("perf"), invariants, expressions, budgetMs, known.getAsJsonArray("runtime"), failures);
 
     if (!failures.isEmpty()) {
       System.out.println("\n" + failures.size() + " Fehlschläge:");
@@ -157,30 +157,39 @@ public class HapiRunner {
     return Collections.min(times) / 1e6;
   }
 
-  static void checkRuntime(JsonObject perf, JsonObject invariants, Map<String, ExpressionNode> expressions, double budgetMs, JsonArray slow, List<String> failures) throws Exception {
+  static void checkRuntime(JsonArray perf, JsonObject invariants, Map<String, ExpressionNode> expressions, double budgetMs, JsonArray slow, List<String> failures) throws Exception {
     Map<String, JsonObject> limits = new HashMap<>();
     for (JsonElement e : slow) limits.put(e.getAsJsonObject().get("invariant").getAsString(), e.getAsJsonObject());
     for (String key : limits.keySet())
       if (!invariants.has(key)) failures.add("Laufzeit-Eintrag ohne getestete Invariante in hapi-known-deviations.json: " + key);
-    Element res = parse(perf.getAsJsonObject("resource"));
-    JsonObject paths = perf.getAsJsonObject("targets");
-    int dosages = paths.getAsJsonArray("Dosage").size();
-    List<Map.Entry<String, Double>> times = new ArrayList<>();
-    for (String key : invariants.keySet()) {
-      String context = invariants.getAsJsonObject(key).get("context").getAsString();
-      List<Base> targets = targets(res, paths.getAsJsonArray(context));
-      if (targets.isEmpty()) continue;
-      ExpressionNode n = expressions.get(key);
-      try {
-        times.add(Map.entry(key, fastest(() -> { for (Base t : targets) fpe.evaluate(null, res, res, t, n); })));
-      } catch (Exception ex) {
-        failures.add("Laufzeitprüfung " + key + ": Auswertungsfehler " + ex.getMessage());
+    // Je Invariante der langsamste Wert über die Testressourcen (eine je Schema).
+    Map<String, Double> worst = new HashMap<>();
+    Map<String, String> worstSchema = new HashMap<>();
+    int dosages = 0;
+    for (JsonElement p : perf) {
+      JsonObject entry = p.getAsJsonObject();
+      String schema = entry.get("schema").getAsString();
+      Element res = parse(entry.getAsJsonObject("resource"));
+      JsonObject paths = entry.getAsJsonObject("targets");
+      dosages = paths.getAsJsonArray("Dosage").size();
+      for (String key : invariants.keySet()) {
+        String context = invariants.getAsJsonObject(key).get("context").getAsString();
+        List<Base> targets = targets(res, paths.getAsJsonArray(context));
+        if (targets.isEmpty()) continue;
+        ExpressionNode n = expressions.get(key);
+        try {
+          double ms = fastest(() -> { for (Base t : targets) fpe.evaluate(null, res, res, t, n); });
+          if (ms > worst.getOrDefault(key, -1.0)) { worst.put(key, ms); worstSchema.put(key, schema); }
+        } catch (Exception ex) {
+          failures.add("Laufzeitprüfung " + key + " (" + schema + "): Auswertungsfehler " + ex.getMessage());
+        }
       }
     }
+    List<Map.Entry<String, Double>> times = new ArrayList<>(worst.entrySet());
     times.sort((a, b) -> Double.compare(b.getValue(), a.getValue()));
-    System.out.println(String.format(Locale.ROOT, "Laufzeit bei %d Dosierungen (Summe je Invariante über alle Kontext-Elemente, Budget %.0f ms):", dosages, budgetMs));
+    System.out.println(String.format(Locale.ROOT, "Laufzeit bei %d Dosierungen (Summe je Invariante über alle Kontext-Elemente, langsamstes Schema, Budget %.0f ms):", dosages, budgetMs));
     for (int i = 0; i < Math.min(5, times.size()); i++)
-      System.out.println(String.format(Locale.ROOT, "  %8.2f ms  %s", times.get(i).getValue(), times.get(i).getKey()));
+      System.out.println(String.format(Locale.ROOT, "  %8.2f ms  %s (%s)", times.get(i).getValue(), times.get(i).getKey(), worstSchema.get(times.get(i).getKey())));
     for (var t : times) {
       JsonObject limit = limits.get(t.getKey());
       double allowed = limit != null ? limit.get("limitMs").getAsDouble() : budgetMs;

@@ -267,7 +267,7 @@ Severity: #error
 
 Invariant: TimingPeriodOnlyWholeNumber
 Description: "period and periodMax must be whole numbers; decimal values are not allowed."
-Expression: "(period.exists() implies period mod 1 = 0) and (periodMax.exists() implies periodMax mod 1 = 0)"
+Expression: "(period.exists() implies period.truncate() = period) and (periodMax.exists() implies periodMax.truncate() = periodMax)"
 Severity: #error
 
 Invariant: TimingOnlyOneType
@@ -356,28 +356,14 @@ Expression: "/* DayOfWeek only; legacy frequency and the exact 1 wk pair are opt
 Severity: #error
 
 Invariant: TimingOnlyOneWhen
-Description: "In a schema that uses only when, no part of the day may occur in more than one Dosage element of a resource."
+Description: "In a schema that uses only when, no part of the day may occur in more than one of the Dosage elements that use this schema."
 Expression: "( /* Detect when-based schema */
   %resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)
-).all(
-    timing.repeat.dayOfWeek.empty() and
-    timing.repeat.when.exists() and
-    timing.repeat.timeOfDay.empty()
-  implies
-  (
-    (
-      (%resource.ofType(MedicationRequest).exists() or %resource.ofType(MedicationDispense).exists())
-      implies
-      (%resource.dosageInstruction.timing.repeat.when.distinct().count() = %resource.dosageInstruction.timing.repeat.when.count())
-    )
-    and
-    (
-      %resource.ofType(MedicationStatement).exists()
-      implies
-      (%resource.dosage.timing.repeat.when.distinct().count() = %resource.dosage.timing.repeat.when.count())
-    )
-  )
-)"
+).where(
+  timing.repeat.dayOfWeek.empty() and
+  timing.repeat.when.exists() and
+  timing.repeat.timeOfDay.empty()
+).timing.repeat.when.isDistinct()"
 Severity: #error
 
 Invariant: TimingOnlyWhenOrTimeOfDay
@@ -405,55 +391,25 @@ or
 Severity: #error
 
 Invariant: TimingOnlyOneTimeOfDay
-Description: "In a schema that uses only timeOfDay, no time of day may occur in more than one Dosage element of a resource."
+Description: "In a schema that uses only timeOfDay, no time of day may occur in more than one of the Dosage elements that use this schema."
 Expression: "( /* Detect TimeOfDay */
   %resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)
 ).where(
   timing.repeat.dayOfWeek.empty() and
   timing.repeat.timeOfDay.exists() and
   timing.repeat.when.empty()
-).empty()
-or
-(
-  (
-    (%resource.ofType(MedicationRequest).exists() or %resource.ofType(MedicationDispense).exists())
-    implies
-    (%resource.dosageInstruction.timing.repeat.timeOfDay.distinct().count() = %resource.dosageInstruction.timing.repeat.timeOfDay.count())
-  )
-  and
-  (
-    %resource.ofType(MedicationStatement).exists()
-    implies
-    (%resource.dosage.timing.repeat.timeOfDay.distinct().count() = %resource.dosage.timing.repeat.timeOfDay.count())
-  )
-)"
+).timing.repeat.timeOfDay.isDistinct()"
 Severity: #error
 
 Invariant: TimingOnlyOneDayOfWeek
-Description: "In a schema that uses only dayOfWeek, no weekday may occur in more than one Dosage element of a resource."
+Description: "In a schema that uses only dayOfWeek, no weekday may occur in more than one of the Dosage elements that use this schema."
 Expression: "( /* Detect DayOfWeek */
   %resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage)
-).all(
-  (
-    timing.repeat.dayOfWeek.exists() and
-    timing.repeat.when.empty() and 
-    timing.repeat.timeOfDay.empty()
-  )
-  implies
-  (
-    (
-      (%resource.ofType(MedicationRequest).exists() or %resource.ofType(MedicationDispense).exists())
-      implies
-      (%resource.dosageInstruction.timing.repeat.dayOfWeek.distinct().count() = %resource.dosageInstruction.timing.repeat.dayOfWeek.count())
-    )
-    and
-    (
-      %resource.ofType(MedicationStatement).exists()
-      implies
-      (%resource.dosage.timing.repeat.dayOfWeek.distinct().count() = %resource.dosage.timing.repeat.dayOfWeek.count())
-    )
-  )
-)"
+).where(
+  timing.repeat.dayOfWeek.exists() and
+  timing.repeat.when.empty() and
+  timing.repeat.timeOfDay.empty()
+).timing.repeat.dayOfWeek.isDistinct()"
 Severity: #error
 
 Invariant: TimingOnlyOneBounds
@@ -713,7 +669,7 @@ Severity: #error
 
 Invariant: TimingBoundsDurationOnlyWholeNumber
 Description: "boundsDuration.value must be a whole number; decimal values are not allowed."
-Expression: "bounds.ofType(Duration).value.empty() or bounds.ofType(Duration).value mod 1 = 0"
+Expression: "bounds.ofType(Duration).value.all($this.truncate() = $this)"
 Severity: #error
 
 Invariant: TimingBoundsPeriodMatchesTime

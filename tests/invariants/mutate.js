@@ -15,7 +15,7 @@ const fs = require('fs');
 const path = require('path');
 const fhirpath = require('fhirpath');
 const r4 = require('fhirpath/fhir-context/r4');
-const { RESOURCE_TYPES, DOSAGE_PATH, loadInvariants, caseBlocks, buildResource } = require('./run');
+const { RESOURCE_TYPES, DOSAGE_PATH, loadInvariants, caseBlocks, expectFor, buildResource } = require('./run');
 
 const KNOWN_FILE = 'mutation-known-survivors.json';
 
@@ -163,7 +163,7 @@ function main() {
     for (const type of block.resourceTypes ?? RESOURCE_TYPES)
       for (const tc of block.cases) {
         const resource = buildResource(type, tc);
-        (casesByKey[block.invariant] ??= []).push({ name: `${tc.name} (${type})`, expect: tc.expect, resource, path: contextPath(block.context, type, resource) });
+        (casesByKey[block.invariant] ??= []).push({ name: `${tc.name} (${type})`, expect: expectFor(tc, 'fhirpathjs'), resource, path: contextPath(block.context, type, resource) });
       }
   }
 

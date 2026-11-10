@@ -10,9 +10,12 @@
 
 **Invarianten**
 
-- **`DosageDoseUnitSameCode` (`DosageDgMP`), `DosageDoseUnitSameCodeWarning` (`DosageDE`), `TimingOnlyOneTimeForInterval`, `TimingOnlyOneTimeOfDay` und `TimingOnlyWhenOrTimeOfDay` (`TimingDgMP`): Ausdruck umgeformt, ohne fachliche Änderung**
+- **`DosageDoseUnitSameCode` (`DosageDgMP`), `DosageDoseUnitSameCodeWarning` (`DosageDE`), `TimingOnlyOneTimeForInterval` und `TimingOnlyWhenOrTimeOfDay` (`TimingDgMP`): Ausdruck umgeformt, ohne fachliche Änderung**
   - Die Prüfung über alle `Dosage`-Elemente der Ressource läuft je Auswertung einmal statt einmal je Element. Bisher wuchs die Validierungszeit mit der dritten Potenz der Anzahl der `Dosage`-Elemente. Constraint-Keys, Schweregrade und Kontext bleiben unverändert.
   - `DosageDoseUnitSameCode` und `DosageDoseUnitSameCodeWarning`: Verglichen werden nur die Codes von Quantity und Range-Grenzen. Bei vorhandenem `doseAndRate` ohne Dosis-Code wird die Regel weiterhin ausgelöst. Die Beschreibungen nennen die verglichenen Felder. Neue Beispiele mit Dosisbereich und mit Dosis ohne Code.
+- **`TimingOnlyOneTimeOfDay`, `TimingOnlyOneWhen` und `TimingOnlyOneDayOfWeek` (`TimingDgMP`)**
+  - Verglichen werden nur die Elemente, die das jeweilige Schema nutzen (nur `timeOfDay`, nur `when` bzw. nur `dayOfWeek`). Bisher zählten auch Elemente anderer Schemata mit, etwa dieselbe Uhrzeit in einem Element mit `dayOfWeek`. Eine Mischung der Schemata verletzt weiterhin `TimingOnlyOneType`.
+  - Bei `TimingOnlyOneTimeOfDay` wächst die Validierungszeit nicht mehr mit der dritten Potenz der Anzahl der `Dosage`-Elemente.
 - **`AsNeededForRequiresAsNeededWarning` (`DosageDE`) — neu** (HDB-924)
   - Warnt, wenn ein Anlass (`extension[asNeededFor]`) ohne `asNeededBoolean = true` angegeben ist. `dos-1` lässt einen Anlass ohne `asNeeded` wie in FHIR R5 weiterhin zu; lesende Systeme werten ihn als Bedarfsdosierung. In den dgMP-Profilen bleibt der Fall über `AsNeededForRequiresAsNeeded` ein Fehler.
 - **`DosageDoseQuantityAllowedFractions` (`DosageDgMP`), `TimingPeriodOnlyWholeNumber` und `TimingBoundsDurationOnlyWholeNumber` (`TimingDgMP`): Ganzzahligkeit mit `truncate()` geprüft**

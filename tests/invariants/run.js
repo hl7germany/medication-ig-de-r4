@@ -100,15 +100,22 @@ function evaluate(expression, context, type, res) {
   return { ok: results.every(r => r.length === 1 && r[0] === true), results };
 }
 
-// Realistisch befüllte MedicationDispense mit n Dosierungen für die Laufzeitprüfung.
-function perfResource(n) {
+const WHEN = ['MORN', 'MORN.early', 'MORN.late', 'NOON', 'AFT', 'AFT.early', 'AFT.late', 'EVE', 'EVE.early', 'EVE.late', 'NIGHT', 'PHS', 'HS', 'WAKE', 'C', 'CM', 'CD', 'CV', 'AC', 'ACM', 'ACD', 'ACV', 'PC', 'PCM', 'PCD', 'PCV'];
+const DAYS = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+
+// Realistisch befüllte MedicationDispense mit n Dosierungen im angegebenen Schema für die Laufzeitprüfung.
+// Im Schema when und dayOfWeek wiederholen sich die Werte, sobald n die Zahl der Codes übersteigt.
+function perfResource(n, schema) {
   const dosages = Array.from({ length: n }, (_, i) => {
     const m = 6 * 60 + 15 * i;
     const time = `${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}:00`;
+    const slot = schema === 'when' ? { period: 1, periodUnit: 'd', when: [WHEN[i % WHEN.length]] }
+      : schema === 'dayOfWeek' ? { period: 1, periodUnit: 'wk', dayOfWeek: [DAYS[i % DAYS.length]] }
+      : { period: 1, periodUnit: 'd', timeOfDay: [time] };
     return {
-      text: `${time.slice(0, 5)} Uhr: je 1 Stück`,
+      text: `${schema} ${i + 1}: je 1 Stück`,
       patientInstruction: 'Nicht zerkauen',
-      timing: { repeat: { boundsDuration: { value: 14, unit: 'Tage', system: 'http://unitsofmeasure.org', code: 'd' }, frequency: 1, period: 1, periodUnit: 'd', timeOfDay: [time] } },
+      timing: { repeat: { boundsDuration: { value: 14, unit: 'Tage', system: 'http://unitsofmeasure.org', code: 'd' }, frequency: 1, ...slot } },
       route: { coding: [{ system: 'http://standardterms.edqm.eu', code: '20053000', display: 'Oral use' }] },
       doseAndRate: [{ doseQuantity: { value: 1, unit: 'Stück', system: 'https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT', code: '1' } }]
     };
@@ -132,11 +139,16 @@ function exportCases(outFile) {
       }
     }
   }
-  const perf = perfResource(Number(process.env.PERF_DOSAGES || 40));
+  const n = Number(process.env.PERF_DOSAGES || 40);
+  const contextsList = ['Resource', 'Dosage', 'Timing', 'Timing.repeat'];
+  const perf = ['timeOfDay', 'when', 'dayOfWeek'].map(schema => {
+    const resource = perfResource(n, schema);
+    return { schema, resource, targets: Object.fromEntries(contextsList.map(c => [c, targetsFor(c, 'MedicationDispense', resource)])) };
+  });
   const out = {
     invariants: Object.fromEntries(Object.entries(contexts).map(([k, context]) => [k, { context, expression: invariants[k].expression }])),
     cases,
-    perf: { resource: perf, targets: Object.fromEntries(['Resource', 'Dosage', 'Timing', 'Timing.repeat'].map(c => [c, targetsFor(c, 'MedicationDispense', perf)])) }
+    perf
   };
   fs.writeFileSync(outFile, JSON.stringify(out).replace(DECIMAL, '$1'));
   console.log(`${cases.length} Testfälle zu ${Object.keys(contexts).length} Invarianten exportiert: ${outFile}`);

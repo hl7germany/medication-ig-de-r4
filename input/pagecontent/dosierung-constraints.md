@@ -259,7 +259,7 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 ##### TimingOnlyOneWhen
 
 **Beschreibung:**  
-Es darf nicht derselbe Zeitraum des Tages (`when`) in mehreren Dosierungsinstanzen vorkommen.
+Im Tageszeitenschema (nur `when`) darf dieselbe Tageszeit nicht in mehreren Dosierungsinstanzen dieses Schemas vorkommen. Eine Mischung mit anderen Schemata verletzt `TimingOnlyOneType`.
 
 **Warum?**  
 Dadurch wird verhindert, dass Dosierungen mehrfach für denselben Zeitraum angegeben werden, was zu Überdosierung oder Verwirrung führen könnte.
@@ -283,7 +283,7 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 ##### TimingOnlyOneTimeOfDay
 
 **Beschreibung:**  
-Es darf nicht dieselbe Tageszeit (`timeOfDay`) in mehreren Dosierungsinstanzen vorkommen.
+Im Uhrzeitenschema (nur `timeOfDay`) darf dieselbe Uhrzeit nicht in mehreren Dosierungsinstanzen dieses Schemas vorkommen. Eine Mischung mit anderen Schemata verletzt `TimingOnlyOneType`.
 
 **Warum?**  
 Auch hier wird sichergestellt, dass Dosierungen nicht mehrfach für dieselbe Uhrzeit definiert werden, um Redundanzen und Fehler zu vermeiden.
@@ -295,7 +295,7 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 ##### TimingOnlyOneDayOfWeek
 
 **Beschreibung:**  
-Es darf nicht derselbe Wochentag (`dayOfWeek`) in mehreren Dosierungsinstanzen vorkommen.
+Im Wochentagsschema (nur `dayOfWeek`) darf derselbe Wochentag nicht in mehreren Dosierungsinstanzen dieses Schemas vorkommen. Eine Mischung mit anderen Schemata verletzt `TimingOnlyOneType`.
 
 **Warum?**  
 Dies verhindert doppelte Einträge für denselben Wochentag und stellt eine eindeutige Zuordnung sicher.

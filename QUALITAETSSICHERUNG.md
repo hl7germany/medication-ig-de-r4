@@ -6,7 +6,7 @@ Bis zum Ballot 2.0.0 sind mehrfach fehlerhafte oder fehlende Invarianten erst du
 
 Die GitHub Action [`.github/workflows/ig-build.yml`](.github/workflows/ig-build.yml) läuft bei jedem Pull Request und jedem Push auf `main`:
 
-1. **Invariantentests** (`tests/invariants`, einige Sekunden): Die FHIRPath-Ausdrücke werden aus den FSH-Dateien gelesen und mit fhirpath.js gegen tabellarische Testfälle ausgewertet, jeweils für alle drei Ressourcentypen.
+1. **Invariantentests** (`tests/invariants`, einige Sekunden): Die FHIRPath-Ausdrücke werden aus den FSH-Dateien gelesen und mit fhirpath.js gegen tabellarische Testfälle ausgewertet, jeweils für alle drei Ressourcentypen. Danach läuft die [Mutationsprüfung](#mutationsprüfung) (etwa eine halbe Minute). Ihr Bericht steht in der Zusammenfassung des Jobs, sie schlägt nicht fehl.
 2. **Invariantentests mit HAPI** (`npm run test:hapi`, etwa eine Minute): Dieselben Testfälle werden mit der FHIRPath-Engine des HL7-Validators aus dem aktuellen `publisher.jar` ausgewertet, auf dem Element-Modell wie bei der Validierung. Der Job schlägt fehl bei
    - einer Abweichung vom erwarteten Ergebnis, die nicht in `tests/invariants/hapi-known-deviations.json` steht (dort stehen bekannte Fehler der Engine mit Issue),
    - einem Eintrag dort, der nicht mehr zutrifft, etwa nach einem Fix der Engine,
@@ -52,6 +52,24 @@ Bei neuen oder geänderten Invarianten gehören in die Tests:
 - jede Klausel und jeder Ressourcentyp-Zweig (`%resource.ofType(...)`),
 - mehrere Dosage-Elemente, wenn die Regel über die Ressource hinweg prüft.
 
+## Mutationsprüfung
+
+`npm run test:mutation` (in `tests/invariants`) prüft, ob die Testfälle jede Stelle einer Invariante abdecken. Dazu verändert `mutate.js` den Ausdruck an jeweils genau einer Stelle und wertet alle Testfälle der Invariante gegen diese Variante (Mutant) aus:
+
+- `and` ↔ `or`, `implies` → `and`, `xor` → `or`
+- eine Klausel einer Verknüpfung oder die Bedingung von `implies` entfernen
+- `=` ↔ `!=`, `<` ↔ `<=`, `>` ↔ `>=`
+- `exists()` ↔ `empty()`, `all(…)` → `exists(…)`, `first()` ↔ `last()`, `toInteger()` → `toString()`, `.not()` oder `.distinct()` entfernen
+- `%resource.` vor einem Pfad entfernen
+- Zahlen um eins (bei Dezimalzahlen um eine Stelle) erhöhen und verringern, Texte ersetzen
+
+Ein Mutant ist erkannt, wenn mindestens ein Testfall ein anderes Ergebnis als erwartet liefert. Der Bericht listet je Invariante die überlebenden Mutanten mit Zeile und Ausschnitt. Ein überlebender Mutant bedeutet eines von beiden:
+
+- Der veränderte Teil der Regel ist ungetestet. Dann fehlt ein Testfall, der genau diesen Teil prüft.
+- Der Mutant ist gleichwertig zum Original, etwa wenn eine Bedingung schon durch eine andere Klausel gilt. Dann ist nichts zu tun.
+
+Mit Invarianten als Argument (`npm run test:mutation -- TimingOnlyOneType`) läuft die Prüfung nur für diese. Bei neuen oder geänderten Invarianten gehört der Bericht für die betroffenen Regeln in den Pull Request. Eine Schwelle, ab der die CI fehlschlägt, gibt es noch nicht.
+
 ## Nebeneffekte bei Negativbeispielen
 
 Ein `-C-`-Beispiel soll nur seinen eigenen Constraint verletzen. Löst es weitere aus, kann es eine zu lockere Regel verdecken. Beispiel: Die `dos-1`-Beispiele lagen auf den dgMP-Profilen und lösten immer auch den strengeren dgMP-Fehler aus. Dass `dos-1` selbst zu locker war, fiel nicht auf (HDB-924).
@@ -59,14 +77,6 @@ Ein `-C-`-Beispiel soll nur seinen eigenen Constraint verletzen. Löst es weiter
 Unvermeidbare Nebeneffekte stehen je erwartetem Key in `scripts/expected-additional-constraints.json`, zum Beispiel `DosageStructuredRequiresGeneratedText` bei Beispielen, für die die Textgenerierung keinen Text erzeugt. Kommt ein neuer Nebeneffekt hinzu, schlägt der Build fehl. Ist er gewollt, wird die Datei mit `python3 scripts/ig-expected-error-check.py --write-baseline` nach einem Build neu geschrieben; die Änderung ist im Review zu prüfen.
 
 ## Offene Maßnahmen
-
-### 4. Mutationstests für Invarianten
-
-Die bisherige Abdeckung misst nur, ob ein Constraint irgendwo ausgelöst wird, nicht, ob jede Klausel getestet ist. So waren bei HDB-971 zunächst nur zwei von fünf Feldern durch Beispiele belegt, und die zu lockere `dos-1` blieb unbemerkt.
-
-Ansatz: Der Runner in `tests/invariants` erzeugt je Invariante Varianten des Ausdrucks – Klausel entfernen, `>` ↔ `>=`, `<` ↔ `<=`, `and` ↔ `or`, `%resource.`-Präfix entfernen, Vergleich über `.toString()` statt `.toInteger()` – und lässt die Tests dagegen laufen. Jede Variante, die alle Tests besteht, zeigt einen ungetesteten Teil der Regel. Zunächst als Bericht, später mit Schwelle in der CI.
-
-Aufwand: mittel, baut auf den Invariantentests auf.
 
 ### 5. Differenztest zwischen Textgenerierung und Profil
 

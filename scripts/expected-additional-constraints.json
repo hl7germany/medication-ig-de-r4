@@ -99,7 +99,6 @@
     "TimingOnlyOneType"
   ],
   "TimingValuesPositive": [
-    "DosageRequiresGeneratedText",
     "TimingVarPeriodGtMin"
   ]
 }

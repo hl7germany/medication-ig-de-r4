@@ -10,7 +10,7 @@ Die GitHub Action [`.github/workflows/ig-build.yml`](.github/workflows/ig-build.
 2. **Invariantentests mit HAPI** (`npm run test:hapi`, etwa eine Minute): Dieselben Testfälle werden mit der FHIRPath-Engine des HL7-Validators aus dem aktuellen `publisher.jar` ausgewertet, auf dem Element-Modell wie bei der Validierung. Der Job schlägt fehl bei
    - einer Abweichung vom erwarteten Ergebnis, die nicht in `tests/invariants/hapi-known-deviations.json` steht (dort stehen bekannte Fehler der Engine mit Issue),
    - einem Eintrag dort, der nicht mehr zutrifft, etwa nach einem Fix der Engine,
-   - einer Invariante, die an einer MedicationDispense mit 40 Dosierungen länger als 60 ms braucht (Summe über alle Kontext-Elemente, schnellster von mehreren Läufen). Für bekannte langsame Invarianten steht ein eigenes Limit unter `runtime`.
+   - einer Invariante, die bei 40 Dosierungen länger als 60 ms braucht. Gemessen wird an je einer MedicationDispense im Uhrzeit-, Tageszeiten- und Wochentagsschema, als Summe über alle Kontext-Elemente und als schnellster von mehreren Läufen. Für bekannte langsame Invarianten steht ein eigenes Limit unter `runtime`.
 3. **IG-Build** (`scripts/build-ig.sh`, ca. 5 Minuten): SUSHI, Textgenerierung, IG Publisher, danach `scripts/ig-expected-error-check.py`. Der Build schlägt fehl bei
    - unerwarteten Fehlern in gültigen Beispielen,
    - Negativbeispielen, die ihren Constraint nicht auslösen, oder Negativbeispielen ohne jeden Fehler,
@@ -41,6 +41,7 @@ Testfälle liegen als JSON in `tests/invariants/cases/`. Jede Datei enthält ein
 - `context`: Element, an dem die Invariante hängt: `Dosage`, `Timing.repeat` oder `Resource`.
 - `dosage` oder `dosages`: ein oder mehrere Dosage-Elemente; `extension`: Extensions auf Ressourcenebene. `{{resourceType}}` wird durch den jeweiligen Ressourcentyp ersetzt, etwa für die URL von `renderedDosageInstruction`.
 - `resourceTypes`: optional; ohne Angabe läuft jeder Fall für MedicationRequest, MedicationDispense und MedicationStatement.
+- `{"$decimal": "1.0"}` anstelle einer Zahl: Dezimalzahl, deren Schreibweise zählt. JSON macht aus `1.0` sonst die Zahl `1`. fhirpath.js bekommt die Zahl, der HAPI-Job die Schreibweise. Das braucht es für Fälle, die HAPI je nach Schreibweise anders auswertet, etwa `1.0 mod 1`.
 - `expect`: `true` heißt erfüllt. Bewertet wird wie im HAPI-Validator: Nur das Ergebnis `[true]` erfüllt die Invariante, `[false]` und ein leeres Ergebnis verletzen sie.
 
 Lokal: `cd tests/invariants && npm install && npm test`. Der Runner nennt am Ende alle Invarianten, die noch keine Tests haben. `npm run test:hapi` braucht Java und nimmt `publisher.jar` aus `PUBLISHER_JAR`, `input-cache/` oder `~/.fhir/tools/publisher/`.

@@ -497,7 +497,7 @@
             }
           ]
         },
-        "expect": false
+        "expect": true
       },
       {
         "name": "nur Typ, keine Dosis",
@@ -510,7 +510,7 @@
             }
           ]
         },
-        "expect": false
+        "expect": true
       },
       {
         "name": "Quantity ohne Code, allein",
@@ -524,7 +524,7 @@
             }
           ]
         },
-        "expect": false
+        "expect": true
       },
       {
         "name": "Quantity ohne Code und Quantity mit Code",
@@ -695,7 +695,7 @@
             }
           ]
         },
-        "expect": false
+        "expect": true
       },
       {
         "name": "zwei identische Dosages",
@@ -1135,7 +1135,7 @@
             }
           ]
         },
-        "expect": false
+        "expect": true
       },
       {
         "name": "nur Typ, keine Dosis",
@@ -1148,7 +1148,7 @@
             }
           ]
         },
-        "expect": false
+        "expect": true
       },
       {
         "name": "Quantity ohne Code, allein",
@@ -1162,7 +1162,7 @@
             }
           ]
         },
-        "expect": false
+        "expect": true
       },
       {
         "name": "Quantity ohne Code und Quantity mit Code",
@@ -1333,7 +1333,7 @@
             }
           ]
         },
-        "expect": false
+        "expect": true
       },
       {
         "name": "zwei identische Dosages",
@@ -1753,7 +1753,7 @@
             }
           ]
         },
-        "expect": false
+        "expect": true
       },
       {
         "name": "Root mit gleichem Dosis-Code",
@@ -1805,7 +1805,7 @@
             }
           ]
         },
-        "expect": false
+        "expect": true
       },
       {
         "name": "Root mit gleichem Dosis-Code",
@@ -1838,9 +1838,56 @@
     ]
   },
   {
+    "invariant": "DosageDoseValueDecimalNotation",
+    "context": "Dosage",
+    "cases": [
+      { "name": "Dosis fehlt", "dosage": {}, "expect": true },
+      { "name": "Quantity ohne Wert", "dosage": { "doseAndRate": [{ "doseQuantity": { "unit": "Stück" } }] }, "expect": true },
+      { "name": "Range ohne Werte", "dosage": { "doseAndRate": [{ "doseRange": { "low": { "unit": "Stück" }, "high": { "unit": "Stück" } } }] }, "expect": true },
+      { "name": "Ganzzahl ohne Längenlimit", "dosage": { "doseAndRate": [{ "doseQuantity": { "value": 12345 } }] }, "expect": true },
+      { "name": "Eine Nachkommastelle", "dosage": { "doseAndRate": [{ "doseQuantity": { "value": 0.5 } }] }, "expect": true },
+      { "name": "Zwei Nachkommastellen", "dosage": { "doseAndRate": [{ "doseQuantity": { "value": 0.25 } }] }, "expect": true },
+      { "name": "Quantity drei Nachkommastellen", "dosage": { "doseAndRate": [{ "doseQuantity": { "value": 0.125 } }] }, "expect": true },
+      { "name": "Range low drei Nachkommastellen", "dosage": { "doseAndRate": [{ "doseRange": { "low": { "value": 0.375 }, "high": { "value": 1 } } }] }, "expect": true },
+      { "name": "Range high drei Nachkommastellen", "dosage": { "doseAndRate": [{ "doseRange": { "high": { "value": 0.875 } } }] }, "expect": true },
+      { "name": "Gemischter Bereich drei Nachkommastellen", "dosage": { "doseAndRate": [{ "doseRange": { "low": { "value": 1.125 }, "high": { "value": 2.625 } } }] }, "expect": true },
+      { "name": "Notation erlaubt auch unzulässigen Bruchteil", "dosage": { "doseAndRate": [{ "doseQuantity": { "value": 0.333 } }] }, "expect": true },
+      { "name": "Quantity vier Nachkommastellen", "dosage": { "doseAndRate": [{ "doseQuantity": { "value": 0.0625 } }] }, "expect": false },
+      { "name": "Range low vier Nachkommastellen", "dosage": { "doseAndRate": [{ "doseRange": { "low": { "value": 0.0625 }, "high": { "value": 1 } } }] }, "expect": false },
+      { "name": "Range high vier Nachkommastellen", "dosage": { "doseAndRate": [{ "doseRange": { "high": { "value": 1.0625 } } }] }, "expect": false },
+      { "name": "Quantity knapp über Achtel", "dosage": { "doseAndRate": [{ "doseQuantity": { "value": 0.1251 } }] }, "expect": false },
+      { "name": "Ungültige Notation im zweiten Element", "dosages": [{ "doseAndRate": [{ "doseQuantity": { "value": 0.125 } }] }, { "doseAndRate": [{ "doseQuantity": { "value": 0.0625 } }] }], "expect": false }
+    ]
+  },
+  {
     "invariant": "DosageDoseQuantityAllowedFractions",
     "context": "Dosage",
     "cases": [
+      { "name": "Achtel Quantity 1/8", "dosage": { "doseAndRate": [{ "doseQuantity": { "value": 0.125 } }] }, "expect": true },
+      { "name": "Bisherige Quantity 1/4", "dosage": { "doseAndRate": [{ "doseQuantity": { "value": 0.25 } }] }, "expect": true },
+      { "name": "Achtel Quantity 3/8", "dosage": { "doseAndRate": [{ "doseQuantity": { "value": 0.375 } }] }, "expect": false },
+      { "name": "Bisherige Quantity 1/2", "dosage": { "doseAndRate": [{ "doseQuantity": { "value": 0.5 } }] }, "expect": true },
+      { "name": "Achtel Quantity 5/8", "dosage": { "doseAndRate": [{ "doseQuantity": { "value": 0.625 } }] }, "expect": false },
+      { "name": "Bisherige Quantity 3/4", "dosage": { "doseAndRate": [{ "doseQuantity": { "value": 0.75 } }] }, "expect": true },
+      { "name": "Achtel Quantity 7/8", "dosage": { "doseAndRate": [{ "doseQuantity": { "value": 0.875 } }] }, "expect": false },
+      { "name": "Achtel Range low 1/8", "dosage": { "doseAndRate": [{ "doseRange": { "low": { "value": 0.125 }, "high": { "value": 2 } } }] }, "expect": true },
+      { "name": "Bisherige Range low 1/4", "dosage": { "doseAndRate": [{ "doseRange": { "low": { "value": 0.25 }, "high": { "value": 2 } } }] }, "expect": true },
+      { "name": "Achtel Range low 3/8", "dosage": { "doseAndRate": [{ "doseRange": { "low": { "value": 0.375 }, "high": { "value": 2 } } }] }, "expect": false },
+      { "name": "Bisherige Range low 1/2", "dosage": { "doseAndRate": [{ "doseRange": { "low": { "value": 0.5 }, "high": { "value": 2 } } }] }, "expect": true },
+      { "name": "Achtel Range low 5/8", "dosage": { "doseAndRate": [{ "doseRange": { "low": { "value": 0.625 }, "high": { "value": 2 } } }] }, "expect": false },
+      { "name": "Bisherige Range low 3/4", "dosage": { "doseAndRate": [{ "doseRange": { "low": { "value": 0.75 }, "high": { "value": 2 } } }] }, "expect": true },
+      { "name": "Achtel Range low 7/8", "dosage": { "doseAndRate": [{ "doseRange": { "low": { "value": 0.875 }, "high": { "value": 2 } } }] }, "expect": false },
+      { "name": "Achtel Range high 1/8", "dosage": { "doseAndRate": [{ "doseRange": { "high": { "value": 0.125 } } }] }, "expect": true },
+      { "name": "Bisherige Range high 1/4", "dosage": { "doseAndRate": [{ "doseRange": { "high": { "value": 0.25 } } }] }, "expect": true },
+      { "name": "Achtel Range high 3/8", "dosage": { "doseAndRate": [{ "doseRange": { "high": { "value": 0.375 } } }] }, "expect": false },
+      { "name": "Bisherige Range high 1/2", "dosage": { "doseAndRate": [{ "doseRange": { "high": { "value": 0.5 } } }] }, "expect": true },
+      { "name": "Achtel Range high 5/8", "dosage": { "doseAndRate": [{ "doseRange": { "high": { "value": 0.625 } } }] }, "expect": false },
+      { "name": "Bisherige Range high 3/4", "dosage": { "doseAndRate": [{ "doseRange": { "high": { "value": 0.75 } } }] }, "expect": true },
+      { "name": "Achtel Range high 7/8", "dosage": { "doseAndRate": [{ "doseRange": { "high": { "value": 0.875 } } }] }, "expect": false },
+      { "name": "Gemischte Zahl 1 1/8", "dosage": { "doseAndRate": [{ "doseQuantity": { "value": 1.125 } }] }, "expect": true },
+      { "name": "Gemischte Zahl 2 3/8", "dosage": { "doseAndRate": [{ "doseQuantity": { "value": 2.375 } }] }, "expect": false },
+      { "name": "Gemischter Bereich 1 5/8 bis 2 7/8", "dosage": { "doseAndRate": [{ "doseRange": { "low": { "value": 1.625 }, "high": { "value": 2.875 } } }] }, "expect": false },
+      { "name": "Nicht jedes Tausendstel ist erlaubt", "dosage": { "doseAndRate": [{ "doseQuantity": { "value": 0.124 } }] }, "expect": false },
       {
         "name": "ganze Zahl",
         "dosage": {
@@ -2271,7 +2318,7 @@
             }
           ]
         },
-        "expect": false
+        "expect": true
       },
       {
         "name": "1.3",
@@ -2449,6 +2496,66 @@
           }
         ],
         "expect": false
+      },
+      {
+        "name": "1.0 (Schreibweise mit Nachkommastelle 0)",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": {
+                  "$decimal": "1.0"
+                },
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
+      },
+      {
+        "name": "Bereich 1.0 bis 2.00 (Schreibweise mit Nachkommastellen 0)",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "when": [
+                "MORN"
+              ]
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseRange": {
+                "low": {
+                  "value": {
+                    "$decimal": "1.0"
+                  },
+                  "unit": "Stück",
+                  "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                  "code": "1"
+                },
+                "high": {
+                  "value": {
+                    "$decimal": "2.00"
+                  },
+                  "unit": "Stück",
+                  "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                  "code": "1"
+                }
+              }
+            }
+          ]
+        },
+        "expect": true
       }
     ]
   }

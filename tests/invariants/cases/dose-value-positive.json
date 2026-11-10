@@ -163,6 +163,24 @@
           "text": "x"
         },
         "expect": true
+      },
+      {
+        "name": "Bereich nur high 0.5",
+        "dosage": {
+          "doseAndRate": [
+            {
+              "doseRange": {
+                "high": {
+                  "value": 0.5,
+                  "unit": "Stück",
+                  "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                  "code": "1"
+                }
+              }
+            }
+          ]
+        },
+        "expect": true
       }
     ]
   },
@@ -328,6 +346,24 @@
         "name": "keine Dosis",
         "dosage": {
           "text": "x"
+        },
+        "expect": true
+      },
+      {
+        "name": "Bereich nur high 0.5",
+        "dosage": {
+          "doseAndRate": [
+            {
+              "doseRange": {
+                "high": {
+                  "value": 0.5,
+                  "unit": "Stück",
+                  "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                  "code": "1"
+                }
+              }
+            }
+          ]
         },
         "expect": true
       }

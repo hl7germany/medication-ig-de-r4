@@ -4,16 +4,20 @@
 // genau einer Stelle vom Original unterscheiden, etwa `and` statt `or` oder `<` statt `<=`.
 // Ein Mutant ist erkannt, wenn mindestens ein Testfall ein anderes Ergebnis als erwartet liefert.
 // Ein überlebender Mutant zeigt einen ungetesteten Teil der Regel, oder er ist gleichwertig zum
-// Original und kann ignoriert werden.
+// Original. Gleichwertige Mutanten stehen mit Anzahl und Begründung je Invariante in
+// mutation-known-survivors.json. Die Prüfung schlägt fehl, wenn bei einer Invariante mehr oder
+// weniger Mutanten überleben als dort eingetragen.
 //
 // Aufruf: npm run test:mutation [-- <Invariante> ...] [-- --summary <Datei>]
-// Der Bericht schlägt nicht fehl. --summary schreibt ihn zusätzlich als Markdown (CI-Zusammenfassung).
+// --summary schreibt den Bericht zusätzlich als Markdown (CI-Zusammenfassung).
 
 const fs = require('fs');
 const path = require('path');
 const fhirpath = require('fhirpath');
 const r4 = require('fhirpath/fhir-context/r4');
 const { RESOURCE_TYPES, DOSAGE_PATH, loadInvariants, caseBlocks, buildResource } = require('./run');
+
+const KNOWN_FILE = 'mutation-known-survivors.json';
 
 // Der ANTLR-Parser von fhirpath.js liefert die Zeichenpositionen jedes Teilausdrucks. Das Paket
 // exportiert ihn nicht, deshalb über den Dateipfad (fhirpath ist in package.json fest versioniert).
@@ -178,18 +182,30 @@ function main() {
     rows.push({ key, cases: cases.length, killed, invalid, survivors });
   }
 
+  // Abgleich mit den eingetragenen gleichwertigen Mutanten. Bei einer Auswahl von Invarianten nur diese.
+  const known = JSON.parse(fs.readFileSync(path.join(__dirname, KNOWN_FILE), 'utf8')).survivors;
+  const expected = key => known[key]?.count ?? 0;
   const valid = rows.filter(r => !r.error);
+  const deviations = valid.filter(r => r.survivors.length !== expected(r.key)).map(r => r.survivors.length > expected(r.key)
+    ? `${r.key}: ${r.survivors.length} überleben, eingetragen ${expected(r.key)}. Testfälle ergänzen oder gleichwertige Mutanten mit Begründung eintragen`
+    : `${r.key}: ${r.survivors.length} überleben, eingetragen ${expected(r.key)}. Eintrag auf ${r.survivors.length} senken`);
+  for (const key of Object.keys(known).filter(k => !only.size || only.has(k)))
+    if (!rows.some(r => r.key === key)) deviations.push(`${key}: eingetragen, aber ohne Testfälle oder nicht mehr in den FSH-Dateien. Eintrag entfernen`);
+
   const total = valid.reduce((s, r) => s + r.killed + r.survivors.length, 0);
   const killed = valid.reduce((s, r) => s + r.killed, 0);
   const lines = [`Mutationsprüfung: ${killed}/${total} Mutanten erkannt (${total ? Math.round(100 * killed / total) : 100} %), ${valid.length} Invarianten, ${((Date.now() - started) / 1000).toFixed(0)} s`];
   for (const r of rows.filter(r => r.error)) lines.push('', `${r.key}: ${r.error}`);
+  if (deviations.length) lines.push('', `Abweichungen von ${KNOWN_FILE}:`, ...deviations.map(d => `  - ${d}`));
+  else lines.push(`Überlebende Mutanten wie in ${KNOWN_FILE} eingetragen`);
   for (const r of valid.filter(r => r.survivors.length).sort((a, b) => b.survivors.length - a.survivors.length)) {
-    lines.push('', `${r.key}: ${r.survivors.length} von ${r.killed + r.survivors.length} Mutanten überleben (${r.cases} Testfälle)`);
+    lines.push('', `${r.key}: ${r.survivors.length} von ${r.killed + r.survivors.length} Mutanten überleben (${r.cases} Testfälle, eingetragen ${expected(r.key)})`);
     r.survivors.forEach(s => lines.push(`  - ${s}`));
   }
   const report = lines.join('\n');
   console.log(report);
   if (summaryFile) fs.appendFileSync(summaryFile, `## Mutationsprüfung der Invarianten\n\n\`\`\`\n${report}\n\`\`\`\n`);
+  if (deviations.length || rows.some(r => r.error)) process.exit(1);
 }
 
 main();

@@ -265,6 +265,32 @@
           ]
         },
         "expect": true
+      },
+      {
+        "name": "Startzeit entspricht timeOfDay mit Sekundenbruchteil",
+        "dosage": {
+          "timing": {
+            "repeat": {
+              "timeOfDay": [
+                "08:00:00.5"
+              ],
+              "boundsPeriod": {
+                "start": "2026-06-05T08:00:00+02:00"
+              }
+            }
+          },
+          "doseAndRate": [
+            {
+              "doseQuantity": {
+                "value": 1,
+                "unit": "Stück",
+                "system": "https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT",
+                "code": "1"
+              }
+            }
+          ]
+        },
+        "expect": true
       }
     ]
   },

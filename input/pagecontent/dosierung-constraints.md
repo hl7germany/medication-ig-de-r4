@@ -304,6 +304,18 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-TimingOnlyOneDayOfWeek-examples.md%}
 
+##### TimingNoDuplicateValues
+
+**Beschreibung:**  
+Innerhalb einer Dosierungsinstanz darf `dayOfWeek` keinen Wochentag, `when` keinen Tagesabschnitt und `timeOfDay` keine Uhrzeit mehrfach enthalten. Das gilt in allen Schemata. Wiederholungen über mehrere Dosierungsinstanzen prüfen die Constraints des jeweiligen Schemas.
+
+**Warum?**  
+FHIR wertet mehrere Angaben in `when` als Vereinigung, `MORN`, `MORN` bedeutet also einmal morgens. `TimingFrequencyCount` zählt dagegen jeden Eintrag. Ohne diese Regel wäre zum Beispiel montags `MORN`, `MORN` mit `frequency = 2` gültig, während der Dosierungstext eine Gabe nennt.
+
+Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
+
+{% include dosage-constraint-TimingNoDuplicateValues-examples.md%}
+
 ##### TimingOnlyOneBounds
 
 **Beschreibung:**  

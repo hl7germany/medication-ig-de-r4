@@ -16,7 +16,7 @@ Ressourcenelemente außerhalb der Dosierung und der Text-Extensions bleiben unve
 
 ### Ablauf
 
-Eine Dosierungs-Liste kann mehrere `Dosage`-Elemente enthalten, und jedes Element kann mehrere der unten aufgeführten Fälle aufweisen. Die Fall-IDs (M01–M13) sind nur Kennungen für die Unterschiede zwischen 1.0.7 und 2.0.0; ihre Nummern geben **keine Reihenfolge** vor. Maßgeblich ist der folgende Ablauf, der immer die gesamte Dosierungs-Liste einer Ressource betrachtet.
+Eine Dosierungs-Liste kann mehrere `Dosage`-Elemente enthalten, und jedes Element kann mehrere der unten aufgeführten Fälle aufweisen. Die Fall-IDs (M01–M14) sind nur Kennungen für die Unterschiede zwischen 1.0.7 und 2.0.0; ihre Nummern geben **keine Reihenfolge** vor. Maßgeblich ist der folgende Ablauf, der immer die gesamte Dosierungs-Liste einer Ressource betrachtet.
 
 1. **Keine Dosierung vorhanden:** Es wird keine Dosierung ergänzt. Sind `renderedDosageInstruction` oder `GeneratedDosageInstructionsMeta` ohne Dosierung vorhanden, werden sie entfernt (M12).
 2. **Reiner Freitext:** Mehrere gleiche Freitext-Elemente werden zu einem zusammengefasst (M13). `Dosage.text` wird übernommen; besteht der Text nur aus einem 4-Schema (zum Beispiel `1-0-1-0 Stück`), wird er nach [M04](#m04) behandelt. Auf Ressourcenebene werden `renderedDosageInstruction` mit exakt diesem Text sowie `GeneratedDosageInstructionsMeta` gesetzt (`DosageRequiresGeneratedText`, `FreeTextMatchesRenderedText`, siehe Abschnitt „Text-Extensions“).
@@ -45,6 +45,7 @@ Das Ergebnis ist eine Ressource, die dem 2.0.0-Profil entspricht. Ausgenommen si
 | M11 | `TimingValuesPositive` | Periode null oder Behandlungsdauer null oder negativ (eine negative Periode schließt bereits die R4-Basisregel `tim-5` aus) | Vorhandenen Dosierungstext als Freitext übernehmen | [M03/M11](#m03-m11) |
 | M12 | `ExtRequiresDosage-MR`, `ExtRequiresDosage-MD`, `ExtRequiresDosage-MS` | Text-Extension ohne Dosierung | Extensions entfernen | Schritt 1 des Ablaufs |
 | M13 | `FreeTextSingleDosageOnly` | Mehrere `Dosage`-Elemente mit demselben Freitext | Zu einem Element zusammenfassen | Schritt 2 des Ablaufs |
+| M14 | `TimingNoDuplicateValues` | Wochentage mit Tagesabschnitten oder Uhrzeiten, bei denen ein `Dosage`-Element denselben Wochentag, Tagesabschnitt oder dieselbe Uhrzeit mehrfach enthält (zum Beispiel montags `MORN`, `MORN` mit `frequency = 2`). In den übrigen Schemata schloss das bereits 1.0.7 aus | Freitext-Fallback | [Freitext-Fallback](#freitext-fallback) |
 
 Bei M01 und M05–M07 werden die Werte weder gerundet noch in andere Einheiten umgerechnet noch umgedeutet, auch wenn eine exakte Umrechnung möglich wäre (zum Beispiel eine Periode von `1.5 d` in `36 h`). „2 x alle 3 Tage“ wird also weder zu „alle 1,5 Tage“ noch zu „alle 36 Stunden“. Die Überführung erhält die Angabe der Quelle, wie sie verordnet wurde; deshalb gilt dort der Freitext-Fallback. Bei M10 wird ausschließlich ein bereits vorhandener Wert wiederholt; er wird nicht verändert.
 
@@ -73,6 +74,7 @@ Die Textgenerierung liefert je nach Quellstruktur zum Beispiel:
 - M05, Behandlungsdauer `1.5 d`: `für 1,5 Tage täglich: je 1 Stück`
 - M06, Periode `1.5 d`: `alle 1,5 Tage: je 1 Stück`
 - M07, Frequenz 2 bei Periode `3 d`: `2 x alle 3 Tage: je 1 Stück`
+- M14, montags `MORN`, `MORN` mit `frequency = 2`: `montags 1-0-0-0 Stück`
 
 #### Beispiel
 
@@ -233,7 +235,7 @@ Für 2.0.0 sind `renderedDosageInstruction` und `GeneratedDosageInstructionsMeta
 
 Für die folgenden Bestandsdaten beschreibt dieser Leitfaden keine Abbildung. Wie ein System mit ihnen umgeht, entscheidet es selbst.
 
-- **Dosierungen, die bereits das Profil 1.0.7 verletzen**, zum Beispiel doppelte Tagesabschnitte oder Uhrzeiten, gemischte Tagesabschnitte und Uhrzeiten, fehlendes `timing` oder `doseAndRate`, unterschiedliche Dosis-Codes oder eine Anzeigeeinheit der Behandlungsdauer, die nicht zum UCUM-Code passt. Ihre Ungültigkeit ist keine Folge des Profilwechsels.
+- **Dosierungen, die bereits das Profil 1.0.7 verletzen**, zum Beispiel doppelte Tagesabschnitte oder Uhrzeiten (außer innerhalb eines Elements mit Wochentagen, siehe M14), gemischte Tagesabschnitte und Uhrzeiten, fehlendes `timing` oder `doseAndRate`, unterschiedliche Dosis-Codes oder eine Anzeigeeinheit der Behandlungsdauer, die nicht zum UCUM-Code passt. Ihre Ungültigkeit ist keine Folge des Profilwechsels.
 - **Dosisangaben ohne Zahlenwert:** `doseQuantity.value` ist in 2.0.0 Pflicht, in 1.0.7 war es optional. Ohne Zahlenwert lässt sich weder eine strukturierte Dosierung noch ein Dosierungstext bilden.
 - **Dosierungen, für die die Textgenerierung im Freitext-Fallback keinen Text liefert** (siehe [Freitext-Fallback](#freitext-fallback)).
 

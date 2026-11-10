@@ -79,6 +79,7 @@
 
 - `MR-Dosage-comb-interval-4-unsorted`, `MD-Dosage-comb-interval-4-unsorted`, `MS-Dosage-comb-interval-4-unsorted` — neu: Intervall-Kombination mit unsortierten Uhrzeiten innerhalb der `Dosage`-Elemente.
 - `MR-Dosage-BoundsDuration-Decimal` — neu (JSON): `boundsDuration.value` als ganze Zahl mit Dezimalpunkt (`14.0`).
+- [Beispiele für Dosierungen](./dosierung-beispiele.html): Die Spalte `bounds[x]` der Übersicht zeigt eine Behandlungsdauer als Wert und Einheit, etwa `Duration = 5 Tag(e)`. Bisher stand dort die interne Darstellung des Erzeugungsskripts, etwa `{'system': 'http://unitsofmeasure.org', 'value': 5, 'code': 'd', 'unit': 'Tag(e)'}`.
 
 ### Release: 2.0.0-ballot
 

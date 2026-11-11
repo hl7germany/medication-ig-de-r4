@@ -1,3 +1,19 @@
+### Release: 1.0.8
+
+**What's Changed**
+
+- **Laufzeit der Invarianten über mehrere Dosierungen**
+  - `DosageDoseUnitSameCode` (`DosageDE`) sowie `TimingOnlyOneTimeForInterval`, `TimingOnlyOneTimeOfDay` und `TimingOnlyWhenOrTimeOfDay` (`TimingDgMP`) werten die Liste aller Dosierungen einmal aus statt einmal je Dosierung. Bisher wuchs die Laufzeit mit der dritten Potenz der Anzahl der Dosierungen. Bei einer MedicationDispense mit 40 Dosierungen sinkt sie etwa für `DosageDoseUnitSameCode` von rund 600 ms auf 5 ms (fhirpath.js).
+  - Fachlich ändert sich nichts. Validatoren auf Basis von HAPI (org.hl7.fhir.core, etwa Validator-CLI und IG Publisher) rechneten mit der Fassung aus 1.0.7 bei mehreren Dosierungen teilweise falsch, weil `|` dort unterschiedliche Dosierungen als gleich zusammenfasste ([hapifhir/org.hl7.fhir.core#2843](https://github.com/hapifhir/org.hl7.fhir.core/issues/2843)). Mit 1.0.8 rechnen sie richtig. Dadurch können Fehler erscheinen, die nach der Spezifikation schon immer bestanden, und falsche Fehlermeldungen entfallen.
+- **Keine negativen Werte**
+  - Neue Fehler: `DosageDoseValueNotNegative` (`DosageDgMP`), `doseQuantity.value` darf nicht negativ sein, und `TimingBoundsDurationNotNegative` (`TimingDgMP`), `boundsDuration.value` darf nicht negativ sein. Negative Werte beschreiben keine Anwendung. Eine negative Periode schließt bereits die FHIR-Basisregel `tim-5` aus.
+  - Neue Warnungen: `DosageDoseValueZeroWarning` (`DosageDgMP`) und `TimingValuesZeroWarning` (`TimingDgMP`) bei einer Dosis, Periode oder Dauer von `0`. Ab Version 2.0.0 ist `0` dort nicht mehr zulässig.
+- **Beispiele**
+  - 55 Dosisangaben in Beispielen der dgMP-Profile verwenden Codes aus `KBV_CS_SFHIR_BMP_DOSIEREINHEIT` (`1` Stück, `s` ml) statt UCUM. Die Beispiele zu `DosageDoseUnitSameCode` verwenden für Milligramm den Code `v` statt `mg`, den es in diesem CodeSystem nicht gibt. Die dgMP-Profile binden die Dosis `required` an das KBV-ValueSet.
+- Die Abhängigkeiten bleiben gegenüber 1.0.7 unverändert.
+
+---
+
 ### Release: 1.0.7
 
 **What's Changed**

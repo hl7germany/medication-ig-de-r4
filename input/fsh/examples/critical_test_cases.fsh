@@ -14,12 +14,12 @@ Description: "Example showing interval dosing with when codes instead of timeOfD
 * dosageInstruction[0].timing.repeat.period = 3
 * dosageInstruction[0].timing.repeat.periodUnit = #d
 * dosageInstruction[0].timing.repeat.when = #MORN
-* dosageInstruction[0].doseAndRate[0].doseQuantity = 1 '1' "Stück"
+* dosageInstruction[0].doseAndRate[0].doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 * dosageInstruction[1].timing.repeat.frequency = 1
 * dosageInstruction[1].timing.repeat.period = 3
 * dosageInstruction[1].timing.repeat.periodUnit = #d
 * dosageInstruction[1].timing.repeat.when = #EVE
-* dosageInstruction[1].doseAndRate[0].doseQuantity = 2 '1' "Stück"
+* dosageInstruction[1].doseAndRate[0].doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
 // 2. 4-Schema single time period - night only (0-0-0-1 pattern)
 Instance: MR-Dosage-4schema-night-only
@@ -34,7 +34,7 @@ Description: "Example showing 4-Schema pattern with only night dose (0-0-0-1)"
 * dosageInstruction.timing.repeat.period = 1
 * dosageInstruction.timing.repeat.periodUnit = #d
 * dosageInstruction.timing.repeat.when = #NIGHT
-* dosageInstruction.doseAndRate[0].doseQuantity = 1 '1' "Stück"
+* dosageInstruction.doseAndRate[0].doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 // 3. 4-Schema single time period - evening only (0-0-1-0 pattern)
 Instance: MR-Dosage-4schema-evening-only
@@ -49,7 +49,7 @@ Description: "Example showing 4-Schema pattern with only evening dose (0-0-1-0)"
 * dosageInstruction.timing.repeat.period = 1
 * dosageInstruction.timing.repeat.periodUnit = #d
 * dosageInstruction.timing.repeat.when = #EVE
-* dosageInstruction.doseAndRate[0].doseQuantity = 1 '1' "Stück"
+* dosageInstruction.doseAndRate[0].doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 // 4. 4-Schema single time period - noon only (0-1-0-0 pattern)
 Instance: MR-Dosage-4schema-noon-only
@@ -64,7 +64,7 @@ Description: "Example showing 4-Schema pattern with only noon dose (0-1-0-0)"
 * dosageInstruction.timing.repeat.period = 1
 * dosageInstruction.timing.repeat.periodUnit = #d
 * dosageInstruction.timing.repeat.when = #NOON
-* dosageInstruction.doseAndRate[0].doseQuantity = 1 '1' "Stück"
+* dosageInstruction.doseAndRate[0].doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 // 5. FreeText with German special characters and complex text
 Instance: MR-Dosage-freetext-german-chars
@@ -90,12 +90,12 @@ Description: "Example showing different doses on different days of the week"
 * dosageInstruction[0].timing.repeat.period = 1
 * dosageInstruction[0].timing.repeat.periodUnit = #wk
 * dosageInstruction[0].timing.repeat.dayOfWeek = #mon
-* dosageInstruction[0].doseAndRate[0].doseQuantity = 1 '1' "Stück"
+* dosageInstruction[0].doseAndRate[0].doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 * dosageInstruction[1].timing.repeat.frequency = 1
 * dosageInstruction[1].timing.repeat.period = 1
 * dosageInstruction[1].timing.repeat.periodUnit = #wk
 * dosageInstruction[1].timing.repeat.dayOfWeek = #tue
-* dosageInstruction[1].doseAndRate[0].doseQuantity = 3 '1' "Stück"
+* dosageInstruction[1].doseAndRate[0].doseQuantity = 3 $kbv-dosiereinheit#1 "Stück"
 
 // 7. TimeOfDay with mixed doses at different times
 Instance: MR-Dosage-tod-mixed-doses
@@ -110,12 +110,12 @@ Description: "Example showing different doses at different times of day"
 * dosageInstruction[0].timing.repeat.period = 1
 * dosageInstruction[0].timing.repeat.periodUnit = #d
 * dosageInstruction[0].timing.repeat.timeOfDay = "08:00:00"
-* dosageInstruction[0].doseAndRate[0].doseQuantity = 1 '1' "Stück"
+* dosageInstruction[0].doseAndRate[0].doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 * dosageInstruction[1].timing.repeat.frequency = 1
 * dosageInstruction[1].timing.repeat.period = 1
 * dosageInstruction[1].timing.repeat.periodUnit = #d
 * dosageInstruction[1].timing.repeat.timeOfDay = "18:00:00"
-* dosageInstruction[1].doseAndRate[0].doseQuantity = 3 '1' "Stück"
+* dosageInstruction[1].doseAndRate[0].doseQuantity = 3 $kbv-dosiereinheit#1 "Stück"
 
 // 8. 4-Schema with different units (ml instead of Stück)
 Instance: MR-Dosage-4schema-ml-units
@@ -130,12 +130,12 @@ Description: "Example showing 4-Schema pattern with ml units instead of Stück"
 * dosageInstruction[0].timing.repeat.period = 1
 * dosageInstruction[0].timing.repeat.periodUnit = #d
 * dosageInstruction[0].timing.repeat.when = #MORN
-* dosageInstruction[0].doseAndRate[0].doseQuantity = 2 'mL' "ml"
+* dosageInstruction[0].doseAndRate[0].doseQuantity = 2 $kbv-dosiereinheit#s "ml"
 * dosageInstruction[1].timing.repeat.frequency = 1
 * dosageInstruction[1].timing.repeat.period = 1
 * dosageInstruction[1].timing.repeat.periodUnit = #d
 * dosageInstruction[1].timing.repeat.when = #EVE
-* dosageInstruction[1].doseAndRate[0].doseQuantity = 1 'mL' "ml"
+* dosageInstruction[1].doseAndRate[0].doseQuantity = 1 $kbv-dosiereinheit#s "ml"
 
 // 9. DayOfWeek and Time/4-Schema with single day + timeOfDay
 Instance: MR-Dosage-single-day-time
@@ -151,7 +151,7 @@ Description: "Example showing minimal dayOfWeek + timeOfDay combination"
 * dosageInstruction.timing.repeat.periodUnit = #wk
 * dosageInstruction.timing.repeat.dayOfWeek = #mon
 * dosageInstruction.timing.repeat.timeOfDay = "08:00:00"
-* dosageInstruction.doseAndRate[0].doseQuantity = 1 '1' "Stück"
+* dosageInstruction.doseAndRate[0].doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 Instance: MR-Dosage-multiple-day-time
 InstanceOf: MedicationRequestDgMP
@@ -193,7 +193,7 @@ Description: "Example showing interval dosing with monthly period"
 * dosageInstruction.timing.repeat.frequency = 1
 * dosageInstruction.timing.repeat.period = 2
 * dosageInstruction.timing.repeat.periodUnit = #mo
-* dosageInstruction.doseAndRate[0].doseQuantity = 1 '1' "Stück"
+* dosageInstruction.doseAndRate[0].doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 // --- MedicationDispense equivalents ---
 
@@ -209,12 +209,12 @@ Description: "Example showing interval dosing with when codes instead of timeOfD
 * dosageInstruction[0].timing.repeat.period = 3
 * dosageInstruction[0].timing.repeat.periodUnit = #d
 * dosageInstruction[0].timing.repeat.when = #MORN
-* dosageInstruction[0].doseAndRate[0].doseQuantity = 1 '1' "Stück"
+* dosageInstruction[0].doseAndRate[0].doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 * dosageInstruction[1].timing.repeat.frequency = 1
 * dosageInstruction[1].timing.repeat.period = 3
 * dosageInstruction[1].timing.repeat.periodUnit = #d
 * dosageInstruction[1].timing.repeat.when = #EVE
-* dosageInstruction[1].doseAndRate[0].doseQuantity = 2 '1' "Stück"
+* dosageInstruction[1].doseAndRate[0].doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
 Instance: MD-Dosage-4schema-night-only
 InstanceOf: MedicationDispenseDgMP
@@ -228,7 +228,7 @@ Description: "Example showing 4-Schema pattern with only night dose (0-0-0-1)"
 * dosageInstruction.timing.repeat.period = 1
 * dosageInstruction.timing.repeat.periodUnit = #d
 * dosageInstruction.timing.repeat.when = #NIGHT
-* dosageInstruction.doseAndRate[0].doseQuantity = 1 '1' "Stück"
+* dosageInstruction.doseAndRate[0].doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 Instance: MD-Dosage-4schema-evening-only
 InstanceOf: MedicationDispenseDgMP
@@ -242,7 +242,7 @@ Description: "Example showing 4-Schema pattern with only evening dose (0-0-1-0)"
 * dosageInstruction.timing.repeat.period = 1
 * dosageInstruction.timing.repeat.periodUnit = #d
 * dosageInstruction.timing.repeat.when = #EVE
-* dosageInstruction.doseAndRate[0].doseQuantity = 1 '1' "Stück"
+* dosageInstruction.doseAndRate[0].doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 Instance: MD-Dosage-4schema-noon-only
 InstanceOf: MedicationDispenseDgMP
@@ -256,7 +256,7 @@ Description: "Example showing 4-Schema pattern with only noon dose (0-1-0-0)"
 * dosageInstruction.timing.repeat.period = 1
 * dosageInstruction.timing.repeat.periodUnit = #d
 * dosageInstruction.timing.repeat.when = #NOON
-* dosageInstruction.doseAndRate[0].doseQuantity = 1 '1' "Stück"
+* dosageInstruction.doseAndRate[0].doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 Instance: MD-Dosage-freetext-german-chars
 InstanceOf: MedicationDispenseDgMP
@@ -280,12 +280,12 @@ Description: "Example showing different doses on different days of the week"
 * dosageInstruction[0].timing.repeat.period = 1
 * dosageInstruction[0].timing.repeat.periodUnit = #wk
 * dosageInstruction[0].timing.repeat.dayOfWeek = #mon
-* dosageInstruction[0].doseAndRate[0].doseQuantity = 1 '1' "Stück"
+* dosageInstruction[0].doseAndRate[0].doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 * dosageInstruction[1].timing.repeat.frequency = 1
 * dosageInstruction[1].timing.repeat.period = 1
 * dosageInstruction[1].timing.repeat.periodUnit = #wk
 * dosageInstruction[1].timing.repeat.dayOfWeek = #tue
-* dosageInstruction[1].doseAndRate[0].doseQuantity = 3 '1' "Stück"
+* dosageInstruction[1].doseAndRate[0].doseQuantity = 3 $kbv-dosiereinheit#1 "Stück"
 
 Instance: MD-Dosage-tod-mixed-doses
 InstanceOf: MedicationDispenseDgMP
@@ -299,12 +299,12 @@ Description: "Example showing different doses at different times of day"
 * dosageInstruction[0].timing.repeat.period = 1
 * dosageInstruction[0].timing.repeat.periodUnit = #d
 * dosageInstruction[0].timing.repeat.timeOfDay = "08:00:00"
-* dosageInstruction[0].doseAndRate[0].doseQuantity = 1 '1' "Stück"
+* dosageInstruction[0].doseAndRate[0].doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 * dosageInstruction[1].timing.repeat.frequency = 1
 * dosageInstruction[1].timing.repeat.period = 1
 * dosageInstruction[1].timing.repeat.periodUnit = #d
 * dosageInstruction[1].timing.repeat.timeOfDay = "18:00:00"
-* dosageInstruction[1].doseAndRate[0].doseQuantity = 3 '1' "Stück"
+* dosageInstruction[1].doseAndRate[0].doseQuantity = 3 $kbv-dosiereinheit#1 "Stück"
 
 Instance: MD-Dosage-4schema-ml-units
 InstanceOf: MedicationDispenseDgMP
@@ -318,12 +318,12 @@ Description: "Example showing 4-Schema pattern with ml units instead of Stück"
 * dosageInstruction[0].timing.repeat.period = 1
 * dosageInstruction[0].timing.repeat.periodUnit = #d
 * dosageInstruction[0].timing.repeat.when = #MORN
-* dosageInstruction[0].doseAndRate[0].doseQuantity = 2 'mL' "ml"
+* dosageInstruction[0].doseAndRate[0].doseQuantity = 2 $kbv-dosiereinheit#s "ml"
 * dosageInstruction[1].timing.repeat.frequency = 1
 * dosageInstruction[1].timing.repeat.period = 1
 * dosageInstruction[1].timing.repeat.periodUnit = #d
 * dosageInstruction[1].timing.repeat.when = #EVE
-* dosageInstruction[1].doseAndRate[0].doseQuantity = 1 'mL' "ml"
+* dosageInstruction[1].doseAndRate[0].doseQuantity = 1 $kbv-dosiereinheit#s "ml"
 
 Instance: MD-Dosage-single-day-time
 InstanceOf: MedicationDispenseDgMP
@@ -338,7 +338,7 @@ Description: "Example showing minimal dayOfWeek + timeOfDay combination"
 * dosageInstruction.timing.repeat.periodUnit = #wk
 * dosageInstruction.timing.repeat.dayOfWeek = #mon
 * dosageInstruction.timing.repeat.timeOfDay = "08:00:00"
-* dosageInstruction.doseAndRate[0].doseQuantity = 1 '1' "Stück"
+* dosageInstruction.doseAndRate[0].doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 Instance: MD-Dosage-multiple-day-time
 InstanceOf: MedicationDispenseDgMP
@@ -379,7 +379,7 @@ Description: "Example showing interval dosing with monthly period"
 * dosageInstruction.timing.repeat.frequency = 1
 * dosageInstruction.timing.repeat.period = 2
 * dosageInstruction.timing.repeat.periodUnit = #mo
-* dosageInstruction.doseAndRate[0].doseQuantity = 1 '1' "Stück"
+* dosageInstruction.doseAndRate[0].doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 // --- MedicationStatement equivalents ---
 
@@ -395,12 +395,12 @@ Description: "Example showing interval dosing with when codes instead of timeOfD
 * dosage[0].timing.repeat.period = 3
 * dosage[0].timing.repeat.periodUnit = #d
 * dosage[0].timing.repeat.when = #MORN
-* dosage[0].doseAndRate[0].doseQuantity = 1 '1' "Stück"
+* dosage[0].doseAndRate[0].doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 * dosage[1].timing.repeat.frequency = 1
 * dosage[1].timing.repeat.period = 3
 * dosage[1].timing.repeat.periodUnit = #d
 * dosage[1].timing.repeat.when = #EVE
-* dosage[1].doseAndRate[0].doseQuantity = 2 '1' "Stück"
+* dosage[1].doseAndRate[0].doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
 Instance: MS-Dosage-interval-time-3d
 InstanceOf: MedicationStatementDgMP
@@ -414,12 +414,12 @@ Description: "Example showing interval dosing with timeOfDay values across dosag
 * dosage[0].timing.repeat.period = 3
 * dosage[0].timing.repeat.periodUnit = #d
 * dosage[0].timing.repeat.timeOfDay = "08:00:00"
-* dosage[0].doseAndRate[0].doseQuantity = 1 '1' "Stück"
+* dosage[0].doseAndRate[0].doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 * dosage[1].timing.repeat.frequency = 1
 * dosage[1].timing.repeat.period = 3
 * dosage[1].timing.repeat.periodUnit = #d
 * dosage[1].timing.repeat.timeOfDay = "20:00:00"
-* dosage[1].doseAndRate[0].doseQuantity = 2 '1' "Stück"
+* dosage[1].doseAndRate[0].doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
 Instance: MS-Dosage-4schema-night-only
 InstanceOf: MedicationStatementDgMP
@@ -433,7 +433,7 @@ Description: "Example showing 4-Schema pattern with only night dose (0-0-0-1)"
 * dosage.timing.repeat.period = 1
 * dosage.timing.repeat.periodUnit = #d
 * dosage.timing.repeat.when = #NIGHT
-* dosage.doseAndRate[0].doseQuantity = 1 '1' "Stück"
+* dosage.doseAndRate[0].doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 Instance: MS-Dosage-4schema-evening-only
 InstanceOf: MedicationStatementDgMP
@@ -447,7 +447,7 @@ Description: "Example showing 4-Schema pattern with only evening dose (0-0-1-0)"
 * dosage.timing.repeat.period = 1
 * dosage.timing.repeat.periodUnit = #d
 * dosage.timing.repeat.when = #EVE
-* dosage.doseAndRate[0].doseQuantity = 1 '1' "Stück"
+* dosage.doseAndRate[0].doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 Instance: MS-Dosage-4schema-noon-only
 InstanceOf: MedicationStatementDgMP
@@ -461,7 +461,7 @@ Description: "Example showing 4-Schema pattern with only noon dose (0-1-0-0)"
 * dosage.timing.repeat.period = 1
 * dosage.timing.repeat.periodUnit = #d
 * dosage.timing.repeat.when = #NOON
-* dosage.doseAndRate[0].doseQuantity = 1 '1' "Stück"
+* dosage.doseAndRate[0].doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 Instance: MS-Dosage-freetext-german-chars
 InstanceOf: MedicationStatementDgMP
@@ -485,12 +485,12 @@ Description: "Example showing different doses on different days of the week"
 * dosage[0].timing.repeat.period = 1
 * dosage[0].timing.repeat.periodUnit = #wk
 * dosage[0].timing.repeat.dayOfWeek = #mon
-* dosage[0].doseAndRate[0].doseQuantity = 1 '1' "Stück"
+* dosage[0].doseAndRate[0].doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 * dosage[1].timing.repeat.frequency = 1
 * dosage[1].timing.repeat.period = 1
 * dosage[1].timing.repeat.periodUnit = #wk
 * dosage[1].timing.repeat.dayOfWeek = #tue
-* dosage[1].doseAndRate[0].doseQuantity = 3 '1' "Stück"
+* dosage[1].doseAndRate[0].doseQuantity = 3 $kbv-dosiereinheit#1 "Stück"
 
 Instance: MS-Dosage-tod-mixed-doses
 InstanceOf: MedicationStatementDgMP
@@ -504,12 +504,12 @@ Description: "Example showing different doses at different times of day"
 * dosage[0].timing.repeat.period = 1
 * dosage[0].timing.repeat.periodUnit = #d
 * dosage[0].timing.repeat.timeOfDay = "08:00:00"
-* dosage[0].doseAndRate[0].doseQuantity = 1 '1' "Stück"
+* dosage[0].doseAndRate[0].doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 * dosage[1].timing.repeat.frequency = 1
 * dosage[1].timing.repeat.period = 1
 * dosage[1].timing.repeat.periodUnit = #d
 * dosage[1].timing.repeat.timeOfDay = "18:00:00"
-* dosage[1].doseAndRate[0].doseQuantity = 3 '1' "Stück"
+* dosage[1].doseAndRate[0].doseQuantity = 3 $kbv-dosiereinheit#1 "Stück"
 
 Instance: MS-Dosage-4schema-ml-units
 InstanceOf: MedicationStatementDgMP
@@ -523,12 +523,12 @@ Description: "Example showing 4-Schema pattern with ml units instead of Stück"
 * dosage[0].timing.repeat.period = 1
 * dosage[0].timing.repeat.periodUnit = #d
 * dosage[0].timing.repeat.when = #MORN
-* dosage[0].doseAndRate[0].doseQuantity = 2 'mL' "ml"
+* dosage[0].doseAndRate[0].doseQuantity = 2 $kbv-dosiereinheit#s "ml"
 * dosage[1].timing.repeat.frequency = 1
 * dosage[1].timing.repeat.period = 1
 * dosage[1].timing.repeat.periodUnit = #d
 * dosage[1].timing.repeat.when = #EVE
-* dosage[1].doseAndRate[0].doseQuantity = 1 'mL' "ml"
+* dosage[1].doseAndRate[0].doseQuantity = 1 $kbv-dosiereinheit#s "ml"
 
 Instance: MS-Dosage-single-day-time
 InstanceOf: MedicationStatementDgMP
@@ -543,7 +543,7 @@ Description: "Example showing minimal dayOfWeek + timeOfDay combination"
 * dosage.timing.repeat.periodUnit = #wk
 * dosage.timing.repeat.dayOfWeek = #mon
 * dosage.timing.repeat.timeOfDay = "08:00:00"
-* dosage.doseAndRate[0].doseQuantity = 1 '1' "Stück"
+* dosage.doseAndRate[0].doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 Instance: MS-Dosage-multiple-day-time
 InstanceOf: MedicationStatementDgMP
@@ -584,4 +584,4 @@ Description: "Example showing interval dosing with monthly period"
 * dosage.timing.repeat.frequency = 1
 * dosage.timing.repeat.period = 2
 * dosage.timing.repeat.periodUnit = #mo
-* dosage.doseAndRate[0].doseQuantity = 1 '1' "Stück"
+* dosage.doseAndRate[0].doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"

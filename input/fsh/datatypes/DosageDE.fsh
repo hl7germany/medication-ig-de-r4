@@ -67,14 +67,14 @@ Severity: #error
 
 Invariant: DosageDoseUnitSameCode
 Description: "Die Dosiereinheit muss über alle Dosierungen gleich sein."
-Expression: "(%resource.ofType(MedicationRequest).dosageInstruction | %resource.ofType(MedicationDispense).dosageInstruction | %resource.ofType(MedicationStatement).dosage).all(
-doseAndRate.exists() implies
-  (
-    (%resource.ofType(MedicationRequest).dosageInstruction | %resource.ofType(MedicationDispense).dosageInstruction | %resource.ofType(MedicationStatement).dosage).doseAndRate.dose.ofType(Quantity).code | 
-    (%resource.ofType(MedicationRequest).dosageInstruction | %resource.ofType(MedicationDispense).dosageInstruction | %resource.ofType(MedicationStatement).dosage).doseAndRate.dose.ofType(Range).low.code | 
-    (%resource.ofType(MedicationRequest).dosageInstruction | %resource.ofType(MedicationDispense).dosageInstruction | %resource.ofType(MedicationStatement).dosage).doseAndRate.dose.ofType(Range).high.code
-  ).distinct().count() = 1
-)"
+Expression: "/* Umgeformt in 1.0.8 fuer die Laufzeit, ohne fachliche Aenderung gegenueber 1.0.7 */
+%resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage).where(doseAndRate.exists()).empty()
+or
+(
+  %resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage).doseAndRate.dose.ofType(Quantity).code
+  .combine(%resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage).doseAndRate.dose.ofType(Range).low.code)
+  .combine(%resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage).doseAndRate.dose.ofType(Range).high.code)
+).distinct().count() = 1"
 Severity: #error
 
 Invariant: DosageWarnungViererschemaInText

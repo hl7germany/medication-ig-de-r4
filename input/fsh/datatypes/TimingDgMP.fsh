@@ -19,6 +19,8 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * obeys TimingOnlyOneBounds
   * obeys TimingFrequencyCount
   * obeys TimingPeriodUnit
+  * obeys TimingBoundsDurationNotNegative
+  * obeys TimingValuesZeroWarning
   * bounds[x] MS
   * bounds[x] only Duration
     * ^comment = "Begründung Einschränkung Datentyp: Nur eine Angabe zur Dauer ist in der ersten Ausbaustufe des dgMP vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
@@ -174,61 +176,52 @@ Severity: #error
 
 Invariant: TimingOnlyWhenOrTimeOfDay
 Description: "Dosages Timings must not state a time of day and period of day across multiple dosage instances"
-Expression: "(
-  %resource.ofType(MedicationRequest).dosageInstruction
-  | %resource.ofType(MedicationDispense).dosageInstruction
-  | %resource.ofType(MedicationStatement).dosage
-).all(
-    timing.repeat.frequency.exists() and
-    timing.repeat.period.exists() and
-    timing.repeat.periodUnit.exists() and
-    (timing.repeat.when.exists() or 
-    timing.repeat.timeOfDay.exists())
-  implies
+Expression: "/* Umgeformt in 1.0.8 fuer die Laufzeit, ohne fachliche Aenderung gegenueber 1.0.7 */
+%resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage).where(
+  timing.repeat.frequency.exists() and
+  timing.repeat.period.exists() and
+  timing.repeat.periodUnit.exists() and
+  (timing.repeat.when.exists() or timing.repeat.timeOfDay.exists())
+).empty()
+or
+(
   (
-    (
-      (%resource.ofType(MedicationRequest).exists() or %resource.ofType(MedicationDispense).exists())
-      implies
-      (%resource.dosageInstruction.timing.repeat.when.exists() xor %resource.dosageInstruction.timing.repeat.timeOfDay.exists())
-    )
-    and
-    (
-      %resource.ofType(MedicationStatement).exists()
-      implies
-      (%resource.dosage.timing.repeat.when.exists() xor %resource.dosage.timing.repeat.timeOfDay.exists())
-    )
+    (%resource.ofType(MedicationRequest).exists() or %resource.ofType(MedicationDispense).exists())
+    implies
+    (%resource.dosageInstruction.timing.repeat.when.exists() xor %resource.dosageInstruction.timing.repeat.timeOfDay.exists())
+  )
+  and
+  (
+    %resource.ofType(MedicationStatement).exists()
+    implies
+    (%resource.dosage.timing.repeat.when.exists() xor %resource.dosage.timing.repeat.timeOfDay.exists())
   )
 )"
 Severity: #error
 
 Invariant: TimingOnlyOneTimeOfDay
 Description: "Dosages Timings must not state the same time of day across multiple dosage instances"
-Expression: "( /* Detect TimeOfDay */
-  %resource.ofType(MedicationRequest).dosageInstruction
-  | %resource.ofType(MedicationDispense).dosageInstruction
-  | %resource.ofType(MedicationStatement).dosage
-).all(
+Expression: "/* Detect TimeOfDay. Umgeformt in 1.0.8 fuer die Laufzeit, ohne fachliche Aenderung gegenueber 1.0.7 */
+%resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage).where(
+  timing.repeat.frequency.exists() and
+  timing.repeat.period.exists() and
+  timing.repeat.periodUnit.exists() and
+  timing.repeat.dayOfWeek.empty() and
+  timing.repeat.timeOfDay.exists() and
+  timing.repeat.when.empty()
+).empty()
+or
+(
   (
-    timing.repeat.frequency.exists() and
-    timing.repeat.period.exists() and
-    timing.repeat.periodUnit.exists() and
-    timing.repeat.dayOfWeek.empty() and
-    timing.repeat.timeOfDay.exists() and
-    timing.repeat.when.empty() 
+    (%resource.ofType(MedicationRequest).exists() or %resource.ofType(MedicationDispense).exists())
+    implies
+    (%resource.dosageInstruction.timing.repeat.timeOfDay.distinct().count() = %resource.dosageInstruction.timing.repeat.timeOfDay.count())
   )
-  implies
+  and
   (
-    (
-      (%resource.ofType(MedicationRequest).exists() or %resource.ofType(MedicationDispense).exists())
-      implies
-      (%resource.dosageInstruction.timing.repeat.timeOfDay.distinct().count() = %resource.dosageInstruction.timing.repeat.timeOfDay.count())
-    )
-    and
-    (
-      %resource.ofType(MedicationStatement).exists()
-      implies
-      (%resource.dosage.timing.repeat.timeOfDay.distinct().count() = %resource.dosage.timing.repeat.timeOfDay.count())
-    )
+    %resource.ofType(MedicationStatement).exists()
+    implies
+    (%resource.dosage.timing.repeat.timeOfDay.distinct().count() = %resource.dosage.timing.repeat.timeOfDay.count())
   )
 )"
 Severity: #error
@@ -466,24 +459,19 @@ Severity: #error
 
 Invariant: TimingOnlyOneTimeForInterval
 Description: "Dosage Interval Timings must use the same period and periodUnit across all dosage instances, and each timeOfDay or when value must be unique across dosage instances"
-Expression: "/* Detect Interval and Time/4-Schema */
-(
-  %resource.ofType(MedicationRequest).dosageInstruction
-  | %resource.ofType(MedicationDispense).dosageInstruction
-  | %resource.ofType(MedicationStatement).dosage
-)
-.all(
+Expression: "/* Detect Interval and Time/4-Schema. Umgeformt in 1.0.8 fuer die Laufzeit, ohne fachliche Aenderung gegenueber 1.0.7 */
+%resource.ofType(MedicationRequest).dosageInstruction.combine(%resource.ofType(MedicationDispense).dosageInstruction).combine(%resource.ofType(MedicationStatement).dosage).where(
+  timing.repeat.frequency.exists() and
+  timing.repeat.period.exists() and
+  timing.repeat.periodUnit.exists() and
+  timing.repeat.dayOfWeek.empty() and
   (
-    timing.repeat.frequency.exists() and
-    timing.repeat.period.exists() and
-    timing.repeat.periodUnit.exists() and
-    timing.repeat.dayOfWeek.empty() and
-    (
-      (timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()) or
-      (timing.repeat.when.exists() and timing.repeat.timeOfDay.empty())
-    )
+    (timing.repeat.timeOfDay.exists() and timing.repeat.when.empty()) or
+    (timing.repeat.when.exists() and timing.repeat.timeOfDay.empty())
   )
-  implies
+).empty()
+or
+(
   (
     (
       %resource.ofType(MedicationRequest).exists()
@@ -520,3 +508,13 @@ Expression: "/* Detect Interval and Time/4-Schema */
   )
 )"
 Severity: #error
+
+Invariant: TimingBoundsDurationNotNegative
+Description: "boundsDuration.value must not be negative. A negative period is already excluded by tim-5."
+Severity: #error
+Expression: "bounds.ofType(Duration).value.all($this >= 0)"
+
+Invariant: TimingValuesZeroWarning
+Description: "period and boundsDuration.value should not be 0."
+Severity: #warning
+Expression: "(period.exists() implies period != 0) and bounds.ofType(Duration).value.all($this != 0)"

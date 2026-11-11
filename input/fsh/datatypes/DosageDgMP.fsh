@@ -7,6 +7,8 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
 * obeys DosageStructuredRequiresGeneratedText
 * obeys FreeTextSingleDosageOnly
 * obeys FreeTextMatchesRenderedText
+* obeys DosageDoseValueNotNegative
+* obeys DosageDoseValueZeroWarning
 * timing only TimingDgMP
 * doseAndRate 0..1 // Nur eine Dosierung für eine Medikation erlauben
   * ^comment = "Begründung Einschränkung Kardinalität: Nur eine Dosierung pro Medikation ist in der ersten Ausbaustufe des dgMP vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
@@ -141,3 +143,13 @@ implies
   )
 )"
 Severity: #error
+
+Invariant: DosageDoseValueNotNegative
+Description: "doseQuantity.value must not be negative."
+Severity: #error
+Expression: "doseAndRate.dose.ofType(Quantity).value.all($this >= 0)"
+
+Invariant: DosageDoseValueZeroWarning
+Description: "doseQuantity.value should not be 0."
+Severity: #warning
+Expression: "doseAndRate.dose.ofType(Quantity).value.all($this != 0)"

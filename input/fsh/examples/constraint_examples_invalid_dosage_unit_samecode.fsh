@@ -23,7 +23,7 @@ Description: "CAVE: Validation example - two dosageInstructions use different do
     * period = 1
     * periodUnit = #d
     * when[+] = #EVE
-  * doseAndRate.doseQuantity = 500 $kbv-dosiereinheit#mg "mg"
+  * doseAndRate.doseQuantity = 500 $kbv-dosiereinheit#v "mg"
 
 Instance: INV-C-DosageDoseUnitSameCode-Statement-01-of-01
 InstanceOf: MedicationStatementDgMP
@@ -46,7 +46,7 @@ Description: "CAVE: Validation example - two dosage entries use different dose u
     * period = 1
     * periodUnit = #d
     * when[+] = #EVE
-  * doseAndRate.doseQuantity = 500 $kbv-dosiereinheit#mg "mg"
+  * doseAndRate.doseQuantity = 500 $kbv-dosiereinheit#v "mg"
 
 Instance: INV-C-DosageDoseUnitSameCode-Dispense-01-of-01
 InstanceOf: MedicationDispenseDgMP
@@ -69,4 +69,4 @@ Description: "CAVE: Validation example - two dosageInstruction entries use diffe
     * period = 1
     * periodUnit = #d
     * when[+] = #EVE
-  * doseAndRate.doseQuantity = 500 $kbv-dosiereinheit#mg "mg"
+  * doseAndRate.doseQuantity = 500 $kbv-dosiereinheit#v "mg"

@@ -17,7 +17,7 @@ Description: "Warning example - two dosageInstructions use different dose unit c
 * dosageInstruction[+]
   * timing.repeat
     * when[+] = #EVE
-  * doseAndRate.doseQuantity = 500 $kbv-dosiereinheit#mg "mg"
+  * doseAndRate.doseQuantity = 500 $kbv-dosiereinheit#v "mg"
 
 Instance: W-DosageDoseUnitSameCodeWarning-04-of-06
 InstanceOf: MedicationRequestDE
@@ -86,7 +86,7 @@ Description: "Warning example - two dosageInstruction entries use different dose
 * dosageInstruction[+]
   * timing.repeat
     * when[+] = #EVE
-  * doseAndRate.doseQuantity = 500 $kbv-dosiereinheit#mg "mg"
+  * doseAndRate.doseQuantity = 500 $kbv-dosiereinheit#v "mg"
 
 Instance: W-DosageDoseUnitSameCodeWarning-03-of-06
 InstanceOf: MedicationStatementDE
@@ -103,4 +103,4 @@ Description: "Warning example - two dosage entries use different dose unit codes
 * dosage[+]
   * timing.repeat
     * when[+] = #EVE
-  * doseAndRate.doseQuantity = 500 $kbv-dosiereinheit#mg "mg"
+  * doseAndRate.doseQuantity = 500 $kbv-dosiereinheit#v "mg"

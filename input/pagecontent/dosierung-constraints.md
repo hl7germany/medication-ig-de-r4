@@ -56,6 +56,18 @@ Folgende Beispiele lösen eine Warnung aus:
 
 {% include dosage-constraint-DosageDoseUnitSameCodeWarning-examples.md%}
 
+##### DosageDoseUnitMatchesCodeWarning
+
+**Beschreibung:**  
+Warnung in `DosageDE`, wenn eine Dosis das CodeSystem `KBV_CS_SFHIR_BMP_DOSIEREINHEIT` verwendet und `unit` nicht exakt dem Anzeigetext ihres Codes entspricht oder der Code nicht zu diesem CodeSystem gehört. Geprüft werden `doseQuantity`, `doseRange.low` und `doseRange.high`. Dosen mit anderen Codesystemen, etwa UCUM oder EDQM, prüft die Regel nicht.
+
+**Warum?**  
+Die Anzeigeeinheit und der Code beschreiben dieselbe Einheit; widersprechen sie sich, ist unklar, welche Angabe gilt. In den dgMP-Profilen gilt für denselben Sachverhalt der Fehler [DosageDoseUnitMatchesCode](#dosagedoseunitmatchescode).
+
+Folgende Beispiele lösen eine Warnung aus:
+
+{% include dosage-constraint-DosageDoseUnitMatchesCodeWarning-examples.md%}
+
 ##### DosageDoseValuePositiveWarning
 
 **Beschreibung:**
@@ -567,6 +579,18 @@ Der dgMP setzt auf durchgängig maschinell vergleichbare Dosierungen; das kompak
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-DosageDoseUnitSameCode-examples.md%}
+
+##### DosageDoseUnitMatchesCode
+
+**Beschreibung:**  
+In `doseQuantity`, `doseRange.low` und `doseRange.high` muss `unit` exakt dem Anzeigetext des Codes aus `KBV_CS_SFHIR_BMP_DOSIEREINHEIT` entsprechen, etwa `Stück` bei Code `1` oder `ml` bei Code `s`, mit derselben Groß- und Kleinschreibung und ohne zusätzliche Leerzeichen. Ein Code außerhalb dieses CodeSystems verletzt die Regel ebenfalls. Die Maximalmenge ist über [MaxDoseSameUnitAsDose](#maxdosesameunitasdose) erfasst.
+
+**Warum?**  
+Die Textgenerierung übernimmt `unit` wörtlich in den Dosierungstext, die Reichweitenberechnung verwendet den Code. Ohne diesen Constraint könnte eine Ressource `code = '1'` (Stück) mit `unit = 'ml'` führen: Der Text spräche von Millilitern, gerechnet würde mit Stück. Da der Medication IG DE nicht vom KBV-Paket abhängt, prüft ein Validator die Bindung an das ValueSet nur, wenn er das KBV-Paket zusätzlich geladen hat; die Regel prüft den Code auch ohne dieses Paket.
+
+Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
+
+{% include dosage-constraint-DosageDoseUnitMatchesCode-examples.md%}
 
 ##### DosageDoseQuantityAllowedFractions
 

@@ -1,6 +1,6 @@
 Diese Seite beschreibt, wie Dosierungen aus dem dgMP-Profilstand 1.0.7 technisch in den Profilstand 2.0.0 überführt werden. Beschrieben wird ausschließlich die Abbildung der FHIR-Strukturen. Wie ein System die Migration organisiert, ob und wie es Quelldaten aufbewahrt, protokolliert oder mit nicht überführbaren Daten umgeht, liegt beim jeweiligen System und ist nicht Gegenstand dieses Leitfadens.
 
-**Grundsatz:** Die Überführung erhält die Aussage der Quelldosierung. Zahlenwerte werden nicht gerundet und nicht in andere Einheiten umgerechnet. Neue Angaben werden nur in zwei Fällen ergänzt: Ein vorhandenes `boundsDuration` wird in die übrigen `Dosage`-Elemente kopiert ([M10](#m10)), und einem reinen 4-Schema im Freitext wird `täglich: ` vorangestellt ([M04](#m04)). Doppelte Werte innerhalb eines `Dosage`-Elements werden zusammengeführt und `frequency` wird an die verbleibenden Werte angepasst ([M14](#m14)). Bei M03 und M11 wird der vorhandene Dosierungstext der Quelle als Freitext übernommen ([M03/M11](#m03-m11)). Für andere nicht überführbare strukturierte Dosierungen gilt der [Freitext-Fallback](#freitext-fallback).
+**Grundsatz:** Die Überführung erhält die Aussage der Quelldosierung. Zahlenwerte werden nicht gerundet und nicht in andere Einheiten umgerechnet. Neue Angaben werden nur in zwei Fällen ergänzt: Ein vorhandenes `boundsDuration` wird in die übrigen `Dosage`-Elemente kopiert ([M10](#m10)), und einem reinen 4-Schema im Freitext wird `täglich: ` vorangestellt ([M04](#m04)). Doppelte Werte innerhalb eines `Dosage`-Elements werden zusammengeführt und `frequency` wird an die verbleibenden Werte angepasst ([M14](#m14)). Die Anzeigeeinheit einer Dosis wird auf den Anzeigetext ihres Codes gesetzt ([M15](#m15)). Bei M03 und M11 wird der vorhandene Dosierungstext der Quelle als Freitext übernommen ([M03/M11](#m03-m11)). Für andere nicht überführbare strukturierte Dosierungen gilt der [Freitext-Fallback](#freitext-fallback).
 
 ### Geltungsbereich
 
@@ -16,11 +16,11 @@ Ressourcenelemente außerhalb der Dosierung und der Text-Extensions bleiben unve
 
 ### Ablauf
 
-Eine Dosierungs-Liste kann mehrere `Dosage`-Elemente enthalten, und jedes Element kann mehrere der unten aufgeführten Fälle aufweisen. Die Fall-IDs (M01–M14) sind nur Kennungen für die Unterschiede zwischen 1.0.7 und 2.0.0; ihre Nummern geben **keine Reihenfolge** vor. Maßgeblich ist der folgende Ablauf, der immer die gesamte Dosierungs-Liste einer Ressource betrachtet.
+Eine Dosierungs-Liste kann mehrere `Dosage`-Elemente enthalten, und jedes Element kann mehrere der unten aufgeführten Fälle aufweisen. Die Fall-IDs (M01–M15) sind nur Kennungen für die Unterschiede zwischen 1.0.7 und 2.0.0; ihre Nummern geben **keine Reihenfolge** vor. Maßgeblich ist der folgende Ablauf, der immer die gesamte Dosierungs-Liste einer Ressource betrachtet.
 
 1. **Keine Dosierung vorhanden:** Es wird keine Dosierung ergänzt. Sind `renderedDosageInstruction` oder `GeneratedDosageInstructionsMeta` ohne Dosierung vorhanden, werden sie entfernt (M12).
 2. **Reiner Freitext:** Mehrere gleiche Freitext-Elemente werden zu einem zusammengefasst (M13). `Dosage.text` wird übernommen; besteht der Text nur aus einem 4-Schema (zum Beispiel `1-0-1-0 Stück`), wird er nach [M04](#m04) behandelt. Auf Ressourcenebene werden `renderedDosageInstruction` mit exakt diesem Text sowie `GeneratedDosageInstructionsMeta` gesetzt (`DosageRequiresGeneratedText`, `FreeTextMatchesRenderedText`, siehe Abschnitt „Text-Extensions“).
-3. **Strukturierte Dosierung normalisieren:** In jedem `Dosage`-Element wird die Exponentialschreibweise nach [M02](#m02) normalisiert, und doppelte Werte werden nach [M14](#m14) zusammengeführt. Weitere Änderungen an den Werten finden nicht statt.
+3. **Strukturierte Dosierung normalisieren:** In jedem `Dosage`-Element wird die Exponentialschreibweise nach [M02](#m02) normalisiert, doppelte Werte werden nach [M14](#m14) zusammengeführt, und die Anzeigeeinheit der Dosis wird nach [M15](#m15) gesetzt. Weitere Änderungen an den Werten finden nicht statt.
 4. **M10 behandeln:** Enthält nur ein Teil der Elemente ein `boundsDuration`, wird es nach [M10](#m10) in die übrigen Elemente kopiert.
 5. **M03/M11 behandeln:** Verletzt mindestens ein Element der normalisierten Liste M03 oder M11, wird die gesamte Liste nach [M03/M11](#m03-m11) durch ein Freitext-Element mit dem vorhandenen Dosierungstext ersetzt und wie in Schritt 2 weiterbehandelt.
 6. **Gesamte Liste prüfen:** Erfüllt die verbleibende strukturierte Dosierungs-Liste die Regeln des 2.0.0-Profils (abgesehen von den Text-Extensions, die erst in diesem Schritt gesetzt werden), bleibt sie strukturiert. Der Dosierungstext wird nach der [Textgenerierung](./dosierung-textgenerierung.html) neu erzeugt; `renderedDosageInstruction` und `GeneratedDosageInstructionsMeta` werden durch die neu erzeugten Werte ersetzt.
@@ -46,16 +46,17 @@ Das Ergebnis ist eine Ressource, die dem 2.0.0-Profil entspricht. Ausgenommen si
 | M12 | `ExtRequiresDosage-MR`, `ExtRequiresDosage-MD`, `ExtRequiresDosage-MS` | Text-Extension ohne Dosierung | Extensions entfernen | Schritt 1 des Ablaufs |
 | M13 | `FreeTextSingleDosageOnly` | Mehrere `Dosage`-Elemente mit demselben Freitext | Zu einem Element zusammenfassen | Schritt 2 des Ablaufs |
 | M14 | `TimingNoDuplicateValues` | Wochentage mit Tagesabschnitten oder Uhrzeiten, bei denen ein `Dosage`-Element denselben Wochentag, Tagesabschnitt oder dieselbe Uhrzeit mehrfach enthält (zum Beispiel montags `MORN`, `MORN` mit `frequency = 2`). In den übrigen Schemata schloss das bereits 1.0.7 aus | Doppelte Werte zusammenführen, `frequency` anpassen | [M14](#m14) |
+| M15 | `DosageDoseUnitMatchesCode` | Anzeigeeinheit der Dosis weicht vom Anzeigetext ihres Codes aus `KBV_CS_SFHIR_BMP_DOSIEREINHEIT` ab (zum Beispiel `code = 1` mit `unit = Tabletten`) | `unit` auf den Anzeigetext des Codes setzen | [M15](#m15) |
 
 Bei M01 und M05–M07 werden die Werte weder gerundet noch in andere Einheiten umgerechnet noch umgedeutet, auch wenn eine exakte Umrechnung möglich wäre (zum Beispiel eine Periode von `1.5 d` in `36 h`). „2 x alle 3 Tage“ wird also weder zu „alle 1,5 Tage“ noch zu „alle 36 Stunden“. Die Überführung erhält die Angabe der Quelle, wie sie verordnet wurde; deshalb gilt dort der Freitext-Fallback. Bei M10 wird ausschließlich ein bereits vorhandener Wert wiederholt; er wird nicht verändert.
 
 ### Freitext-Fallback
 
-Der Freitext-Fallback gilt, wenn eine strukturierte 1.0.7-Dosierungs-Liste nach den Schritten M02, M14 und M10 weiterhin mindestens eine Invariante des 2.0.0-Profils verletzt. M03 und M11 werden stattdessen nach dem eigenen Ablauf [M03/M11](#m03-m11) behandelt. Die übrigen Fälle und ihre Invarianten stehen in der Fallübersicht. Die Dosierung wird dann als reine Freitext-Dosierung abgebildet. Zahlen, Einheiten und Zeitangaben werden dabei weder korrigiert noch umgerechnet; der Freitext gibt die Quelldosierung so wieder, wie sie strukturiert angegeben war.
+Der Freitext-Fallback gilt, wenn eine strukturierte 1.0.7-Dosierungs-Liste nach den Schritten M02, M14, M15 und M10 weiterhin mindestens eine Invariante des 2.0.0-Profils verletzt. M03 und M11 werden stattdessen nach dem eigenen Ablauf [M03/M11](#m03-m11) behandelt. Die übrigen Fälle und ihre Invarianten stehen in der Fallübersicht. Die Dosierung wird dann als reine Freitext-Dosierung abgebildet. Zahlen, Einheiten und Zeitangaben werden dabei weder korrigiert noch umgerechnet; der Freitext gibt die Quelldosierung so wieder, wie sie strukturiert angegeben war.
 
 #### Abbildung
 
-1. **Text erzeugen:** Der Text wird immer mit der [Textgenerierung](./dosierung-textgenerierung.html) aus **allen** `Dosage`-Elementen der Quelle im Zustand nach den Schritten [M02](#m02), [M14](#m14) und [M10](#m10) erzeugt, mit der tatsächlich verwendeten Algorithmusversion (in dieser Beschreibung `2.0.0`). Eine vorhandene `renderedDosageInstruction` der Quellressource wird nicht übernommen, da Bestandsdaten häufig fehlerhaft sind und der Text sonst nicht zur Struktur passen muss.
+1. **Text erzeugen:** Der Text wird immer mit der [Textgenerierung](./dosierung-textgenerierung.html) aus **allen** `Dosage`-Elementen der Quelle im Zustand nach den Schritten [M02](#m02), [M14](#m14), [M15](#m15) und [M10](#m10) erzeugt, mit der tatsächlich verwendeten Algorithmusversion (in dieser Beschreibung `2.0.0`). Eine vorhandene `renderedDosageInstruction` der Quellressource wird nicht übernommen, da Bestandsdaten häufig fehlerhaft sind und der Text sonst nicht zur Struktur passen muss.
 2. **Dosierung ersetzen:** Die gesamte Dosierungs-Liste wird durch genau ein `Dosage`-Element ersetzt, das nur `text` mit dem Text aus Schritt 1 enthält, also ohne `timing` und ohne `doseAndRate` (`DosageStructuredOrFreeText`, `FreeTextSingleDosageOnly`).
 3. **4-Schema prüfen:** Besteht der Text nur aus einem 4-Schema (zum Beispiel `1-0-1-0 Stück`), wird [M04](#m04) angewendet.
 4. **Text-Extensions setzen:** `renderedDosageInstruction` erhält exakt den Wert von `Dosage.text`. `GeneratedDosageInstructionsMeta` gibt die Sprache und die Algorithmusversion an, mit der der Text in Schritt 1 erzeugt wurde.
@@ -248,6 +249,28 @@ Ziel:    dayOfWeek = mon, timeOfDay = 08:00:00, frequency = 1
 Text:    montags 08:00 Uhr — je 1 Stück
 ```
 
+### M15 – Anzeigeeinheit der Dosis {#m15}
+
+#### Anlass
+
+In 1.0.7 war die Anzeigeeinheit `unit` einer Dosis frei; gebunden war nur der Code an `KBV_VS_SFHIR_BMP_DOSIEREINHEIT`. 2.0.0 verlangt, dass `unit` exakt dem Anzeigetext des Codes entspricht (`DosageDoseUnitMatchesCode`). Maßgeblich ist der Code, mit ihm rechnet etwa die Reichweitenberechnung.
+
+#### Überführung
+
+1. In `doseQuantity`, `doseRange.low` und `doseRange.high` jedes `Dosage`-Elements `unit` auf den Anzeigetext des Codes aus `KBV_CS_SFHIR_BMP_DOSIEREINHEIT` setzen. `value`, `system` und `code` bleiben unverändert.
+2. Trägt `maxDosePerPeriod.numerator` denselben Code, dort `unit` ebenso setzen (`MaxDoseSameUnitAsDose`).
+3. Mit dem Ergebnis weiter nach dem [Ablauf](#ablauf) verfahren.
+
+Eine Dosisangabe mit einem Code außerhalb dieses CodeSystems verletzt bereits das Profil 1.0.7 und ist nicht Gegenstand der Überführung.
+
+#### Beispiel
+
+```text
+Quelle:  when = MORN, doseQuantity = 1, code = 1, unit = Tabletten
+Ziel:    when = MORN, doseQuantity = 1, code = 1, unit = Stück
+Text:    täglich: 1-0-0-0 Stück
+```
+
 ### Text-Extensions
 
 Für 2.0.0 sind `renderedDosageInstruction` und `GeneratedDosageInstructionsMeta` bei jeder Dosierung erforderlich, auch bei Freitext (`DosageRequiresGeneratedText`). Bei Freitext stimmt `renderedDosageInstruction` exakt mit `Dosage.text` überein (`FreeTextMatchesRenderedText`). Die Umstellung von `DosageStructuredRequiresGeneratedText` auf `DosageRequiresGeneratedText` ist daher nicht nur eine Umbenennung: Auch bestehende Freitext-Dosierungen erhalten beide Extensions.
@@ -264,4 +287,4 @@ Für die folgenden Bestandsdaten beschreibt dieser Leitfaden keine Abbildung. Wi
 
 ### Einheiten
 
-Zeit- und Dosiseinheiten werden nicht umgerechnet. `value`, `system` und `code` von Dosis-, Perioden- und Dauerangaben bleiben unverändert, ebenso die Anzeige `unit`. Für `periodUnit` erlaubt das Ziel-ValueSet `min`, `h`, `d`, `wk` und `mo` (in 1.0.7 nur `d`, `wk` und `mo`), für `boundsDuration` die Codes `d`, `wk`, `mo` und `a`.
+Zeit- und Dosiseinheiten werden nicht umgerechnet. `value`, `system` und `code` von Dosis-, Perioden- und Dauerangaben bleiben unverändert, ebenso die Anzeige `unit`, mit Ausnahme der Anzeigeeinheit der Dosis nach [M15](#m15). Für `periodUnit` erlaubt das Ziel-ValueSet `min`, `h`, `d`, `wk` und `mo` (in 1.0.7 nur `d`, `wk` und `mo`), für `boundsDuration` die Codes `d`, `wk`, `mo` und `a`.

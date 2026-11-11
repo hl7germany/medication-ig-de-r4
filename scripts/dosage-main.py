@@ -51,6 +51,13 @@ def main():
     json_examples_script = os.path.join(base_dir, "check-json-examples.py")
     subprocess.run(['python3', json_examples_script, medication_dosage_script], check=True)
 
+    # 1e. Der IG haengt nicht vom KBV-Paket ab; der Publisher prueft die
+    #     Dosis-Codes deshalb nicht gegen das ValueSet. Diese Pruefung laedt das
+    #     CodeSystem nur fuer den Test (scripts/kbv-dosiereinheit.lock).
+    print("Checking dose units against the KBV CodeSystem...")
+    kbv_check_script = os.path.join(base_dir, "check-kbv-dosiereinheit.py")
+    subprocess.run(['python3', kbv_check_script, input_folder], check=True)
+
     # 2. Generate the supported/unsupported table
     print("Generating unsupported table...")
     unsupported_table_script = os.path.join(base_dir, "dosage-generate-unsupported-table.py")

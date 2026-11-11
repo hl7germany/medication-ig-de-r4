@@ -1,0 +1,7 @@
+{
+  "package": "kbv.all.st-combined",
+  "version": "1.51.0",
+  "file": "package/KBV_CS_SFHIR_BMP_DOSIEREINHEIT.json",
+  "sha256": "9d80d3c651a82e18cd1b45d6ada55320f5be881bba452f9a24d85b6536c8723c",
+  "comment": "CodeSystem der Dosiereinheiten, gegen das check-kbv-dosiereinheit.py die Beispiele und die Invarianten DosageDoseUnitMatchesCode(Warning) prueft. Das Paket wird nur zum Pruefen geladen und ist keine Abhaengigkeit des IG. Zum Aktualisieren: version setzen, Datei aus dem neuen Paket laden, sha256 daraus neu berechnen."
+}

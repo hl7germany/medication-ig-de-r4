@@ -14,8 +14,8 @@ Description: "CAVE: Validation example - doseRange.low is set while doseRange.hi
   * timing.repeat.period = 1
   * timing.repeat.periodUnit = #d
   * doseAndRate.doseRange.low.value = 1
-  * doseAndRate.doseRange.low.system = $ucum
-  * doseAndRate.doseRange.low.code = #mg
+  * doseAndRate.doseRange.low.system = $kbv-dosiereinheit
+  * doseAndRate.doseRange.low.code = #v
   * doseAndRate.doseRange.low.unit = "mg"
 
 Instance: INV-C-DoseRangeHighRequiredWhenLowPresent-MD-02-of-03
@@ -31,8 +31,8 @@ Description: "CAVE: Validation example - doseRange.low is set while doseRange.hi
   * timing.repeat.period = 1
   * timing.repeat.periodUnit = #d
   * doseAndRate.doseRange.low.value = 1
-  * doseAndRate.doseRange.low.system = $ucum
-  * doseAndRate.doseRange.low.code = #mg
+  * doseAndRate.doseRange.low.system = $kbv-dosiereinheit
+  * doseAndRate.doseRange.low.code = #v
   * doseAndRate.doseRange.low.unit = "mg"
 
 Instance: INV-C-DoseRangeHighRequiredWhenLowPresent-MS-03-of-03
@@ -48,8 +48,8 @@ Description: "CAVE: Validation example - doseRange.low is set while doseRange.hi
   * timing.repeat.period = 1
   * timing.repeat.periodUnit = #d
   * doseAndRate.doseRange.low.value = 1
-  * doseAndRate.doseRange.low.system = $ucum
-  * doseAndRate.doseRange.low.code = #mg
+  * doseAndRate.doseRange.low.system = $kbv-dosiereinheit
+  * doseAndRate.doseRange.low.code = #v
   * doseAndRate.doseRange.low.unit = "mg"
 
 Instance: INV-C-DoseRangeLowAndHighSameUnit-Request-01-of-03
@@ -66,8 +66,8 @@ Description: "CAVE: Validation example - doseRange.low and doseRange.high use di
   * timing.repeat.period = 1
   * timing.repeat.periodUnit = #d
   * doseAndRate.doseRange.low.value = 1
-  * doseAndRate.doseRange.low.system = $ucum
-  * doseAndRate.doseRange.low.code = #mg
+  * doseAndRate.doseRange.low.system = $kbv-dosiereinheit
+  * doseAndRate.doseRange.low.code = #v
   * doseAndRate.doseRange.low.unit = "mg"
   * doseAndRate.doseRange.high.value = 2
   * doseAndRate.doseRange.high.system = $kbv-dosiereinheit
@@ -87,8 +87,8 @@ Description: "CAVE: Validation example - doseRange.low and doseRange.high use di
   * timing.repeat.period = 1
   * timing.repeat.periodUnit = #d
   * doseAndRate.doseRange.low.value = 1
-  * doseAndRate.doseRange.low.system = $ucum
-  * doseAndRate.doseRange.low.code = #mg
+  * doseAndRate.doseRange.low.system = $kbv-dosiereinheit
+  * doseAndRate.doseRange.low.code = #v
   * doseAndRate.doseRange.low.unit = "mg"
   * doseAndRate.doseRange.high.value = 2
   * doseAndRate.doseRange.high.system = $kbv-dosiereinheit
@@ -108,8 +108,8 @@ Description: "CAVE: Validation example - doseRange.low and doseRange.high use di
   * timing.repeat.period = 1
   * timing.repeat.periodUnit = #d
   * doseAndRate.doseRange.low.value = 1
-  * doseAndRate.doseRange.low.system = $ucum
-  * doseAndRate.doseRange.low.code = #mg
+  * doseAndRate.doseRange.low.system = $kbv-dosiereinheit
+  * doseAndRate.doseRange.low.code = #v
   * doseAndRate.doseRange.low.unit = "mg"
   * doseAndRate.doseRange.high.value = 2
   * doseAndRate.doseRange.high.system = $kbv-dosiereinheit

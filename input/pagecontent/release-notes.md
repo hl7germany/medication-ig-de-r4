@@ -18,6 +18,11 @@
 
 **Invarianten: neu**
 
+- **`DosageDoseUnitMatchesCode` (`DosageDgMP`) und `DosageDoseUnitMatchesCodeWarning` (`DosageDE`)**
+  - In `doseQuantity`, `doseRange.low` und `doseRange.high` muss `unit` exakt dem Anzeigetext des Codes aus `KBV_CS_SFHIR_BMP_DOSIEREINHEIT` entsprechen, und der Code muss zu diesem CodeSystem gehören. Bisher prüfte das keine Regel; die Textgenerierung übernimmt `unit` wörtlich, die Reichweitenberechnung verwendet den Code. In `DosageDE` gilt die Regel als Warnung und nur für Dosen mit diesem CodeSystem.
+  - Die Kurzbeschreibung von `unit` in `DosageDgMP` nennt die Regel.
+  - Sendende Systeme, die eigene Einheitentexte übermitteln (etwa „Tabletten“ zu Code `1`), müssen den Anzeigetext des Codes übernehmen. Die Mehrzahl bildet die Textgenerierung nicht; sie folgt, sobald das CodeSystem sie führt (hl7germany/dgMP-DosageTextgenerierung-Skript#52).
+  - Bei der Migration aus 1.0.7 wird `unit` auf den Anzeigetext des Codes gesetzt ([M15](./migration-1.0.7-2.0.0.html#m15)).
 - **`TimingNoDuplicateValues` (`TimingDgMP`)**
   - Innerhalb eines `Dosage`-Elements dürfen `dayOfWeek`, `when` und `timeOfDay` keinen Wert mehrfach enthalten. Bisher schlossen das nur die Schemata ohne Wochentag sowie das reine Wochentagsschema aus. Bei Wochentagen mit Tagesabschnitt oder Uhrzeit war zum Beispiel montags `MORN`, `MORN` mit `frequency = 2` gültig, obwohl FHIR mehrere Angaben in `when` als Vereinigung wertet und der Dosierungstext eine Gabe nennt.
   - Bei der Migration aus 1.0.7 werden doppelte Werte zusammengeführt und `frequency` angepasst ([M14](./migration-1.0.7-2.0.0.html#m14)).
@@ -106,6 +111,7 @@
 
 - `MR-Dosage-comb-interval-4-unsorted`, `MD-Dosage-comb-interval-4-unsorted`, `MS-Dosage-comb-interval-4-unsorted` — neu: Intervall-Kombination mit unsortierten Uhrzeiten innerhalb der `Dosage`-Elemente.
 - `MR-Dosage-BoundsDuration-Decimal` — neu (JSON): `boundsDuration.value` als ganze Zahl mit Dezimalpunkt (`14.0`).
+- Dosis-Codes in Beispielen: 36 Beispiele der dgMP-Profile (etwa `MR-Dosage-4schema-noon-only`, `MD-Dosage-4schema-ml-units`) und die Untergrenzen in den Beispielen zu `DoseRangeHighRequiredWhenLowPresent` und `DoseRangeLowAndHighSameUnit` verwenden Codes aus `KBV_CS_SFHIR_BMP_DOSIEREINHEIT` (`1` Stück, `s` ml, `v` mg) statt UCUM. Die Beispiele zu `DosageDoseUnitSameCode` und `DosageDoseUnitSameCodeWarning` verwenden für Milligramm den Code `v` statt `mg`, das es in diesem CodeSystem nicht gibt. Die dgMP-Profile binden die Dosis `required` an das KBV-ValueSet; aufgefallen ist das bisher nicht, weil der IG nicht vom KBV-Paket abhängt und der IG Publisher das ValueSet nicht kennt. Die erzeugten Texte ändern sich nicht.
 - [Beispiele für Dosierungen](./dosierung-beispiele.html): Die Spalte `bounds[x]` der Übersicht zeigt eine Behandlungsdauer als Wert und Einheit, etwa `Duration = 5 Tag(e)`. Bisher stand dort die interne Darstellung des Erzeugungsskripts, etwa `{'system': 'http://unitsofmeasure.org', 'value': 5, 'code': 'd', 'unit': 'Tag(e)'}`.
 
 **Nachtrag zu 2.0.0-ballot**

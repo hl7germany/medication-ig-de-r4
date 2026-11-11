@@ -10,6 +10,7 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
 * obeys FreeTextMatchesRenderedText
 * obeys DosageDoseQuantityAllowedFractions
 * obeys DosageDoseUnitSameCode
+* obeys DosageDoseUnitMatchesCode
 * obeys DosageDoseValueDecimalNotation
 * obeys DosageDoseValuePositive
 * obeys DosageLimitsPositive
@@ -41,6 +42,7 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
     * system 1..1 MS
     * code 1..1 MS
     * unit 1..1 MS
+      * ^short = "Anzeigetext des Codes aus KBV_CS_SFHIR_BMP_DOSIEREINHEIT, exakt"
   * doseRange
     * low MS
     * low from $kbv-dosiereinheit-vs
@@ -49,6 +51,7 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
       * system 1..1 MS
       * code 1..1 MS
       * unit 1..1 MS
+        * ^short = "Anzeigetext des Codes aus KBV_CS_SFHIR_BMP_DOSIEREINHEIT, exakt"
     * high MS
     * high from $kbv-dosiereinheit-vs
       * value 1..1 MS
@@ -56,6 +59,7 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
       * system 1..1 MS
       * code 1..1 MS
       * unit 1..1 MS
+        * ^short = "Anzeigetext des Codes aus KBV_CS_SFHIR_BMP_DOSIEREINHEIT, exakt"
   * rate[x] 0..0
     * ^comment = "Begründung Einschränkung Kardinalität: Eine Verabreichungsmenge pro Zeiteinheit ist in der aktuellen Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
 
@@ -478,3 +482,44 @@ Expression: "maxDosePerPeriod.numerator.value.empty() or (
    doseAndRate.dose.ofType(Range).high.value <= maxDosePerPeriod.numerator.value)
 )"
 Severity: #error
+
+Invariant: DosageDoseUnitMatchesCode
+Description: "The dose unit (doseQuantity.unit, doseRange.low.unit, doseRange.high.unit) must be exactly the display of its code from KBV_CS_SFHIR_BMP_DOSIEREINHEIT; the code must belong to this CodeSystem."
+Severity: #error
+Expression: "doseAndRate.select(dose.ofType(Quantity).combine(dose.ofType(Range).low).combine(dose.ofType(Range).high)).all(
+  system = 'https://fhir.kbv.de/CodeSystem/KBV_CS_SFHIR_BMP_DOSIEREINHEIT' and (
+      (code = '#' and unit = 'Messlöffel') or
+      (code = '0' and unit = 'Messbecher') or
+      (code = '1' and unit = 'Stück') or
+      (code = '2' and unit = 'Pkg.') or
+      (code = '3' and unit = 'Flasche') or
+      (code = '4' and unit = 'Beutel') or
+      (code = '5' and unit = 'Hub') or
+      (code = '6' and unit = 'Tropfen') or
+      (code = '7' and unit = 'Teelöffel') or
+      (code = '8' and unit = 'Esslöffel') or
+      (code = '9' and unit = 'E') or
+      (code = 'a' and unit = 'Tasse') or
+      (code = 'b' and unit = 'Applikatorfüllung') or
+      (code = 'c' and unit = 'Augenbadewanne') or
+      (code = 'd' and unit = 'Dosierbriefchen') or
+      (code = 'e' and unit = 'Dosierpipette') or
+      (code = 'f' and unit = 'Dosierspritze') or
+      (code = 'g' and unit = 'Einzeldosis') or
+      (code = 'h' and unit = 'Glas') or
+      (code = 'i' and unit = 'Likörglas') or
+      (code = 'j' and unit = 'Messkappe') or
+      (code = 'k' and unit = 'Messschale') or
+      (code = 'l' and unit = 'Mio E') or
+      (code = 'm' and unit = 'Mio IE') or
+      (code = 'n' and unit = 'Pipettenteilstrich') or
+      (code = 'o' and unit = 'Sprühstoß') or
+      (code = 'p' and unit = 'IE') or
+      (code = 'q' and unit = 'cm') or
+      (code = 'r' and unit = 'l') or
+      (code = 's' and unit = 'ml') or
+      (code = 't' and unit = 'g') or
+      (code = 'u' and unit = 'kg') or
+      (code = 'v' and unit = 'mg')
+  )
+)"

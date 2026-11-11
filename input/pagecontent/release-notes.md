@@ -85,6 +85,8 @@
 
 **Profile**
 
+- **`DosageDgMP`, `TimingDgMP`: Begründungen der ausgeschlossenen Elemente (`0..0`)**
+  - `additionalInstruction`, `boundsDuration.comparator` und die beiden `comparator` von `maxDosePerPeriod` tragen jetzt eine Begründung; bisher fehlte sie dort. Die Begründungen sprechen einheitlich von der „aktuellen Ausbaustufe“.
 - **`DosageDgMP`: `maxDosePerPeriod.numerator.comparator` und `.denominator.comparator` sind `0..0`**
   - Bereiche und Obergrenzen haben eigene Elemente (`doseRange`, `maxDosePerPeriod`); ein Vergleichsoperator ist daneben nicht vorgesehen; die Textgenerierung definiert für ihn keine Darstellung. Bei der Dosis schließt `SimpleQuantity` den `comparator` bereits aus.
 

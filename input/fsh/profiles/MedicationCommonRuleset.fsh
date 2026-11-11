@@ -5,8 +5,8 @@ RuleSet: MedicationCommonRuleset
   * ^short = "Dosierungsanweisung"
   * ^definition = "Diese R5 backport Extension enthält die algorithmisch generierten gerenderten Dosierungsanweisungen, die für den Patienten bestimmt sind, um eine klare und verständliche Anweisung zur Einnahme des Medikaments zu geben."
   * valueMarkdown
-    * ^short = "Hinweis: In der ersten Ausbaustufe des dgMP ist nur einfacher Text (String) zulässig; Markdown wird nicht unterstützt."
-    * ^definition = "Abweichend von FHIR R5 (Typ Markdown) darf in der ersten Ausbaustufe des dgMP ausschließlich Klartext ohne Markdown‑Formatierungen (z. B. Überschriften, Listen, Links) geliefert werden."
+    * ^short = "Hinweis: In der aktuellen Ausbaustufe des dgMP ist nur einfacher Text (String) zulässig; Markdown wird nicht unterstützt."
+    * ^definition = "Abweichend von FHIR R5 (Typ Markdown) darf in der aktuellen Ausbaustufe des dgMP ausschließlich Klartext ohne Markdown‑Formatierungen (z. B. Überschriften, Listen, Links) geliefert werden."
 
 * extension[generatedDosageInstructionsMeta]
   * ^short = "Metadaten zu den generierten Dosierungsanweisungen"

@@ -6,7 +6,7 @@ Dort sind Algorithmenbeschreibung, Beispielimplementierung und Versionsverlauf z
 
 ### Vorbedingung: validierte Ressource
 
-Die Textgenerierung setzt eine **gegen das Profil validierte Ressource** voraus. Der Algorithmus ist kein Validator und ersetzt keinen: Er prüft weder Wertebereiche (etwa `DosageDoseValuePositive`, `TimingValuesPositive`) noch Kardinalitäten oder Invarianten, die den Text nicht berühren. Er bricht nur ab, wenn der Text nicht bildbar wäre oder eine Angabe der Ressource unterschlagen beziehungsweise mehrdeutig wiedergeben würde.
+Die Textgenerierung setzt eine **gegen das Profil validierte Ressource** voraus. Der Algorithmus ist kein Validator und ersetzt keinen: Er prüft weder Wertebereiche (etwa `DosageDoseValuePositive`, `TimingValuesPositive`) noch Kardinalitäten oder Invarianten, die den Text nicht berühren. Er bricht nur ab, wenn der Text nicht bildbar wäre, wenn er eine Angabe der Ressource unterschlagen würde, wenn sich gelesene Angaben widersprechen (etwa zwei Dosen zur selben Uhrzeit) oder wenn ein Feld nicht den JSON-Datentyp seines FHIR-Typs hat.
 
 Daraus folgt für alle Systeme:
 

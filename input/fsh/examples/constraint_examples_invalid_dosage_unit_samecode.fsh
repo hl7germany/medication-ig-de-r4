@@ -17,7 +17,7 @@ Description: "CAVE: Validation example - two dosageInstructions use different do
 * dosageInstruction[+]
   * timing.repeat
     * when[+] = #EVE
-  * doseAndRate.doseQuantity = 500 $kbv-dosiereinheit#mg "mg"
+  * doseAndRate.doseQuantity = 500 $kbv-dosiereinheit#v "mg"
 
 Instance: INV-C-DosageDoseUnitSameCode-Request-02-of-02
 InstanceOf: MedicationRequestDgMP
@@ -86,7 +86,7 @@ Description: "CAVE: Validation example - two dosage entries use different dose u
 * dosage[+]
   * timing.repeat
     * when[+] = #EVE
-  * doseAndRate.doseQuantity = 500 $kbv-dosiereinheit#mg "mg"
+  * doseAndRate.doseQuantity = 500 $kbv-dosiereinheit#v "mg"
 
 Instance: INV-C-DosageDoseUnitSameCode-Dispense-01-of-02
 InstanceOf: MedicationDispenseDgMP
@@ -103,4 +103,4 @@ Description: "CAVE: Validation example - two dosageInstruction entries use diffe
 * dosageInstruction[+]
   * timing.repeat
     * when[+] = #EVE
-  * doseAndRate.doseQuantity = 500 $kbv-dosiereinheit#mg "mg"
+  * doseAndRate.doseQuantity = 500 $kbv-dosiereinheit#v "mg"

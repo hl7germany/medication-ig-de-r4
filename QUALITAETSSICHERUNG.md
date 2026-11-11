@@ -17,7 +17,8 @@ Die GitHub Action [`.github/workflows/ig-build.yml`](.github/workflows/ig-build.
    - Constraints, die nicht in allen drei Ressourcentypen durch Beispiele belegt sind,
    - nicht isolierten Negativbeispielen (siehe unten),
    - Fehlerbeispielen für DE-Regeln, die nicht auf einem DE-Profil liegen,
-   - Broken Links.
+   - Broken Links,
+   - Dosis-Codes, die es in `KBV_CS_SFHIR_BMP_DOSIEREINHEIT` nicht gibt, und Abweichungen zwischen diesem CodeSystem und den Code-Einheit-Paaren in `DosageDoseUnitMatchesCode(Warning)` (`scripts/check-kbv-dosiereinheit.py`). Das CodeSystem stammt aus dem in `scripts/kbv-dosiereinheit.lock` gepinnten Paket `kbv.all.st-combined`, das nur für diese Prüfung geladen wird und keine Abhängigkeit des IG ist.
 4. **Erzeugte Includes entsprechen dem Repo-Stand**: Nach dem Build dürfen sich unter `input/` keine Dateien geändert haben. Wer Beispiele ändert, muss die neu erzeugten Includes mit einchecken.
 
 Damit die Prüfungen wirken, braucht `main` eine Branch Protection (Repo-Admin, Settings → Branches): Status-Checks „Invariantentests (fhirpath.js)“, „Invariantentests (HAPI-FHIRPath)“ und „IG-Build und Prüfung der Beispiele“ erforderlich, mindestens eine Freigabe, offene Review-Kommentare vor dem Merge klären.

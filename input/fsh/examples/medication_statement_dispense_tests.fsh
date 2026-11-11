@@ -15,7 +15,7 @@ Description: "Example showing 4-Schema pattern in MedicationStatement"
   * timing.repeat
     * when[+] = #MORN
     * when[+] = #EVE
-  * doseAndRate[+].doseQuantity = 1 '1' "Stück"
+  * doseAndRate[+].doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 // 2. MedicationStatement with FreeText
 Instance: MS-Dosage-Freetext
@@ -37,10 +37,10 @@ Description: "Example showing TimeOfDay pattern in MedicationStatement"
 * status = #active
 * dosage[+]
   * timing.repeat.timeOfDay = "08:00:00"
-  * doseAndRate[+].doseQuantity = 2 '1' "Stück"
+  * doseAndRate[+].doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 * dosage[+]
   * timing.repeat.timeOfDay = "20:00:00"
-  * doseAndRate[+].doseQuantity = 1 '1' "Stück"
+  * doseAndRate[+].doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 // 4. MedicationStatement with DayOfWeek
 Instance: MS-Dosage-DayOfWeek
@@ -52,10 +52,10 @@ Description: "Example showing DayOfWeek pattern in MedicationStatement"
 * status = #active
 * dosage[+]
   * timing.repeat.dayOfWeek = #mon
-  * doseAndRate[+].doseQuantity = 2 '1' "Stück"
+  * doseAndRate[+].doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 * dosage[+]
   * timing.repeat.dayOfWeek = #fri
-  * doseAndRate[+].doseQuantity = 1 '1' "Stück"
+  * doseAndRate[+].doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 // 5. MedicationStatement with Interval
 Instance: MS-Dosage-Interval
@@ -70,7 +70,7 @@ Description: "Example showing Interval pattern in MedicationStatement"
     * frequency = 1
     * period = 3
     * periodUnit = #d
-  * doseAndRate[+].doseQuantity = 1 '1' "Stück"
+  * doseAndRate[+].doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
 // MedicationDispense Examples
 
@@ -84,10 +84,10 @@ Description: "Example showing 4-Schema pattern in MedicationDispense"
 * status = #completed
 * dosageInstruction[+]
   * timing.repeat.when = #MORN
-  * doseAndRate[+].doseQuantity = 1 '1' "Stück"
+  * doseAndRate[+].doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 * dosageInstruction[+]
   * timing.repeat.when = #EVE
-  * doseAndRate[+].doseQuantity = 2 '1' "Stück"
+  * doseAndRate[+].doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
 // 7. MedicationDispense with FreeText
 Instance: MD-Dosage-Freetext
@@ -112,13 +112,13 @@ Description: "Example showing Interval and Time pattern in MedicationDispense"
     * period = 2
     * periodUnit = #d
     * timeOfDay = "09:00:00"
-  * doseAndRate[+].doseQuantity = 1 '1' "Stück"
+  * doseAndRate[+].doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 * dosageInstruction[+]
   * timing.repeat
     * period = 2
     * periodUnit = #d
     * timeOfDay = "21:00:00"
-  * doseAndRate[+].doseQuantity = 2 '1' "Stück"
+  * doseAndRate[+].doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
 // 9. MedicationDispense with DayOfWeek and Time
 Instance: MD-Dosage-DayOfWeek-Time
@@ -132,12 +132,12 @@ Description: "Example showing DayOfWeek and Time pattern in MedicationDispense"
   * timing.repeat
     * dayOfWeek = #mon
     * when = #MORN
-  * doseAndRate[+].doseQuantity = 1 '1' "Stück"
+  * doseAndRate[+].doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 * dosageInstruction[+]
   * timing.repeat
     * dayOfWeek = #wed
     * when = #EVE
-  * doseAndRate[+].doseQuantity = 2 '1' "Stück"
+  * doseAndRate[+].doseQuantity = 2 $kbv-dosiereinheit#1 "Stück"
 
 // 10. MedicationDispense with bounds and decimals
 Instance: MD-Dosage-Bounds-Decimals
@@ -151,9 +151,9 @@ Description: "Example showing bounds and decimal doses in MedicationDispense"
   * timing.repeat
     * when = #MORN
     * boundsDuration = 2 'wk' "Wochen"
-  * doseAndRate[+].doseQuantity = 0.5 '1' "Stück"
+  * doseAndRate[+].doseQuantity = 0.5 $kbv-dosiereinheit#1 "Stück"
 * dosageInstruction[+]
   * timing.repeat
     * when = #EVE
     * boundsDuration = 2 'wk' "Wochen"
-  * doseAndRate[+].doseQuantity = 1.5 '1' "Stück"
+  * doseAndRate[+].doseQuantity = 1.5 $kbv-dosiereinheit#1 "Stück"

@@ -30,9 +30,9 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
 * obeys MinimumIntervalUnitMatchesCode
 * timing only TimingDgMP
 * doseAndRate 0..1 // Nur eine Dosierung für eine Medikation erlauben
-  * ^comment = "Begründung Einschränkung Kardinalität: Nur eine Dosierung pro Medikation ist in der ersten Ausbaustufe des dgMP vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
+  * ^comment = "Begründung Einschränkung Kardinalität: Nur eine Dosierung pro Medikation ist in der aktuellen Ausbaustufe des dgMP vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
   * type 0..0
-    * ^comment = "Begründung Einschränkung Kardinalität: Eine 'type'-Angabe ist in der ersten Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
+    * ^comment = "Begründung Einschränkung Kardinalität: Eine 'type'-Angabe ist in der aktuellen Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
   * dose[x] MS
   * doseQuantity
   * doseQuantity from $kbv-dosiereinheit-vs
@@ -54,12 +54,13 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
       * code 1..1 MS
       * unit 1..1 MS
   * rate[x] 0..0
-    * ^comment = "Begründung Einschränkung Kardinalität: Eine Verabreichungsmenge pro Zeiteinheit ist in der ersten Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
+    * ^comment = "Begründung Einschränkung Kardinalität: Eine Verabreichungsmenge pro Zeiteinheit ist in der aktuellen Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
 
 // Remove unused Fields
 * sequence 0..0
-  * ^comment = "Begründung Einschränkung Kardinalität: Eine Dosier-Sequenz ist in der ersten Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
+  * ^comment = "Begründung Einschränkung Kardinalität: Eine Dosier-Sequenz ist in der aktuellen Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
 * additionalInstruction 0..0
+  * ^comment = "Begründung Einschränkung Kardinalität: Codierte ergänzende Anweisungen sind in der aktuellen Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
 * patientInstruction 0..1 MS
   * ^short = "Ergänzende Anwendungshinweise für Patientinnen und Patienten"
   * ^definition = "Ergänzende, nicht strukturiert abbildbare Anwendungshinweise für die sichere, korrekte oder verständliche Anwendung des Arzneimittels."
@@ -89,12 +90,12 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
 * method 0..0
   * ^comment = "Begründung Einschränkung Kardinalität: Eine Verabreichungsmethode ist in der aktuellen Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
 * maxDosePerPeriod
-  // Bereiche und Obergrenzen haben eigene Elemente (doseRange, maxDosePerPeriod);
-  // ein comparator ist daneben nicht vorgesehen; die Textgenerierung definiert
-  // fuer ihn keine Darstellung. Bei der Dosis schliesst ihn SimpleQuantity bereits
-  // aus, bei Ratio ist er sonst erlaubt.
+  // Bei der Dosis schliesst SimpleQuantity den comparator bereits aus, bei Ratio
+  // ist er sonst erlaubt.
   * numerator.comparator 0..0
+    * ^comment = "Begründung Einschränkung Kardinalität: Bereiche und Obergrenzen haben eigene Elemente (doseRange, maxDosePerPeriod); ein Vergleichsoperator ist daneben nicht vorgesehen, und die Textgenerierung definiert für ihn keine Darstellung."
   * denominator.comparator 0..0
+    * ^comment = "Begründung Einschränkung Kardinalität: Bereiche und Obergrenzen haben eigene Elemente (doseRange, maxDosePerPeriod); ein Vergleichsoperator ist daneben nicht vorgesehen, und die Textgenerierung definiert für ihn keine Darstellung."
 * maxDosePerAdministration 0..0
   * ^comment = "Begründung Einschränkung Kardinalität: Eine maximale Dosis pro Verabreichung ist in der aktuellen Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
 * maxDosePerLifetime 0..0

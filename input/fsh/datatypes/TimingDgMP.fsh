@@ -4,9 +4,9 @@ Id: TimingDgMP
 Title: "Timing dgMP"
 Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne werden verwendet, um festzuhalten, wann etwas geplant, erwartet oder angefordert ist. Die häufigste Anwendung ist in Dosierungsanweisungen für Medikamente. Sie werden aber auch für die Planung verschiedener Versorgungsleistungen genutzt und können zur Dokumentation von bereits erfolgten oder laufenden Aktivitäten verwendet werden."
 * event 0..0
-  * ^comment = "Begründung Einschränkung Kardinalität: Der Zeitpunkt des Ereignisses ist in der ersten Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
+  * ^comment = "Begründung Einschränkung Kardinalität: Der Zeitpunkt des Ereignisses ist in der aktuellen Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
 * code 0..0
-  * ^comment = "Begründung Einschränkung Kardinalität: Ein Timing-Code ist in der ersten Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen. Stattdessen muss das Zeitmuster explizit strukturiert angegeben werden."
+  * ^comment = "Begründung Einschränkung Kardinalität: Ein Timing-Code ist in der aktuellen Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen. Stattdessen muss das Zeitmuster explizit strukturiert angegeben werden."
 // TimingOnlyOnePeriodForDayOfWeek moved out of repeat to fix an overflow of IG Publisher while creating Excel sheets. Invariant uses %resource move didn't change any semantics
 * obeys TimingOnlyOnePeriodForDayOfWeek
 * repeat 1..1 MS
@@ -43,6 +43,7 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
     * unit 1..1 MS
     * value 1..1 MS
     * comparator 0..0
+      * ^comment = "Begründung Einschränkung Kardinalität: Ein Komparator würde die Dauer unbestimmt machen (z. B. '< 7 Tage'); die Textgenerierung definiert für ihn keine Darstellung."
   * boundsPeriod MS
     * ^short = "Start- und Endzeitpunkt der Dosieranweisung."
     * ^definition = "Beschreibt die Gültigkeit einer Dosieranweisung mit einem konkreten Start- und/oder Endzeitpunkt. Neben einem Datum kann eine Uhrzeit mit Zeitzone angegeben werden."
@@ -64,20 +65,20 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * when MS
   * when from TimingWhenDgMPVS (required)
 
-  // Restrict all elements in the repeat backbone to 0..0
+  // Im dgMP nicht vorgesehene Elemente von repeat
   * count 0..0
-    * ^comment = "Begründung Einschränkung Kardinalität: Wiederholungen sind in der ersten Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
+    * ^comment = "Begründung Einschränkung Kardinalität: Wiederholungen sind in der aktuellen Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
   * countMax 0..0
-    * ^comment = "Begründung Einschränkung Kardinalität: Maximale Wiederholungen sind in der ersten Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
+    * ^comment = "Begründung Einschränkung Kardinalität: Maximale Wiederholungen sind in der aktuellen Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
   * duration 0..0
-    * ^comment = "Begründung Einschränkung Kardinalität: Angaben zur Dauer einer Einzelgabe sind in der ersten Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
+    * ^comment = "Begründung Einschränkung Kardinalität: Angaben zur Dauer einer Einzelgabe sind in der aktuellen Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
   * durationMax 0..0
-    * ^comment = "Begründung Einschränkung Kardinalität: Angaben zur maximalen Dauer einer Einzelgabe sind in der ersten Ausbaustufe desdgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
+    * ^comment = "Begründung Einschränkung Kardinalität: Angaben zur maximalen Dauer einer Einzelgabe sind in der aktuellen Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
   * durationUnit 0..0
-    * ^comment = "Begründung Einschränkung Kardinalität: Angaben zur Einheit der Dauer einer Einzelgabe sind in der ersten Ausbaustufe desdgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
+    * ^comment = "Begründung Einschränkung Kardinalität: Angaben zur Einheit der Dauer einer Einzelgabe sind in der aktuellen Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
   * offset 0..0
     * ^short = "Zeitversatz"
-    * ^comment = "Begründung Einschränkung Kardinalität: Ein Zeitversatz ist in der ersten Ausbaustufe desdgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
+    * ^comment = "Begründung Einschränkung Kardinalität: Ein Zeitversatz ist in der aktuellen Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
 
 Invariant: TimingSingleDosageForTimeOfDay
 Description: "If only timeOfDay is used (without dayOfWeek), the times must be modelled in a single Dosage element, both for daily dosing and in an interval combination. Multiple Dosage elements are only allowed if every element carries a distinct dose, including its data type."

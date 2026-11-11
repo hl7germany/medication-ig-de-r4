@@ -1,7 +1,7 @@
 {
   "repository": "hl7germany/dgMP-DosageTextgenerierung-Skript",
   "file": "medication-dosage-to-text.py",
-  "tag": "2.0.0-rc.1",
-  "sha256": "ff743ddc3e08349e3cfce481072636356349ce60979b7a95a0471dfb901122b8",
+  "tag": "2.0.0-rc.3",
+  "sha256": "e0041b4587314e7b8afd480050262fa7d3b535200709db7b6cf153a1ec38f6be",
   "comment": "Gepinnte Version des Textgenerierungs-Algorithmus. tag muss dem __version__ der Datei entsprechen; der IG schreibt diesen Wert als algorithmVersion in jede Ressource. Zum Aktualisieren: tag setzen, Datei vom neuen Tag laden, sha256 daraus neu berechnen."
 }

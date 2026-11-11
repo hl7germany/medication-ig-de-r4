@@ -23,7 +23,7 @@ Bei der Bereitstellung des Dosierungstextes ist die verwendete Version in der Ex
 #### In diesem Guide verwendete Version
 
 Die Beispieltexte dieses Guide wurden mit der Algorithmusversion
-**[2.0.0-rc.1](https://github.com/hl7germany/dgMP-DosageTextgenerierung-Skript/releases/tag/2.0.0-rc.1)**
+**[2.0.0-rc.3](https://github.com/hl7germany/dgMP-DosageTextgenerierung-Skript/releases/tag/2.0.0-rc.3)**
 erzeugt. Die Angabe dient allein der Nachvollziehbarkeit — sie legt **nicht** fest,
 welche Version zu verwenden ist. Dieselbe Version steht als `algorithmVersion` in
 jeder Beispielressource, sodass sich jeder abgebildete Text seiner Herkunft

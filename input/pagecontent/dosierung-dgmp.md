@@ -31,6 +31,10 @@ In der aktuellen Ausbaustufe und im Kontext dgMP ist die Verwendung von `Dosage.
 Für die Berechnung der Reichweite einer Medikation ist es erforderlich, dass Dosierungseinheiten (z.B. „1 Stück) strukturiert über ein Codesystem angegeben werden.  
 Dafür wird das ValueSet `KBV_VS_SFHIR_BMP_DOSIEREINHEIT` genutzt.
 
+#### Nur Werte größer als 0
+
+Mengen, Abstände und Zeiträume werden im dgMP nur mit Werten größer als `0` übertragen: die Dosis (`doseQuantity.value`, `doseRange.high.value`), der Mindestabstand, die Maximalmenge, die Periode (`period`, `periodMax`) und die Anwendungsdauer (`boundsDuration.value`). Einzige Ausnahme ist die Untergrenze eines Dosisbereichs (`doseRange.low.value`), die auch `0` sein darf. Geprüft wird das über [DosageDoseValuePositive](./dosierung-constraints.html#dosagedosevaluepositive), [DosageLimitsPositive](./dosierung-constraints.html#dosagelimitspositive) und [TimingValuesPositive](./dosierung-constraints.html#timingvaluespositive).
+
 #### Beispiele
 
 Zur Unterstützung der Implementierenden werden in diesem Projekt verschiedene Beispiele bereitgestellt. Die [Übersicht der Beispiele](./dosierung-beispiele.html) zeigt alle validen Beispiele in einer Matrix mit generierter Dosisinstruktion und einer Übersicht der belegten Felder.  

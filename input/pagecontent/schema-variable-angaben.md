@@ -22,7 +22,7 @@ Folgende weitere Beispiele sind in diesem IG dargestellt:
 
 ### Variable Einzeldosis
 
-Eine variable Einzeldosis wird über `Dosage.doseAndRate.doseRange` modelliert. Dabei beschreibt `low` die Untergrenze und `high` die Obergrenze des zulässigen Dosisbereichs.
+Eine variable Einzeldosis wird über `Dosage.doseAndRate.doseRange` modelliert. Dabei beschreibt `low` die Untergrenze und `high` die Obergrenze des zulässigen Dosisbereichs. Die Obergrenze muss größer als `0` sein, die Untergrenze darf auch `0` sein.
 
 Beide Grenzen dürfen die [zulässigen Dosisbruchteile](./dosierung-constraints.html#dosagedosequantityallowedfractions) verwenden, einschließlich des neu erlaubten 1/8-Werts. Sie werden als Dezimalzahlen mit höchstens drei Nachkommastellen übertragen, beispielsweise `0.125` bis `1.66` für 1/8 bis 1 2/3 Einheiten.
 
@@ -103,7 +103,7 @@ Folgende Beispiele sind nicht valide, da sie diese Constraints brechen:
 
 ### Variable Periode
 
-Eine variable Periode wird über `Timing.repeat.period` als Untergrenze und `Timing.repeat.periodMax` als Obergrenze modelliert.
+Eine variable Periode wird über `Timing.repeat.period` als Untergrenze und `Timing.repeat.periodMax` als Obergrenze modelliert. Beide sind ganze Zahlen größer als `0`.
 
 ### Beispiel
 

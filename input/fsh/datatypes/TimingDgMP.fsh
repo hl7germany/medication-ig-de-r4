@@ -19,6 +19,8 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * obeys TimingOnlyOneBounds
   * obeys TimingFrequencyCount
   * obeys TimingPeriodUnit
+  * obeys TimingBoundsDurationNotNegative
+  * obeys TimingValuesZeroWarning
   * bounds[x] MS
   * bounds[x] only Duration
     * ^comment = "Begründung Einschränkung Datentyp: Nur eine Angabe zur Dauer ist in der ersten Ausbaustufe des dgMP vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
@@ -506,3 +508,13 @@ or
   )
 )"
 Severity: #error
+
+Invariant: TimingBoundsDurationNotNegative
+Description: "boundsDuration.value must not be negative. A negative period is already excluded by tim-5."
+Severity: #error
+Expression: "bounds.ofType(Duration).value.all($this >= 0)"
+
+Invariant: TimingValuesZeroWarning
+Description: "period and boundsDuration.value should not be 0."
+Severity: #warning
+Expression: "(period.exists() implies period != 0) and bounds.ofType(Duration).value.all($this != 0)"

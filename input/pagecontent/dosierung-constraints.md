@@ -148,6 +148,31 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-TimingBoundsUnitMatchesCode-examples.md%}
 
+#### TimingBoundsDurationNotNegative
+
+**Beschreibung:**  
+`boundsDuration.value` darf nicht negativ sein. Eine negative Periode schließt bereits die FHIR-Basisregel `tim-5` aus.
+
+**Warum?**  
+Eine negative Dauer beschreibt keinen Zeitraum.
+
+Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
+
+{% include dosage-constraint-TimingBoundsDurationNotNegative-examples.md%}
+
+#### TimingValuesZeroWarning
+
+**Beschreibung:**  
+Warnung, wenn `period` oder `boundsDuration.value` den Wert `0` hat.
+
+**Warum?**  
+Eine Periode oder Dauer von `0` beschreibt keinen Zeitraum. Ab Version 2.0.0 ist der Wert `0` hier nicht mehr zulässig.
+
+Folgende Beispiele lösen eine Warnung aus:
+
+{% include dosage-constraint-TimingValuesZeroWarning-examples.md%}
+
+
 #### TimingSingleDosageForTimeOfDay
 
 **Beschreibung:**  
@@ -254,6 +279,31 @@ Verhindert inkonsistente oder schwer vergleichbare Einträge (z. B. Mischung von
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-DosageDoseUnitSameCode-examples.md%}
+
+#### DosageDoseValueNotNegative
+
+**Beschreibung:**  
+`doseQuantity.value` darf nicht negativ sein.
+
+**Warum?**  
+Eine negative Dosis beschreibt keine anwendbare Arzneimittelmenge.
+
+Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
+
+{% include dosage-constraint-DosageDoseValueNotNegative-examples.md%}
+
+#### DosageDoseValueZeroWarning
+
+**Beschreibung:**  
+Warnung, wenn `doseQuantity.value` den Wert `0` hat.
+
+**Warum?**  
+Eine Dosis von `0` beschreibt keine Anwendung. Ab Version 2.0.0 ist sie nicht mehr zulässig.
+
+Folgende Beispiele lösen eine Warnung aus:
+
+{% include dosage-constraint-DosageDoseValueZeroWarning-examples.md%}
+
 
 #### DosageWarnungViererschemaInText
 

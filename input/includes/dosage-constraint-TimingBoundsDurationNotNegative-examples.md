@@ -1,0 +1,5 @@
+| File | doseQuantity | duration | durationUnit | frequency | period | periodUnit | Day<br>of<br>Week | Time<br>Of<br>Day | when | bounds[x] |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| [MedicationDispense-INV-C-TimingBoundsDurationNotNegative-Dispense-02-of-03](./MedicationDispense-INV-C-TimingBoundsDurationNotNegative-Dispense-02-of-03.html) | 1 Stück |  |  | 1 | 1 | d |  |  | MORN | {'system': 'http://unitsofmeasure.org', 'value': -3, 'code': 'd', 'unit': 'Tag(e)'} |
+| [MedicationRequest-INV-C-TimingBoundsDurationNotNegative-Request-01-of-03](./MedicationRequest-INV-C-TimingBoundsDurationNotNegative-Request-01-of-03.html) | 1 Stück |  |  | 1 | 1 | d |  |  | MORN | {'system': 'http://unitsofmeasure.org', 'value': -3, 'code': 'd', 'unit': 'Tag(e)'} |
+| [MedicationStatement-INV-C-TimingBoundsDurationNotNegative-Statement-03-of-03](./MedicationStatement-INV-C-TimingBoundsDurationNotNegative-Statement-03-of-03.html) | 1 Stück |  |  | 1 | 1 | d |  |  | MORN | {'system': 'http://unitsofmeasure.org', 'value': -3, 'code': 'd', 'unit': 'Tag(e)'} |

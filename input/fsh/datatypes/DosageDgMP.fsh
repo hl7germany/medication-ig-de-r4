@@ -97,14 +97,14 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
   // ein comparator ist daneben nicht vorgesehen; die Textgenerierung definiert
   // fuer ihn keine Darstellung. Bei der Dosis schliesst ihn SimpleQuantity bereits
   // aus, bei Ratio ist er sonst erlaubt.
-  * numerator.value ^short = "Maximalmenge im Bezugszeitraum, größer als 0"
   * numerator.comparator 0..0
-  * denominator.value ^short = "Bezugszeitraum: 24 (bei h) oder 1 (bei d)"
   * denominator.comparator 0..0
 * maxDosePerAdministration 0..0
   * ^comment = "Begründung Einschränkung Kardinalität: Eine maximale Dosis pro Verabreichung ist in der aktuellen Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
 * maxDosePerLifetime 0..0
   * ^comment = "Begründung Einschränkung Kardinalität: Eine maximale Dosis über die Lebenszeit ist in der aktuellen Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
+* maxDosePerPeriod.numerator.value ^short = "Maximalmenge im Bezugszeitraum, größer als 0"
+* maxDosePerPeriod.denominator.value ^short = "Bezugszeitraum: 24 (bei h) oder 1 (bei d)"
 
 Invariant: DosageStructuredOrFreeText
 Description: "A dosage must be given either as free text only or as complete structured information only; mixing both is not allowed."

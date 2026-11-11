@@ -89,6 +89,8 @@
   - `additionalInstruction`, `boundsDuration.comparator` und die beiden `comparator` von `maxDosePerPeriod` tragen jetzt eine Begründung; bisher fehlte sie dort. Die Begründungen sprechen einheitlich von der „aktuellen Ausbaustufe“.
 - **`DosageDgMP`: `maxDosePerPeriod.numerator.comparator` und `.denominator.comparator` sind `0..0`**
   - Bereiche und Obergrenzen haben eigene Elemente (`doseRange`, `maxDosePerPeriod`); ein Vergleichsoperator ist daneben nicht vorgesehen; die Textgenerierung definiert für ihn keine Darstellung. Bei der Dosis schließt `SimpleQuantity` den `comparator` bereits aus.
+- **`DosageDgMP`, `TimingDgMP`: Kurzbeschreibungen nennen den Wertebereich**
+  - Dosis, Dosisbereich, Mindestabstand, Maximalmenge, Periode und Anwendungsdauer zeigen in der Kurzbeschreibung, dass nur Werte größer als `0` zulässig sind; die Untergrenze eines Dosisbereichs darf auch `0` sein. Die Seite [Fachliche Rahmenvorgaben des dgMP](./dosierung-dgmp.html) und die Seiten der betroffenen Schemata nennen die Regel ebenfalls. Die Invarianten sind unverändert.
 
 **Fachliche Informationsmodelle**
 

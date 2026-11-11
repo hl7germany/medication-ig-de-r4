@@ -37,6 +37,7 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
   * doseQuantity
   * doseQuantity from $kbv-dosiereinheit-vs
     * value 1..1 MS
+      * ^short = "Dosis je Gabe, größer als 0"
     * system 1..1 MS
     * code 1..1 MS
     * unit 1..1 MS
@@ -44,12 +45,14 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
     * low MS
     * low from $kbv-dosiereinheit-vs
       * value 1..1 MS
+        * ^short = "Untergrenze der Dosis, 0 oder größer"
       * system 1..1 MS
       * code 1..1 MS
       * unit 1..1 MS
     * high MS
     * high from $kbv-dosiereinheit-vs
       * value 1..1 MS
+        * ^short = "Obergrenze der Dosis, größer als 0"
       * system 1..1 MS
       * code 1..1 MS
       * unit 1..1 MS
@@ -76,6 +79,7 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
 * modifierExtension[minimumIntervalBetweenAdministrations]
   * valueDuration 1..1 MS
     * value 1..1 MS
+      * ^short = "Mindestabstand zwischen zwei Gaben, größer als 0"
     * system 1..1 MS
     * system = $ucum (exactly)
     * code 1..1 MS
@@ -100,6 +104,8 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
   * ^comment = "Begründung Einschränkung Kardinalität: Eine maximale Dosis pro Verabreichung ist in der aktuellen Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
 * maxDosePerLifetime 0..0
   * ^comment = "Begründung Einschränkung Kardinalität: Eine maximale Dosis über die Lebenszeit ist in der aktuellen Ausbaustufe des dgMP nicht vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
+* maxDosePerPeriod.numerator.value ^short = "Maximalmenge im Bezugszeitraum, größer als 0"
+* maxDosePerPeriod.denominator.value ^short = "Bezugszeitraum: 24 (bei h) oder 1 (bei d)"
 
 Invariant: DosageStructuredOrFreeText
 Description: "A dosage must be given either as free text only or as complete structured information only; mixing both is not allowed."

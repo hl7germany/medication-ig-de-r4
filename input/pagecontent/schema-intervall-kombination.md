@@ -51,7 +51,7 @@ fest, und eine Periode größer als `1` beschreibt den Abstand der Anwendungstag
 Im dgMP-Profil ist die Regel ein Fehler, im generischen Profil `TimingDE` eine
 Warnung.
 
-Mit `period` und `periodUnit` wird der Einnahmerhythmus festgelegt. `when` oder
+Mit `period` und `periodUnit` wird der Einnahmerhythmus festgelegt; `period` ist eine ganze Zahl größer als `0`. `when` oder
 `timeOfDay` ordnet diesem Rhythmus konkrete Tagesabschnitte beziehungsweise
 Uhrzeiten zu.
 

@@ -42,6 +42,7 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
     * system 1..1 MS
     * unit 1..1 MS
     * value 1..1 MS
+      * ^short = "Anwendungsdauer, ganze Zahl größer als 0"
     * comparator 0..0
       * ^comment = "Begründung Einschränkung Kardinalität: Ein Komparator würde die Dauer unbestimmt machen (z. B. '< 7 Tage'); die Textgenerierung definiert für ihn keine Darstellung."
   * boundsPeriod MS
@@ -56,10 +57,12 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * frequency 0..1 MS
   * frequencyMax MS
   * period 0..1 MS
+    * ^short = "Periode, ganze Zahl größer als 0"
   * periodUnit 0..1 MS
     * ^short = "min | h | d | wk | mo - Zeiteinheit (UCUM)"
   * periodUnit from PeriodUnitsOfTimeDgMPVS (required)
   * periodMax MS
+    * ^short = "Obergrenze der Periode, ganze Zahl größer als period"
   * dayOfWeek MS
   * timeOfDay MS
   * when MS

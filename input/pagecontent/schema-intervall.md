@@ -39,6 +39,6 @@ timing.repeat.timeOfDay.empty() and
 timing.repeat.dayOfWeek.empty()
 ```
 
-An diesen Feldern wird kodiert der Zeitinterval angegeben an der eine konkrete Dosierung einzunehmen ist.
+An diesen Feldern wird kodiert der Zeitinterval angegeben an der eine konkrete Dosierung einzunehmen ist. `period` ist eine ganze Zahl größer als `0`.
 
 Lesende Systeme werten entsprechend auch `Dosage.timing.repeat` aus. Wenn ausschließlich die oben genannten Felder angegeben sind, ist dem Nutzer anzuzeigen, dass die Dosierung nach einem Interval definiert ist.

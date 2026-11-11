@@ -61,7 +61,7 @@ Die einzunehmende Menge wird wie in den anderen strukturierten Dosierschemata ü
 
 Bei einer reinen Bedarfsdosierung wird `timing` nicht befüllt (folglich ist hierfür auch kein Anwendungszeitraum über `bounds[x]` vorgesehen).
 
-Der Mindestabstand zwischen zwei Gaben wird über die Modifier Extension `modifierExtension[MinimumIntervalBetweenAdministrations].valueDuration` angegeben.
+Der Mindestabstand zwischen zwei Gaben wird über die Modifier Extension `modifierExtension[MinimumIntervalBetweenAdministrations].valueDuration` angegeben. Sein Wert muss größer als `0` sein; ist kein Abstand einzuhalten, entfällt die Extension.
 
 `maxDosePerPeriod` kann optional verwendet werden, um eine maximale Menge je Zeitraum anzugeben. Wie der Mindestabstand ist die Angabe der reinen Bedarfsdosierung vorbehalten: Ein strukturierter Rhythmus legt bereits fest, wie viel im Bezugszeitraum angewendet wird. Dabei muss die Einheit im `numerator` der Einheit von `doseAndRate.doseQuantity` entsprechen, und der Wert darf nicht kleiner als die Einzeldosis sein (bei `doseRange`: als die Obergrenze). Als Bezugszeitraum (`denominator`) ist ausschließlich **24 Stunden** (`24 h`) oder **1 Tag** (`1 d`) zulässig; andere Perioden sind nicht erlaubt. Die Auswahl wird eingabetreu wiedergegeben: `24 h` ergibt „in 24 Stunden", `1 d` ergibt „pro Tag".
 

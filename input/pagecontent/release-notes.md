@@ -1,6 +1,6 @@
 ### Release: 2.0.0
 
-**Version des Textgenerierungs-Algorithmus:** `2.0.0-rc.1`. Die erzeugten Texte ändern sich gegenüber `2.0.0-ballot`, etwa `täglich: 1-0-1-0 Stück` statt `1-0-1-0 Stück` und `bei Kopfschmerzen, alle 8 Stunden: je 1 Stück` statt `bei Kopfschmerzen: alle 8 Stunden je 1 Stück`. Alle Änderungen des Algorithmus stehen im `CHANGELOG.md` von [hl7germany/dgMP-DosageTextgenerierung-Skript](https://github.com/hl7germany/dgMP-DosageTextgenerierung-Skript).
+**Version des Textgenerierungs-Algorithmus:** `2.0.0-rc.3`. Die erzeugten Texte ändern sich gegenüber `2.0.0-ballot`, etwa `täglich: 1-0-1-0 Stück` statt `1-0-1-0 Stück` und `bei Kopfschmerzen, alle 8 Stunden: je 1 Stück` statt `bei Kopfschmerzen: alle 8 Stunden je 1 Stück`. Alle Änderungen des Algorithmus stehen im `CHANGELOG.md` von [hl7germany/dgMP-DosageTextgenerierung-Skript](https://github.com/hl7germany/dgMP-DosageTextgenerierung-Skript).
 
 **Neue Seiten**
 

@@ -7,6 +7,9 @@ Description: "Gibt an, wie das Medikament vom Patienten im Kontext dgMP eingenom
 * obeys DosageStructuredRequiresGeneratedText
 * obeys FreeTextSingleDosageOnly
 * obeys FreeTextMatchesRenderedText
+* obeys DosageDoseValueNotNegative
+* obeys DosageDoseQuantityAllowedFractionsWarning
+* obeys DosageDoseValueDecimalNotationWarning
 * timing only TimingDgMP
 * doseAndRate 0..1 // Nur eine Dosierung für eine Medikation erlauben
   * ^comment = "Begründung Einschränkung Kardinalität: Nur eine Dosierung pro Medikation ist in der ersten Ausbaustufe des dgMP vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
@@ -141,3 +144,76 @@ implies
   )
 )"
 Severity: #error
+
+Invariant: DosageDoseValueNotNegative
+Description: "doseQuantity.value must not be negative."
+Severity: #error
+Expression: "doseAndRate.dose.ofType(Quantity).value.all($this >= 0)"
+
+Invariant: DosageDoseQuantityAllowedFractionsWarning
+Description: "Dose values in doseQuantity or doseRange should be whole numbers or use one of the following fractional parts: .125, .25, .33, .5, .66 or .75."
+Expression: """
+doseAndRate.all(
+  (
+    dose.ofType(Quantity).value.empty() or
+    dose.ofType(Quantity).value.all(
+      ($this.truncate() = $this) or
+      ($this mod 1 = 0.125) or
+      ($this mod 1 = 0.25) or
+      ($this mod 1 = 0.33) or
+      ($this mod 1 = 0.5) or
+      ($this mod 1 = 0.66) or
+      ($this mod 1 = 0.75)
+    )
+  )
+  and
+  (
+    dose.ofType(Range).low.value.empty() or
+    dose.ofType(Range).low.value.all(
+      ($this.truncate() = $this) or
+      ($this mod 1 = 0.125) or
+      ($this mod 1 = 0.25) or
+      ($this mod 1 = 0.33) or
+      ($this mod 1 = 0.5) or
+      ($this mod 1 = 0.66) or
+      ($this mod 1 = 0.75)
+    )
+  )
+  and
+  (
+    dose.ofType(Range).high.value.empty() or
+    dose.ofType(Range).high.value.all(
+      ($this.truncate() = $this) or
+      ($this mod 1 = 0.125) or
+      ($this mod 1 = 0.25) or
+      ($this mod 1 = 0.33) or
+      ($this mod 1 = 0.5) or
+      ($this mod 1 = 0.66) or
+      ($this mod 1 = 0.75)
+    )
+  )
+)
+"""
+Severity: #warning
+
+Invariant: DosageDoseValueDecimalNotationWarning
+Description: "Dose values in doseQuantity or doseRange should use plain decimal notation with at most three decimal places. Exponential notation (e.g. 50e-2 instead of 0.5) should not be used."
+Expression: """
+doseAndRate.all(
+  (
+    dose.ofType(Quantity).value.empty() or
+    dose.ofType(Quantity).value.toString().matches('^[0-9]+([.][0-9]{1,3})?$')
+  )
+  and
+  (
+    dose.ofType(Range).low.value.empty() or
+    dose.ofType(Range).low.value.toString().matches('^[0-9]+([.][0-9]{1,3})?$')
+  )
+  and
+  (
+    dose.ofType(Range).high.value.empty() or
+    dose.ofType(Range).high.value.toString().matches('^[0-9]+([.][0-9]{1,3})?$')
+  )
+)
+"""
+Severity: #warning

@@ -1,0 +1,5 @@
+| File | doseQuantity | duration | durationUnit | frequency | period | periodUnit | Day<br>of<br>Week | Time<br>Of<br>Day | when | bounds[x] |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| [MedicationDispense-W-TimingBoundsDurationOnlyWholeNumberWarning-MD-02-of-03](./MedicationDispense-W-TimingBoundsDurationOnlyWholeNumberWarning-MD-02-of-03.html) | 1 Stück |  |  | 1 | 1 | d |  |  | MORN | {'system': 'http://unitsofmeasure.org', 'value': 1.5, 'code': 'd', 'unit': 'Tag(e)'} |
+| [MedicationRequest-W-TimingBoundsDurationOnlyWholeNumberWarning-MR-01-of-03](./MedicationRequest-W-TimingBoundsDurationOnlyWholeNumberWarning-MR-01-of-03.html) | 1 Stück |  |  | 1 | 1 | d |  |  | MORN | {'system': 'http://unitsofmeasure.org', 'value': 1.5, 'code': 'd', 'unit': 'Tag(e)'} |
+| [MedicationStatement-W-TimingBoundsDurationOnlyWholeNumberWarning-MS-03-of-03](./MedicationStatement-W-TimingBoundsDurationOnlyWholeNumberWarning-MS-03-of-03.html) | 1 Stück |  |  | 1 | 1 | d |  |  | MORN | {'system': 'http://unitsofmeasure.org', 'value': 1.5, 'code': 'd', 'unit': 'Tag(e)'} |

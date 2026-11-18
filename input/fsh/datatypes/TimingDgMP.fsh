@@ -20,7 +20,8 @@ Description: "Beschreibt ein Ereignis, das mehrfach auftreten kann. Zeitpläne w
   * obeys TimingFrequencyCount
   * obeys TimingPeriodUnit
   * obeys TimingBoundsDurationPositive
-  * obeys TimingPeriodZeroWarning
+  * obeys TimingPeriodOnlyWholeNumberWarning
+  * obeys TimingBoundsDurationOnlyWholeNumberWarning
   * bounds[x] MS
   * bounds[x] only Duration
     * ^comment = "Begründung Einschränkung Datentyp: Nur eine Angabe zur Dauer ist in der ersten Ausbaustufe des dgMP vorgesehen, um die Komplexität zu reduzieren und die Übersichtlichkeit zu erhöhen."
@@ -514,7 +515,12 @@ Description: "boundsDuration.value must be greater than 0."
 Severity: #error
 Expression: "bounds.ofType(Duration).value.all($this > 0)"
 
-Invariant: TimingPeriodZeroWarning
-Description: "period should not be 0. A negative period is already excluded by tim-5."
+Invariant: TimingPeriodOnlyWholeNumberWarning
+Description: "period and periodMax should be whole numbers; decimal values should not be used."
+Expression: "(period.exists() implies period.truncate() = period) and (periodMax.exists() implies periodMax.truncate() = periodMax)"
 Severity: #warning
-Expression: "period.exists() implies period != 0"
+
+Invariant: TimingBoundsDurationOnlyWholeNumberWarning
+Description: "boundsDuration.value should be a whole number; decimal values should not be used."
+Expression: "bounds.ofType(Duration).value.all($this.truncate() = $this)"
+Severity: #warning

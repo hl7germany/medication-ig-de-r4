@@ -101,7 +101,7 @@ Description: "boundsDuration.value -3 d"
     * boundsDuration = -3 $ucum#d "Tag(e)"
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: Dosage-W-DosageDoseValueZeroWarning-Request-01-of-03
+Instance: W-DosageDoseValuePositiveWarning-MR-01-of-03
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Warning (Request): dose 0"
@@ -118,7 +118,7 @@ Description: "doseQuantity.value 0"
     * when = #MORN
   * doseAndRate.doseQuantity = 0 $kbv-dosiereinheit#1 "Stück"
 
-Instance: Dosage-W-DosageDoseValueZeroWarning-Dispense-02-of-03
+Instance: W-DosageDoseValuePositiveWarning-MD-02-of-03
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
 Title: "Warning (Dispense): dose 0"
@@ -134,7 +134,7 @@ Description: "doseQuantity.value 0"
     * when = #MORN
   * doseAndRate.doseQuantity = 0 $kbv-dosiereinheit#1 "Stück"
 
-Instance: Dosage-W-DosageDoseValueZeroWarning-Statement-03-of-03
+Instance: W-DosageDoseValuePositiveWarning-MS-03-of-03
 InstanceOf: MedicationStatementDgMP
 Usage: #example
 Title: "Warning (Statement): dose 0"
@@ -202,7 +202,7 @@ Description: "boundsDuration.value 0 d"
     * boundsDuration = 0 $ucum#d "Tag(e)"
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: Dosage-W-TimingPeriodZeroWarning-Request-01-of-03
+Instance: W-TimingValuesPositiveWarning-MR-01-of-03
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Warning (Request): period 0"
@@ -218,7 +218,7 @@ Description: "period 0 d"
     * periodUnit = #d
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: Dosage-W-TimingPeriodZeroWarning-Dispense-02-of-03
+Instance: W-TimingValuesPositiveWarning-MD-02-of-03
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
 Title: "Warning (Dispense): period 0"
@@ -233,7 +233,7 @@ Description: "period 0 d"
     * periodUnit = #d
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: Dosage-W-TimingPeriodZeroWarning-Statement-03-of-03
+Instance: W-TimingValuesPositiveWarning-MS-03-of-03
 InstanceOf: MedicationStatementDgMP
 Usage: #example
 Title: "Warning (Statement): period 0"

@@ -160,17 +160,41 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-TimingBoundsDurationPositive-examples.md%}
 
-#### TimingPeriodZeroWarning
+#### TimingValuesPositiveWarning
 
 **Beschreibung:**  
-Warnung, wenn `period` den Wert `0` hat. Eine negative Periode schließt bereits die FHIR-Basisregel `tim-5` aus.
+Warnung in `TimingDE`, wenn `period`, `periodMax`, `boundsDuration.value` oder `boundsRange.high.value` nicht größer als `0` ist oder `boundsRange.low.value` negativ ist. Die dgMP-Profile übernehmen die Warnung; eine Dauer von `0` oder darunter ist dort zusätzlich ein Fehler (`TimingBoundsDurationPositive`). Eine negative Periode schließt bereits die FHIR-Basisregel `tim-5` aus.
 
 **Warum?**  
-Eine Periode von `0` beschreibt keinen Rhythmus. Ab Version 2.0.0 ist der Wert `0` hier nicht mehr zulässig.
+Eine Periode oder Dauer von `0` beschreibt keinen Zeitraum. Ab Version 2.0.0 ist das in den dgMP-Profilen ein Fehler.
 
 Folgende Beispiele lösen eine Warnung aus:
 
-{% include dosage-constraint-TimingPeriodZeroWarning-examples.md%}
+{% include dosage-constraint-TimingValuesPositiveWarning-examples.md%}
+
+#### TimingPeriodOnlyWholeNumberWarning
+
+**Beschreibung:**  
+Warnung in `TimingDgMP`, wenn `period` keine ganze Zahl ist, zum Beispiel `1.5`.
+
+**Warum?**  
+Ab Version 2.0.0 sind in den dgMP-Profilen nur ganzzahlige Perioden zulässig.
+
+Folgende Beispiele lösen eine Warnung aus:
+
+{% include dosage-constraint-TimingPeriodOnlyWholeNumberWarning-examples.md%}
+
+#### TimingBoundsDurationOnlyWholeNumberWarning
+
+**Beschreibung:**  
+Warnung in `TimingDgMP`, wenn `boundsDuration.value` keine ganze Zahl ist, zum Beispiel `1.5`.
+
+**Warum?**  
+Ab Version 2.0.0 sind in den dgMP-Profilen nur ganzzahlige Behandlungsdauern zulässig.
+
+Folgende Beispiele lösen eine Warnung aus:
+
+{% include dosage-constraint-TimingBoundsDurationOnlyWholeNumberWarning-examples.md%}
 
 
 #### TimingSingleDosageForTimeOfDay
@@ -292,17 +316,49 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-DosageDoseValueNotNegative-examples.md%}
 
-#### DosageDoseValueZeroWarning
+#### DosageDoseValuePositiveWarning
 
 **Beschreibung:**  
-Warnung, wenn `doseQuantity.value` den Wert `0` hat.
+Warnung in `DosageDE`, wenn `doseQuantity.value` oder `doseRange.high.value` nicht größer als `0` ist oder `doseRange.low.value` negativ ist. Die dgMP-Profile übernehmen die Warnung; eine negative Dosis ist dort zusätzlich ein Fehler (`DosageDoseValueNotNegative`).
 
 **Warum?**  
-Eine Dosis von `0` beschreibt keine Anwendung. Ab Version 2.0.0 ist sie nicht mehr zulässig.
+Eine Dosis von `0` beschreibt keine Anwendung. Ab Version 2.0.0 ist eine Dosis von `0` oder darunter in den dgMP-Profilen ein Fehler.
 
 Folgende Beispiele lösen eine Warnung aus:
 
-{% include dosage-constraint-DosageDoseValueZeroWarning-examples.md%}
+{% include dosage-constraint-DosageDoseValuePositiveWarning-examples.md%}
+
+#### DosageLimitsPositiveWarning
+
+**Beschreibung:**  
+Warnung in `DosageDE`, wenn bei `maxDosePerPeriod` der Zähler oder der Nenner nicht größer als `0` ist. Der Ausdruck prüft außerdem den Mindestabstand (`MinimumIntervalBetweenAdministrations`), den es erst ab Version 2.0.0 gibt.
+
+**Warum?**  
+Eine Maximalmenge oder ein Bezugszeitraum von `0` ist nicht sinnvoll. In den dgMP-Profilen ist `maxDosePerPeriod` ausgeschlossen; deshalb gibt es hier keine Beispiele.
+
+#### DosageDoseQuantityAllowedFractionsWarning
+
+**Beschreibung:**  
+Warnung in `DosageDgMP`, wenn ein Dosiswert keine ganze Zahl ist und keinen der Bruchteile `.125`, `.25`, `.33`, `.5`, `.66` oder `.75` hat, zum Beispiel `1.2`.
+
+**Warum?**  
+Ab Version 2.0.0 sind in den dgMP-Profilen nur diese Bruchteile zulässig.
+
+Folgende Beispiele lösen eine Warnung aus:
+
+{% include dosage-constraint-DosageDoseQuantityAllowedFractionsWarning-examples.md%}
+
+#### DosageDoseValueDecimalNotationWarning
+
+**Beschreibung:**  
+Warnung in `DosageDgMP`, wenn ein Dosiswert mehr als drei Nachkommastellen hat oder mit Exponent angegeben ist (zum Beispiel `5e-1`). Ob ein Exponent erkannt wird, hängt vom JSON-Parser ab. Ein negativer Dosiswert löst die Warnung ebenfalls aus.
+
+**Warum?**  
+Ab Version 2.0.0 ist in den dgMP-Profilen nur die einfache Dezimalschreibweise mit höchstens drei Nachkommastellen zulässig.
+
+Folgende Beispiele lösen eine Warnung aus:
+
+{% include dosage-constraint-DosageDoseValueDecimalNotationWarning-examples.md%}
 
 
 #### DosageWarnungViererschemaInText

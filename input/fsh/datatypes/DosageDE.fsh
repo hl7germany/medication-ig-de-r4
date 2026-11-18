@@ -10,6 +10,8 @@ Description: "Gibt an, wie das Medikament eingenommen oder verabreicht wurde bzw
 * obeys DosageDoseUnitSameCode
 * obeys DosageWarnungViererschemaInText
 * obeys FreeTextSingleDosageOnlyWarning
+* obeys DosageDoseValuePositiveWarning
+* obeys DosageLimitsPositiveWarning
 * text 0..1 MS
   * ^short = "Freitext-Dosierungsanweisungen, z. B. 'Maximal 3x täglich 1 Stück bei Bedarf'"
   * ^definition = "Freitext-Dosierungsanweisungen, z. B. 'Maximal 3x täglich 1 Stück bei Bedarf'. Als Quelle dient hier ausschließlich der Arzt oder Apotheker"
@@ -80,4 +82,24 @@ Severity: #error
 Invariant: DosageWarnungViererschemaInText
 Description: "Hinweis: In Dosage.text wurde ein Viererschema (z. B. 1-1-1-1) erkannt. Bitte prüfen, ob dies strukturiert abgebildet werden kann."
 Expression: "text.exists() implies text.matches('.*\\\\d+\\\\s*[-–]\\\\s*\\\\d+\\\\s*[-–]\\\\s*\\\\d+\\\\s*[-–]\\\\d+.*').not()"
+Severity: #warning
+
+Invariant: DosageDoseValuePositiveWarning
+Description: "doseQuantity.value and doseRange.high.value should be greater than 0. The value 0 is additionally allowed for doseRange.low.value only."
+Expression: """
+doseAndRate.all(
+  dose.ofType(Quantity).value.all($this > 0) and
+  dose.ofType(Range).low.value.all($this >= 0) and
+  dose.ofType(Range).high.value.all($this > 0)
+)
+"""
+Severity: #warning
+
+Invariant: DosageLimitsPositiveWarning
+Description: "The minimum interval between administrations (valueDuration.value) and maxDosePerPeriod (numerator.value, denominator.value) should be greater than 0."
+Expression: "modifierExtension.where(
+  url = 'http://ig.fhir.de/igs/medication/StructureDefinition/MinimumIntervalBetweenAdministrations'
+).value.ofType(Duration).value.all($this > 0) and
+maxDosePerPeriod.numerator.value.all($this > 0) and
+maxDosePerPeriod.denominator.value.all($this > 0)"
 Severity: #warning

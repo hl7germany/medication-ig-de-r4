@@ -159,6 +159,7 @@ Texte, die der Algorithmus 1.0.1 für solche Dosierungen erzeugt hat:
 - Dosis `0`: `0-0-0-0 Stück` wird nach M04 zu `täglich: 0-0-0-0 Stück`.
 - Dosis `-1`: `-1-0-0-0 Stück` bleibt unverändert, der Text ist kein reines 4-Schema.
 - Periode `0`: `alle 0 Tage: je 1 Stück` bleibt unverändert.
+- Behandlungsdauer `0`: Die Algorithmen 1.0.1 und 1.0.2 lassen die Dauer im Text weg, zum Beispiel `täglich: je 1 Stück`. Der Text bleibt unverändert und gibt damit eine unbefristete Anwendung wieder.
 
 ### M04 – 4-Schema im Freitext {#m04}
 

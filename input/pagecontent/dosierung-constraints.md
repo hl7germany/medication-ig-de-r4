@@ -148,29 +148,29 @@ Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
 {% include dosage-constraint-TimingBoundsUnitMatchesCode-examples.md%}
 
-#### TimingBoundsDurationNotNegative
+#### TimingBoundsDurationPositive
 
 **Beschreibung:**  
-`boundsDuration.value` darf nicht negativ sein. Eine negative Periode schließt bereits die FHIR-Basisregel `tim-5` aus.
+`boundsDuration.value` muss größer als `0` sein.
 
 **Warum?**  
-Eine negative Dauer beschreibt keinen Zeitraum.
+Eine Dauer von `0` oder darunter beschreibt keinen Zeitraum. Die Textgenerierung 1.0.1 lässt eine Dauer von `0` im Text weg; der Text gibt dann eine unbefristete Anwendung wieder.
 
 Folgende Beispiele sind nicht valide, da sie den Constraint brechen:
 
-{% include dosage-constraint-TimingBoundsDurationNotNegative-examples.md%}
+{% include dosage-constraint-TimingBoundsDurationPositive-examples.md%}
 
-#### TimingValuesZeroWarning
+#### TimingPeriodZeroWarning
 
 **Beschreibung:**  
-Warnung, wenn `period` oder `boundsDuration.value` den Wert `0` hat.
+Warnung, wenn `period` den Wert `0` hat. Eine negative Periode schließt bereits die FHIR-Basisregel `tim-5` aus.
 
 **Warum?**  
-Eine Periode oder Dauer von `0` beschreibt keinen Zeitraum. Ab Version 2.0.0 ist der Wert `0` hier nicht mehr zulässig.
+Eine Periode von `0` beschreibt keinen Rhythmus. Ab Version 2.0.0 ist der Wert `0` hier nicht mehr zulässig.
 
 Folgende Beispiele lösen eine Warnung aus:
 
-{% include dosage-constraint-TimingValuesZeroWarning-examples.md%}
+{% include dosage-constraint-TimingPeriodZeroWarning-examples.md%}
 
 
 #### TimingSingleDosageForTimeOfDay

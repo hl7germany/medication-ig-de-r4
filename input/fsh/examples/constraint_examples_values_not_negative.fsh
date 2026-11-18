@@ -49,7 +49,7 @@ Description: "doseQuantity.value -1"
     * when = #MORN
   * doseAndRate.doseQuantity = -1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-C-TimingBoundsDurationNotNegative-Request-01-of-03
+Instance: INV-C-TimingBoundsDurationPositive-Request-01-of-06
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Invalid (Request): negative duration"
@@ -67,7 +67,7 @@ Description: "boundsDuration.value -3 d"
     * boundsDuration = -3 $ucum#d "Tag(e)"
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-C-TimingBoundsDurationNotNegative-Dispense-02-of-03
+Instance: INV-C-TimingBoundsDurationPositive-Dispense-02-of-06
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
 Title: "Invalid (Dispense): negative duration"
@@ -84,7 +84,7 @@ Description: "boundsDuration.value -3 d"
     * boundsDuration = -3 $ucum#d "Tag(e)"
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: INV-C-TimingBoundsDurationNotNegative-Statement-03-of-03
+Instance: INV-C-TimingBoundsDurationPositive-Statement-03-of-06
 InstanceOf: MedicationStatementDgMP
 Usage: #example
 Title: "Invalid (Statement): negative duration"
@@ -150,10 +150,10 @@ Description: "doseQuantity.value 0"
     * when = #MORN
   * doseAndRate.doseQuantity = 0 $kbv-dosiereinheit#1 "Stück"
 
-Instance: Dosage-W-TimingValuesZeroWarning-Request-01-of-03
+Instance: INV-C-TimingBoundsDurationPositive-Request-04-of-06
 InstanceOf: MedicationRequestDgMP
 Usage: #example
-Title: "Warning (Request): duration 0"
+Title: "Invalid (Request): duration 0"
 Description: "boundsDuration.value 0 d"
 * subject.display = "Patient"
 * status = #active
@@ -168,10 +168,10 @@ Description: "boundsDuration.value 0 d"
     * boundsDuration = 0 $ucum#d "Tag(e)"
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: Dosage-W-TimingValuesZeroWarning-Dispense-02-of-03
+Instance: INV-C-TimingBoundsDurationPositive-Dispense-05-of-06
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
-Title: "Warning (Dispense): duration 0"
+Title: "Invalid (Dispense): duration 0"
 Description: "boundsDuration.value 0 d"
 * subject.display = "Patient"
 * status = #completed
@@ -185,10 +185,10 @@ Description: "boundsDuration.value 0 d"
     * boundsDuration = 0 $ucum#d "Tag(e)"
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
 
-Instance: Dosage-W-TimingValuesZeroWarning-Statement-03-of-03
+Instance: INV-C-TimingBoundsDurationPositive-Statement-06-of-06
 InstanceOf: MedicationStatementDgMP
 Usage: #example
-Title: "Warning (Statement): duration 0"
+Title: "Invalid (Statement): duration 0"
 Description: "boundsDuration.value 0 d"
 * subject.display = "Patient"
 * status = #active
@@ -200,4 +200,50 @@ Description: "boundsDuration.value 0 d"
     * periodUnit = #d
     * when = #MORN
     * boundsDuration = 0 $ucum#d "Tag(e)"
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
+
+Instance: Dosage-W-TimingPeriodZeroWarning-Request-01-of-03
+InstanceOf: MedicationRequestDgMP
+Usage: #example
+Title: "Warning (Request): period 0"
+Description: "period 0 d"
+* subject.display = "Patient"
+* status = #active
+* intent = #order
+* medicationCodeableConcept.text = "Ibuprofen 400mg"
+* dosageInstruction[+]
+  * timing.repeat
+    * frequency = 1
+    * period = 0
+    * periodUnit = #d
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
+
+Instance: Dosage-W-TimingPeriodZeroWarning-Dispense-02-of-03
+InstanceOf: MedicationDispenseDgMP
+Usage: #example
+Title: "Warning (Dispense): period 0"
+Description: "period 0 d"
+* subject.display = "Patient"
+* status = #completed
+* medicationCodeableConcept.text = "Ibuprofen 400mg"
+* dosageInstruction[+]
+  * timing.repeat
+    * frequency = 1
+    * period = 0
+    * periodUnit = #d
+  * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
+
+Instance: Dosage-W-TimingPeriodZeroWarning-Statement-03-of-03
+InstanceOf: MedicationStatementDgMP
+Usage: #example
+Title: "Warning (Statement): period 0"
+Description: "period 0 d"
+* subject.display = "Patient"
+* status = #active
+* medicationCodeableConcept.text = "Ibuprofen 400mg"
+* dosage[+]
+  * timing.repeat
+    * frequency = 1
+    * period = 0
+    * periodUnit = #d
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"

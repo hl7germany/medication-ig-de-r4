@@ -83,7 +83,7 @@
 - **`TimingPeriodUnit` (`TimingDgMP`)**
   - Mit `dayOfWeek` ist nur `period = 1` und `periodUnit = wk` zulässig, wie beschrieben; bisher wurde jede Periode in Wochen akzeptiert (der Fall war über `TimingOnlyOneType` bereits ausgeschlossen).
 - **`TimingSingleDosageForWhen`, `TimingSingleDosageForTimeOfDay` (`TimingDgMP`) und die Warnungen in `TimingDE`**
-  - Beschreibung an den Ausdruck angeglichen: Die Regel gilt bei täglicher Gabe und in einer Intervall-Kombination, nicht nur bei täglicher Gabe.
+  - Beschreibung an den Ausdruck angeglichen: Die Regel gilt bei täglicher Gabe und in einer Intervall-Kombination, nicht nur bei täglicher Gabe. Beispiele für eine Intervall-Kombination (alle 2 Tage) ergänzt.
   - Bekannte Einschränkung: Der HL7-Validator (org.hl7.fhir.core, geprüft bis 7.0.5) meldet einen Verstoß, wenn auf einen Dosisbereich mit Unter- und Obergrenze ein Dosisbereich nur mit derselben Obergrenze folgt, etwa morgens 1 bis 2 Stück und abends bis zu 2 Stück. Die Dosen sind verschieden, die Regel ist erfüllt ([hapifhir/org.hl7.fhir.core#2843](https://github.com/hapifhir/org.hl7.fhir.core/issues/2843)).
 - **`TimingFreqOrPeriodGtOne` (`TimingDgMP`) / `TimingFreqOrPeriodGtOneWarning` (`TimingDE`)** (HDB-942)
   - Beschreibung, Begründung und Beispiele um die Kombination aus variabler Frequenz und variabler Periode ergänzt („1 bis 3 x alle 2 bis 3 Tage“). Der Ausdruck ist unverändert; die Kombination war bereits ausgeschlossen.

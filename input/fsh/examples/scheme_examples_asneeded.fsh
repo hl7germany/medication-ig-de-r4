@@ -2,7 +2,7 @@ Instance: Example-MR-Dosage-Bedarfsmedikation-Kopfschmerzen
 InstanceOf: MedicationRequestDgMP
 Usage: #example
 Title: "Example-MR-Dosage-Bedarfsmedikation-Kopfschmerzen"
-Description: "Dieses Beispiel stellt eine Bedarfsmedikation mit Anlass, Menge, Mindestabstand zwischen Gaben und Maximalgabe pro 24 Stunden dar."
+Description: "Dieses Beispiel stellt eine Bedarfsmedikation mit Anlass, Menge, Mindestabstand zwischen Gaben und Maximalgabe pro 24 Stunden dar. Die Maximalmenge ist strenger als der Mindestabstand, der allein 4 Gaben in 24 Stunden zuließe."
 * subject.display = "Patient"
 * status = #active
 * intent = #order
@@ -10,9 +10,9 @@ Description: "Dieses Beispiel stellt eine Bedarfsmedikation mit Anlass, Menge, M
 * dosageInstruction[+]
   * asNeededBoolean = true
   * extension[asNeededFor].valueCodeableConcept.text = "Kopfschmerzen"
-  * modifierExtension[minimumIntervalBetweenAdministrations].valueDuration = 4 $ucum#h "Stunde(n)"
+  * modifierExtension[minimumIntervalBetweenAdministrations].valueDuration = 6 $ucum#h "Stunde(n)"
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
-  * maxDosePerPeriod.numerator.value = 6
+  * maxDosePerPeriod.numerator.value = 3
   * maxDosePerPeriod.numerator.system = $kbv-dosiereinheit
   * maxDosePerPeriod.numerator.code = #1
   * maxDosePerPeriod.numerator.unit = "Stück"
@@ -37,7 +37,7 @@ Description: "Bedarfsmedikation mit mehreren Anlässen (asNeededFor 0..*). Die A
   * extension[asNeededFor][+].valueCodeableConcept.text = "Gliederschmerzen"
   * modifierExtension[minimumIntervalBetweenAdministrations].valueDuration = 6 $ucum#h "Stunde(n)"
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
-  * maxDosePerPeriod.numerator.value = 4
+  * maxDosePerPeriod.numerator.value = 3
   * maxDosePerPeriod.numerator.system = $kbv-dosiereinheit
   * maxDosePerPeriod.numerator.code = #1
   * maxDosePerPeriod.numerator.unit = "Stück"
@@ -73,16 +73,16 @@ Instance: Example-MD-Dosage-Bedarfsmedikation-Kopfschmerzen
 InstanceOf: MedicationDispenseDgMP
 Usage: #example
 Title: "Example-MD-Dosage-Bedarfsmedikation-Kopfschmerzen"
-Description: "Reine Bedarfsmedikation mit Anlass, Mindestabstand und Maximalmenge."
+Description: "Reine Bedarfsmedikation mit Anlass, Mindestabstand und Maximalmenge. Die Maximalmenge ist strenger als der Mindestabstand, der allein 4 Gaben in 24 Stunden zuließe."
 * subject.display = "Patient"
 * status = #completed
 * medicationCodeableConcept.text = "Ibuprofen 400mg"
 * dosageInstruction[+]
   * asNeededBoolean = true
   * extension[asNeededFor].valueCodeableConcept.text = "Kopfschmerzen"
-  * modifierExtension[minimumIntervalBetweenAdministrations].valueDuration = 4 $ucum#h "Stunde(n)"
+  * modifierExtension[minimumIntervalBetweenAdministrations].valueDuration = 6 $ucum#h "Stunde(n)"
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
-  * maxDosePerPeriod.numerator.value = 6
+  * maxDosePerPeriod.numerator.value = 3
   * maxDosePerPeriod.numerator.system = $kbv-dosiereinheit
   * maxDosePerPeriod.numerator.code = #1
   * maxDosePerPeriod.numerator.unit = "Stück"
@@ -95,16 +95,16 @@ Instance: Example-MS-Dosage-Bedarfsmedikation-Kopfschmerzen
 InstanceOf: MedicationStatementDgMP
 Usage: #example
 Title: "Example-MS-Dosage-Bedarfsmedikation-Kopfschmerzen"
-Description: "Reine Bedarfsmedikation mit Anlass, Mindestabstand und Maximalmenge."
+Description: "Reine Bedarfsmedikation mit Anlass, Mindestabstand und Maximalmenge. Die Maximalmenge ist strenger als der Mindestabstand, der allein 4 Gaben in 24 Stunden zuließe."
 * subject.display = "Patient"
 * status = #active
 * medicationCodeableConcept.text = "Ibuprofen 400mg"
 * dosage[+]
   * asNeededBoolean = true
   * extension[asNeededFor].valueCodeableConcept.text = "Kopfschmerzen"
-  * modifierExtension[minimumIntervalBetweenAdministrations].valueDuration = 4 $ucum#h "Stunde(n)"
+  * modifierExtension[minimumIntervalBetweenAdministrations].valueDuration = 6 $ucum#h "Stunde(n)"
   * doseAndRate.doseQuantity = 1 $kbv-dosiereinheit#1 "Stück"
-  * maxDosePerPeriod.numerator.value = 6
+  * maxDosePerPeriod.numerator.value = 3
   * maxDosePerPeriod.numerator.system = $kbv-dosiereinheit
   * maxDosePerPeriod.numerator.code = #1
   * maxDosePerPeriod.numerator.unit = "Stück"

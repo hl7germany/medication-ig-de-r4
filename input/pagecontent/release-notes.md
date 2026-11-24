@@ -23,6 +23,7 @@
 - **Fehlerkorrektur in der `package.json`**
   - Behebung eines Fehlers im Feld `url`, der durch den Tooling-Workaround bei der Nutzung der alten Sushi Version entstanden ist.
   - Es gibt keine fachlichen Änderungen. Das Bugfix-Release stellt lediglich sicher, dass die Abhängigkeiten unverändert zu Version 1.0.4 bleiben.
+
 ---
 
 ### Release: 1.0.6

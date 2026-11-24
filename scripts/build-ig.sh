@@ -6,7 +6,9 @@ Abfolge der Erstellung von Ressourcen und Dokumenten
 '
 
 # Generate Sushi
-sushi .
+# SUSHI 3.18.1 wie für 1.0.6/1.0.7: neuere Versionen ersetzen hl7.fhir.extensions.r5
+# durch die Abhängigkeit hl7.fhir.uv.xver-r5.r4
+npx -y fsh-sushi@3.18.1 .
 
 # Build Dosage Files
 python3 scripts/dosage-main.py

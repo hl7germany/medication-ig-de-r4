@@ -1,10 +1,10 @@
 {
   "package-id" : "de.fhir.medication",
-  "version": "1.0.7",
-  "path": "http://ig.fhir.de/igs/medication/1.0.7",
+  "version": "1.0.8",
+  "path": "http://ig.fhir.de/igs/medication/1.0.8",
   "mode" : "milestone",
   "status" : "release",
   "sequence" : "STU1",
-  "desc": "Rebuilt of 1.0.5 :Bugfix release correcting the package.json url field introduced by the tooling workaround. No functional changes; dependencies remain unchanged compared to version 1.0.4.",
+  "desc": "Patch release: four invariants over multiple dosages evaluated faster without functional change, errors for negative dose and duration values, warnings for 0, corrected dose codes in examples. Dependencies unchanged.",
   "first" : false
 }

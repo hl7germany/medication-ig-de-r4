@@ -1,6 +1,6 @@
 ### Release: 2.0.0
 
-**Version des Textgenerierungs-Algorithmus:** `2.0.0-rc.3`. Die erzeugten Texte ändern sich gegenüber `2.0.0-ballot`, etwa `täglich: 1-0-1-0 Stück` statt `1-0-1-0 Stück` und `bei Kopfschmerzen, alle 8 Stunden: je 1 Stück` statt `bei Kopfschmerzen: alle 8 Stunden je 1 Stück`. Alle Änderungen des Algorithmus stehen im `CHANGELOG.md` von [hl7germany/dgMP-DosageTextgenerierung-Skript](https://github.com/hl7germany/dgMP-DosageTextgenerierung-Skript).
+**Version des Textgenerierungs-Algorithmus:** `2.0.0`. Die erzeugten Texte ändern sich gegenüber `2.0.0-ballot`, etwa `täglich: 1-0-1-0 Stück` statt `1-0-1-0 Stück` und `bei Kopfschmerzen, alle 8 Stunden: je 1 Stück` statt `bei Kopfschmerzen: alle 8 Stunden je 1 Stück`. Alle Änderungen des Algorithmus stehen im `CHANGELOG.md` von [hl7germany/dgMP-DosageTextgenerierung-Skript](https://github.com/hl7germany/dgMP-DosageTextgenerierung-Skript).
 
 **Neue Seiten**
 
@@ -125,6 +125,15 @@
 - **`ExtRequiresDosage-MR`, `ExtRequiresDosage-MD` und `ExtRequiresDosage-MS` (`MedicationRequestDgMP`, `MedicationDispenseDgMP`, `MedicationStatementDgMP`)**
   - Die drei Invarianten sind seit 2.0.0-ballot Teil der Profile, fehlten aber in den Release Notes zu 2.0.0-ballot. Trägt eine Ressource `GeneratedDosageInstructionsMeta` oder `renderedDosageInstruction`, muss sie mindestens eine Dosierung enthalten. Zur Überführung bestehender Daten siehe [Migration, M12](./migration-1.0.7-2.0.0.html).
 
+**Umstieg von 1.0.8**
+
+1.0.8 ist nach 2.0.0-ballot erschienen und hat Regeln eingeführt, die es in 2.0.0 nicht oder mit anderer Schwere gibt:
+
+- `DosageDoseValueNotNegative` entfällt; in 2.0.0 gilt `DosageDoseValuePositive` (Dosis größer als `0`, Untergrenze eines Dosisbereichs auch `0`).
+- `TimingBoundsDurationPositive` entfällt; in 2.0.0 gilt `TimingValuesPositive` (zusätzlich `period` und `periodMax`).
+- `DosageDoseQuantityAllowedFractionsWarning`, `DosageDoseValueDecimalNotationWarning`, `TimingPeriodOnlyWholeNumberWarning` und `TimingBoundsDurationOnlyWholeNumberWarning` (dgMP-Profile) sind in 2.0.0 Fehler mit demselben Schlüssel ohne `Warning`.
+- `DosageDoseValuePositiveWarning`, `TimingValuesPositiveWarning` und `DosageLimitsPositiveWarning` bleiben unverändert.
+
 ### Release: 2.0.0-ballot
 
 Diese Version erweitert das dgMP-Dosiermodell erheblich: Dosierungen, die bisher
@@ -206,6 +215,22 @@ Damit entfallen 20 Beispiele aus der Liste nicht unterstützter Dosierkonfigurat
 
 - Die Spezifikation der Dosis-Textgenerierung liegt nicht mehr im IG. Die Seite [Dosis Textgenerierung](./dosierung-textgenerierung.html) verweist auf das externe Repository; der Build bezieht den Algorithmus als über Tag und Prüfsumme gepinnte Version.
 - Die Seiten der Dosierschemata beschreiben jetzt durchgängig, welche `frequency`-, `period`- und `periodUnit`-Angaben optional zulässig sind und dass sie den erzeugten Text nicht verändern.
+
+### Release: 1.0.8
+
+**What's Changed**
+
+- **Laufzeit der Invarianten über mehrere Dosierungen**
+  - `DosageDoseUnitSameCode` (`DosageDE`) sowie `TimingOnlyOneTimeForInterval`, `TimingOnlyOneTimeOfDay` und `TimingOnlyWhenOrTimeOfDay` (`TimingDgMP`) werten die Liste aller Dosierungen einmal aus statt einmal je Dosierung. Bisher wuchs die Laufzeit mit der dritten Potenz der Anzahl der Dosierungen. Bei einer MedicationDispense mit 40 Dosierungen sinkt sie etwa für `DosageDoseUnitSameCode` von rund 600 ms auf 5 ms (fhirpath.js).
+  - Fachlich ändert sich nichts. Validatoren auf Basis von HAPI (org.hl7.fhir.core, etwa Validator-CLI und IG Publisher) rechneten mit der Fassung aus 1.0.7 bei mehreren Dosierungen teilweise falsch, weil `|` dort unterschiedliche Dosierungen als gleich zusammenfasste ([hapifhir/org.hl7.fhir.core#2843](https://github.com/hapifhir/org.hl7.fhir.core/issues/2843)). Mit 1.0.8 rechnen sie richtig. Dadurch können Fehler erscheinen, die nach der Spezifikation schon immer bestanden, und falsche Fehlermeldungen entfallen.
+- **Keine negativen Werte, keine Dauer von 0**
+  - Neue Fehler: `DosageDoseValueNotNegative` (`DosageDgMP`), `doseQuantity.value` darf nicht negativ sein, und `TimingBoundsDurationPositive` (`TimingDgMP`), `boundsDuration.value` muss größer als `0` sein. Negative Werte beschreiben keine Anwendung. Eine Dauer von `0` lässt die Textgenerierung 1.0.1 im Text weg, der Text gibt dann eine unbefristete Anwendung wieder. Eine negative Periode schließt bereits die FHIR-Basisregel `tim-5` aus.
+  - Neue Warnungen in `DosageDE` und `TimingDE`, die auch für die dgMP-Profile gelten: `DosageDoseValuePositiveWarning` (Dosis, Dosisbereich), `TimingValuesPositiveWarning` (Periode, Dauer) und `DosageLimitsPositiveWarning` (Maximalmenge) bei Werten von `0` oder darunter. Schlüssel und Ausdrücke entsprechen Version 2.0.0, in der diese Werte in den dgMP-Profilen nicht mehr zulässig sind.
+- **Bruchteile und ganze Zahlen**
+  - Neue Warnungen in den dgMP-Profilen: `DosageDoseQuantityAllowedFractionsWarning` (nur die Bruchteile `.125`, `.25`, `.33`, `.5`, `.66`, `.75`), `DosageDoseValueDecimalNotationWarning` (höchstens drei Nachkommastellen, kein Exponent), `TimingPeriodOnlyWholeNumberWarning` und `TimingBoundsDurationOnlyWholeNumberWarning` (ganzzahlige Periode und Dauer). In Version 2.0.0 sind das Fehler mit demselben Schlüssel ohne `Warning`.
+- **Beispiele**
+  - 55 Dosisangaben in Beispielen der dgMP-Profile verwenden Codes aus `KBV_CS_SFHIR_BMP_DOSIEREINHEIT` (`1` Stück, `s` ml) statt UCUM. Die Beispiele zu `DosageDoseUnitSameCode` verwenden für Milligramm den Code `v` statt `mg`, den es in diesem CodeSystem nicht gibt. Die dgMP-Profile binden die Dosis `required` an das KBV-ValueSet.
+- Die Abhängigkeiten bleiben gegenüber 1.0.7 unverändert.
 
 ### Release: 1.0.7
 

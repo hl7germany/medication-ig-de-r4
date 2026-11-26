@@ -115,6 +115,11 @@
 - Dosis-Codes in Beispielen: 36 Beispiele der dgMP-Profile (etwa `MR-Dosage-4schema-noon-only`, `MD-Dosage-4schema-ml-units`) und die Untergrenzen in den Beispielen zu `DoseRangeHighRequiredWhenLowPresent` und `DoseRangeLowAndHighSameUnit` verwenden Codes aus `KBV_CS_SFHIR_BMP_DOSIEREINHEIT` (`1` Stück, `s` ml, `v` mg) statt UCUM. Die Beispiele zu `DosageDoseUnitSameCode` und `DosageDoseUnitSameCodeWarning` verwenden für Milligramm den Code `v` statt `mg`, das es in diesem CodeSystem nicht gibt. Die dgMP-Profile binden die Dosis `required` an das KBV-ValueSet; aufgefallen ist das bisher nicht, weil der IG nicht vom KBV-Paket abhängt und der IG Publisher das ValueSet nicht kennt. Die erzeugten Texte ändern sich nicht.
 - [Beispiele für Dosierungen](./dosierung-beispiele.html): Die Spalte `bounds[x]` der Übersicht zeigt eine Behandlungsdauer als Wert und Einheit, etwa `Duration = 5 Tag(e)`. Bisher stand dort die interne Darstellung des Erzeugungsskripts, etwa `{'system': 'http://unitsofmeasure.org', 'value': 5, 'code': 'd', 'unit': 'Tag(e)'}`.
 
+**Abhängigkeiten**
+
+- `hl7.terminology.r4` `7.5.0` (bisher `7.3.0`), `hl7.fhir.uv.extensions.r4` `5.4.0` (bisher `5.3.0`).
+- `hl7.fhir.uv.xver-r5.r4` bleibt `0.1.0`. Die [Startseite](./index.html) verweist jetzt auf diese Version statt auf `0.0.1-snapshot-2` und nennt `Dosage.asNeededFor` als Extension, die das Paket nicht enthält und dieser IG definiert.
+
 **Nachtrag zu 2.0.0-ballot**
 
 - **`ExtRequiresDosage-MR`, `ExtRequiresDosage-MD` und `ExtRequiresDosage-MS` (`MedicationRequestDgMP`, `MedicationDispenseDgMP`, `MedicationStatementDgMP`)**

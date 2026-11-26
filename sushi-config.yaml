@@ -25,10 +25,12 @@ publisher:
 # use cases, the value can be an object with keys for id, uri, and version.
 #
 dependencies:
-  hl7.fhir.extensions.r5: 4.0.1
-  # Auf den Stand von 2.0.0-ballot gepinnt; ohne Angabe laden SUSHI und Publisher jeweils latest
-  hl7.terminology.r4: 7.3.0
-  hl7.fhir.uv.extensions.r4: 5.3.0
+  # Auf den Stand von 2.0.0 gepinnt; ohne Angabe laden SUSHI und Publisher jeweils latest
+  hl7.terminology.r4: 7.5.0
+  hl7.fhir.uv.extensions.r4: 5.4.0
+  # Cross-Version-Extensions renderedDosageInstruction; Dosage.asNeededFor fehlt im
+  # Paket und ist im IG definiert (input/fsh/extensions/asNeededForBackport-Ex.fsh)
+  hl7.fhir.uv.xver-r5.r4: 0.1.0
 #
 #
 # The pages property corresponds to IG.definition.page. SUSHI can

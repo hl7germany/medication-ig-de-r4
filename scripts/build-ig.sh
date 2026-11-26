@@ -27,7 +27,12 @@ python3 scripts/dosage-main.py
 # Generate IG Publisher Content
 # qa.xml vorher entfernen, damit Schritt 4 nicht gegen einen alten Lauf prüft
 rm -f output/qa.xml
-./_build.sh nosushi
+# Freigaben für den IG Publisher (ab 3.0.6):
+#   -trust-template: custom-template baut auf fhir.base.template auf, das Ant-Skripte
+#     nennt; ohne Freigabe bricht der Publisher ab
+#   -allow-committed-scripts: die _build-/_genonce-Skripte im Wurzelverzeichnis wären
+#     sonst ein Fehler in qa.xml, den die Fehlerprüfung als unerwartet zählt
+./_build.sh nosushi -trust-template fhir.base.template -allow-committed-scripts
 
 if [[ ! -f output/qa.xml ]]; then
     echo "IG Publisher hat kein output/qa.xml erzeugt. Abbruch." >&2

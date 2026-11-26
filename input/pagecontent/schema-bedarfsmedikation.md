@@ -10,7 +10,7 @@ Folgende weitere Beispiele sind in diesem IG dargestellt:
 
 | Beispiel | Beispiel Datei |
 | -------- | ------- |
-| Bei Kopfschmerzen: 1 Stück, Mindestabstand 4 Stunden, maximal 6 Stück pro 24 Stunden | [Example-MR-Dosage-Bedarfsmedikation-Kopfschmerzen](MedicationRequest-Example-MR-Dosage-Bedarfsmedikation-Kopfschmerzen.html) |
+| Bei Kopfschmerzen: 1 Stück, Mindestabstand 6 Stunden, maximal 3 Stück pro 24 Stunden | [Example-MR-Dosage-Bedarfsmedikation-Kopfschmerzen](MedicationRequest-Example-MR-Dosage-Bedarfsmedikation-Kopfschmerzen.html) |
 
 ### Angabe und Erkennung der Dosierart
 
